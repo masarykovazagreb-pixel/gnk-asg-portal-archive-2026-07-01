@@ -58,4 +58,26 @@ jobs:
             GITHUB_BASE_SHA="$(git rev-parse HEAD^)"
             export GITHUB_BASE_SHA
           fi
-          node scripts/validate-direct-static-editorial-v1.mjs
+          set +e
+          node scripts/validate-direct-static-editorial-v1.mjs > /tmp/direct-static-editorial-policy.json 2>&1
+          result=$?
+          set -e
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          content=Path('/tmp/direct-static-editorial-policy.json').read_text(encoding='utf-8',errors='replace')
+          try:
+              data=json.loads(content.replace('\nDIRECT_STATIC_EDITORIAL_POLICY_OK\n','\n'))
+          except Exception as exc:
+              print('Policy diagnostics could not be parsed:',exc)
+              print(content[-5000:])
+              raise SystemExit(1)
+          print(json.dumps({
+              'ok':data.get('ok'),
+              'candidateCount':data.get('candidateCount'),
+              'checkedCount':data.get('checkedCount'),
+              'skippedCount':data.get('skippedCount'),
+              'errors':data.get('errors',[]),
+          },ensure_ascii=False,indent=2))
+          PY
+          exit "$result"

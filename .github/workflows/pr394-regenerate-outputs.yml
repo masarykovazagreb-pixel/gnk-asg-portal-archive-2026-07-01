@@ -1,9 +1,5 @@
 name: PR394 — deterministic generated-output repair
 on:
-  push:
-    branches: [arena/0ba72079-gnk-asg-portal-archive-2026-07]
-    paths:
-      - '.github/workflows/pr394-regenerate-outputs.yml'
   workflow_dispatch:
 permissions:
   contents: write

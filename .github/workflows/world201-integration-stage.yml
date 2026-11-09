@@ -1,0 +1,351 @@
+name: WORLD 201 integration - stage generated output only
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - integration/world201-pr394-main-20261108
+    paths:
+      - .github/workflows/world201-integration-stage.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-asg-world201-pr394-integration-staging
+  cancel-in-progress: false
+
+jobs:
+  regenerate-on-integration-branch:
+    if: github.ref == 'refs/heads/integration/world201-pr394-main-20261108' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    name: Build 201 countries and weekly archive without touching main
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out the exact branch commit
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax-check imported generators and test input completeness
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check scripts/build-aktual-world-v1.mjs
+          node --check scripts/build-aktual-media-weekly-archive-v1.mjs
+          node --check scripts/build-index-parity.mjs
+          node --check scripts/build-sync-status-v1.mjs
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          world=json.loads(Path('apps/portal/data/world-countries-v1.json').read_text())
+          issue=json.loads(Path('apps/portal/data/aktual-weekly.json').read_text())
+          assert world['count']==201 and len(world['countries'])==201, 'World must list 201 countries'
+          assert len(world['cities'])==10, 'World must list 10 cities'
+          assert issue['issue_week']=='2026-11-02', 'Unexpected weekly issue'
+          print('Inputs validated: 201 countries, 10 cities and weekly issue')
+          PY
+      - name: Regenerate WORLD 201 pages from main plus imported sources
+        env:
+          AKTUAL_WORLD_OUT: apps/portal/gnk-aktual
+        run: node scripts/build-aktual-world-v1.mjs --base https://gnk-asg.hr/gnk-aktual/
+      - name: Regenerate HR/EN weekly archive without deleting newer news
+        run: node scripts/build-aktual-media-weekly-archive-v1.mjs
+      - name: Rebuild canonical editorial registry and sitemap metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/editorial-registry-v1.mjs
+          node scripts/generate-editorial-sitemap-v2.mjs
+      - name: Validate all generated XML, page counts and weekly originals
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          portal=Path('apps/portal')
+          out=portal/'gnk-aktual'
+          world=json.loads((portal/'data/world-countries-v1.json').read_text())
+          issue=json.loads((portal/'data/aktual-weekly.json').read_text())
+          for item in world['countries']:
+              d=out/'media'/item['slug']
+              assert (d/'index.html').is_file(), str(d)
+              ET.parse(d/'feed.xml')
+          for item in world['cities']:
+              d=out/'grad'/item['slug']
+              assert (d/'index.html').is_file(), str(d)
+              ET.parse(d/'feed.xml')
+          tree=ET.parse(out/'media/sitemap.xml')
+          assert len(tree.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc'))>=211, 'Incomplete sitemap'
+          week=issue['issue_week']
+          editorial=portal/'editorial-sitemap.xml'
+          ET.parse(editorial)
+          editorial_xml=editorial.read_text()
+          assert f'https://gnk-asg.hr/gnk-aktual/tjedni/{week}/' in editorial_xml, 'HR weekly sitemap route missing'
+          assert f'https://gnk-asg.hr/en/gnk-aktual/weekly/{week}/' in editorial_xml, 'EN weekly sitemap route missing'
+          for p in [out/'tjedni'/week/'index.html',portal/'en/gnk-aktual/weekly'/week/'index.html']:
+              assert p.is_file() and p.stat().st_size>500, str(p)
+          for path in [issue['cover_image_hr'],issue['cover_image_en']]:
+              assert (portal/path.lstrip('/')).is_file(), path
+          for section in issue.get('sections',[]):
+              for item in section.get('items',[]):
+                  img=item.get('image','')
+                  if img.startswith('/assets/'):
+                      assert (portal/img.lstrip('/')).is_file(), img
+          print('Validated 211 WORLD pages, 211 RSS feeds, sitemap, and HR/EN weekly archives')
+          PY
+      - name: Stage only generated WORLD and weekly paths; fail on deletion
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -A -- apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad apps/portal/gnk-aktual/tjedni apps/portal/en/gnk-aktual/weekly apps/portal/data/aktual-weekly-archives apps/portal/data/editorial-registry.json apps/portal/editorial-sitemap.xml apps/portal/sitemap-index.xml
+          git diff --cached --check
+          if git diff --cached --name-status | grep -q $'^D\t'; then
+            echo 'Deletion detected; refusing generated-output commit.' >&2
+            exit 1
+          fi
+          if git diff --cached --quiet; then
+            echo 'No generated changes; already synchronized.'
+            exit 0
+          fi
+          git fetch origin "$GITHUB_REF_NAME"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(world201): regenerate country-city and weekly pages from latest main'
+          git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
+
+  homepage-parity:
+    needs: regenerate-on-integration-branch
+    if: github.ref == 'refs/heads/integration/world201-pr394-main-20261108' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    name: Repair only HR and EN homepage parity on integration branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: integration/world201-pr394-main-20261108
+          persist-credentials: true
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerate and check homepage parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/build-index-parity.mjs
+          node scripts/build-index-parity.mjs --check
+          git diff --check
+      - name: Strict two-file change allowance, no deletions, no blind overwrite
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only > /tmp/homepage-files.txt
+          if grep -Ev '^(apps/portal/index.html|apps/portal/en/index.html)$' /tmp/homepage-files.txt; then
+            echo 'Unexpected path changed by index regeneration; refusing commit.' >&2
+            exit 1
+          fi
+          git add -- apps/portal/index.html apps/portal/en/index.html
+          git diff --cached --check
+          if git diff --cached --name-status | grep -q $'^D\t'; then
+            echo 'Deletion detected; refusing commit.' >&2
+            exit 1
+          fi
+          if git diff --cached --quiet; then
+            echo 'HR/EN homepages already synchronized.'
+            exit 0
+          fi
+          git fetch origin "$GITHUB_REF_NAME"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(portal): restore generated HR EN homepage index parity'
+          git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
+
+  generated-drift-repair:
+    needs: homepage-parity
+    if: github.ref == 'refs/heads/integration/world201-pr394-main-20261108' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    name: Repair deterministic public network output on staging only
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: integration/world201-pr394-main-20261108
+          persist-credentials: true
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerate only deterministic public derived assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          node apps/sites/build.mjs
+          node apps/world/build.mjs
+          node scripts/build-prenos-hub-v1.mjs
+          node scripts/build-sync-status-v1.mjs
+          node scripts/apply-design-tokens-v1.mjs
+          node scripts/public-status-snapshot-v1.mjs
+      - name: Verify derived output and audit working-tree scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tests/test-sites-network-v1.mjs
+          node scripts/build-prenos-hub-v1.mjs --check
+          node tests/test-sync-status-v1.mjs
+          node tests/test-design-system-v1.mjs
+          node scripts/public-status-snapshot-v1.mjs --check
+          git diff --check
+          git status --short | head -80 || true
+      - name: Stage only reviewed generated paths and reject any deletion
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -A -- apps/sites/site apps/portal/data/prenos-network-v1.json apps/portal/status/sync.json apps/portal/status/sinkronizacija/index.html apps/portal/autonomija/index.html apps/portal/en/autonomy/index.html apps/portal/assets/am-design-v1.css apps/portal/data/public_service_status.json apps/portal/data/public_service_status_history.json
+          git diff --cached --check
+          if git diff --cached --name-status | grep -q $'^D\\t'; then
+            echo 'Generated file deletion detected; refusing staging commit' >&2
+            exit 1
+          fi
+          if git diff --cached --name-only | grep -E '(^|/)(podijeli|vijest|news)(/|$)' ; then
+            echo 'Protected editorial path changed; refusing staging commit' >&2
+            exit 1
+          fi
+          count="$(git diff --cached --name-only | wc -l)"
+          echo "Staged deterministic output files: $count"
+          if [ "$count" -gt 4000 ]; then
+            echo 'Unexpected large rewrite; refusing staging commit' >&2
+            exit 1
+          fi
+          if git diff --cached --quiet; then
+            echo 'All selected generated output already synchronized.'
+            exit 0
+          fi
+          git fetch origin "$GITHUB_REF_NAME"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(world201): repair deterministic network, status and design parity on staging'
+          git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"
+
+  final-integrity-repair:
+    needs: generated-drift-repair
+    if: github.ref == 'refs/heads/integration/world201-pr394-main-20261108' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    name: Safely repair JSON-LD, brand, attribution and refresh metadata
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: integration/world201-pr394-main-20261108
+          persist-credentials: true
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run canonical metadata-only generators
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/ensure-website-jsonld-v1.mjs --write > /tmp/world201-jsonld-summary.json
+          node scripts/apply-brand-mark-v1.mjs
+          python3 scripts/factory/apply_standard.py
+          node scripts/apply-refresh-v1.mjs --only=portal
+          node --check scripts/ensure-website-jsonld-v1.mjs
+          git diff --check
+      - name: Verify metadata and archived article preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/test-website-jsonld-v1.mjs
+          python3 scripts/factory/apply_standard.py --check
+          node scripts/ensure-website-jsonld-v1.mjs > /tmp/world201-verify-jsonld.json
+          node scripts/apply-brand-mark-v1.mjs --check
+          node scripts/apply-refresh-v1.mjs --only=portal --check
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,re
+          files=subprocess.check_output(['git','diff','--name-only','-z']).decode().split('\0')
+          for path in filter(None,files):
+              if not path.startswith('apps/portal/podijeli/vijest/'):
+                  continue
+              previous=subprocess.check_output(['git','show',f'HEAD:{path}'])
+              current=Path(path).read_bytes()
+              pat=re.compile(rb'<script\b[^>]*\bdata-am-netday="[^"]*"[^>]*></script>',re.I)
+              if len(pat.findall(previous)) != 1 or len(pat.findall(current)) != 1:
+                  raise SystemExit('Protected article refresh tag count changed: '+path)
+              if pat.sub(b'<script refresh-normalized></script>',previous) != pat.sub(b'<script refresh-normalized></script>',current):
+                  raise SystemExit('Protected article body/markup changed beyond refresh date: '+path)
+          print('Protected article content unchanged; only existing refresh script dates may differ')
+          PY
+      - name: Strict guarded commit, no deletion or unexpected scale
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -A -- apps/portal
+          git diff --cached --check
+          if git diff --cached --name-status | grep -q $'^D\t'; then
+            echo 'Deletion detected; refusing stage' >&2
+            exit 1
+          fi
+          count="$(git diff --cached --name-only | wc -l)"
+          echo "Metadata-only staged portal paths: $count"
+          if [ "$count" -gt 22000 ]; then
+            echo 'More than 22000 public portal files affected: refusing unreviewed bulk commit' >&2
+            exit 1
+          fi
+          if [ "$count" -gt 5000 ]; then
+            echo 'Large metadata repair; checking visible text of EVERY modified HTML document against HEAD.'
+            mkdir -p /tmp/asg-baseline
+            git archive HEAD apps/portal | tar -x -C /tmp/asg-baseline
+            python3 - <<'PY'
+          import html,importlib.util,re,subprocess
+          from pathlib import Path
+          spec=importlib.util.spec_from_file_location('asg_factory','scripts/factory/apply_standard.py')
+          module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+          variants=[v for group in module.LEAD_GROUPS for v in group]
+          changed=subprocess.check_output(['git','diff','--cached','--name-only','-z']).decode().split('\0')
+          remove_added=re.compile(r'(?is)<p\b[^>]*class=["\x27]gnk-(?:attribution|hashtags)["\x27][^>]*>.*?</p>')
+          def visible(raw):
+              raw=re.sub(r'(?is)<!--\s*radio-promo-v1:start\s*-->.*?<!--\s*radio-promo-v1:end\s*-->','',raw)
+              raw=remove_added.sub('',raw)
+              raw=re.sub(r'(?is)<head\b.*?</head>','',raw)
+              raw=re.sub(r'(?is)<script\b.*?</script>|<style\b.*?</style>|<!--.*?-->','',raw)
+              raw=html.unescape(re.sub(r'<[^>]+>',' ',raw))
+              raw=' '.join(raw.split())
+              for variant in variants: raw=raw.replace(variant,'[network lead]')
+              return raw
+          checked=0
+          for path in filter(None,changed):
+              if not path.startswith('apps/portal/') or not path.endswith('.html'): continue
+              old=Path('/tmp/asg-baseline',path)
+              if not old.is_file(): raise SystemExit('Unreviewed newly-created HTML: '+path)
+              former=old.read_text(encoding='utf-8',errors='replace')
+              current=Path(path).read_text(encoding='utf-8',errors='replace')
+              if visible(former)!=visible(current):
+                  raise SystemExit('Editorial visible text changed beyond allowed metadata/marked UI: '+path)
+              checked+=1
+          print('PASS: all',checked,'modified HTML files preserve their visible editorial content.')
+          PY
+          fi
+          if git diff --cached --quiet; then
+            echo 'Canonical metadata already synchronized.'
+            exit 0
+          fi
+          git fetch origin "$GITHUB_REF_NAME"
+          test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(world201): reconcile public JSON-LD, brand, factory and freshness layers'
+          git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"

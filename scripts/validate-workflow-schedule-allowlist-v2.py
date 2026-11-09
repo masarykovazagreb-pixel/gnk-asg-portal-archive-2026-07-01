@@ -11,17 +11,41 @@ WORKFLOWS = ROOT / ".github" / "workflows"
 ALLOWLIST = ROOT / "ops" / "production-workflow-allowlist-v2.json"
 
 
+def cron_field_values(field: str, minimum: int, maximum: int) -> set[int]:
+    """Expand fixed, comma-separated and stepped cron fields without undercounting."""
+    values: set[int] = set()
+    for item in field.split(","):
+        if "/" in item:
+            base, step_text = item.split("/", 1)
+            step = int(step_text)
+        else:
+            base, step = item, 1
+        if base == "*":
+            start, end = minimum, maximum
+        elif "-" in base:
+            start, end = (int(value) for value in base.split("-", 1))
+        else:
+            start = end = int(base)
+        if step < 1 or start < minimum or end > maximum or start > end:
+            raise ValueError(f"Invalid cron field: {field}")
+        values.update(range(start, end + 1, step))
+    return values
+
+
 def daily_invocations(cron: str) -> tuple[float, list[int]]:
-    """Return average/day and Sunday-first per-day counts for simple production crons."""
+    """Return actual runs/day, including */N minutes and */N hours."""
     fields = cron.split()
     if len(fields) != 5 or fields[2] != "*" or fields[3] != "*":
         raise ValueError(f"Unsupported production cron shape: {cron}")
-    hours = 24 if fields[1] == "*" else len(fields[1].split(","))
-    if fields[4] == "*":
-        days = [hours] * 7
-    elif fields[4].isdigit() and 0 <= int(fields[4]) <= 6:
+    minutes = cron_field_values(fields[0], 0, 59)
+    hours = cron_field_values(fields[1], 0, 23)
+    count = len(minutes) * len(hours)
+    day_of_week = fields[4]
+    if day_of_week == "*":
+        days = [count] * 7
+    elif day_of_week.isdigit() and 0 <= int(day_of_week) <= 6:
         days = [0] * 7
-        days[int(fields[4])] = hours
+        days[int(day_of_week)] = count
     else:
         raise ValueError(f"Unsupported production day-of-week field: {cron}")
     return sum(days) / 7, days
