@@ -18,7 +18,7 @@ export function topicTagsForRoute(route){
   if(typeof route!=='string'||!/^\/[a-z0-9\-\u00c0-\u024f\/]*\/?$/iu.test(route))return [];
   const clean=route.replace(/\/{2,}/g,'/').replace(/\/?$/,'/');
   const en=clean.startsWith('/en/');
-  return TOPICS.filter(t=>t.test(clean)).map(t=>({label:t.label,href:en?t.en:t.hr}));
+  return TOPICS.filter(t=>t.test.test(clean)).map(t=>({label:t.label,href:en?t.en:t.hr}));
 }
 export function brandHashtagTarget(label){
   return BRAND_HASHTAG_TARGETS[label]||null;
