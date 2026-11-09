@@ -68,6 +68,8 @@
     }
 
     function open() {
+      // WORLD takeover has its own once-per-session modal; never lock scroll for the retired popup.
+      if (document.getElementById('amZgModal')) return;
       if (opened || alreadySeen()) return;
       opened = true;
       lastFocus = document.activeElement;

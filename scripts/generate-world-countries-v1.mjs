@@ -322,8 +322,8 @@ const countries = COUNTRY_DEFS.map(([code, slug, nameLocal, nameEn, language, fl
     code, slug, nameLocal, nameEn, language, flag, region,
     sources: sources.length,
     sourcesList: sources,
-    rss: `https://gnk-asg.hr/kanal/svijet/feed.xml`,
-    url: `https://gnk-asg.hr/gnk-aktual/svijet/${slug}/`,
+    rss: `https://gnk-asg.hr/gnk-aktual/media/${slug}/feed.xml`,
+    url: `https://gnk-asg.hr/gnk-aktual/media/${slug}/`,
   };
 });
 
@@ -344,6 +344,7 @@ const CITIES = [
 const cities = CITIES.map(([slug, nameLocal, nameEn, country, flag, sources]) => ({
   slug, nameLocal, nameEn, country, flag, sources,
   url: `https://gnk-asg.hr/gnk-aktual/grad/${slug}/`,
+  rss: `https://gnk-asg.hr/gnk-aktual/grad/${slug}/feed.xml`,
 }));
 
 const output = {

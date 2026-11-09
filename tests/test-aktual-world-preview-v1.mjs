@@ -15,6 +15,13 @@ test('promocija je trajna, jasno označena i vodi na odabrani vanjski pregled',(
   assert.ok(page.includes(`href="${url}" target="_blank" rel="external noopener noreferrer"`));
   assert.ok(page.includes('data-am-promo-close'));
   assert.ok(page.includes('data-am-promo-never'));
+  // On the current homepage the takeover replaces the legacy popup at runtime.
+  const visibleModal = page.match(/<div class="am-zg-modal" id="amZgModal"[\s\S]*?<!-- AM-WORLD-PROMO:END -->/);
+  assert.ok(visibleModal);
+  assert.match(visibleModal[0], /id="amZgTitle">HRVATSKA NA SVJETSKOJ KARTI!/);
+  assert.match(visibleModal[0], /demonstracijske vijesti/);
+  assert.ok(visibleModal[0].includes(`href="${url}"`));
+  assert.ok(visibleModal[0].includes('data-am-zg-close'));
   assert.ok(page.includes('id="amPromoTop"'));
   assert.ok(page.includes('id="amAd"'));
   assert.doesNotMatch(worldPreviewBanner(),/<iframe/i);

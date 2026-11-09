@@ -1,5 +1,4 @@
 name: All gates (portal)
-# PR394: verify regenerated branch output after bot-generated commit.
 
 # Jedan obavezni prag za svaki PR: iste provjere koje dnevni self-heal
 # pokreće lokalno. Cilj je da "zeleno" znači isto svugdje — u PR-u, na
@@ -23,30 +22,13 @@ on:
       - 'ops/**'
       - '.github/workflows/**'
   workflow_dispatch:
-  push:
-    branches:
-      - 'arena/0ba72079-gnk-asg-portal-archive-2026-07'
-    paths:
-      - '.github/workflows/all-gates-v1.yml'
-      # Validate the complete generated branch whenever its public output changes.
-      - 'apps/portal/**'
-      - 'apps/world/**'
-      - 'apps/region/**'
-      # Bot-generated commits update these outputs; validate their actual SHA
-      # instead of accepting a cancelled pre-regeneration PR run.
-      - 'scripts/**'
-      - 'apps/portal/data/public_service_status.json'
-      - 'apps/kanal/site/**'
-      - 'apps/tjednik/**'
-      - 'apps/sites/site/**'
 
 permissions:
   contents: read
 
 concurrency:
   group: all-gates-${{ github.event.pull_request.number || github.ref }}
-  # Keep the current gate run alive while regeneration or PR metadata changes.
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   gates:
@@ -66,11 +48,10 @@ jobs:
       - name: Python 3 (za allowlist gate)
         run: python3 --version
 
-      - name: Sastavi samostalne portale za gate (arhiva, dnevnik)
+      - name: Sastavi samostalne portale za gate (world, arhiva, dnevnik)
         run: |
           set -euo pipefail
-          node apps/kanal/build.mjs
-          node apps/tjednik/build.mjs
+          node apps/world/build.mjs
           node apps/arhiva/engine/build.mjs
           node apps/dnevnik/engine/build.mjs
 
