@@ -10,6 +10,11 @@ on:
       - 'apps/portal/assets/aktual-media-layout-seo-v1.js'
       - 'apps/portal/sitemap.xml'
       - 'scripts/test-aktual-media-world-v1.mjs'
+      - 'scripts/test-aktual-world-directory-v1.mjs'
+      - 'apps/portal/data/world-countries-v1.json'
+      - 'apps/portal/assets/aktual-world-directory-v1.css'
+      - 'apps/portal/assets/aktual-world-directory-v1.js'
+      - 'scripts/generate-world-countries-v1.mjs'
       - '.github/workflows/check-aktual-media-world-v1.yml'
   push:
     branches: [main]
@@ -21,6 +26,11 @@ on:
       - 'apps/portal/assets/aktual-media-layout-seo-v1.js'
       - 'apps/portal/sitemap.xml'
       - 'scripts/test-aktual-media-world-v1.mjs'
+      - 'scripts/test-aktual-world-directory-v1.mjs'
+      - 'apps/portal/data/world-countries-v1.json'
+      - 'apps/portal/assets/aktual-world-directory-v1.css'
+      - 'apps/portal/assets/aktual-world-directory-v1.js'
+      - 'scripts/generate-world-countries-v1.mjs'
       - '.github/workflows/check-aktual-media-world-v1.yml'
 
 permissions:
@@ -36,4 +46,6 @@ jobs:
         with:
           node-version: '22'
       - name: Validate AKTUAL Media world-edition contract
-        run: node scripts/test-aktual-media-world-v1.mjs
+        run: |
+          node scripts/test-aktual-media-world-v1.mjs
+          node scripts/test-aktual-world-directory-v1.mjs
