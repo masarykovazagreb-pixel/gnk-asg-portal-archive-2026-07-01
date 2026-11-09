@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   regenerate:
-    if: github.repository == 'masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01' && github.ref == 'refs/heads/feat/aktual-world-ci-release-20261109'
+    if: github.repository == 'masarykovazagreb-pixel/gnk-asg-portal-archive-2026-07-01' && ((github.event_name == 'pull_request' && github.event.pull_request.number == 404 && github.head_ref == 'feat/aktual-world-ci-release-20261109') || (github.event_name == 'push' && github.ref == 'refs/heads/feat/aktual-world-ci-release-20261109'))
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
