@@ -1,0 +1,68 @@
+name: PR404 Canonical Generated-Site Repair
+on:
+  push:
+    branches:
+      - feat/aktual-world-ci-release-20261109
+    paths:
+      - docs/aktual-media/PR404_REBUILD_REQUEST.md
+permissions:
+  contents: write
+concurrency:
+  group: pr404-canonical-generated-site-repair
+  cancel-in-progress: false
+jobs:
+  repair-generated-pages:
+    if: github.ref == 'refs/heads/feat/aktual-world-ci-release-20261109' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/aktual-world-ci-release-20261109
+          persist-credentials: true
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify canonical source state and data day
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const data=JSON.parse(fs.readFileSync('apps/portal/data/network-counts-v1.json','utf8'));
+          if(!/^\d{4}-\d{2}-\d{2}$/.test(data.dataDay||''))throw Error('Missing dataDay in source registry');
+          console.log('Canonical data day:',data.dataDay,'(not system clock)');
+          NODE
+      - name: Regenerate six independent sites with canonical generator
+        run: node apps/sites/build.mjs
+      - name: Align refresh tags across six public-site roots using registry data day
+        run: node scripts/apply-refresh-v1.mjs
+      - name: Materialize canonical public radio promo only
+        run: python3 scripts/factory/radio_promo_v1.py
+      - name: Validate generator freshness and refresh-layer invariants
+        run: |
+          set -euo pipefail
+          node tests/test-sites-network-v1.mjs
+          node tests/test-refresh-layer-v1.mjs
+          python3 scripts/factory/radio_promo_v1.py --check
+          git diff --check
+      - name: Examine scope and commit only canonical generated public outputs
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git status --short | head -n 30 || true
+          changed="$(git status --porcelain | wc -l)"
+          echo "Changed files: $changed"
+          if [ "$changed" -gt 9500 ]; then
+            echo "::error::Unexpected broad generated-file change; refusing auto-commit"
+            exit 1
+          fi
+          git add -- apps/sites/site apps/portal apps/world/site apps/kanal/site apps/arhiva/site apps/dnevnik/site
+          if git diff --cached --quiet; then
+            echo 'Already in canonical generated state'
+            exit 0
+          fi
+          git diff --cached --stat | tail -n 20
+          git commit -m 'build(portal): repair canonical generated sites and registry-day refresh tags'
+          git push origin HEAD:feat/aktual-world-ci-release-20261109
