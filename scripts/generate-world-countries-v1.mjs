@@ -323,7 +323,7 @@ const countries = COUNTRY_DEFS.map(([code, slug, nameLocal, nameEn, language, fl
     sources: sources.length,
     sourcesList: sources,
     rss: `https://gnk-asg.hr/kanal/svijet/feed.xml`,
-    url: `https://gnk-asg.hr/gnk-aktual/svijet/${slug}/`,
+    url: `https://gnk-asg.hr/gnk-aktual/media/${slug}/`,
   };
 });
 
