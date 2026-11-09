@@ -1,6 +1,6 @@
 {
   "name": "adria-bank-demo",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "description": "Synthetic banking rehearsal with local background simulation and public daily reference data",
   "author": "Adria Bank Demo Team",
@@ -15,6 +15,7 @@
     "install:windows:source": "powershell -NoProfile -ExecutionPolicy Bypass -File .\\Install-Windows.ps1",
     "test": "node --test tests/*.test.mjs",
     "package:desktop-zip": "python scripts/package-desktop-zip.py",
+    "package:windows-installer-zip": "python scripts/package-windows-installer.py",
     "dist:win": "electron-builder --win nsis --x64",
     "dist:win:portable": "electron-builder --win portable --x64"
   },
@@ -56,11 +57,13 @@
       "artifactName": "Adria-Banka-Demo-Setup-${version}-${arch}.${ext}"
     },
     "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
+      "oneClick": true,
+      "perMachine": false,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Adria Bank Demo"
+      "shortcutName": "Adria Bank Demo",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false
     },
     "portable": {
       "artifactName": "Adria-Banka-Demo-Portable-${version}-${arch}.${ext}"

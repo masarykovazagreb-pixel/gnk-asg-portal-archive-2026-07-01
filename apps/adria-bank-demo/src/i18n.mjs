@@ -976,6 +976,21 @@ for (const [language, translations] of Object.entries(interopPanelTranslations))
 
 for (const [language, translations] of Object.entries(interopSystemTranslations)) Object.assign(dictionaries[language], translations);
 
+const desktopDemoDisclaimers = {
+  hr: 'Desktop demo verzija · nije stvarna banka ni financijska usluga',
+  en: 'Desktop demo version · not a real bank or financial service',
+  de: 'Desktop-Demoversion · keine echte Bank oder Finanzdienstleistung',
+  fr: 'Version démo de bureau · ni banque ni service financier réel',
+  es: 'Versión demo de escritorio · no es un banco ni un servicio financiero real',
+  ar: 'نسخة تجريبية لسطح المكتب · ليست بنكاً أو خدمة مالية حقيقية',
+  sw: 'Toleo la demo la kompyuta · si benki wala huduma halisi ya kifedha',
+  ja: 'デスクトップ・デモ版 · 実在の銀行・金融サービスではありません',
+  zh: '桌面演示版 · 并非真实银行或金融服务'
+};
+for (const [language, disclaimer] of Object.entries(desktopDemoDisclaimers)) {
+  dictionaries[language].desktopDemoDisclaimer = disclaimer;
+}
+
 export const supportedLanguages = [
   { code: 'hr', label: 'HR Hrvatski', locale: 'hr-HR' }, { code: 'en', label: 'EN English', locale: 'en-GB' },
   { code: 'de', label: 'DE Deutsch', locale: 'de-DE' }, { code: 'fr', label: 'FR Français', locale: 'fr-FR' },

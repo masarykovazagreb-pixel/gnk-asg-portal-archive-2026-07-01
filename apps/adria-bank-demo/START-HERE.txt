@@ -1,13 +1,14 @@
-ADRIA BANK DEMO — WINDOWS DESKTOP SOURCE BUNDLE
-Snapshot date: 11 October 2026
+ADRIA BANK DEMO 1.2.0 — SOURCE/DEVELOPER BUNDLE
 
-1. Extract the ZIP to a folder you can write to.
-2. Install Node.js 22.12 or newer (64-bit) and keep its normal TLS/certificate verification enabled.
-3. Double-click START-ADRIA-BANK-DEMO.bat.
-4. The script installs the app for the current Windows user, creates Desktop and Start-menu shortcuts, and opens the demo. The first setup needs an internet connection so npm can download the Electron runtime and dependencies. It does not disable certificate checks.
+This is the legacy source bundle, not the easy end-user installer. To install the Windows 11 desktop app without Node.js or npm, use the separate standalone Windows installer ZIP linked in `DOWNLOADS.md`; it contains `Adria-Banka-Demo-Setup-1.2.0-x64.exe` and its SHA-256 checksum.
 
-If Windows asks for confirmation to run the included PowerShell script, review it and allow it only if you trust this source bundle. No administrator permission is intended. If setup fails, run Install-Windows.ps1 in PowerShell and read the error; do not bypass TLS verification. If your organization's trusted proxy certificate is missing, ask your administrator to configure the approved certificate chain.
+For this source bundle only:
+1. Extract it to a writable folder.
+2. Install Node.js 22.12 or newer (64-bit) and npm; keep normal TLS/certificate verification enabled.
+3. Double-click `START-ADRIA-BANK-DEMO.bat`. First-time setup needs internet to download npm packages and Electron. It installs per-user and creates Desktop/Start-menu shortcuts.
 
-The bundle is not a signed standalone .exe installer and does not include the Windows Electron binary. Its first-run setup requires Node.js 22.12+ and internet access. After successful installation, launch “Adria Bank Demo” from the Desktop or Start menu. Optional public reference rates may still require internet access; the training scenario uses synthetic local data.
+If source setup fails, read the PowerShell error and ask an administrator to configure the approved certificate chain. Do not disable TLS verification or Windows security protections. This source-based setup is not a standalone `.exe` installer.
 
-The program is a fictional rehearsal only. It is not a bank or exchange, does not verify identity, open real accounts, authorize cards, transmit payments or trade. Do not enter real personal, banking, identity, payment-card or confidential data. See README.md, COMPLIANCE-OVERVIEW.md and PRODUCT-AND-COMPETITOR-REVIEW-2026-10-11.md.
+The app is a fictional local rehearsal only. It is not a bank, financial service or exchange; it does not open real accounts, verify identity, authorize cards, transmit payments or trade. Use synthetic records only. Optional public reference rates may require internet; the local scenario has clearly labelled sample data.
+
+Desktop demo version — not a real bank or financial service.
