@@ -268,7 +268,15 @@ for (const site of SITES_RUN) {
     if (items < 1) fail(site, null, 'feed.xml bez <item>');
     else notes.push(`${site.id}: feed ${items} stavki`);
     for (const m of f.matchAll(/<link>([^<]*)<\/link>/g)) {
-      if (!/^https:\/\//.test(decode(m[1]))) fail(site, null, `feed link nije apsolutan: ${m[1]}`);
+      // RSS source links may legitimately use HTTP; both HTTP and HTTPS are absolute URLs.
+      // Reject relative, malformed, or non-web schemes without changing an external publisher's canonical link.
+      const link = decode(m[1]);
+      let valid = false;
+      try {
+        const url = new URL(link);
+        valid = ['http:', 'https:'].includes(url.protocol) && Boolean(url.hostname) && !url.username && !url.password;
+      } catch { /* malformed URL */ }
+      if (!valid) fail(site, null, `feed link nije apsolutni HTTP(S) URL: ${m[1]}`);
     }
   }
 
