@@ -33,3 +33,9 @@ Pokrenuti `node --test tests/test-entity-navigation-seo-v1.mjs tests/test-seo-co
 ### Puni testni prolaz
 
 U izdvojenoj radnoj kopiji, s izgrađenim WORLD, ARHIVA i DNEVNIK izlazima, prošle su 104 od 110 obaveznih provjera. Šest nije prošlo: dvije provjere javnog statusa zbog zastarjelog snimka, te dizajn, brend, tvornica i osvježavanje zbog nedostajućih slojeva na HR/EN stranicama autonomije. Ti izlazi nisu osvježavani niti je datum statusa umjetno mijenjan u sklopu ovog SEO prolaza. Puni test bio je pokrenut prije završnog dodatka kontekstualnih poveznica na profilu i Twitter metapodataka WORLD imenika; završni ciljani testovi pokrivaju i te dodatke.
+
+### Naknadni popravci
+
+Na HR i EN stranice autonomije vraćeni su favicon, dizajnerski i radijski sloj, modul osvježavanja s podatkovnim danom te vidljiva poveznica na GNK DINAMO Ltd. Generator te slojeve sada čuva; kod radijske promocije odbija rad ako postojeći sloj nedostaje ili je dupliciran, umjesto da ga tiho izbriše. Dodane su regresijske provjere. Hrvatskom indeksu komentara vraćena je poveznica `rel=author` na profil Nermina Sefića i ugovor javnog SEO-a ponovno prolazi.
+
+Statusni snimak nije mijenjan: sistemski datum izvršnog okruženja i datum sesije nisu usklađeni, a postojeći repozitorijski podaci nose kasnije datume. Dok se stvarno vrijeme i izvori ne provjere, novo vremensko obilježje ne bi bilo pouzdano. Provjere svježine nisu oslabljene.

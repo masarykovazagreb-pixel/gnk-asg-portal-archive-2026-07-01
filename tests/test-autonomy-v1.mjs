@@ -120,6 +120,12 @@ for (const [name, html, lang] of [['hr', hr, 'hr'], ['en', en, 'en']]) {
   check(html.includes('public-unified-menu-v6.js'), `${name}: missing unified menu`);
   check(html.includes('public-contrast-hardening-v1.js'), `${name}: missing contrast runtime`);
   check(html.includes('public-design-tokens-v1.css'), `${name}: missing design tokens`);
+  const day = JSON.parse(read('apps/portal/data/network-counts-v1.json')).dataDay;
+  check((html.match(/data-am-design="v1"/g) || []).length === 1, `${name}: missing or duplicate design layer`);
+  check(/<link\s+rel="icon"[^>]+href="\/assets\/favicon\.svg"/.test(html), `${name}: missing favicon`);
+  check((html.match(/am-refresh-v1\.js/g) || []).length === 1 && html.includes(`data-am-netday="${day}"`), `${name}: missing, duplicate or incorrect refresh data day`);
+  check((html.match(/<!-- radio-promo-v1:start -->/g) || []).length === 1 && (html.match(/<!-- radio-promo-v1:end -->/g) || []).length === 1, `${name}: missing or duplicate radio promotion`);
+  check(/<a href="\/usa\/">GNK DINAMO Ltd\.<\/a>/.test(html), `${name}: missing visible GNK DINAMO Ltd. link`);
   check(/<meta name="robots" content="index,follow/.test(html), `${name}: page must be indexable`);
   check(/<meta name="description" content="[^"]{60,}"/.test(html), `${name}: description is too short`);
   const internal = new Set([...html.matchAll(/href="(\/[^"#?]*)/g)].map((m) => m[1]));
