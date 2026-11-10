@@ -5,9 +5,10 @@
    Inspects all static HTML pages and linked XML sitemaps, including images. */
 import {readdir,readFile,writeFile} from 'node:fs/promises';
 import {join,relative,sep} from 'node:path';
+import {personName, canonicalLinks, internalLinkPaths} from './lib/seo-coverage-v1.mjs';
 const root='apps/portal';
 const entities=[
- {id:'nermin-sefic',re:/\bNermin\s+Sefi[cć]\b|\bSefi[cć]\s+Nermin\b/iu,profile:'/nermin-sefic/'},
+ {id:'nermin-sefic',re:personName,profile:'/nermin-sefic/'},
  {id:'aktual-media',re:/\bAktual\s+Media\b/iu,profile:'/gnk-aktual/'},
  {id:'gnk-asg',re:/\bGNK\s+ASG\b/iu,profile:'/'},
  {id:'gnk-dinamo-ltd',re:/\bGNK\s+DINAMO\s+Ltd\.?\b/iu,profile:'/usa/'}
@@ -21,13 +22,19 @@ for(const f of xmlFiles){const t=await readFile(f,'utf8');results.sitemaps.push(
 for(const f of files.filter(f=>/\/index\.html$/.test(f)||/\.html$/.test(f))){const s=await readFile(f,'utf8');results.pages++;const p=relative(root,f).split(sep).join('/');const head=s.split(/<\/head\s*>/i)[0];const plain=s.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,' ').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ');
 const add=(type,details)=>results.issues.push({page:p,type,...(details?{details}:{})});
 const excluded=/\bnoindex\b/i.test(head)||/(^|\/)(admin|control|api)\//.test(p);
-const canon=head.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)/i)?.[1];
+const canonicals=canonicalLinks(head);
+const canon=canonicals[0];
 if(!excluded){if(!canon)add('missing-canonical');if(!(head.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.trim()))add('missing-title');if(!/<meta\b[^>]*name=["']description["']/i.test(head))add('missing-description');
 if(!/property=["']og:image["']/i.test(head))add('missing-og-image');if(!/application\/ld\+json/i.test(head))add('missing-jsonld');
 if(canon&&!sitemapText.includes('<loc>'+canon+'</loc>'))add('missing-primary-sitemap-entry',{canonical:canon});}
-for(const e of entities){if(e.re.test(plain)){results.entityPages[e.id]=(results.entityPages[e.id]||0)+1;if(!plain.includes(e.profile)&&!excluded)add('entity-unlinked',{entity:e.id,target:e.profile});}}
+// Inspect actual links rather than text after tags have been stripped.
+// Resolve relative URLs against the page's own address; matching the host
+// avoids treating links on unrelated sites as our entity profiles.
+const pageUrl = new URL(p.endsWith('/index.html') ? p.slice(0, -'index.html'.length) : p, 'https://gnk-asg.hr/');
+const linkedPaths=internalLinkPaths(s,pageUrl);
+for(const e of entities){if(e.re.test(plain)){results.entityPages[e.id]=(results.entityPages[e.id]||0)+1;if(!linkedPaths.has(e.profile)&&!excluded)add('entity-unlinked',{entity:e.id,target:e.profile});}}
 for(const m of s.matchAll(/<img\b[^>]*>/gi)){results.images++;if(!/\balt\s*=\s*(["'][^"']*["']|[^\s>]+)/i.test(m[0]))add('image-missing-alt',{image:m[0].slice(0,160)});}
-if((head.match(/<link\b[^>]*rel=["']canonical["']/gi)||[]).length>1)add('multiple-canonicals');
+if(canonicals.length>1)add('multiple-canonicals');
 if((head.match(/<meta\b[^>]*name=["']description["']/gi)||[]).length>1)add('multiple-descriptions');
 }
 const report=JSON.stringify(results,null,2)+'\n';

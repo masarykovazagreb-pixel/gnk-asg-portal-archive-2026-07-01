@@ -190,10 +190,19 @@ const stateLabel = {
 
 function shell({ lang, title, description, canonical, alternates, jsonld, body }) {
   const t = (hr, en) => (lang === 'hr' ? hr : en);
+  // Preserve the canonical radio layer from the checked-in page. If it is
+  // absent or duplicated, fail closed rather than silently deleting it.
+  const existing = readText(path.join(PORTAL, lang === 'hr' ? 'autonomija/index.html' : 'en/autonomy/index.html'));
+  const blocks = [...existing.matchAll(/<!-- radio-promo-v1:start -->[\s\S]*?<!-- radio-promo-v1:end -->/g)];
+  if (blocks.length !== 1) throw new Error(`Autonomy ${lang}: expected one existing radio promotion block`);
+  const radioPromo = blocks[0][0];
+  const day = readJson(path.join(PORTAL, 'data/network-counts-v1.json'))?.dataDay;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day || '')) throw new Error('Autonomy: missing actual network data day');
   return `<!doctype html>
 <html lang="${lang}">
 <head>
 <meta charset="utf-8">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
@@ -216,6 +225,7 @@ ${alternates.map(([hreflang, href]) => `<link rel="alternate" hreflang="${hrefla
 <meta name="twitter:description" content="${esc(description)}">
 <meta name="twitter:image" content="${SITE}/assets/izdanja/aktual-media-og.jpg">
 <link rel="stylesheet" href="/assets/public-design-tokens-v1.css">
+<link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
 ${jsonld.map((node) => `<script type="application/ld+json">${JSON.stringify(node)}</script>`).join('\n')}
 <style>
 *{box-sizing:border-box}
@@ -286,6 +296,8 @@ a{color:inherit}
 </head>
 <body>
 ${body}
+<script src="/assets/am-refresh-v1.js?v=${day}" data-am-netday="${day}" defer></script>
+${radioPromo}
 </body>
 </html>
 `;
@@ -442,6 +454,7 @@ function render(lang, rows) {
   </ul>
   <p><strong>AKTUAL MEDIA d.o.o.</strong> · ${t('Urednik', 'Editor')}: Nermin Sefić · <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a></p>
   <p>${t('Brojevi na ovoj stranici čitaju se iz repozitorija u trenutku gradnje. Stranica ne objavljuje procjene ni najave rezultata.', 'The numbers on this page are read from the repository at build time. The page publishes no estimates and no forecasts of results.')}</p>
+  <p>${t('Profil grupacije:', 'Group profile:')} <a href="/usa/">GNK DINAMO Ltd.</a> — ${t('informacije o društvu i povezanim projektima.', 'information about the company and related projects.')}</p>
   <p class="au-links">
     <a href="/gnk-aktual/">AKTUAL MEDIA</a>
     <a href="/izdanja/">${t('Sva izdanja', 'All editions')}</a>

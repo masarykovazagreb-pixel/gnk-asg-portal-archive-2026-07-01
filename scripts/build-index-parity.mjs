@@ -100,7 +100,8 @@ function deskStrip(lang) {
 
 function tagRow(lang) {
   const en = lang === 'en';
-  const list = TAGS.map((t) => `<li><a href="/nermin-sefic/">${t}</a></li>`).join('');
+  const destinations = { '#AKTUALMEDIA': en ? '/en/gnk-aktual/' : '/gnk-aktual/', '#GNKASG': en ? '/en/' : '/' };
+  const list = TAGS.map((t) => `<li><a href="${destinations[t] || (en ? '/en/nermin-sefic/' : '/nermin-sefic/')}">${t}</a></li>`).join('');
   return `<ul class="amz-tags" aria-label="${en ? 'Edition hashtags' : 'Oznake izdanja'}">${list}</ul>`;
 }
 
