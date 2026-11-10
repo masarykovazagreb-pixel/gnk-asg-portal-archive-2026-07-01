@@ -68,8 +68,8 @@ for (const base of SITES) {
     const has=(r)=>r.test(html);
     // Administrative, redirects and explicitly noindex pages are not SEO-indexable.
     // The visual favicon is still checked for every public HTML page scanned.
-    if (/<meta\\b[^>]*name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html) ||
-        /<meta\\b[^>]*http-equiv=["']refresh["']/i.test(html)) { excludedSeoPages++; continue; }
+    if (/<meta\b[^>]*name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html) ||
+        /<meta\b[^>]*http-equiv=["']refresh["']/i.test(html)) { excludedSeoPages++; continue; }
     if (has(/<title>\s*[^<\s][^<]*<\/title>/i)) stats.titles++; else record(file,'title missing');
     if (has(/<meta\b[^>]*name=["']description["'][^>]*content=["'][^"']+/i)) stats.descriptions++; else record(file,'meta description missing');
     if (has(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']https?:\/\//i)) stats.canonicals++; else record(file,'absolute canonical missing');
