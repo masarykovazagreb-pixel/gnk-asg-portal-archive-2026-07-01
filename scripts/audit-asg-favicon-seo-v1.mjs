@@ -53,7 +53,7 @@ for (const base of SITES) {
         try {
           const u=new URL(href,'https://example.invalid');
           if (u.host==='example.invalid') {
-            target=href.startsWith('/') ? join(webRoot,u.pathname) : resolve(dirname(file),u.pathname);
+            target=href.startsWith('/') ? join(webRoot,u.pathname) : resolve(dirname(file),href);
           } else if (base==='apps/portal' && u.host==='gnk-asg.hr') target=join(webRoot,u.pathname);
           else if (base!=='apps/portal' && u.pathname.endsWith('/assets/favicon.svg')) target=join(webRoot,'assets/favicon.svg');
         } catch {}
