@@ -13,6 +13,9 @@ const SITES = ['apps/portal','apps/sites/site','apps/world/site','apps/arhiva/si
 const SKIP = new Set(['.git','node_modules','assets','data','admin','admin-center','admin-login','webmail','mail-studio','api','__preview','operator-dashboard','workers']);
 const canonical = readFileSync(join(ROOT,'apps/shared/brand/favicon.svg'),'utf8');
 const issues = [];
+const issueCounts = Object.create(null);
+let excludedSeoPages = 0;
+const MAX_ISSUE_SAMPLES = 100;
 const stats = {pages:0, withIcon:0, faviconMatches:0, titles:0, descriptions:0, canonicals:0, ogTitles:0, jsonLd:0, internalLinks:0, externalLinks:0, nofollowExternalLinks:0};
 if (!/stroke="#(?:d4af37|f0c94c)"/i.test(canonical) || !/>ASG<\/text>/.test(canonical)) {
   throw new Error('Canonical ASG favicon has lost the gold border or centered ASG lettering');
@@ -26,7 +29,8 @@ function* pages(dir) {
   }
 }
 function record(file, kind) {
-  issues.push({file:relative(ROOT,file).split(sep).join('/'), issue:kind});
+  issueCounts[kind] = (issueCounts[kind] || 0) + 1;
+  if (issues.length < MAX_ISSUE_SAMPLES) issues.push({file:relative(ROOT,file).split(sep).join('/'), issue:kind});
 }
 function getIcon(html) {
   return [...html.matchAll(/<link\b[^>]*>/gi)].map(m=>m[0]).find(s=>/\brel=["'](?:shortcut )?icon["']/i.test(s));
@@ -62,6 +66,10 @@ for (const base of SITES) {
       else record(file,'favicon missing, foreign or differs from canonical ASG asset');
     }
     const has=(r)=>r.test(html);
+    // Administrative, redirects and explicitly noindex pages are not SEO-indexable.
+    // The visual favicon is still checked for every public HTML page scanned.
+    if (/<meta\\b[^>]*name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html) ||
+        /<meta\\b[^>]*http-equiv=["']refresh["']/i.test(html)) { excludedSeoPages++; continue; }
     if (has(/<title>\s*[^<\s][^<]*<\/title>/i)) stats.titles++; else record(file,'title missing');
     if (has(/<meta\b[^>]*name=["']description["'][^>]*content=["'][^"']+/i)) stats.descriptions++; else record(file,'meta description missing');
     if (has(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']https?:\/\//i)) stats.canonicals++; else record(file,'absolute canonical missing');
@@ -74,6 +82,7 @@ for (const base of SITES) {
     }
   }
 }
-const report={version:'ASG_FAVICON_TECHNICAL_SEO_AUDIT_V1',mode:'read-only',stats,issueCount:issues.length,issues:issues.slice(0,100),notes:['Hashtags belong in social posts, not meta keywords or body stuffing.','External backlink acquisition requires editorial outreach and real third-party placements.','This local audit is not evidence of search-engine indexing or live deployment.']};
+const totalIssues=Object.values(issueCounts).reduce((sum,n)=>sum+n,0);
+const report={version:'ASG_FAVICON_TECHNICAL_SEO_AUDIT_V1',mode:'read-only',stats,excludedSeoPages,issueCount:totalIssues,issueCounts,issues,notes:['Hashtags belong in social posts, not meta keywords or body stuffing.','External backlink acquisition requires editorial outreach and real third-party placements.','This local audit is not evidence of search-engine indexing or live deployment.']};
 console.log(JSON.stringify(report,null,2));
-if (process.argv.includes('--strict') && issues.length) process.exitCode=1;
+if (process.argv.includes('--strict') && totalIssues) process.exitCode=1;
