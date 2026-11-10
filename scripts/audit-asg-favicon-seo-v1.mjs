@@ -61,7 +61,7 @@ for (const base of SITES) {
           } else if (base==='apps/portal' && u.host==='gnk-asg.hr') target=join(webRoot,u.pathname);
           else if (base!=='apps/portal' && u.pathname.endsWith('/assets/favicon.svg')) {
             // An arbitrary foreign host is not an acceptable source of the site icon.
-            const canonicalHost = html.match(/<link\\b[^>]*rel=["']canonical["'][^>]*href=["'](https?:\\/\\/[^/"']+)/i)?.[1];
+            const canonicalHost = html.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["'](https?:\/\/[^/"']+)/i)?.[1];
             if (canonicalHost && new URL(canonicalHost).host === u.host) target=join(webRoot,'assets/favicon.svg');
           }
         } catch {}
