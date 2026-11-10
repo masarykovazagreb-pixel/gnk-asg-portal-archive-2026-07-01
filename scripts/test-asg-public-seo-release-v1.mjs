@@ -22,13 +22,14 @@ assert.match(icon, /aria-label="ASG"/, 'Root favicon identifies the ASG brand');
 assert.match(icon, /#b4162e/i, 'Root favicon has red ASG background');
 assert.match(icon, />ASG</, 'Root favicon contains ASG lettering');
 
-const iconUrl = 'https://gnk-asg.hr/favicon.svg?v=asg-red-20261107';
-exactlyOnce(home, 'href="' + iconUrl + '"', 'Homepage red ASG favicon URL');
-exactlyOnce(homeEN, 'href="' + iconUrl + '"', 'English homepage red ASG favicon URL');
-exactlyOnce(profile, 'href="' + iconUrl + '"', 'Profile red ASG favicon URL');
-exactlyOnce(profileEN, 'href="' + iconUrl + '"', 'English profile red ASG favicon URL');
-exactlyOnce(comments, 'href="/favicon.svg?v=asg-red-20261107"', 'Commentary red ASG favicon URL');
-exactlyOnce(commentsEN, 'href="/favicon.svg?v=asg-red-20261107"', 'English commentary red ASG favicon URL');
+const iconUrl = '/assets/favicon.svg';
+for (const [page, label] of [
+  [home, 'Homepage'], [homeEN, 'English homepage'],
+  [profile, 'Profile'], [profileEN, 'English profile'],
+  [comments, 'Commentary'], [commentsEN, 'English commentary']
+]) {
+  exactlyOnce(page, 'href="' + iconUrl + '"', label + ' canonical ASG gold-rim favicon URL');
+}
 
 exactlyOnce(profile, 'href="../komentari/"', 'Profile links to author comments');
 exactlyOnce(comments, '<link rel="author" href="https://gnk-asg.hr/nermin-sefic/">', 'Commentary author SEO link');

@@ -23,6 +23,8 @@ import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from '
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { entityGraphJson, HASHTAGS, PERSON, ORG_AKTUAL, ORG_ASG, ORG_DINAMO, EXPLAINER } from './lib/entity-graph-v1.mjs';
+import { brandHashtagTarget, topicTagsForRoute } from './lib/seo-topic-taxonomy-v1.mjs';
+import { enrichSitewideMeta } from './lib/sitewide-meta-enrichment-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
@@ -121,7 +123,7 @@ function entityBlocks({ full }) {
 ${CLOSE}`;
 }
 
-function footBlock(allowAuthorTag = true) {
+function footBlock(allowAuthorTag = true, route = '/') {
   return `${MARK_FOOT}
 <nav class="ne-tags" aria-label="Mreža AKTUAL MEDIA">
   <p class="ne-label">AKTUAL MEDIA · GNK ASG d.o.o. · urednik Nermin Sefić</p>
@@ -133,7 +135,7 @@ function footBlock(allowAuthorTag = true) {
     <li><a href="${url('/mreza/')}">Mreža</a></li>
     <li><a href="${EXPLAINER}">GNK ASG i GNK DINAMO Ltd.</a></li>
   </ul>
-  <p class="ne-hash">${HASHTAGS.filter((tag) => allowAuthorTag || tag !== AUTHOR_HASHTAG).map((tag) => `<a href="${url('/nermin-sefic/')}">${tag}</a>`).join(' · ')}</p>
+  <p class="ne-hash">${[...HASHTAGS.filter((tag) => allowAuthorTag || tag !== AUTHOR_HASHTAG).map((tag) => ({label:tag,href:brandHashtagTarget(tag)})), ...topicTagsForRoute(route)].filter((tag) => tag.href).map((tag) => `<a href="${url(tag.href)}">${tag.label}</a>`).join(' · ')}</p>
 </nav>
 <!-- /entity-foot:v1 -->`;
 }
@@ -245,13 +247,13 @@ export function entityHtml(input, file) {
 
   /* Vidljivi red oznaka: samo ako stranica nema svoj blok s #AKTUALMEDIA. */
   if (has(html, MARK_FOOT)) {
-    html = html.replace(new RegExp(`${MARK_FOOT}[\\s\\S]*?<!-- /entity-foot:v1 -->`), footBlock(allowAuthorTag));
+    html = html.replace(new RegExp(`${MARK_FOOT}[\\s\\S]*?<!-- /entity-foot:v1 -->`), footBlock(allowAuthorTag, route));
   } else if (!has(html, '#AKTUALMEDIA') && has(html, '</body>')) {
-    html = html.replace('</body>', `${footBlock(allowAuthorTag)}\n</body>`);
+    html = html.replace('</body>', `${footBlock(allowAuthorTag, route)}\n</body>`);
     if (!has(original, 'id="network-entity-css"')) html = html.replace('</head>', `${CSS}\n</head>`);
   }
 
-  return html;
+  return enrichSitewideMeta(html,{route});
 }
 
 const RUN = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];

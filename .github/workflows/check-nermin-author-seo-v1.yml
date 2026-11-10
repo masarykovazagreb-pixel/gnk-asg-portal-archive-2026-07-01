@@ -13,6 +13,13 @@ on:
       - 'apps/portal/komentari/index.html'
       - 'apps/portal/en/commentary/index.html'
       - 'apps/portal/favicon.svg'
+      - 'apps/shared/brand/favicon.svg'
+      - 'apps/portal/assets/favicon.svg'
+      - 'scripts/lib/sitewide-meta-enrichment-v1.mjs'
+      - 'scripts/lib/seo-topic-taxonomy-v1.mjs'
+      - 'scripts/sitewide-seo-meta-v1.mjs'
+      - 'scripts/test-sitewide-semantic-seo-v1.mjs'
+      - 'scripts/apply-network-entity-v1.mjs'
       - 'apps/portal/robots.txt'
       - 'apps/portal/sitemap.xml'
       - 'apps/portal/scripts/generate_seo.py'
@@ -35,6 +42,13 @@ on:
       - 'apps/portal/komentari/index.html'
       - 'apps/portal/en/commentary/index.html'
       - 'apps/portal/favicon.svg'
+      - 'apps/shared/brand/favicon.svg'
+      - 'apps/portal/assets/favicon.svg'
+      - 'scripts/lib/sitewide-meta-enrichment-v1.mjs'
+      - 'scripts/lib/seo-topic-taxonomy-v1.mjs'
+      - 'scripts/sitewide-seo-meta-v1.mjs'
+      - 'scripts/test-sitewide-semantic-seo-v1.mjs'
+      - 'scripts/apply-network-entity-v1.mjs'
       - 'apps/portal/robots.txt'
       - 'apps/portal/sitemap.xml'
       - 'apps/portal/scripts/generate_seo.py'
@@ -61,3 +75,4 @@ jobs:
         run: |
           node scripts/test-nermin-author-seo-v1.mjs
           node scripts/test-asg-public-seo-release-v1.mjs
+          node scripts/test-sitewide-semantic-seo-v1.mjs
