@@ -24,6 +24,7 @@ const FAST = args.has('--fast');
 const JSON_OUT = args.has('--json');
 
 const GATES = [
+  { name: 'SEO — poveznice entiteta i metapodaci', cmd: ['node', '--test', 'tests/test-entity-navigation-seo-v1.mjs', 'tests/test-seo-coverage-helpers-v1.mjs'], required: true },
   { name: 'Pretraga — ponašanje sučelja', cmd: ['node', '--test', 'tests/test-public-title-search-browser-v1.mjs'], required: true },
   { name: 'Pretraga — odobreni naslovi i javni opseg', cmd: ['node', '--test', 'tests/test-public-title-search-v1.mjs'], required: true },
   { name: 'Arhive — detalji sukoba bez prepisivanja', cmd: ['node', '--test', 'scripts/factory/test-archive-conflicts-v1.mjs'], required: true },
