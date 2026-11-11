@@ -24,4 +24,5 @@ jobs:
           node --check scripts/check-hub-counts-v1.mjs
           node --check apps/region/engine/aktual-central.mjs
           node --check tests/test-region-hub-counts-and-performance-v1.mjs
+          node --test tests/test-hub-counts-v1.mjs
           node tests/test-region-hub-counts-and-performance-v1.mjs
