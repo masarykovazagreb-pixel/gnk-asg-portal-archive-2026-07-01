@@ -1,0 +1,38 @@
+name: AKTUAL HR-EN Homepage Design Parity
+
+on:
+  pull_request:
+    paths:
+      - 'apps/region/engine/aktual-central.mjs'
+      - 'apps/region/engine/aktual-en-home-parity-v1.mjs'
+      - 'apps/portal/gnk-aktual/index.html'
+      - 'apps/portal/en/gnk-aktual/index.html'
+      - 'tests/test-aktual-en-home-parity-v1.mjs'
+      - '.github/workflows/aktual-en-home-parity-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/region/engine/aktual-central.mjs'
+      - 'apps/region/engine/aktual-en-home-parity-v1.mjs'
+      - 'apps/portal/gnk-aktual/index.html'
+      - 'apps/portal/en/gnk-aktual/index.html'
+      - 'tests/test-aktual-en-home-parity-v1.mjs'
+      - '.github/workflows/aktual-en-home-parity-v1.yml'
+permissions:
+  contents: read
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and HR-EN visual contracts
+        run: |
+          node --check apps/region/engine/aktual-en-home-parity-v1.mjs
+          node --check apps/region/engine/aktual-central.mjs
+          node --test tests/test-aktual-en-home-parity-v1.mjs
