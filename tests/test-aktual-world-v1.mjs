@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
+import {externalStationSection} from '../apps/shared/aktual-external-stations-v1.mjs';
 const ROOT=process.cwd();
 const src=JSON.parse(fs.readFileSync('apps/portal/data/world-countries-v1.json','utf8'));
 const slugs=src.countries.map(x=>x.slug),codes=src.countries.map(x=>x.code);
@@ -29,6 +30,9 @@ test('build includes only real generated URLs and no fake headlines',()=>{
       const page=fs.readFileSync(path.join(tmp,'media',slug,'index.html'),'utf8');
       const feed=fs.readFileSync(path.join(tmp,'media',slug,'feed.xml'),'utf8');
       if (!(fresh && cache.countries?.[slug]?.length)) assert.ok(page.includes('Trenutačno nema provjerenog svježeg skupa naslova'));
+      const station = externalStationSection(slug);
+      if (station) assert.ok(page.includes(station), `generated cross-link for ${slug}`);
+      else assert.ok(!page.includes('data-external-station="v1"'), `no guessed station for ${slug}`);
       assert.ok(!page.includes('Bot čita i prepisuje vijesti'));
       if (!(fresh && cache.countries?.[slug]?.length)) assert.ok(!feed.includes('<item>'));
       assert.match(feed,/<rss version="2\.0"/);
