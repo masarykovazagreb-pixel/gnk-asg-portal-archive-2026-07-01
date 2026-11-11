@@ -21,6 +21,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { refreshTag } from '../apps/shared/refresh-tag-v1.mjs';
 import { impressumBlock } from '../apps/shared/impressum-v1.mjs';
+import { externalStationSection } from '../apps/shared/aktual-external-stations-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
@@ -167,7 +168,7 @@ a:hover{text-decoration:underline}
     </ul>
   </div>
 
-  <div class="section">
+${externalStationSection(country.slug)}  <div class="section">
     <h2>Izvori</h2>
     <p>${country.sources} konfiguriranih izvora za praćenje; dostupnost i prava korištenja provjeravaju se zasebno:</p>
     <div class="sources">${sources}</div>
