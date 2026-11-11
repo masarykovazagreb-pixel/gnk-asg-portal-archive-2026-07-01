@@ -38,6 +38,8 @@ on:
       - 'scripts/network-agents-v1.mjs'
       - 'scripts/network-sync-v1.mjs'
       - 'ops/network-agents-v1.json'
+      - 'apps/agents/operations/**'
+      - 'tests/test-operations-30-v1.mjs'
       - '.github/workflows/network-agents-daily.yml'
 
 permissions:
@@ -65,7 +67,14 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Alati za provjeru slika
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq imagemagick webp
+          convert -version | head -1
+
       - name: Sinkroniziraj stranice, svjetske portale, arhivu i dnevnik
+        id: sync
         run: node scripts/network-sync-v1.mjs
 
       - name: Pokreni agente
@@ -75,6 +84,46 @@ jobs:
           else
             node scripts/network-agents-v1.mjs
           fi
+
+      - name: Provjeri operativne agente
+        if: ${{ always() && steps.sync.outcome == 'success' }}
+        id: operations_contract
+        run: node --test tests/test-operations-30-v1.mjs
+
+      - name: Operativni agenti — dijagnostika 30 zadataka
+        if: ${{ always() && steps.sync.outcome == 'success' && steps.operations_contract.outcome == 'success' }}
+        run: |
+          mkdir -p artifacts
+          node apps/agents/operations/run-v1.mjs > artifacts/operations-30-v1.json
+
+      - name: Sažetak dijagnostike 30 agenata
+        if: always()
+        shell: bash
+        run: |
+          if [ -s "$NETWORK_AGENTS_REPORT" ]; then
+            node -e 'const r=require("./"+process.env.NETWORK_AGENTS_REPORT); for(const a of r.agents.filter(x=>!x.ok && x.required)) console.log("::error::Mreža: " + `${a.id} ${a.tail}`.replace(/[\r\n%]/g," "));'
+          fi
+          if [ -s artifacts/operations-30-v1.json ]; then
+            node -e '
+              const r = require("./artifacts/operations-30-v1.json");
+              const fs = require("fs");
+              fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `## Operativni agenti: ${r.passed}/${r.agents.length}\n`);
+              for (const a of r.agents.filter(x => x.status === "fail")) {
+                const message = `${a.id}: ${a.name} — exit ${a.exitCode}, ${a.error || a.signal || "provjera pala"}`.replace(/[\r\n%]/g, " ");
+                console.log(`::error::${message}`);
+                fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `- ${message}\n`);
+              }
+            '
+          fi
+
+      - name: Spremi izvještaj 30 agenata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: operations-30-${{ github.run_id }}
+          path: artifacts/operations-30-v1.json
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Sažetak u summary
         if: always()

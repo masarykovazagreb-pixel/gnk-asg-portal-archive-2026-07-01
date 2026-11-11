@@ -9,13 +9,17 @@ export const PUBLIC_ROOTS=['apps/portal','apps/region/site','apps/sites/site','a
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const attrs=tag=>Object.fromEntries([...tag.matchAll(/([\w:-]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g)].map(m=>[m[1].toLowerCase(),m[2]??m[3]]));
 const text=value=>String(value||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+// V8 may retain the entire source HTML behind a small regex substring. Copy
+// fields kept in the report so thousands of pages can be collected safely.
+const copyString=value=>Buffer.from(value,'utf8').toString('utf8');
 
 export function inspectPage(source,html){
   const id=`PAGE-${hash(source).slice(0,20)}`;
   const tags=[...html.matchAll(/<(?:meta|link|img)\b[^>]*>/gi)].map(m=>({tag:m[0].slice(1).split(/\s/)[0].toLowerCase(),...attrs(m[0])}));
   const meta=name=>tags.find(t=>t.tag==='meta'&&(t.name?.toLowerCase()===name||t.property?.toLowerCase()===name))?.content?.trim();
-  const title=text(html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1]);
-  const canonical=tags.find(t=>t.tag==='link'&&t.rel?.split(/\s+/).includes('canonical'))?.href||null;
+  const title=copyString(text(html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1]));
+  const canonicalValue=tags.find(t=>t.tag==='link'&&t.rel?.split(/\s+/).includes('canonical'))?.href;
+  const canonical=canonicalValue ? copyString(canonicalValue) : null;
   const indexable=!/\bnoindex\b/i.test(meta('robots')||'')&&!/\/(?:__preview|admin|operator|login)(?:\/|\.)/i.test(source);
   const findings=[];
   if(!title)findings.push({code:'title',evidence:'Missing non-empty title',priority:1});
