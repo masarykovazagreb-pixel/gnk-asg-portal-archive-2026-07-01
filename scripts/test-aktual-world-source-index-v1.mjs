@@ -34,10 +34,15 @@ assert.match(css,/aw-world-entry-cta/);
 for(const page of [dir,hub,desk])assert.match(page,/favicon.svg\?v=asg-red-gold-20261111/);
 for(const c of inventory.countries){
   assert(manifest.includes('<loc>https://gnk-asg.hr/gnk-aktual/media/'+c.slug+'/</loc>'),c.slug+' missing from sitemap');
-  assert(fs.existsSync(portal+'gnk-aktual/media/'+c.slug+'/index.html'),'missing page '+c.slug);
+  const file=portal+'gnk-aktual/media/'+c.slug+'/index.html';
+  assert(fs.existsSync(file),'missing page '+c.slug);
+  const head=read(file).split('</head>')[0];
+  assert(head.includes('rel="canonical" href="https://gnk-asg.hr/gnk-aktual/media/'+c.slug+'/"'),'bad country canonical '+c.slug);
+  assert(/name="robots" content="index,follow/.test(head) && !/noindex/i.test(head),'nonindexable country '+c.slug);
 }
 for(const c of inventory.cities){
   assert(manifest.includes('<loc>https://gnk-asg.hr/gnk-aktual/grad/'+c.slug+'/</loc>'),c.slug+' missing city sitemap');
+  assert(fs.existsSync(portal+'gnk-aktual/grad/'+c.slug+'/index.html'),'missing city HTML '+c.slug);
 }
 assert.equal((manifest.match(/<loc>/g)||[]).length,212,'exactly 201 countries, 10 cities, 1 directory');
 const sub='https://gnk-asg.hr/gnk-aktual/media/sitemap.xml';
