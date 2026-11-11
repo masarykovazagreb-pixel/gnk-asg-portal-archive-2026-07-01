@@ -1,0 +1,27 @@
+name: Telegram Optional Distribution Contract
+on:
+  pull_request:
+    paths:
+      - 'scripts/telegram-distribution-v1.mjs'
+      - 'scripts/lib/telegram-distribution-core-v1.mjs'
+      - 'tests/test-telegram-distribution-v1.mjs'
+      - '.github/workflows/blog-mirror-publish.yml'
+      - '.github/workflows/telegram-distribution-contract.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check Telegram selector and publisher syntax
+        run: |
+          node --check scripts/lib/telegram-distribution-core-v1.mjs
+          node --check scripts/telegram-distribution-v1.mjs
+      - name: Test publication dates, URL safety, HTML escaping and dedupe
+        run: node tests/test-telegram-distribution-v1.mjs
