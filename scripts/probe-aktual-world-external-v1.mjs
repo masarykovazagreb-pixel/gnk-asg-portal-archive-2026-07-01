@@ -47,7 +47,7 @@ try{
     const url=safeSameHost(getAttr(tag,'href'));if(url&&!status.feedCandidates.includes(url))status.feedCandidates.push(url);
     if(status.feedCandidates.length>=10)break;
   }
-  status.imagePreviewPresent=/(?:property|name)\s*=\\s*["'](?:og:image|twitter:image)["']/i.test(html);
+  status.imagePreviewPresent=/(?:property|name)\s*=\s*["'](?:og:image|twitter:image)["']/i.test(html);
   status.ok=true;
 }catch(e){
   status.error=String(e?.message||e).slice(0,160);
