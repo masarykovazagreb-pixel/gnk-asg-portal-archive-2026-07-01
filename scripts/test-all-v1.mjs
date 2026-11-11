@@ -24,7 +24,7 @@ const FAST = args.has('--fast');
 const JSON_OUT = args.has('--json');
 
 const GATES = [
-  { name: 'Operativni agenti — ugovor i sigurnost', cmd: ['node', '--test', 'tests/test-operations-30-v1.mjs'], required: true },
+  { name: 'Operativni agenti — ugovor i sigurnost', cmd: ['node', '--test', 'tests/test-operations-30-v1.mjs', 'tests/test-operations-triage-v1.mjs', 'tests/test-agent-review-packet-v1.mjs'], required: true },
   { name: 'SEO — poveznice entiteta i metapodaci', cmd: ['node', '--test', 'tests/test-entity-navigation-seo-v1.mjs', 'tests/test-seo-coverage-helpers-v1.mjs'], required: true },
   { name: 'Pretraga — ponašanje sučelja', cmd: ['node', '--test', 'tests/test-public-title-search-browser-v1.mjs'], required: true },
   { name: 'Pretraga — odobreni naslovi i javni opseg', cmd: ['node', '--test', 'tests/test-public-title-search-v1.mjs'], required: true },

@@ -20,7 +20,10 @@ on:
     paths:
       - 'apps/agents/**'
       - 'scripts/validate-agent-editorial-queue-v1.mjs'
+      - 'scripts/publish-agent-reviews-v1.mjs'
       - 'tests/test-agent-editorial-pipeline-v1.mjs'
+      - 'tests/test-agent-publish-v1.mjs'
+      - 'tests/test-agent-review-packet-v1.mjs'
       - '.github/workflows/agent-editorial-daily.yml'
 
 permissions:
@@ -35,6 +38,10 @@ jobs:
     name: Pisac i AI kontrola
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      # A fresh run must not re-process old, checked-in queues.
+      AGENT_OUT: ${{ github.workspace }}/artifacts/agent-editorial-run
+      AGENT_PREVIEW_PORTAL: ${{ github.workspace }}/artifacts/agent-editorial-preview
     steps:
       - name: Dohvati granu
         uses: actions/checkout@v4
@@ -47,18 +54,36 @@ jobs:
           node-version: '22'
 
       - name: Testovi agenata
-        run: node tests/test-agent-editorial-pipeline-v1.mjs
+        run: |
+          node tests/test-agent-editorial-pipeline-v1.mjs
+          node tests/test-agent-publish-v1.mjs
+          node --test tests/test-agent-review-packet-v1.mjs
+
+      - name: Prekidač uredničkog tijeka
+        id: editorial_switch
+        run: |
+          node --input-type=module -e 'import {killSwitchState} from "./apps/agents/lib/policy-v1.mjs"; import {appendFileSync} from "node:fs"; const s=killSwitchState(); appendFileSync(process.env.GITHUB_OUTPUT, `enabled=${s.enabled ? "true" : "false"}\n`); console.log(s.enabled ? "Urednički tijek omogućen" : "Urednički tijek zaustavljen: " + s.reason);'
 
       - name: Pisac — sastavi preglede iz svježih izvora
+        if: ${{ steps.editorial_switch.outputs.enabled == 'true' }}
         run: node apps/agents/writer-agent-v1.mjs
 
       - name: AI kontrola — odobri ili odbij svaku objavu
+        if: ${{ steps.editorial_switch.outputs.enabled == 'true' }}
         run: node apps/agents/control-agent-v1.mjs
 
       - name: Validiraj red objava
+        if: ${{ steps.editorial_switch.outputs.enabled == 'true' }}
         run: node scripts/validate-agent-editorial-queue-v1.mjs
 
-      - name: Objavi odobrene preglede
+      - name: Pripremi paket za ljudski urednički pregled
+        if: ${{ steps.editorial_switch.outputs.enabled == 'true' }}
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: node apps/agents/operations/review-packet-v1.mjs --queue-dir "$AGENT_OUT" --sha "$SOURCE_SHA" > "$AGENT_OUT/review-packet.json"
+
+      - name: Izradi statički pregled za artefakt (ne deploy)
+        if: ${{ steps.editorial_switch.outputs.enabled == 'true' }}
         run: node scripts/publish-agent-reviews-v1.mjs
 
       - name: Spremi red i odluke
@@ -67,9 +92,7 @@ jobs:
         with:
           name: agent-editorial-${{ github.run_id }}
           path: |
-            artifacts/agent-editorial/
-            apps/portal/agenti/pregledi/
-            apps/portal/en/agents/reviews/
-            apps/portal/agent-reviews-sitemap.xml
+            artifacts/agent-editorial-run/
+            artifacts/agent-editorial-preview/
           if-no-files-found: warn
           retention-days: 30

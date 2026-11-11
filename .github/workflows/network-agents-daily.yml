@@ -40,6 +40,7 @@ on:
       - 'ops/network-agents-v1.json'
       - 'apps/agents/operations/**'
       - 'tests/test-operations-30-v1.mjs'
+      - 'tests/test-operations-triage-v1.mjs'
       - '.github/workflows/network-agents-daily.yml'
 
 permissions:
@@ -78,9 +79,11 @@ jobs:
         run: node scripts/network-sync-v1.mjs
 
       - name: Pokreni agente
+        env:
+          SELECTED_AGENTS: ${{ inputs.only }}
         run: |
-          if [ -n "${{ inputs.only }}" ]; then
-            node scripts/network-agents-v1.mjs --only "${{ inputs.only }}"
+          if [ -n "$SELECTED_AGENTS" ]; then
+            node scripts/network-agents-v1.mjs --only "$SELECTED_AGENTS"
           else
             node scripts/network-agents-v1.mjs
           fi
@@ -88,13 +91,22 @@ jobs:
       - name: Provjeri operativne agente
         if: ${{ always() && steps.sync.outcome == 'success' }}
         id: operations_contract
-        run: node --test tests/test-operations-30-v1.mjs
+        run: node --test tests/test-operations-30-v1.mjs tests/test-operations-triage-v1.mjs
 
       - name: Operativni agenti — dijagnostika 30 zadataka
         if: ${{ always() && steps.sync.outcome == 'success' && steps.operations_contract.outcome == 'success' }}
         run: |
           mkdir -p artifacts
           node apps/agents/operations/run-v1.mjs > artifacts/operations-30-v1.json
+
+      - name: Sigurna lista zadataka iz dijagnostike
+        if: ${{ always() && steps.sync.outcome == 'success' && steps.operations_contract.outcome == 'success' }}
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          report=missing
+          if [ -s artifacts/operations-30-v1.json ]; then report=artifacts/operations-30-v1.json; fi
+          node apps/agents/operations/triage-v1.mjs --report "$report" --sha "$SOURCE_SHA" > artifacts/operations-triage-v1.json
 
       - name: Sažetak dijagnostike 30 agenata
         if: always()
@@ -121,7 +133,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: operations-30-${{ github.run_id }}
-          path: artifacts/operations-30-v1.json
+          path: |
+            artifacts/operations-30-v1.json
+            artifacts/operations-triage-v1.json
           if-no-files-found: warn
           retention-days: 30
 

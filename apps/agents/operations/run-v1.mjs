@@ -71,6 +71,10 @@ function main(args) {
   } else if (!args.length || (args.length === 2 && args[0] === '--agent')) {
     const registry = JSON.parse(readFileSync(resolve(ROOT, 'apps/agents/operations/agents-v1.json'), 'utf8'));
     const result = runAgents(registry, args[1]);
+    const git = spawnSync('git', ['rev-parse', 'HEAD'], {cwd: ROOT, encoding: 'utf8', timeout: 10_000});
+    const sha = git.status === 0 ? git.stdout.trim() : '';
+    result.sourceSha = /^[0-9a-f]{40}$/.test(sha) ? sha : null;
+    // This identifies the checked-out revision, not cleanliness, deployed SHA, or generated files.
     console.log(JSON.stringify(result, null, 2));
     if (result.failed) process.exitCode = 1;
   } else throw Error('Usage: node apps/agents/operations/run-v1.mjs [--agent O01] | --candidate FILE --as-of YYYY-MM-DD');

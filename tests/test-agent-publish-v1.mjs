@@ -3,10 +3,11 @@
 // Dokazuje: odobrena stavka dobiva HR i EN stranicu s JSON-LD-om, hreflang parom,
 // AI oznakom i autorom-agentom; stavka koja ne prolazi provjere se ne objavljuje;
 // popisi i sitemap postoje.
-import { mkdtempSync, mkdirSync, readFileSync, existsSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, existsSync, writeFileSync, rmSync, symlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { publish, reviewProblems } from '../scripts/publish-agent-reviews-v1.mjs';
+import { spawnSync } from 'node:child_process';
+import { publish, reviewProblems, renderReview, renderIndex } from '../scripts/publish-agent-reviews-v1.mjs';
 
 const fails = [];
 const check = (cond, msg) => { if (!cond) fails.push(msg); };
@@ -51,6 +52,22 @@ writeFileSync(join(queueDir, 'queue-2026-10-29.json'), JSON.stringify({ schema: 
 
 check(reviewProblems(good).length === 0, `dobra stavka mora proći provjere: ${reviewProblems(good).join('; ')}`);
 check(reviewProblems(bad).some((p) => p.includes('opis')), 'prekratak opis mora biti odbijen');
+for (const field of ['id', 'channel']) {
+  const unsafe = structuredClone(good); unsafe[field] = '../../podijeli/vijest';
+  check(reviewProblems(unsafe).length > 0, `${field}: putanja mora biti odbijena`);
+}
+for (const url of ['/local', '//other.example/a', 'https://user:pass@example.org/', 'https://example.org/\nfoo']) {
+  const unsafe = structuredClone(good); unsafe.items[0].url = url;
+  check(reviewProblems(unsafe).some(p => p.includes('HTTPS')), `nesiguran izvor ${url} mora biti odbijen`);
+}
+const unsafeLink = structuredClone(good); unsafeLink.links[0] = '//evil.example/';
+check(reviewProblems(unsafeLink).some(p => p.includes('interna')), 'vanjska protokol-relativna interna veza mora biti odbijena');
+const injection = structuredClone(good); injection.hr.title = '</script><script>alert(1)</script>';
+for (const html of [renderReview(injection, 'hr'), renderIndex([injection], 'hr')]) {
+  check(!html.includes('</script><script>alert(1)</script>'), 'tekst se ne smije izvući iz JSON-LD skripte');
+  const ld = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  try { JSON.parse(ld[1]); } catch { check(false, 'JSON-LD mora ostati valjan'); }
+}
 
 const res = publish({ queueDir, portal, check: false });
 check(res.published === 1, `objavljena mora biti 1 stavka, bilo ${res.published}`);
@@ -67,7 +84,8 @@ if (existsSync(hrPath) && existsSync(enPath)) {
   const hrLd = ldOf(hr);
   const article = hrLd['@graph'].find((g) => g['@type'] === 'Article');
   check(article && article.author && article.author.name === 'AGENT-PISAC-001', 'autor u JSON-LD mora biti AI agent');
-  check(article && article.editor && article.editor['@id'], 'urednik mora biti Nermin Sefić (preko @id)');
+  check(article && !article.editor, 'strojno odobrenje ne smije pripisivati pojedinačni ljudski pregled');
+  check(hr.includes('Pojedinačni ljudski urednički pregled nije potvrđen.'), 'granica strojne kontrole mora biti vidljiva');
   check(!/<meta name="author" content="Nermin/.test(hr), 'meta autor ne smije biti Nermin Sefić');
   check(hr.includes('rel="canonical" href="https://gnk-asg.hr/agenti/pregledi/' + good.id + '/"'), 'HR canonical mora biti točan');
   check(hr.includes('hreflang="en" href="https://gnk-asg.hr/en/agents/reviews/' + good.id + '/"'), 'HR mora imati hreflang na EN');
@@ -76,6 +94,7 @@ if (existsSync(hrPath) && existsSync(enPath)) {
   check(hr.includes('AI agent GNK ASG') && en.includes('AI agent GNK ASG'), 'AI oznaka mora biti vidljiva na obje stranice');
   check((hr.match(/href="https?:\/\//g) || []).length >= 6, 'HR stranica mora imati ≥6 poveznica');
   check(hr.includes('#AKTUALMEDIA') && hr.includes('article:tag'), 'hashtagovi moraju biti vidljivi i u meta podacima');
+  check(hr.includes('<a href="/gnk-aktual/">/gnk-aktual/</a>'), 'povezane adrese moraju biti klikabilne, ne escapirani HTML');
   check(hr.includes('data-am-author="v1"'), 'autorska traka urednika mora biti na stranici');
 }
 
@@ -83,6 +102,22 @@ check(existsSync(join(portal, 'agenti', 'pregledi', 'index.html')), 'HR popis mo
 check(existsSync(join(portal, 'en', 'agents', 'reviews', 'index.html')), 'EN popis mora postojati');
 const sm = existsSync(join(portal, 'agent-reviews-sitemap.xml')) ? readFileSync(join(portal, 'agent-reviews-sitemap.xml'), 'utf8') : '';
 check(sm.includes('/agenti/pregledi/' + good.id + '/') && sm.includes('/en/agents/reviews/' + good.id + '/'), 'sitemap mora sadržavati HR i EN URL');
+let refused = false;
+try { publish({queueDir, portal: join(process.cwd(), 'apps/portal'), check: false}); } catch { refused = true; }
+check(refused, 'izravan upis u izvorni portal mora biti odbijen');
+const alias = join(root, 'portal-alias');
+symlinkSync(join(process.cwd(), 'apps/portal'), alias);
+refused = false;
+try { publish({queueDir, portal: join(alias, 'new-subdirectory'), check: false}); } catch { refused = true; }
+check(refused, 'simbolička poveznica ne smije zaobići zabranu upisa u portal');
+const preview = join(root, 'isolated-preview');
+const cli = spawnSync(process.execPath, ['scripts/publish-agent-reviews-v1.mjs'], {cwd: process.cwd(), env: {...process.env, AGENT_OUT: queueDir, AGENT_PREVIEW_PORTAL: preview}, encoding: 'utf8'});
+check(cli.status === 0, `izolirani pregled nije uspio: ${cli.stderr}`);
+const previewPage = join(preview, 'agenti', 'pregledi', good.id, 'index.html');
+check(existsSync(previewPage) && readFileSync(previewPage, 'utf8').includes('content="noindex,nofollow"'), 'izolirani pregled mora biti označen noindex');
+writeFileSync(join(queueDir, 'queue-2026-10-30.json'), JSON.stringify({ items: [good] }));
+const duplicate = publish({queueDir, portal, check: true});
+check(duplicate.wouldPublish === 0 && duplicate.rejected === 3, 'duplicirani ID mora biti odbijen u svim redovima');
 
 rmSync(root, { recursive: true, force: true });
 
