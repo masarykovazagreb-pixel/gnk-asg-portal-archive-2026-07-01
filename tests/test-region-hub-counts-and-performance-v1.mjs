@@ -23,6 +23,6 @@ for(const lang of ['hr','en']) {
     `${lang} stale podium count must fail`);
 }
 const generator=readFileSync(new URL('../apps/region/engine/aktual-central.mjs',import.meta.url),'utf8');
-assert.ok(generator.includes("loading=\"\\${i < 3 ? 'eager' : 'lazy'}\""),
+assert.ok(generator.includes('loading="${i < 3 ? \'eager\' : \'lazy\'}"'),
   'city cards beyond third card must be lazy-loaded from the generator');
 console.log('PASS: current Zagreb podium and lazy city images validated for HR/EN');
