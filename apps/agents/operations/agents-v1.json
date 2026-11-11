@@ -1,0 +1,276 @@
+{
+  "version": "ASG_OPERATIONS_30_V1",
+  "purpose": "Deterministički operativni agenti i izvještaj; bez autonomne produkcijske objave",
+  "agents": [
+    {
+      "id": "O01",
+      "name": "Urednički pisac",
+      "task": "Provjerava da postojeći pisac stvara nacrte iz izvora i poštuje prekidač, bez izmišljanja činjenica.",
+      "command": [
+        "node",
+        "tests/test-agent-editorial-pipeline-v1.mjs"
+      ]
+    },
+    {
+      "id": "O02",
+      "name": "Kontrola objava",
+      "task": "Provjerava postupak pripreme objava u izoliranom testu; nije dozvola za javnu objavu.",
+      "command": [
+        "node",
+        "tests/test-agent-publish-v1.mjs"
+      ]
+    },
+    {
+      "id": "O03",
+      "name": "Izvori i podrijetlo",
+      "task": "Provjerava pravila razvrstavanja izvora i prava uporabe.",
+      "command": [
+        "node",
+        "scripts/test-content-source-governance-v1.mjs"
+      ]
+    },
+    {
+      "id": "O04",
+      "name": "Izvori u uredničkom redu",
+      "task": "Provjerava da kandidati bez izvora ne prelaze izvornu kapiju.",
+      "command": [
+        "node",
+        "scripts/test-source-gated-editorial-queue-v1.mjs"
+      ]
+    },
+    {
+      "id": "O05",
+      "name": "Priprema kandidata",
+      "task": "Provjerava stroge predobjavne kontrole i obvezne izvore na testnim kandidatima.",
+      "command": [
+        "node",
+        "scripts/test-editorial-prepublication-readiness-v1.mjs"
+      ]
+    },
+    {
+      "id": "O06",
+      "name": "AI upravljanje",
+      "task": "Provjerava postojeća pravila AI podrijetla, rizika i označavanja.",
+      "command": [
+        "node",
+        "scripts/test-ai-act-governance-v1.mjs"
+      ]
+    },
+    {
+      "id": "O07",
+      "name": "Autorstvo i pripisivanje",
+      "task": "Provjerava zaseban SEO ugovor Nermina Sefića i odobrenih URL-ova.",
+      "command": [
+        "node",
+        "scripts/test-nermin-author-seo-v1.mjs"
+      ]
+    },
+    {
+      "id": "O08",
+      "name": "Urednički SEO",
+      "task": "Provjerava kanonikalne i autorske veze hrvatskih i engleskih uredničkih stranica.",
+      "command": [
+        "node",
+        "scripts/test-asg-public-seo-release-v1.mjs"
+      ]
+    },
+    {
+      "id": "O09",
+      "name": "Poveznice entiteta",
+      "task": "Provjerava interne poveznice i metapodatke ključnih entiteta.",
+      "command": [
+        "node",
+        "tests/test-entity-navigation-seo-v1.mjs"
+      ]
+    },
+    {
+      "id": "O10",
+      "name": "Izdanja i mreža",
+      "task": "Provjerava povezivanje čvorova mreže i javne ulaze.",
+      "command": [
+        "node",
+        "tests/test-network-mesh-v1.mjs"
+      ]
+    },
+    {
+      "id": "O11",
+      "name": "Inventar mreže",
+      "task": "Provjerava inventar domena, izdanja i izvora.",
+      "command": [
+        "node",
+        "tests/test-network-inventory-v1.mjs"
+      ]
+    },
+    {
+      "id": "O12",
+      "name": "Javni inventar",
+      "task": "Provjerava objavljeni inventar i njegov ugovor.",
+      "command": [
+        "node",
+        "tests/test-public-network-inventory-v1.mjs"
+      ]
+    },
+    {
+      "id": "O13",
+      "name": "Atlas svijeta",
+      "task": "Provjerava atlas i međusobne veze čvorova.",
+      "command": [
+        "node",
+        "tests/test-network-atlas-v1.mjs"
+      ]
+    },
+    {
+      "id": "O14",
+      "name": "Uzajamne veze",
+      "task": "Provjerava razmjenu i uzajamne veze mreže.",
+      "command": [
+        "node",
+        "tests/test-network-reciprocity-v1.mjs"
+      ]
+    },
+    {
+      "id": "O15",
+      "name": "Brend izdanja",
+      "task": "Provjerava ugovor brenda AKTUAL MEDIA u mreži.",
+      "command": [
+        "node",
+        "tests/test-aktual-media-brand-network-v1.mjs"
+      ]
+    },
+    {
+      "id": "O16",
+      "name": "Radio",
+      "task": "Provjerava očuvanje trajne radio-promocije i izvornog generatora.",
+      "command": [
+        "node",
+        "scripts/test-aktual-media-radio-persistent-v1.mjs"
+      ]
+    },
+    {
+      "id": "O17",
+      "name": "Sitemap",
+      "task": "Provjerava postojanje lokalnih ciljeva u sitemapu.",
+      "command": [
+        "node",
+        "tests/test-sitemap-integrity-v1.mjs"
+      ]
+    },
+    {
+      "id": "O18",
+      "name": "Jezici",
+      "task": "Provjerava uzajamnost hreflang jezičnih veza.",
+      "command": [
+        "node",
+        "tests/test-hreflang-reciprocity-v1.mjs"
+      ]
+    },
+    {
+      "id": "O19",
+      "name": "Pretraga",
+      "task": "Provjerava opseg i točnost javnog indeksa naslova.",
+      "command": [
+        "node",
+        "tests/test-public-title-search-v1.mjs"
+      ]
+    },
+    {
+      "id": "O20",
+      "name": "Pristupačnost",
+      "task": "Provjerava poveznice za preskakanje navigacije na stranicama.",
+      "command": [
+        "node",
+        "tests/test-a11y-skip-v1.mjs"
+      ]
+    },
+    {
+      "id": "O21",
+      "name": "Dizajn",
+      "task": "Provjerava konzistentnost dizajnerskih tokena na izlaznim stranicama.",
+      "command": [
+        "node",
+        "tests/test-design-system-v1.mjs"
+      ]
+    },
+    {
+      "id": "O22",
+      "name": "Slike izdanja",
+      "task": "Provjerava ugovor slika izdanja.",
+      "command": [
+        "node",
+        "tests/test-edition-images-v1.mjs"
+      ]
+    },
+    {
+      "id": "O23",
+      "name": "Pristupačnost slika",
+      "task": "Provjerava alt, dimenzije i postojanje lokalnih slika.",
+      "command": [
+        "node",
+        "tests/test-image-alt-v1.mjs"
+      ]
+    },
+    {
+      "id": "O24",
+      "name": "Uredničke fotografije",
+      "task": "Provjerava vidljivost i tehničku jasnoću uredničkih slika.",
+      "command": [
+        "node",
+        "tests/test-editorial-photo-clarity-v1.mjs"
+      ]
+    },
+    {
+      "id": "O25",
+      "name": "Posrednik slika",
+      "task": "Provjerava sigurnosni ugovor posrednika slika.",
+      "command": [
+        "node",
+        "tests/test-image-proxy-v1.mjs"
+      ]
+    },
+    {
+      "id": "O26",
+      "name": "Sigurnost",
+      "task": "Provjerava sigurnosna zaglavlja radnika.",
+      "command": [
+        "node",
+        "tests/test-security-headers-v1.mjs"
+      ]
+    },
+    {
+      "id": "O27",
+      "name": "Osvježavanje",
+      "task": "Provjerava modul osvježavanja i stvarni podatkovni dan.",
+      "command": [
+        "node",
+        "tests/test-refresh-layer-v1.mjs"
+      ]
+    },
+    {
+      "id": "O28",
+      "name": "Autonomija",
+      "task": "Provjerava mjerenja, hrvatsku i englesku stranicu i očuvane slojeve.",
+      "command": [
+        "node",
+        "tests/test-autonomy-v1.mjs"
+      ]
+    },
+    {
+      "id": "O29",
+      "name": "SEO matrica",
+      "task": "Provjerava pokrivenost mrežne SEO matrice.",
+      "command": [
+        "node",
+        "tests/test-seo-matrix-v1.mjs"
+      ]
+    },
+    {
+      "id": "O30",
+      "name": "Zaštita objave",
+      "task": "Provjerava da se mrežni deploy ograničava na kanonski main.",
+      "command": [
+        "node",
+        "tests/test-main-only-network-deploy-v1.mjs"
+      ]
+    }
+  ]
+}
