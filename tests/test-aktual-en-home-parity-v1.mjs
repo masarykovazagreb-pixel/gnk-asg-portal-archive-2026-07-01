@@ -26,6 +26,7 @@ test('English renders the same world component types as Croatian, in the same or
   assert.deepEqual([...enIndices].sort((a,b) => a-b), enIndices);
   assert.equal(count(en, /class="am-world-col"/g), 5);
   assert.equal(count(en, /id="amZgModal"/g), 1);
+  assert.ok(en.indexOf('<!-- KANAL-BAND:START -->') < en.indexOf('<!-- IZDANJA-BAND:START -->'), 'English section order must match Croatian');
   assert.equal(count(en, /<script src="\/assets\/aktual-zagreb-takeover-v1\.js/g), 1);
   assert.match(en, /not been independently verified/);
 });
