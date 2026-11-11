@@ -3,7 +3,7 @@ name: AGENTI — pisac i AI kontrola pregleda
 # Svakodnevni pregled aktualnih tema: pisac agent sastavlja HR i EN preglede iz
 # javnih izvora (apps/region/data, sa atribucijom i linkom na izvornik), a AI
 # kontrolni agent (AGENT-KONTROLA-001) odobrava ili odbija svaku objavu.
-# Čovjek ne odobrava objave. Odobreni pregledi se generiraju i provjeravaju (HR i EN stranice, popisi,
+# Ovaj posao ne provodi ljudsko uredničko odobrenje. Provjereni nacrti se generiraju (HR i EN stranice, popisi,
 # sitemap) i spremaju kao artefakt. Ovaj workflow NE piše na main (contents: read):
 # novi direct-main tok nije dopušten registrom vlasništva. Kill switch
 # (ops/agent-editorial-kill-switch.json) zaustavlja pisca, kontrolu i objavu.
@@ -59,13 +59,13 @@ jobs:
       - name: Pisac — sastavi preglede iz svježih izvora
         run: node apps/agents/writer-agent-v1.mjs
 
-      - name: AI kontrola — odobri ili odbij svaku objavu
+      - name: AI kontrola — provjeri ili odbij nacrt
         run: node apps/agents/control-agent-v1.mjs
 
       - name: Validiraj red objava
         run: node scripts/validate-agent-editorial-queue-v1.mjs
 
-      - name: Objavi odobrene preglede
+      - name: Generiraj pregledne HTML artefakte (bez produkcijske objave)
         run: node scripts/publish-agent-reviews-v1.mjs
 
       - name: Spremi red i odluke
