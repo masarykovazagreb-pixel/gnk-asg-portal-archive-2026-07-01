@@ -86,5 +86,20 @@ ${END}`;
       html = html.replace('</head>', `<link rel="stylesheet" href="${href}">\n</head>`);
     }
   }
+  // Match the Croatian story-section sequence without rewriting translations.
+  // HR presents the channel desk before the editions directory; old EN
+  // placed them in the opposite order. Keep each generated block intact.
+  const editionStart = '<!-- IZDANJA-BAND:START -->';
+  const editionEnd = '<!-- IZDANJA-BAND:END -->';
+  const channelStart = '<!-- KANAL-BAND:START -->';
+  const channelEnd = '<!-- KANAL-BAND:END -->';
+  const p0 = html.indexOf(editionStart), p1 = html.indexOf(editionEnd, p0);
+  const q0 = html.indexOf(channelStart), q1 = html.indexOf(channelEnd, q0);
+  if (p0 >= 0 && p1 > p0 && q0 > p1 && q1 > q0) {
+    const a = html.slice(p0, p1 + editionEnd.length);
+    const gap = html.slice(p1 + editionEnd.length, q0);
+    const b = html.slice(q0, q1 + channelEnd.length);
+    html = html.slice(0, p0) + b + gap + a + html.slice(q1 + channelEnd.length);
+  }
   return html;
 }
