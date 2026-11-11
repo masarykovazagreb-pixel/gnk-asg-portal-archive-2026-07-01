@@ -90,6 +90,26 @@ jobs:
           mkdir -p artifacts
           node apps/agents/operations/run-v1.mjs > artifacts/operations-30-v1.json
 
+      - name: Sažetak dijagnostike 30 agenata
+        if: always()
+        shell: bash
+        run: |
+          if [ -s "$NETWORK_AGENTS_REPORT" ]; then
+            node -e 'const r=require("./"+process.env.NETWORK_AGENTS_REPORT); for(const id of r.failed || []) console.log("::error::Mreža: " + String(id).replace(/[\r\n%]/g," "));'
+          fi
+          if [ -s artifacts/operations-30-v1.json ]; then
+            node -e '
+              const r = require("./artifacts/operations-30-v1.json");
+              const fs = require("fs");
+              fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `## Operativni agenti: ${r.passed}/${r.agents.length}\n`);
+              for (const a of r.agents.filter(x => x.status === "fail")) {
+                const message = `${a.id}: ${a.name} — exit ${a.exitCode}, ${a.error || a.signal || "provjera pala"}`.replace(/[\r\n%]/g, " ");
+                console.log(`::error::${message}`);
+                fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `- ${message}\n`);
+              }
+            '
+          fi
+
       - name: Spremi izvještaj 30 agenata
         if: always()
         uses: actions/upload-artifact@v4
