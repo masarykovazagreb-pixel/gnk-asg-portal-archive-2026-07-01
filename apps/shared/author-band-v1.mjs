@@ -19,20 +19,20 @@ export const AUTHOR_BAND_VERSION = 'AKTUAL_MEDIA_AUTHOR_BAND_V1';
 export const AUTHOR_PORTRAIT = join(dirname(fileURLToPath(import.meta.url)), '..', 'portal', 'assets', 'people', 'nermin-sefic', 'nermin-sefic-01-official-desk-portrait.webp');
 
 const COPY = {
-  hr: { role: 'stvarni vlasnik (UBO) povezane grupe GNK ASG / GNK DINAMO Ltd. i urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Autorske objave', profile: 'Profil', kicker: 'Vlasnička povezanost' },
-  en: { role: 'ultimate beneficial owner (UBO) of the GNK ASG / GNK DINAMO Ltd. group and AKTUAL MEDIA editor', columns: 'Columns', author: 'Authored texts', profile: 'Profile', kicker: 'Group ownership' },
-  sr: { role: 'stvarni vlasnik (UBO) povezane grupe GNK ASG / GNK DINAMO Ltd. i urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Autorski tekstovi', profile: 'Profil', kicker: 'Vlasnička povezanost' },
-  bs: { role: 'stvarni vlasnik (UBO) povezane grupe GNK ASG / GNK DINAMO Ltd. i urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Autorski tekstovi', profile: 'Profil', kicker: 'Vlasnička povezanost' },
-  sl: { role: 'dejanski lastnik (UBO) skupine GNK ASG / GNK DINAMO Ltd. in urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Avtorski prispevki', profile: 'Profil', kicker: 'Lastniška povezava' },
-  hu: { role: 'a GNK ASG / GNK DINAMO Ltd. csoport tényleges tulajdonosa (UBO) és az AKTUAL MEDIA szerkesztője', columns: 'Rovatok', author: 'Saját írások', profile: 'Profil', kicker: 'Tulajdonosi kapcsolat' },
-  it: { role: 'titolare effettivo (UBO) del gruppo GNK ASG / GNK DINAMO Ltd. e redattore di AKTUAL MEDIA', columns: 'Rubriche', author: 'Scritti', profile: 'Profilo', kicker: 'Legame proprietario' },
-  bg: { role: 'действителен собственик (UBO) на групата GNK ASG / GNK DINAMO Ltd. и редактор на AKTUAL MEDIA', columns: 'Колони', author: 'Авторски текстове', profile: 'Профил', kicker: 'Собственост на групата' },
-  ro: { role: 'beneficiar real (UBO) al grupului GNK ASG / GNK DINAMO Ltd. și editor AKTUAL MEDIA', columns: 'Cronici', author: 'Texte de autor', profile: 'Profil', kicker: 'Legătură de proprietate' },
-  ar: { role: 'المالك المستفيد النهائي (UBO) لمجموعة GNK ASG / GNK DINAMO Ltd. ومحرر AKTUAL MEDIA', columns: 'أعمدة', author: 'مقالات الكاتب', profile: 'الملف الشخصي', kicker: 'ملكية المجموعة' },
-  id: { role: 'pemilik manfaat akhir (UBO) grup GNK ASG / GNK DINAMO Ltd. dan editor AKTUAL MEDIA', columns: 'Kolom', author: 'Tulisan penulis', profile: 'Profil', kicker: 'Keterkaitan kepemilikan' },
-  ja: { role: 'GNK ASG / GNK DINAMO Ltd.グループの実質的支配者（UBO）、AKTUAL MEDIA編集者', columns: 'コラム', author: '寄稿', profile: 'プロフィール', kicker: 'グループの実質的所有者' },
-  zh: { role: 'GNK ASG / GNK DINAMO Ltd. 集团最终受益所有人（UBO）、AKTUAL MEDIA 编辑', columns: '专栏', author: '作者文章', profile: '简介', kicker: '集团所有权' },
-  pt: { role: 'beneficiário final (UBO) do grupo GNK ASG / GNK DINAMO Ltd. e editor da AKTUAL MEDIA', columns: 'Colunas', author: 'Textos de autor', profile: 'Perfil', kicker: 'Vínculo societário' }
+  hr: { role: 'stvarni vlasnik (UBO) povezane grupe GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA i urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Autorske objave', profile: 'Profil', kicker: 'Vlasnička povezanost' },
+  en: { role: 'ultimate beneficial owner (UBO) of the GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA group and AKTUAL MEDIA editor', columns: 'Columns', author: 'Authored texts', profile: 'Profile', kicker: 'Group ownership' },
+  sr: { role: 'stvarni vlasnik (UBO) povezane grupe GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA i urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Autorski tekstovi', profile: 'Profil', kicker: 'Vlasnička povezanost' },
+  bs: { role: 'stvarni vlasnik (UBO) povezane grupe GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA i urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Autorski tekstovi', profile: 'Profil', kicker: 'Vlasnička povezanost' },
+  sl: { role: 'dejanski lastnik (UBO) skupine GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA in urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Avtorski prispevki', profile: 'Profil', kicker: 'Lastniška povezava' },
+  hu: { role: 'a GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA csoport tényleges tulajdonosa (UBO) és az AKTUAL MEDIA szerkesztője', columns: 'Rovatok', author: 'Saját írások', profile: 'Profil', kicker: 'Tulajdonosi kapcsolat' },
+  it: { role: 'titolare effettivo (UBO) del gruppo GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA e redattore di AKTUAL MEDIA', columns: 'Rubriche', author: 'Scritti', profile: 'Profilo', kicker: 'Legame proprietario' },
+  bg: { role: 'действителен собственик (UBO) на групата GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA и редактор на AKTUAL MEDIA', columns: 'Колони', author: 'Авторски текстове', profile: 'Профил', kicker: 'Собственост на групата' },
+  ro: { role: 'beneficiar real (UBO) al grupului GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA și editor AKTUAL MEDIA', columns: 'Cronici', author: 'Texte de autor', profile: 'Profil', kicker: 'Legătură de proprietate' },
+  ar: { role: 'المالك المستفيد النهائي (UBO) لمجموعة GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA ومحرر AKTUAL MEDIA', columns: 'أعمدة', author: 'مقالات الكاتب', profile: 'الملف الشخصي', kicker: 'ملكية المجموعة' },
+  id: { role: 'pemilik manfaat akhir (UBO) grup GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA dan editor AKTUAL MEDIA', columns: 'Kolom', author: 'Tulisan penulis', profile: 'Profil', kicker: 'Keterkaitan kepemilikan' },
+  ja: { role: 'GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIAグループの実質的支配者（UBO）、AKTUAL MEDIA編集者', columns: 'コラム', author: '寄稿', profile: 'プロフィール', kicker: 'グループの実質的所有者' },
+  zh: { role: 'GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA 集团最终受益所有人（UBO）、AKTUAL MEDIA 编辑', columns: '专栏', author: '作者文章', profile: '简介', kicker: '集团所有权' },
+  pt: { role: 'beneficiário final (UBO) do grupo GNK ASG / GNK DINAMO Ltd. / AKTUAL MEDIA e editor da AKTUAL MEDIA', columns: 'Colunas', author: 'Textos de autor', profile: 'Perfil', kicker: 'Vínculo societário' }
 };
 
 export function authorBandCopy(lang) {
