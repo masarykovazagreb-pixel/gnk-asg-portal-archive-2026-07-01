@@ -37,6 +37,9 @@ jobs:
     name: Pisac i AI kontrola
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      # Each run gets an isolated queue; historical snapshots are not silently re-approved.
+      AGENT_OUT: ${{ runner.temp }}/agent-editorial-${{ github.run_id }}
     steps:
       - name: Dohvati granu
         uses: actions/checkout@v4
