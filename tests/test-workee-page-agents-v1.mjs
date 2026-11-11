@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import {spawnSync} from 'node:child_process';
+import {pathToFileURL} from 'node:url';
 import {inspectPage,buildReport} from '../scripts/workee-page-agents-v1.mjs';
 const root=fs.mkdtempSync(path.join(os.tmpdir(),'workee-test-'));
 try{
@@ -26,5 +28,13 @@ try{
   assert.equal(second.coordinator.liveHealthVerified,false);
   const internal=inspectPage('pages/admin/index.html','<title>Admin</title><meta name="robots" content="noindex">');
   assert.equal(internal.indexable,false);assert.equal(internal.findings.length,0);
+  // Large source strings must not stay alive through retained title/canonical substrings.
+  fs.mkdirSync(path.join(root,'large'));
+  const large=good+'<p>'+('x'.repeat(1024*1024))+'</p>';
+  for(let i=0;i<96;i++) fs.writeFileSync(path.join(root,'large',`${i}.html`),large);
+  const moduleUrl=pathToFileURL(path.resolve('scripts/workee-page-agents-v1.mjs')).href;
+  const code=`import {buildReport} from ${JSON.stringify(moduleUrl)}; const r=buildReport(${JSON.stringify(root)},['large']); if(r.total!==96) process.exit(2);`;
+  const bounded=spawnSync(process.execPath,['--max-old-space-size=64','--input-type=module','-e',code],{encoding:'utf8',timeout:60000});
+  assert.equal(bounded.status,0,`bounded heap inspection failed: ${bounded.error || bounded.stderr}`);
   console.log('WORKEE_PAGE_AGENTS_OK: discovery, per-page identity, evidence, stable proposal IDs, safe review gate');
 }finally{fs.rmSync(root,{recursive:true,force:true});}
