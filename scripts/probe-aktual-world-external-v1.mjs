@@ -40,14 +40,14 @@ try{
   const html=await res.text();
   if(html.length>600000)throw new Error('HTML exceeds limit');
   status.reachable=true;
-  for(const tag of html.match(/<link\\b[^>]*>/gi)||[]){
+  for(const tag of html.match(/<link\b[^>]*>/gi)||[]){
     const rel=getAttr(tag,'rel').toLowerCase();
     const format=getAttr(tag,'type').toLowerCase();
-    if(!rel.split(/\\s+/).includes('alternate')||!/(rss\\+xml|atom\\+xml|application\\/feed\\+json)/.test(format))continue;
+    if(!rel.split(/\s+/).includes('alternate')||!/(rss\+xml|atom\+xml|application\/feed\+json)/.test(format))continue;
     const url=safeSameHost(getAttr(tag,'href'));if(url&&!status.feedCandidates.includes(url))status.feedCandidates.push(url);
     if(status.feedCandidates.length>=10)break;
   }
-  status.imagePreviewPresent=/(?:property|name)\\s*=\\s*["'](?:og:image|twitter:image)["']/i.test(html);
+  status.imagePreviewPresent=/(?:property|name)\s*=\\s*["'](?:og:image|twitter:image)["']/i.test(html);
   status.ok=true;
 }catch(e){
   status.error=String(e?.message||e).slice(0,160);
