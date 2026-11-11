@@ -190,7 +190,7 @@ ${jsonLd({ canonical, title, description, lang, item, city, pathHr: HR_PATH(item
 ${houseRibbonHtml(lang)}
 <main class="ag-wrap" data-agent-review="${esc(item.id)}" data-agent-writer="${esc(WRITER_ID)}" data-agent-approver="${esc(APPROVER_ID)}">
 <p class="ag-kicker">${L.kicker} · ${esc(city)} · ${esc(item.run_date)}</p>
-<p class="ag-byline">${isHr ? `Autor: AI agent ${esc(WRITER_ID)} (GNK ASG) · Odobrio: AI kontrolni agent ${esc(APPROVER_ID)} · Urednik: Nermin Sefić, direktor GNK ASG d.o.o. i glavni urednik AKTUAL MEDIA` : `Author: AI agent ${esc(WRITER_ID)} (GNK ASG) · Approved by: AI control agent ${esc(APPROVER_ID)} · Editor: Nermin Sefić, director of GNK ASG d.o.o. and editor-in-chief of AKTUAL MEDIA`}</p>
+<p class="ag-byline">${isHr ? `Autor: AI agent ${esc(WRITER_ID)} (GNK ASG) · Automatski provjerio: AI kontrolni agent ${esc(APPROVER_ID)} · Urednička kontakt osoba: AKTUAL MEDIA` : `Author: AI agent ${esc(WRITER_ID)} (GNK ASG) · Automatically checked by: AI control agent ${esc(APPROVER_ID)} · Editorial contact: AKTUAL MEDIA`}</p>
 <h1>${esc(title)}</h1>
 <p class="ag-lead">${esc(description)}</p>
 <p class="ag-disclosure">${esc(item.disclosure[lang])}</p>
@@ -221,8 +221,8 @@ export function renderIndex(items, lang) {
   const canonical = isHr ? `${SITE}/agenti/pregledi/` : `${SITE}/en/agents/reviews/`;
   const title = isHr ? 'AI pregledi aktualnih tema — AKTUAL MEDIA' : 'AI reviews of current topics — AKTUAL MEDIA';
   const description = isHr
-    ? 'Dnevni pregledi aktualnih tema koje pišu AI agenti iz javnih izvora, s poveznicama na izdavače. Objave odobrava AI kontrolni agent.'
-    : 'Daily reviews of current topics written by AI agents from public sources, with links to publishers. Each post is approved by an AI control agent.';
+    ? 'Dnevni pregledi aktualnih tema koje pišu AI agenti iz javnih izvora, s poveznicama na izdavače. Automatski kontrolor provjerava nacrte; takva provjera nije ljudsko uredničko odobrenje.'
+    : 'Daily reviews of current topics written by AI agents from public sources, with links to publishers. Drafts undergo automated checks; those checks are not human editorial approval.';
   const cards = items.map((it) => {
     const t = it[lang];
     const href = isHr ? HR_PATH(it.id) : EN_PATH(it.id);
@@ -265,8 +265,8 @@ ${houseRibbonHtml(isHr ? 'hr' : 'en')}
 <p class="ag-kicker">${isHr ? 'AI agenti · pregledi' : 'AI agents · reviews'}</p>
 <h1>${isHr ? 'AI pregledi aktualnih tema' : 'AI reviews of current topics'}</h1>
 <p class="ag-lead">${esc(description)}</p>
-<p class="ag-byline">${isHr ? 'Tekstove pišu AI agenti, odobrava AI kontrola, urednik je Nermin Sefić.' : 'Texts are written by AI agents, approved by AI control, editor: Nermin Sefić.'}</p>
-<p class="ag-disclosure">${isHr ? 'Tekstove priprema AI agent GNK ASG-a iz javnih izvora. Svaku objavu odobrava AI kontrolni agent AGENT-KONTROLA-001. Izvorni naslovi i sadržaj ostaju vlasništvo izdavača.' : 'Texts are prepared by a GNK ASG AI agent from public sources. Each post is approved by the AI control agent AGENT-KONTROLA-001. Original headlines and content remain the property of their publishers.'}</p>
+<p class="ag-byline">${isHr ? 'AI agenti pripremaju preglede; AI kontrola provjerava nacrte, ali ne zamjenjuje ljudsku uredničku odgovornost.' : 'AI agents prepare reviews; automated checks do not replace human editorial responsibility.'}</p>
+<p class="ag-disclosure">${isHr ? 'Tekstove priprema AI agent GNK ASG-a iz javnih izvora. Automatsku tehničku provjeru nacrta provodi AGENT-KONTROLA-001; ona nije dokaz ljudske provjere. Izvorni naslovi i sadržaj ostaju vlasništvo izdavača.' : 'Texts are prepared by a GNK ASG AI agent from public sources. Agent AGENT-KONTROLA-001 performs automated draft screening; this is not evidence of human review. Original headlines and content remain the property of their publishers.'}</p>
 ${cards || `<p>${isHr ? 'Trenutno nema odobrenih pregleda.' : 'There are no approved reviews at the moment.'}</p>`}
 <nav class="ag-nav">${isHr ? '<a href="/agenti/">← Agenti mreže</a>' : ''}<a href="${alt}">${isHr ? 'English' : 'Hrvatski'}</a></nav>
 ${authorBand(lang, undefined, { portrait: '/assets/people/nermin-sefic.webp' })}
