@@ -74,7 +74,7 @@ jobs:
         with:
           name: agent-editorial-${{ github.run_id }}
           path: |
-            artifacts/agent-editorial/
+            ${{ env.AGENT_OUT }}/
             apps/portal/agenti/pregledi/
             apps/portal/en/agents/reviews/
             apps/portal/agent-reviews-sitemap.xml
