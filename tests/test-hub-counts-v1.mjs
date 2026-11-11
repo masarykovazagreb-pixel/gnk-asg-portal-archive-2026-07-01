@@ -41,7 +41,7 @@ test('provjera hvata zastarjeli Zagreb u stvarnom amx-link podiumu', () => {
       `<a class="amx-link" href="${zagrebBase}" rel="external noopener" aria-label="AKTUAL MEDIA KANAL ZAGREB — Hrvatska — 9 ${word} — otvori izdanje">`;
     assert.deepEqual(checkHubCounts(h, withZagreb, allCounts, lang), []);
     assert.ok(
-      checkHubCounts(h.replace(` — 9 ${word} —`, ` — 420 ${word} —`), withZagreb, allCounts, lang)
+      checkHubCounts(h.replace(`ZAGREB — Hrvatska — 9 ${word} —`, `ZAGREB — Hrvatska — 420 ${word} —`), withZagreb, allCounts, lang)
         .includes('Zagreb u najavi'),
       `${lang}: stale Zagreb podium count must be rejected`
     );
