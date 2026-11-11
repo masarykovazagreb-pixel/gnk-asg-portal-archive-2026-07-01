@@ -82,8 +82,15 @@ const imageFrom = (node, base, decodedSummary = '') => {
   for (const raw of candidates) {
     const url = resolveUrl(decode(raw).trim(), base);
     if (!/^https:\/\//i.test(url)) continue;
-    if (!/\.[a-z0-9]{2,5}(?:[?#].*)?$/i.test(url)) continue;
-    return url;
+    // CDN image URLs commonly omit file extensions (e.g. /image?id=123).
+    // Reject active documents, credentials, and unsafe schemes, but accept
+    // extensionless HTTPS image endpoints from trusted source feeds.
+    try {
+      const parsed = new URL(url);
+      if (parsed.username || parsed.password) continue;
+      if (/\.(?:svg|html?|php|aspx?|js|json|xml|pdf)(?:$)/i.test(parsed.pathname)) continue;
+      if (/\.(?:gif|jpe?g|png|webp|avif)(?:$)/i.test(parsed.pathname) || !/\.[a-z0-9]{1,6}$/i.test(parsed.pathname)) return url;
+    } catch { continue; }
   }
   return '';
 };
