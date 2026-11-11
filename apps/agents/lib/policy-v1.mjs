@@ -68,3 +68,39 @@ export function killSwitchState(file = KILL_SWITCH) {
     return { enabled: false, reason: `kill switch se ne čita: ${error.message}` };
   }
 }
+
+// A source is a public HTTPS article URL, not a private service, credential-bearing
+// link or unvalidated string. Tracking parameters do not define a new article.
+export function sourceIdentity(raw) {
+  if (typeof raw !== 'string' || raw.length > 2048 || /[\s<>"'\\\u0000-\u001f]/u.test(raw)) return null;
+  try {
+    const url = new URL(raw);
+    const host = url.hostname.toLowerCase();
+    const labels = host.split('.');
+    if (url.protocol !== 'https:' || url.username || url.password || url.port ||
+        labels.length < 2 || labels.some(x => !/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(x)) ||
+        /^(?:\d{1,3}\.){3}\d{1,3}$/.test(host) ||
+        /\.(?:local|localhost|internal|test|invalid|example)$/.test(host)) return null;
+    url.hash = '';
+    for (const key of [...url.searchParams.keys()]) {
+      if (/^(?:utm_.+|fbclid|gclid|msclkid)$/i.test(key)) url.searchParams.delete(key);
+    }
+    url.pathname = url.pathname.replace(/\/+$/, '') || '/';
+    return url.href;
+  } catch {
+    return null;
+  }
+}
+
+// Relative routes must remain within GNK ASG, including when rendered as hrefs.
+export function safeInternalLink(raw) {
+  if (typeof raw !== 'string' || !raw.startsWith('/') || raw.startsWith('//') ||
+      /[\s<>"'\\\u0000-\u001f]/u.test(raw) || /%(?:2f|5c|00)/i.test(raw) ||
+      /(?:^|\/)\.\.?(?:\/|$)/.test(raw)) return false;
+  try {
+    const u = new URL(raw, 'https://gnk-asg.hr');
+    return u.origin === 'https://gnk-asg.hr';
+  } catch {
+    return false;
+  }
+}
