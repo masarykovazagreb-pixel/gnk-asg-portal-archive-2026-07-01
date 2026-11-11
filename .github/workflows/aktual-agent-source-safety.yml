@@ -1,0 +1,34 @@
+name: AKTUAL AI source and editorial safety
+on:
+  pull_request:
+    paths:
+      - 'apps/agents/lib/policy-v1.mjs'
+      - 'apps/agents/control-agent-v1.mjs'
+      - 'apps/agents/writer-agent-v1.mjs'
+      - 'tests/test-agent-editorial-source-hygiene-v1.mjs'
+      - '.github/workflows/aktual-agent-source-safety.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  editorial-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and regression checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check apps/agents/lib/policy-v1.mjs
+          node --check apps/agents/control-agent-v1.mjs
+          node --check apps/agents/writer-agent-v1.mjs
+          node --check tests/test-agent-editorial-source-hygiene-v1.mjs
+          node tests/test-agent-editorial-pipeline-v1.mjs
+          node tests/test-agent-editorial-source-hygiene-v1.mjs
