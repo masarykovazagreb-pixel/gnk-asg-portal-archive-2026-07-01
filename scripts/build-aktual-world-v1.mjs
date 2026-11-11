@@ -273,7 +273,7 @@ ${items}
 function buildSitemap() {
   const urls = [];
   // Root directory is a separately maintained, static page and exists on this deployment.
-  if (existsSync(join(OUT, 'media', 'index.html'))) urls.push(`  <url><loc>${escXml(`${BASE}media/`)}</loc></url>`);
+  if (existsSync(join(OUT, 'media', 'index.html'))) urls.push(`  <url><loc>${escXml(`${BASE}media/`)}</loc><lastmod>2026-11-11</lastmod></url>`);
   // Include only routes whose HTML is generated below.
   // Country pages
   for (const c of data.countries) {
