@@ -9,7 +9,9 @@ export function checkHubCounts(html,channels,counts,lang){
  one(new RegExp(`<div class="am-mast-side right">AKTUAL MEDIA DESK<br>${rx(fmt(total))} ${mastWord} `),'zbroj u zaglavlju');
  one(new RegExp(`<ul class="amh-stats"><li><b>${rx(fmt(total))}</b><span>${archiveWord}</span>`),'zbroj u hero traci');
  const zagreb=counts.find(c=>c.id==='zagreb');
- if(zagreb) one(new RegExp(`<a href="/kanal/zagreb/"><b>Zagreb</b><i>${lang==='en'?'Croatia':'Hrvatska'} · ${zagreb.count} ${lang==='en'?'stories':'tekstova'}</i></a>`),'Zagreb u najavi');
+ // The compact city podium replaced the legacy teaser markup. Verify the actual
+ // rendered, linked Zagreb card and its count, instead of matching obsolete HTML.
+ if(zagreb) one(new RegExp(`<a class="amx-link" href="https://gnk-asg\\.hr/kanal/zagreb/"[^>]*aria-label="[^"]* — ${zagreb.count} ${lang==='en'?'stories':'tekstova'} —`),'Zagreb u najavi');
  for(const c of channels){const x=counts.find(y=>y.id===c.id);if(!x){errors.push(`nedostaju brojevi ${c.id}`);continue}const w=lang==='en'?'stories':'tekstova';one(new RegExp(`<a class="amx-link" href="${rx(c.base)}"[^>]*aria-label="[^"]* — ${x.count} ${w} —`),`krug ${c.id}`)}
  const pins=[...html.matchAll(/<a class="amm-pin" href="([^"]+)"[^>]*aria-label="[^"]* — (\d+) (?:tekstova|stories) —/g)];if(pins.length!==8)errors.push('broj oznaka na karti');for(const [,href,n] of pins){let c=channels.find(x=>x.base===href);if(!c||counts.find(x=>x.id===c.id)?.count!==Number(n))errors.push(`oznaka karte ${href}`)}return errors;
 }
