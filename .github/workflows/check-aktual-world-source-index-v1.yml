@@ -1,0 +1,44 @@
+name: Validate AKTUAL WORLD Source and Country Index
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/gnk-aktual/media/**'
+      - 'apps/portal/gnk-aktual/index.html'
+      - 'apps/portal/aktual-media/index.html'
+      - 'apps/portal/assets/aktual-world-source-feature-v1.css'
+      - 'apps/portal/data/aktual-world-external-source-v1.json'
+      - 'scripts/generate-sitemaps.py'
+      - 'scripts/build-aktual-world-v1.mjs'
+      - 'scripts/probe-aktual-world-external-v1.mjs'
+      - 'scripts/test-aktual-world-source-index-v1.mjs'
+      - '.github/workflows/check-aktual-world-source-index-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-index-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check scripts
+        run: |
+          node --check scripts/probe-aktual-world-external-v1.mjs
+          python3 -m py_compile scripts/generate-sitemaps.py
+      - name: Check world source policy (offline only)
+        run: node scripts/probe-aktual-world-external-v1.mjs
+      - name: Check world country index, sitemap, and links
+        run: |
+          node scripts/test-aktual-world-source-index-v1.mjs
+          node scripts/test-aktual-world-directory-v1.mjs
+      - name: Parse all world and sitemap index XML
+        run: |
+          python3 - <<'PY'
+          from xml.etree import ElementTree as ET
+          for p in ['apps/portal/sitemap-index.xml','apps/portal/gnk-aktual/media/sitemap.xml']:
+              ET.parse(p)
+              print('valid XML:',p)
+          PY
