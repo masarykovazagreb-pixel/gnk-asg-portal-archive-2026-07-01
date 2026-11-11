@@ -1,0 +1,32 @@
+name: Check Published Related Article Links
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/objave/**'
+      - 'apps/portal/sve-stranice/**'
+      - 'scripts/build-pages-inventory-v1.mjs'
+      - 'tests/test-editorial-related-links-v1.mjs'
+      - '.github/workflows/check-editorial-related-links-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/objave/**'
+      - 'apps/portal/sve-stranice/**'
+      - 'scripts/build-pages-inventory-v1.mjs'
+      - 'tests/test-editorial-related-links-v1.mjs'
+permissions:
+  contents: read
+jobs:
+  published-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify all published related article links and world inventory target
+        run: node tests/test-editorial-related-links-v1.mjs
