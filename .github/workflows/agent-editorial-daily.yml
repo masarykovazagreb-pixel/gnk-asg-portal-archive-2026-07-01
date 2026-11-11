@@ -21,6 +21,8 @@ on:
       - 'apps/agents/**'
       - 'scripts/validate-agent-editorial-queue-v1.mjs'
       - 'tests/test-agent-editorial-pipeline-v1.mjs'
+      - 'tests/test-agent-editorial-transparency-v1.mjs'
+      - 'scripts/publish-agent-reviews-v1.mjs'
       - '.github/workflows/agent-editorial-daily.yml'
 
 permissions:
@@ -47,7 +49,9 @@ jobs:
           node-version: '22'
 
       - name: Testovi agenata
-        run: node tests/test-agent-editorial-pipeline-v1.mjs
+        run: |
+          node tests/test-agent-editorial-pipeline-v1.mjs
+          node tests/test-agent-editorial-transparency-v1.mjs
 
       - name: Pisac — sastavi preglede iz svježih izvora
         run: node apps/agents/writer-agent-v1.mjs
