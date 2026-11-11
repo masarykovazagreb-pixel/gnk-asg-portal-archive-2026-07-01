@@ -73,3 +73,17 @@ jobs:
             apps/portal/agent-reviews-sitemap.xml
           if-no-files-found: warn
           retention-days: 30
+
+      - name: State truthfully whether articles reached production
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '## AKTUAL MEDIA — editorial agent status'
+            echo ''
+            echo '- Mode: draft generation and AI screening (no production push).'
+            echo '- HTML pages, if generated, are runner-local artifacts only.'
+            echo '- AI screening is not a human factual review or publication authorization.'
+            echo '- Production status: **NOT DEPLOYED BY THIS WORKFLOW**.'
+            echo '- Existing content-queue publishing and exact-SHA release gates remain separate.'
+          } >> "$GITHUB_STEP_SUMMARY"
