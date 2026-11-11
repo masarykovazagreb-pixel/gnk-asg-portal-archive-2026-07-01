@@ -20,7 +20,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { AI_DISCLOSURE, APPROVER_ID, POLICY, SCHEMA, killSwitchState, words, zagrebDate } from './lib/policy-v1.mjs';
+import { AI_DISCLOSURE, APPROVER_ID, POLICY, SCHEMA, killSwitchState, words, zagrebDate, sourceIdentity, safeInternalLink } from './lib/policy-v1.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const OUT = resolve(process.env.AGENT_OUT || join(ROOT, 'artifacts', 'agent-editorial'));
@@ -69,7 +69,7 @@ function freshnessOk(item, runDate) {
 // Svi brojevi u tekstu moraju biti izvedeni iz izvora, datuma, broja stavki ili pravila.
 function unsupportedNumbers(draft, texts) {
   const allowed = new Set([String(draft.items.length), String(POLICY.freshDays)]);
-  const sourceCorpus = draft.items
+  const sourceCorpus = (Array.isArray(draft.items) ? draft.items : [])
     .flatMap((it) => [it.title, it.excerpt, it.url, it.publisher, it.date])
     .concat([draft.run_date]);
   for (const s of sourceCorpus) numbersIn(s).forEach((n) => allowed.add(n));
@@ -82,6 +82,7 @@ function unsupportedNumbers(draft, texts) {
 }
 
 export function reviewDraft(draft, { now = NOW } = {}) {
+  const sourceItems = Array.isArray(draft.items) ? draft.items : [];
   const runDate = draft.run_date || zagrebDate(now.toISOString());
   const reasons = [];
   const checks = {};
@@ -91,29 +92,32 @@ export function reviewDraft(draft, { now = NOW } = {}) {
   if (draft.status !== 'draft') fail('state', `status nije draft (${draft.status})`);
   else pass('state');
 
-  if (!Array.isArray(draft.items) || draft.items.length === 0) fail('sources', 'nema izvora');
+  if (!sourceItems.length) fail('sources', 'nema izvora');
   else {
-    const stale = draft.items.filter((it) => !freshnessOk(it, runDate));
+    const stale = sourceItems.filter((it) => !freshnessOk(it, runDate));
     if (stale.length) fail('freshness', `${stale.length} izvor(a) starije od ${POLICY.freshDays} dana`);
     else pass('freshness');
-    const badSrc = draft.items.filter((it) => !/^https:\/\//i.test(it.url || '') || !it.publisher || !it.title);
+    const badSrc = sourceItems.filter((it) => !sourceIdentity(it.url) || !it.publisher || !it.title);
     if (badSrc.length) fail('source-fields', `${badSrc.length} izvor(a) bez HTTPS linka, izdavača ili naslova`);
     else pass('source-fields');
+    const identities = sourceItems.map((it) => sourceIdentity(it.url)).filter(Boolean);
+    if (new Set(identities).size !== identities.length) fail('duplicate-source', 'ponovljeni izvor u istom pregledu');
+    else pass('duplicate-source');
     // Bez prijevoda (jezični model nije spojen) citat na nelatiničnom pismu ne ide čitatelju.
-    const nonLatin = draft.items.filter((it) => latinShare(`${it.title} ${it.excerpt}`) < POLICY.latinMinShare);
+    const nonLatin = sourceItems.filter((it) => latinShare(`${it.title} ${it.excerpt}`) < POLICY.latinMinShare);
     if (nonLatin.length) fail('script', `${nonLatin.length} izvor(a) nije na latiničnom pismu, a nema prijevoda`);
     else pass('script');
     // Jezik: kanal mora biti na hrvatskom ili engleskom (polje lang); izvadak se dodatno provjerava čestim riječima.
     if (!['hr', 'en'].includes(draft.source_lang)) fail('language', `izvori su na jeziku ${draft.source_lang || 'nepoznato'}, a nema prijevoda`);
     else {
-      const foreign = draft.items.filter((it) => !isHrOrEn(it.excerpt));
+      const foreign = sourceItems.filter((it) => !isHrOrEn(it.excerpt));
       if (foreign.length) fail('language', `${foreign.length} izvadak(a) ne izgleda kao hrvatski ili engleski tekst`);
       else pass('language');
     }
-    const corrupt = draft.items.filter((it) => CORRUPT.test(`${it.title} ${it.excerpt}`));
+    const corrupt = sourceItems.filter((it) => CORRUPT.test(`${it.title} ${it.excerpt}`));
     if (corrupt.length) fail('encoding', `${corrupt.length} izvor(a) s pokvarenim znakovima`);
     else pass('encoding');
-    const longQuote = draft.items.filter((it) => words(String(it.excerpt).replace(/…$/, '')) > POLICY.quoteMaxWords);
+    const longQuote = sourceItems.filter((it) => words(String(it.excerpt).replace(/…$/, '')) > POLICY.quoteMaxWords);
     if (longQuote.length) fail('quote-length', `${longQuote.length} izvadak(a) dulji od ${POLICY.quoteMaxWords} riječi`);
     else pass('quote-length');
   }
@@ -134,7 +138,7 @@ export function reviewDraft(draft, { now = NOW } = {}) {
   }
 
   const links = [...new Set(Array.isArray(draft.links) ? draft.links : [])];
-  if (links.length < POLICY.linksMin || links.some((l) => typeof l !== 'string' || !l.startsWith('/'))) fail('links', `potrebno ${POLICY.linksMin}+ internih linkova (imam ${links.length})`);
+  if (links.length < POLICY.linksMin || links.some((l) => !safeInternalLink(l))) fail('links', `potrebno ${POLICY.linksMin}+ internih linkova (imam ${links.length})`);
   else pass('links');
 
   const tags = Array.isArray(draft.hashtags) ? draft.hashtags : [];
@@ -142,7 +146,7 @@ export function reviewDraft(draft, { now = NOW } = {}) {
   if (missingTags.length || tags.some((t) => !String(t).startsWith('#'))) fail('hashtags', `nedostaju hashtagovi: ${missingTags.join(', ') || 'neispravan format'}`);
   else pass('hashtags');
 
-  const allText = [draft.hr?.title, draft.hr?.description, ...(draft.hr?.paragraphs || []), draft.en?.title, draft.en?.description, ...(draft.en?.paragraphs || []), ...draft.items.map((it) => `${it.title} ${it.excerpt} ${it.publisher}`)].filter(Boolean).join('\n');
+  const allText = [draft.hr?.title, draft.hr?.description, ...(draft.hr?.paragraphs || []), draft.en?.title, draft.en?.description, ...(draft.en?.paragraphs || []), ...sourceItems.map((it) => `${it.title} ${it.excerpt} ${it.publisher}`)].filter(Boolean).join('\n');
   const banned = POLICY.bannedPatterns.filter((re) => re.test(allText)).map(String);
   if (banned.length) fail('banned', `zabranjeni obrasci: ${banned.join(', ')}`);
   else pass('banned');
@@ -156,6 +160,12 @@ export function reviewDraft(draft, { now = NOW } = {}) {
 }
 
 export function reviewQueue(queue, { now = NOW } = {}) {
+  if (!Array.isArray(queue.items)) throw new Error('queue.items mora biti polje');
+  const ids = new Set();
+  for (const d of queue.items) {
+    if (!d || typeof d.id !== 'string' || !d.id.trim() || ids.has(d.id)) throw new Error('prazan ili dupliciran ID reda: ' + String(d?.id));
+    ids.add(d.id);
+  }
   if (queue.schema !== SCHEMA) throw new Error(`neočekivana shema: ${queue.schema}`);
   const decisions = queue.items.map((d) => reviewDraft(d, { now }));
   for (const d of queue.items) {
