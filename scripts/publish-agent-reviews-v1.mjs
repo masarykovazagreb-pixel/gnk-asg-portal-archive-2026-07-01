@@ -11,8 +11,8 @@
  *   sitemap: apps/portal/agent-reviews-sitemap.xml (+ unos u sitemap-index.xml)
  *
  * Pravila:
- *  - Autor u meta podacima i JSON-LD-u je AI agent (AGENT-PISAC-001). Urednik je
- *    Nermin Sefić, kao na svakom uređivačkom webu (autorska traka).
+ *  - Autor u meta podacima i JSON-LD-u je AI agent (AGENT-PISAC-001).
+ *    Strojno odobrenje ne tvrdi da je itko pojedinačno urednički pregledao tekst.
  *  - AI oznaka je vidljiva na stranici, na jeziku te stranice.
  *  - Ako je kill switch isključen (ops/agent-editorial-kill-switch.json), ništa se
  *    ne piše i postojeće stranice ostaju kako jesu.
@@ -21,8 +21,8 @@
  *
  *   node scripts/publish-agent-reviews-v1.mjs [--check]
  */
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join, dirname, resolve } from 'node:path';
+import { existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { join, dirname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { killSwitchState, WRITER_ID, APPROVER_ID } from '../apps/agents/lib/policy-v1.mjs';
 import { authorBand, AUTHOR_BAND_CSS, AUTHOR_PORTRAIT, ensureAuthorPortrait } from '../apps/shared/author-band-v1.mjs';
@@ -30,13 +30,21 @@ import { impressumBlock } from '../apps/shared/impressum-v1.mjs';
 import { houseRibbonHtml, HOUSE_RIBBON_CSS } from './lib/house-ribbon-v1.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const PORTAL = join(ROOT, 'apps', 'portal');
-const QUEUE_DIR = join(ROOT, 'artifacts', 'agent-editorial');
+const PREVIEW = Boolean(process.env.AGENT_PREVIEW_PORTAL);
+const PORTAL = resolve(process.env.AGENT_PREVIEW_PORTAL || join(ROOT, 'apps', 'portal'));
+const QUEUE_DIR = resolve(process.env.AGENT_OUT || join(ROOT, 'artifacts', 'agent-editorial'));
 const SITE = 'https://gnk-asg.hr';
 const CHECK = process.argv.includes('--check');
 
 const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-const hrefOk = (u) => /^https:\/\//.test(u) || u.startsWith('/');
+const sourceUrlOk = (value) => {
+  if (typeof value !== 'string' || /[\s\\\u0000-\u001f\u007f]/.test(value)) return false;
+  try { const u = new URL(value); return u.protocol === 'https:' && Boolean(u.hostname) && !u.username && !u.password; } catch { return false; }
+};
+const internalUrlOk = (value) => typeof value === 'string' && /^\/(?!\/)/.test(value) && !/[\s\\\u0000-\u001f\u007f]/.test(value);
+const validSlug = (value) => typeof value === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value) && value.length <= 180;
+const validDay = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
+const safeJson = (value) => JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
 
 const HR_PATH = (id) => `/agenti/pregledi/${id}/`;
 const EN_PATH = (id) => `/en/agents/reviews/${id}/`;
@@ -54,19 +62,25 @@ export function collectApproved(queueDir = QUEUE_DIR) {
 /** Provjere prije objave; vraća popis problema (prazno = prolazi). */
 export function reviewProblems(item) {
   const problems = [];
+  if (!item || typeof item !== 'object') return ['nevaljana stavka'];
+  if (!validSlug(item.id) || !validSlug(item.channel)) problems.push('nevaljan ID ili kanal');
+  if (!validDay(item.run_date)) problems.push('nevaljan datum');
+  if (typeof item.city !== 'string' || !item.city.trim()) problems.push('nema naziva grada');
   for (const lang of ['hr', 'en']) {
     const t = item[lang];
-    if (!t) { problems.push(`${lang}: nema teksta`); continue; }
-    const len = (t.description || '').length;
+    if (!t || typeof t !== 'object') { problems.push(`${lang}: nema teksta`); continue; }
+    if (typeof t.title !== 'string' || !t.title.trim()) problems.push(`${lang}: nema naslova`);
+    const len = typeof t.description === 'string' ? t.description.length : 0;
     if (len < 80 || len > 200) problems.push(`${lang}: opis ${len} znakova (80–200)`);
-    if (!t.paragraphs || t.paragraphs.length < 2) problems.push(`${lang}: premalo odlomaka`);
-    if (!item.disclosure || !item.disclosure[lang]) problems.push(`${lang}: nema AI oznake`);
+    if (!Array.isArray(t.paragraphs) || t.paragraphs.length < 2 || t.paragraphs.some(p => typeof p !== 'string')) problems.push(`${lang}: nevaljani odlomci`);
+    if (typeof item.disclosure?.[lang] !== 'string' || !item.disclosure[lang].trim()) problems.push(`${lang}: nema AI oznake`);
   }
-  if (!item.hashtags || item.hashtags.length < 3) problems.push('premalo hashtagova');
-  const sourceLinks = (item.items || []).map((x) => x.url);
-  const links = [...(item.links || []), ...sourceLinks];
-  if (links.length < 6) problems.push(`samo ${links.length} poveznica (≥6)`);
-  if (!sourceLinks.every(hrefOk)) problems.push('izvor nije HTTPS');
+  if (!Array.isArray(item.hashtags) || item.hashtags.length < 3 || item.hashtags.some(h => typeof h !== 'string')) problems.push('nevaljani hashtagovi');
+  const sources = Array.isArray(item.items) ? item.items : [];
+  const links = Array.isArray(item.links) ? item.links : [];
+  if (!sources.length || sources.some(s => !s || !sourceUrlOk(s.url) || typeof s.publisher !== 'string' || !s.publisher.trim() || typeof s.title !== 'string' || !s.title.trim() || !validDay(s.date))) problems.push('izvor nedostaje ili nije valjan HTTPS zapis');
+  if (links.some(u => !internalUrlOk(u))) problems.push('nevaljana interna poveznica');
+  if (links.length + sources.length < 6) problems.push(`samo ${links.length + sources.length} poveznica (≥6)`);
   return problems;
 }
 
@@ -108,7 +122,6 @@ function jsonLd({ canonical, title, description, lang, item, city, pathHr, pathE
       dateModified: item.run_date,
       mainEntityOfPage: canonical,
       author: { '@type': 'SoftwareApplication', name: WRITER_ID, description: 'AI agent GNK ASG-a: priprema pregled iz javnih izvora' },
-      editor: { '@id': `${SITE}/#nermin-sefic` },
       publisher: { '@id': `${SITE}/#gnk-asg` },
       keywords: hashtags.join(', '),
       about: { '@type': 'Place', name: city },
@@ -128,7 +141,7 @@ function jsonLd({ canonical, title, description, lang, item, city, pathHr, pathE
     },
   ];
   for (const g of graph) for (const k of Object.keys(g)) if (g[k] === undefined) delete g[k];
-  return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })}</script>`;
+  return `<script type="application/ld+json">${safeJson({ '@context': 'https://schema.org', '@graph': graph })}</script>`;
 }
 
 export function renderReview(item, lang) {
@@ -174,9 +187,8 @@ ${alt}
 ${articleTags}
 <meta name="keywords" content="${esc(hashtags.join(', '))}">
 <meta name="twitter:card" content="summary">
-<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="robots" content="${PREVIEW ? 'noindex,nofollow' : 'index,follow,max-image-preview:large'}">
 <meta name="author" content="${esc(WRITER_ID)} (AI agent)">
-<meta name="editor" content="Nermin Sefić">
 <meta name="generator" content="${esc(WRITER_ID)}; kontrola ${esc(APPROVER_ID)}">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/am-design-v1.css?v=20261024" data-am-design="v1">
@@ -190,7 +202,7 @@ ${jsonLd({ canonical, title, description, lang, item, city, pathHr: HR_PATH(item
 ${houseRibbonHtml(lang)}
 <main class="ag-wrap" data-agent-review="${esc(item.id)}" data-agent-writer="${esc(WRITER_ID)}" data-agent-approver="${esc(APPROVER_ID)}">
 <p class="ag-kicker">${L.kicker} · ${esc(city)} · ${esc(item.run_date)}</p>
-<p class="ag-byline">${isHr ? `Autor: AI agent ${esc(WRITER_ID)} (GNK ASG) · Odobrio: AI kontrolni agent ${esc(APPROVER_ID)} · Urednik: Nermin Sefić, direktor GNK ASG d.o.o. i glavni urednik AKTUAL MEDIA` : `Author: AI agent ${esc(WRITER_ID)} (GNK ASG) · Approved by: AI control agent ${esc(APPROVER_ID)} · Editor: Nermin Sefić, director of GNK ASG d.o.o. and editor-in-chief of AKTUAL MEDIA`}</p>
+<p class="ag-byline">${isHr ? `Autor: AI agent ${esc(WRITER_ID)} (GNK ASG) · Strojna kontrola: ${esc(APPROVER_ID)} · Pojedinačni ljudski urednički pregled nije potvrđen.` : `Author: AI agent ${esc(WRITER_ID)} (GNK ASG) · Automated check: ${esc(APPROVER_ID)} · Individual human editorial review has not been confirmed.`}</p>
 <h1>${esc(title)}</h1>
 <p class="ag-lead">${esc(description)}</p>
 <p class="ag-disclosure">${esc(item.disclosure[lang])}</p>
@@ -206,7 +218,7 @@ ${sourceList}
 <a href="${isHr ? `/kanal/${item.channel}/` : `/en/agents/reviews/`}">${esc(city)}</a>
 <a href="${pathAlt}">${L.alt}</a>
 </nav>
-<p class="ag-src">${esc(relatedLinks)}</p>
+<p class="ag-src">${relatedLinks}</p>
 ${band}
 </main>
 ${impressumBlock(lang)}
@@ -245,7 +257,7 @@ export function renderIndex(items, lang) {
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:site_name" content="AKTUAL MEDIA">
-<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="robots" content="${PREVIEW ? 'noindex,nofollow' : 'index,follow,max-image-preview:large'}">
 <meta name="author" content="${esc(WRITER_ID)} (AI)">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/am-design-v1.css?v=20261024" data-am-design="v1">
@@ -253,8 +265,8 @@ export function renderIndex(items, lang) {
 <link rel="stylesheet" href="${HOUSE_RIBBON_CSS}">
 <script src="/assets/am-refresh-v1.js?v=${ITEMS_DAY}" data-am-netday="${ITEMS_DAY}" defer></script>
 ${CSS}
-<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': [
-    { '@type': 'CollectionPage', '@id': `${canonical}#page`, name: title, description, url: canonical, inLanguage: isHr ? 'hr' : 'en', publisher: { '@id': `${SITE}/#gnk-asg` }, editor: { '@id': `${SITE}/#nermin-sefic` }, hasPart: items.map((it) => ({ '@type': 'Article', headline: it[lang].title, url: `${SITE}${isHr ? HR_PATH(it.id) : EN_PATH(it.id)}`, datePublished: it.run_date })) },
+<script type="application/ld+json">${safeJson({ '@context': 'https://schema.org', '@graph': [
+    { '@type': 'CollectionPage', '@id': `${canonical}#page`, name: title, description, url: canonical, inLanguage: isHr ? 'hr' : 'en', publisher: { '@id': `${SITE}/#gnk-asg` }, hasPart: items.map((it) => ({ '@type': 'Article', headline: it[lang].title, url: `${SITE}${isHr ? HR_PATH(it.id) : EN_PATH(it.id)}`, datePublished: it.run_date })) },
     { '@type': 'WebSite', '@id': `${SITE}/#website`, url: `${SITE}/`, name: 'GNK ASG', inLanguage: ['hr', 'en'], publisher: { '@id': `${SITE}/#gnk-asg` } },
     { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: isHr ? 'Početna' : 'Home', item: `${SITE}/` }, { '@type': 'ListItem', position: 2, name: title, item: canonical }] },
   ] })}</script>
@@ -265,7 +277,7 @@ ${houseRibbonHtml(isHr ? 'hr' : 'en')}
 <p class="ag-kicker">${isHr ? 'AI agenti · pregledi' : 'AI agents · reviews'}</p>
 <h1>${isHr ? 'AI pregledi aktualnih tema' : 'AI reviews of current topics'}</h1>
 <p class="ag-lead">${esc(description)}</p>
-<p class="ag-byline">${isHr ? 'Tekstove pišu AI agenti, odobrava AI kontrola, urednik je Nermin Sefić.' : 'Texts are written by AI agents, approved by AI control, editor: Nermin Sefić.'}</p>
+<p class="ag-byline">${isHr ? 'Tekstove pripremaju AI agenti; strojna kontrola nije potvrda pojedinačnog ljudskog uredničkog pregleda.' : 'Texts are prepared by AI agents; automated checks do not confirm individual human editorial review.'}</p>
 <p class="ag-disclosure">${isHr ? 'Tekstove priprema AI agent GNK ASG-a iz javnih izvora. Svaku objavu odobrava AI kontrolni agent AGENT-KONTROLA-001. Izvorni naslovi i sadržaj ostaju vlasništvo izdavača.' : 'Texts are prepared by a GNK ASG AI agent from public sources. Each post is approved by the AI control agent AGENT-KONTROLA-001. Original headlines and content remain the property of their publishers.'}</p>
 ${cards || `<p>${isHr ? 'Trenutno nema odobrenih pregleda.' : 'There are no approved reviews at the moment.'}</p>`}
 <nav class="ag-nav">${isHr ? '<a href="/agenti/">← Agenti mreže</a>' : ''}<a href="${alt}">${isHr ? 'English' : 'Hrvatski'}</a></nav>
@@ -294,13 +306,27 @@ function write(file, content) {
 }
 
 export function publish({ queueDir = QUEUE_DIR, portal = PORTAL, check = CHECK } = {}) {
+  const canonicalPortal = realpathSync(resolve(ROOT, 'apps', 'portal'));
+  let parent = resolve(portal);
+  const missing = [];
+  while (!existsSync(parent)) {
+    const next = dirname(parent);
+    if (next === parent) throw new Error('Cannot resolve output location');
+    missing.unshift(parent.slice(next.length + (next.endsWith(sep) ? 0 : 1)));
+    parent = next;
+  }
+  const output = resolve(realpathSync(parent), ...missing);
+  if (!check && (output === canonicalPortal || output.startsWith(canonicalPortal + sep))) throw new Error('Refusing writes inside the source portal: use an isolated preview and the separate release process.');
   const ks = killSwitchState();
   if (!ks.enabled) return { paused: true, reason: ks.reason, published: 0 };
   const approved = collectApproved(queueDir);
   const ok = [];
   const rejected = [];
+  const counts = new Map();
+  for (const item of approved) counts.set(item.id, (counts.get(item.id) || 0) + 1);
   for (const item of approved) {
     const problems = reviewProblems(item);
+    if (counts.get(item.id) > 1) problems.push('dupliciran ID između redova');
     if (problems.length) rejected.push({ id: item.id, problems });
     else ok.push(item);
   }
@@ -328,5 +354,10 @@ export function publish({ queueDir = QUEUE_DIR, portal = PORTAL, check = CHECK }
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  console.log(JSON.stringify(publish(), null, 2));
+  if (!CHECK && !PREVIEW) {
+    console.error('Public portal writes are disabled: generate an isolated preview using AGENT_PREVIEW_PORTAL; human approval and the separate release process are required.');
+    process.exitCode = 1;
+  } else {
+    console.log(JSON.stringify(publish(), null, 2));
+  }
 }
