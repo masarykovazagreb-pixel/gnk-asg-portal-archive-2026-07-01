@@ -204,7 +204,7 @@ def main():
             if name == "sitemap-index.xml":
                 continue
             if not (name == "sitemap.xml" or name.endswith("-sitemap.xml")
-                    or re.fullmatch(r"image-sitemap-\\d+\\.xml", name)):
+                    or re.fullmatch(r"image-sitemap-\d+\.xml", name)):
                 continue
             relative_path = (rel_dir + "/" if rel_dir else "") + name
             if is_excluded(relative_path):
@@ -225,9 +225,9 @@ def main():
         f"  <sitemap><loc>{BASE_URL}/{item}</loc><lastmod>{submaps[item]}</lastmod></sitemap>"
         for item in ordered
     ]
-    index_xml = ('<?xml version="1.0" encoding="UTF-8"?>\\n'
-                 '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\\n'
-                 + "\\n".join(rows) + '\\n</sitemapindex>')
+    index_xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+                 '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+                 + "\n".join(rows) + '\n</sitemapindex>')
     with open(os.path.join(PORTAL_DIR, "sitemap-index.xml"), "w", encoding="utf-8") as f:
         f.write(index_xml)
     print("wrote sitemap-index.xml")
