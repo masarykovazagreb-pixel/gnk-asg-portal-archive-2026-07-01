@@ -199,18 +199,21 @@
       "role": "canonical-writer-legacy-direct-main",
       "cadence": "6x/day",
       "read": [
-        "news source inputs"
+        "news source inputs",
+        "public portal files for repository-snapshot verification"
       ],
       "write": [
         "apps/portal/data/news.json",
         "apps/portal/data/news_archive.json",
         "apps/portal/data/news-automation-status.json",
-        "apps/portal/data/freshness-status.json"
+        "apps/portal/data/freshness-status.json",
+        "apps/portal/data/public_service_status.json",
+        "apps/portal/data/public_service_status_history.json"
       ],
-      "gate": "news contract + freshness",
+      "gate": "news contract + freshness + evidence-based public status snapshot",
       "handoff": "PUBLISH/STABILITY",
       "prohibitions": [
-        "write outside AKTUAL_NEWS paths"
+        "write outside registered news and public-status paths"
       ]
     },
     {
