@@ -45,8 +45,8 @@ export const POLICY = {
 };
 
 export const AI_DISCLOSURE = {
-  hr: 'Tekst je pripremio AI agent GNK ASG iz javnih izvora navedenih u tekstu. Objavu je odobrio AI kontrolni agent ' + APPROVER_ID + '. Izvorni naslovi, izvaci i sadržaj ostaju vlasništvo izdavača, a poveznice vode na izvornike.',
-  en: 'This text was prepared by a GNK ASG AI agent from the public sources named in the text. The publication was approved by the AI control agent ' + APPROVER_ID + '. Original headlines, excerpts and content remain the property of their publishers; links point to the originals.',
+  hr: 'Tekst je pripremio AI agent GNK ASG iz javnih izvora navedenih u tekstu. Automatske kontrole sadržaja proveo je agent ' + APPROVER_ID + '; to nije ljudska provjera činjenica niti potvrda objave na webu. Izvorni naslovi, izvaci i sadržaj ostaju vlasništvo izdavača, a poveznice vode na izvornike.',
+  en: 'This text was prepared by a GNK ASG AI agent from the public sources named in the text. Automated content screening was performed by agent ' + APPROVER_ID + '; this is not human fact-checking or evidence of live website publication. Original headlines, excerpts and content remain the property of their publishers; links point to the originals.',
 };
 
 export function words(text) {
