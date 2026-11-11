@@ -1,0 +1,18 @@
+/* AKTUAL MEDIA WORLD: owned image, internal country directory, external-preview disclosure. */
+.aw-source-feature,.aw-world-entry-cta{box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:clamp(18px,3vw,34px);align-items:center;margin:26px 0 36px;padding:clamp(18px,3vw,32px);border:1px solid rgba(233,198,108,.55);border-radius:16px;background:linear-gradient(135deg,#142d45,#09182a);color:#edf5fc;box-shadow:0 16px 40px rgba(0,0,0,.14)}
+.aw-source-feature>*{min-width:0}.aw-source-art{margin:0;overflow:hidden;border-radius:12px;aspect-ratio:16/10;background:#162d46}.aw-source-art img{width:100%;height:100%;object-fit:cover;display:block}
+.aw-source-copy h2,.aw-world-entry-cta h2{font:750 clamp(23px,3vw,37px)/1.17 Georgia,serif;color:#fff;margin:7px 0 15px;letter-spacing:-.02em}
+.aw-source-copy p,.aw-world-entry-cta p{color:#d5e0ee;line-height:1.6}
+.aw-source-actions,.aw-world-entry-actions{display:flex;gap:12px;flex-wrap:wrap;margin:19px 0}
+.aw-source-actions a,.aw-world-entry-actions a{display:inline-block;border:1px solid #d9b95f;border-radius:8px;padding:11px 15px;color:#ffe49b;text-decoration:none;font-weight:750;background:#0c2138}
+.aw-source-actions .aw-source-action-primary,.aw-world-entry-actions a:first-child{color:#102039;background:#e9c66c;border-color:#e9c66c}
+.aw-source-actions a:hover,.aw-world-entry-actions a:hover,.aw-quick-countries a:hover{text-decoration:underline;border-color:#fff}
+.aw-quick-countries{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0}
+.aw-quick-countries a{border-radius:30px;border:1px solid #496077;padding:6px 11px;font-size:13px;color:#f1f6fa;text-decoration:none}
+.aw-source-notice{font-size:12px;color:#b9c9dc!important;max-width:80ch}
+.aw-world-entry-cta{grid-template-columns:minmax(0,1.45fr) minmax(190px,.65fr);margin:20px auto;width:min(calc(100% - 32px),1200px);position:relative;z-index:1}
+.aw-world-entry-label{font-size:12px!important;text-transform:uppercase;letter-spacing:.13em;font-weight:800;color:#e9c66c!important}
+.aw-world-entry-cta img{width:100%;height:auto;max-height:240px;object-fit:cover;border-radius:12px;border:1px solid #4a5e75}
+.aw-world-entry-cta a:focus-visible,.aw-source-feature a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media(max-width:750px){.aw-source-feature,.aw-world-entry-cta{grid-template-columns:1fr}.aw-source-feature .aw-source-art{aspect-ratio:16/8}.aw-world-entry-cta img{max-height:180px}}
+@media(prefers-reduced-motion:reduce){.aw-source-feature *,.aw-world-entry-cta *{transition:none!important}}
