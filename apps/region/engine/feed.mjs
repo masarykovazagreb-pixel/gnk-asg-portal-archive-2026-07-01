@@ -82,14 +82,14 @@ const imageFrom = (node, base, decodedSummary = '') => {
   for (const raw of candidates) {
     const url = resolveUrl(decode(raw).trim(), base);
     if (!/^https:\/\//i.test(url)) continue;
-    // CDN image URLs commonly omit file extensions (e.g. /image?id=123).
-    // Reject active documents, credentials, and unsafe schemes, but accept
-    // extensionless HTTPS image endpoints from trusted source feeds.
+    // Keep candidate URLs aligned with the deployed /api/img security
+    // boundary: extensionless endpoints and documents are not served.
+    // A broken photo is worse than the existing branded fallback.
     try {
       const parsed = new URL(url);
       if (parsed.username || parsed.password) continue;
-      if (/\.(?:svg|html?|php|aspx?|js|json|xml|pdf)(?:$)/i.test(parsed.pathname)) continue;
-      if (/\.(?:gif|jpe?g|png|webp|avif)(?:$)/i.test(parsed.pathname) || !/\.[a-z0-9]{1,6}$/i.test(parsed.pathname)) return url;
+      if (!/\.(?:gif|jpe?g|png|webp|avif)$/i.test(parsed.pathname)) continue;
+      return url;
     } catch { continue; }
   }
   return '';
