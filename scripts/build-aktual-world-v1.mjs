@@ -96,7 +96,7 @@ function buildCountryPage(country) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon.svg?v=asg-red-gold-20261111" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
 <title>${escHtml(title)}</title>
 <meta name="description" content="${escHtml(description)}">
@@ -211,7 +211,7 @@ function buildCityPage(city) {
   return `<!doctype html>
 <html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon.svg?v=asg-red-gold-20261111" type="image/svg+xml">
 <title>${escHtml(title)}</title><meta name="description" content="${escHtml(cityDescription)}">
 <meta name="keywords" content="AKTUAL MEDIA, GNK ASG, GNK DINAMO Ltd">
 <meta name="author" content="Nermin Sefić">
