@@ -20,7 +20,7 @@
 import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { basename, join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { AI_DISCLOSURE, POLICY, SCHEMA, WRITER_ID, APPROVER_ID, killSwitchState, words, zagrebDate } from './lib/policy-v1.mjs';
+import { AI_DISCLOSURE, POLICY, SCHEMA, WRITER_ID, APPROVER_ID, killSwitchState, words, zagrebDate, sourceIdentity } from './lib/policy-v1.mjs';
 import { itemIssues } from './control-agent-v1.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -61,15 +61,16 @@ export function selectItems(channel, now = NOW) {
   for (const it of channel.items || []) {
     const t = Date.parse(it.date);
     if (!Number.isFinite(t) || t < cutoff || t > now.getTime() + 36e5) continue;
-    if (!/^https:\/\//i.test(it.url || '')) continue;
+    const identity = sourceIdentity(it.url);
+    if (!identity) continue;
     const title = clean(it.title);
     const excerpt = excerptOf(it.summary);
     if (!title || excerpt.length < 40) continue;
-    if (seen.has(it.url)) continue;
+    if (seen.has(identity)) continue;
     const candidate = { title: title.slice(0, 200), publisher: clean(it.sourceName || it.source), url: it.url, date: zagrebDate(it.date), excerpt };
     // Stavka koja ne prolazi jezik, pismo ili kodiranje ne ulazi u pregled.
     if (itemIssues(candidate, lang).length) continue;
-    seen.add(it.url);
+    seen.add(identity);
     out.push(candidate);
   }
   return out.sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, MAX_ITEMS);
