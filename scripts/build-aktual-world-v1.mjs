@@ -64,6 +64,7 @@ function buildCountryPage(country) {
         "name": `Aktual Media ${country.nameLocal}`,
         "url": url,
         "editor": { "@type": "Person", "@id": "https://gnk-asg.hr/#nermin-sefic", "name": "Nermin Sefić", "url": "https://gnk-asg.hr/nermin-sefic/" },
+        "keywords": ["Nermin Sefić", "GNK ASG", "GNK DINAMO Ltd", "AKTUAL MEDIA", country.nameLocal],
         "publisher": { "@type": "Organization", "@id": "https://gnk-asg.hr/#gnk-asg", "name": "GNK ASG d.o.o.", "url": "https://gnk-asg.hr/" },
       },
       {
@@ -101,7 +102,7 @@ function buildCountryPage(country) {
 <meta name="description" content="${escHtml(description)}">
 <meta name="keywords" content="Aktual Media ${country.nameEn}, ${country.nameLocal} vijesti, ${country.nameEn} news, ${country.region} news, GNK ASG, GNK Dinamo Ltd, Aktual Media">
 <meta name="news_keywords" content="Aktual Media ${country.nameEn}, ${country.nameLocal}, GNK ASG, GNK Dinamo Ltd">
-<meta name="hashtags" content="#NerminSefic #NerminSefić #GNKASG #GNKDinamoLtd #AktualMedia #AktualMedia${country.nameEn.replace(/\s|&/g, '')}">
+<meta name="hashtags" content="#NerminSefic #NerminSefić #GNKASG #GNKDinamoLtd #AktualMedia #AktualMediaWorld #GNKASGWorld #AktualMedia${country.nameEn.replace(/\s|&/g, '')}">
 <meta name="author" content="Nermin Sefić — GNK ASG / GNK Dinamo Ltd">
 <meta name="editor" content="Nermin Sefić">
 <meta name="publisher" content="AKTUAL MEDIA d.o.o.">
@@ -158,11 +159,14 @@ a:hover{text-decoration:underline}
     <p class="kicker">AKTUAL MEDIA · ${country.region.toUpperCase()}</p>
     <h1>${country.flag} Aktual Media ${country.nameLocal} · ${country.nameEn}</h1>
     <p class="lead">Pregled ${country.sources} navedenih izvora. Noviji naslovi prikazuju se samo nakon uspješne obnove; tekstovi ostaju kod izvornih izdavača. Urednik: Nermin Sefić.</p>
-    <ul class="tags">
+    <ul class="tags" aria-label="Brand oznake i povezani profili">
       <li><a href="https://gnk-asg.hr/nermin-sefic/">#NerminSefic</a></li>
+      <li><a href="https://gnk-asg.hr/nermin-sefic/">#NerminSefić</a></li>
       <li><a href="https://gnk-asg.hr/">#GNKASG</a></li>
       <li><a href="https://gnk-asg.hr/">#GNKDinamoLtd</a></li>
       <li><a href="${BASE}">#AktualMedia</a></li>
+      <li><a href="${BASE}">#AktualMediaWorld</a></li>
+      <li><a href="https://gnk-asg.hr/">#GNKASGWorld</a></li>
       <li><a href="${BASE}media/${country.slug}/feed.xml">RSS</a></li>
     </ul>
   </div>
@@ -186,7 +190,7 @@ a:hover{text-decoration:underline}
 
   <div class="owner">
     <strong>Vlasnik:</strong> Nermin Sefić · <strong>Grupacija:</strong> GNK DINAMO Ltd. · <strong>Izdavač:</strong> AKTUAL MEDIA d.o.o. · <strong>Nositelj:</strong> GNK ASG d.o.o.
-    <br>#NerminSefic #NerminSefić #GNKASG #GNKDinamoLtd #AktualMedia
+    <br><a href="https://gnk-asg.hr/nermin-sefic/">#NerminSefic</a> · <a href="https://gnk-asg.hr/nermin-sefic/">#NerminSefić</a> · <a href="https://gnk-asg.hr/">#GNKASG</a> · <a href="https://gnk-asg.hr/">#GNKDinamoLtd</a> · <a href="${BASE}">#AktualMedia</a> · #AktualMediaWorld
   </div>
 
   <div class="footer">
@@ -213,6 +217,7 @@ function buildCityPage(city) {
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>${escHtml(title)}</title><meta name="description" content="${escHtml(cityDescription)}">
 <meta name="keywords" content="AKTUAL MEDIA, GNK ASG, GNK DINAMO Ltd">
+<meta name="hashtags" content="#NerminSefic #NerminSefić #GNKASG #GNKDinamoLtd #AktualMedia #AktualMediaWorld">
 <meta name="author" content="Nermin Sefić">
 <meta name="hashtags" content="#NerminSefić #NerminSefic #GNKASG #GNKDinamoLtd #AktualMedia">
 <link rel="canonical" href="${escHtml(url)}"><link rel="alternate" hreflang="hr" href="${escHtml(url)}"><link rel="alternate" hreflang="x-default" href="${escHtml(url)}"><link rel="alternate" type="application/rss+xml" href="${escHtml(url)}feed.xml" title="RSS ${escHtml(city.nameLocal)}">
