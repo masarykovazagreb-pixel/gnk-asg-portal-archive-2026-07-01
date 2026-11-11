@@ -31,7 +31,7 @@ import { houseRibbonHtml, HOUSE_RIBBON_CSS } from './lib/house-ribbon-v1.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PORTAL = join(ROOT, 'apps', 'portal');
-const QUEUE_DIR = join(ROOT, 'artifacts', 'agent-editorial');
+const QUEUE_DIR = resolve(process.env.AGENT_OUT || join(ROOT, 'artifacts', 'agent-editorial'));
 const SITE = 'https://gnk-asg.hr';
 const CHECK = process.argv.includes('--check');
 
