@@ -68,7 +68,7 @@ function freshnessOk(item, runDate) {
 
 // Svi brojevi u tekstu moraju biti izvedeni iz izvora, datuma, broja stavki ili pravila.
 function unsupportedNumbers(draft, texts) {
-  const allowed = new Set([String(draft.items.length), String(POLICY.freshDays)]);
+  const allowed = new Set([String(Array.isArray(draft.items) ? draft.items.length : 0), String(POLICY.freshDays)]);
   const sourceCorpus = (Array.isArray(draft.items) ? draft.items : [])
     .flatMap((it) => [it.title, it.excerpt, it.url, it.publisher, it.date])
     .concat([draft.run_date]);
@@ -84,10 +84,14 @@ function unsupportedNumbers(draft, texts) {
 export function reviewDraft(draft, { now = NOW } = {}) {
   const sourceItems = Array.isArray(draft.items) ? draft.items : [];
   const runDate = draft.run_date || zagrebDate(now.toISOString());
+  const today = zagrebDate(now.toISOString());
   const reasons = [];
   const checks = {};
   const fail = (key, msg) => { checks[key] = 'fail'; reasons.push(msg); };
   const pass = (key) => { checks[key] = 'pass'; };
+
+  if (runDate !== today) fail('run-date', `datum nacrta ${runDate} nije datum ove provjere ${today}`);
+  else pass('run-date');
 
   if (draft.status !== 'draft') fail('state', `status nije draft (${draft.status})`);
   else pass('state');
