@@ -2,15 +2,15 @@
   "city": "Zagreb",
   "lat": 45.815,
   "lon": 15.9819,
-  "updated_at": "2026-11-12T09:41:52.322Z",
+  "updated_at": "2026-11-12T18:52:36.436Z",
   "source": "open-meteo.com",
   "state": "live",
   "current": {
-    "temperature_c": 13.2,
-    "feels_like_c": 14,
+    "temperature_c": 14.6,
+    "feels_like_c": 14.9,
     "humidity_pct": 96,
-    "wind_kmh": 0.4,
-    "is_day": true,
+    "wind_kmh": 6.6,
+    "is_day": false,
     "weather_code": 61,
     "condition_hr": "Slaba kiša",
     "condition_en": "Slight rain"
@@ -18,27 +18,27 @@
   "forecast": [
     {
       "date": "2026-11-12",
-      "max_c": 16,
+      "max_c": 15.2,
       "min_c": 9.7,
-      "weather_code": 63,
-      "condition_hr": "Umjerena kiša",
-      "condition_en": "Moderate rain"
+      "weather_code": 61,
+      "condition_hr": "Slaba kiša",
+      "condition_en": "Slight rain"
     },
     {
       "date": "2026-11-13",
-      "max_c": 14.3,
-      "min_c": 4.9,
-      "weather_code": 80,
-      "condition_hr": "Slabi pljuskovi",
-      "condition_en": "Slight rain showers"
+      "max_c": 15,
+      "min_c": 5.8,
+      "weather_code": 95,
+      "condition_hr": "Grmljavinsko nevrijeme",
+      "condition_en": "Thunderstorm"
     },
     {
       "date": "2026-11-14",
-      "max_c": 8.5,
+      "max_c": 8.7,
       "min_c": 2.8,
-      "weather_code": 2,
-      "condition_hr": "Djelomično oblačno",
-      "condition_en": "Partly cloudy"
+      "weather_code": 3,
+      "condition_hr": "Oblačno",
+      "condition_en": "Overcast"
     }
   ]
 }
