@@ -718,7 +718,9 @@ function homePage(channel, strings, data) {
   const items = data.items;
   const lead = items[0];
   const rest = items.slice(1, 13);
-  const more = items.slice(13, 30);
+  const more = items.slice(13, 45);
+  const moreCards = more.slice(0, 12);
+  const moreList = more.slice(12);
   const themes = [...new Set(items.map(themeOf))];
   const themeLinks = themes.map((id) => `<a class="chip" href="tema/${id}/">${esc(strings.themeNames[id] || id)}</a>`).join('');
   const sources = channel.sources.map((s) => `<a class="chip" href="izvor/${s.id}/">${esc(s.name)}</a>`).join('');
@@ -753,7 +755,8 @@ function homePage(channel, strings, data) {
 
   ${more.length ? `<section class="band">
     <div class="bandhead"><h2>${esc(strings.allNews)}</h2></div>
-    <ul class="list">${more.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10), channel.lang))}</time><a href="clanak/${i.slug}/">${esc(i.title)}</a><span class="src">${esc(i.sourceName)}</span></li>`).join('')}</ul>
+    <div class="grid grid--more">${moreCards.map((i) => card(channel, strings, i)).join('')}</div>
+    ${moreList.length ? `<ul class="list list--more">${moreList.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10), channel.lang))}</time><a href="clanak/${i.slug}/">${esc(i.title)}</a><span class="src">${esc(i.sourceName)}</span></li>`).join('')}</ul>` : ''}
   </section>` : ''}
 
   ${mravinjakSection(channel, strings, data)}

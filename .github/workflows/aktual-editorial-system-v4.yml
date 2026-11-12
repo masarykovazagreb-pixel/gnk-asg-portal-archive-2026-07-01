@@ -1,0 +1,77 @@
+name: AKTUAL Editorial V4 Design and Generation
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/assets/aktual-editorial-v4.css'
+      - 'apps/portal/gnk-aktual/index.html'
+      - 'apps/portal/en/gnk-aktual/index.html'
+      - 'apps/region/engine/**'
+      - 'tests/test-aktual-editorial-system-v4.mjs'
+      - '.github/workflows/aktual-editorial-system-v4.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/assets/aktual-editorial-v4.css'
+      - 'apps/region/engine/kanal-design-v2.mjs'
+      - 'tests/test-aktual-editorial-system-v4.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aktual-editorial-v4-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check engine syntax
+        run: |
+          node --check apps/region/engine/kanal-design-v2.mjs
+          node --check apps/region/engine/build.mjs
+          node --check apps/region/engine/aktual-central.mjs
+          node --check apps/region/engine/aktual-en-home-parity-v1.mjs
+      - name: Run unified editorial quality contracts
+        run: node --test tests/test-aktual-editorial-system-v4.mjs
+      - name: Rebuild and inspect all 17 city editions from bundled RSS data
+        shell: bash
+        run: |
+          node apps/region/engine/build.mjs > /tmp/aktual-v4-region-build.json
+          node --input-type=module <<'NODE'
+          import {readFileSync,readdirSync,existsSync} from 'node:fs';
+          import {join} from 'node:path';
+          const root='apps/portal/kanal';
+          const cities=readdirSync(root).filter(city=>existsSync(join(root,city,'index.html')));
+          if(cities.length!==17)throw new Error('Expected 17 city editions, found '+cities.length);
+          const report=[];
+          for(const city of cities){
+            const dir=join(root,city);
+            const css=readFileSync(join(dir,'assets','region.css'),'utf8');
+            const html=readFileSync(join(dir,'index.html'),'utf8');
+            const checks={
+              'Editorial photo grid CSS':css.includes('.grid .card:nth-child(7n+6)'),
+              'Responsive city CSS':css.includes('@media(max-width:520px)'),
+              '12-card archive block':html.includes('grid grid--more'),
+              'Safe image fallback':css.includes('aktual-media-mark.svg'),
+              'Static news cards':(html.match(/class="card/g)||[]).length>=10
+            };
+            const failed=Object.keys(checks).filter(k=>!checks[k]);
+            report.push({city,htmlBytes:html.length,cssBytes:css.length,failed});
+          }
+          console.log(JSON.stringify({count:cities.length,report},null,2));
+          const bad=report.filter(r=>r.failed.length);
+          if(bad.length)throw new Error('City design output failed: '+bad.map(r=>r.city+':'+r.failed.join(',')).join(' | '));
+          NODE
+      - name: Publish validation summary
+        if: always()
+        run: |
+          echo "Editorial V4 checks and source generation completed. No production deploy and no external publishing." >> "$GITHUB_STEP_SUMMARY"
