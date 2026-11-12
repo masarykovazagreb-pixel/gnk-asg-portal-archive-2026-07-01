@@ -185,10 +185,16 @@ jobs:
             # generira — važnije je da zapis izađe.
             git stash push -u -m "region-artifacts-$attempt" >/dev/null 2>&1 || true
             if ! git rebase "origin/$ref"; then
-              echo "::warning::Rebase na origin/$ref nije prošao (pokušaj $attempt) — izdanje ostaje za sljedeći ciklus."
-              git rebase --abort || true
-              git stash drop >/dev/null 2>&1 || true
-              break
+              # Generated HR/EN homepages are frequently touched by canonical
+              # main writers. If these are the ONLY conflicts, regenerate them
+              # using the newer main layout plus rebased REGION archives.
+              # Never auto-resolve source, workflow, data or other conflicts.
+              if ! bash scripts/recover-region-homepage-rebase-v1.sh; then
+                echo "::warning::REGION safe recovery failed; refusing to overwrite concurrent changes."
+                git rebase --abort || true
+                git stash drop >/dev/null 2>&1 || true
+                break
+              fi
             fi
             if git push origin "HEAD:$ref"; then
               pushed=true
