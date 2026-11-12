@@ -936,7 +936,20 @@ function withPublisher(html) {
 }
 
 export function buildAktualCentral({ cards = [] } = {}) {
-  const DATA_DAY = readJSON(join(ROOT, 'apps', 'portal', 'data', 'network-counts-v1.json'), null)?.dataDay || '';
+  // Keep the V4 preview on the same authoritative raw archive counts as the
+  // independent hub validator (P0 REGION recovery, merged PR #424).
+  const networkCounts = readJSON(join(PORTAL, 'data', 'network-counts-v1.json'), null);
+  if (!networkCounts || !Array.isArray(networkCounts.channels)) {
+    throw new Error('AKTUAL: canonical network-counts-v1.json missing or invalid');
+  }
+  const canonicalChannelCount = (id) => {
+    const entry = networkCounts.channels.find((c) => c.id === id);
+    if (!Number.isSafeInteger(entry?.count) || entry.count < 0) {
+      throw new Error(`AKTUAL: canonical count missing for ${id}`);
+    }
+    return entry.count;
+  };
+  const DATA_DAY = networkCounts.dataDay || '';
   if (!existsSync(FILE)) return { ok: false, reason: 'nema gnk-aktual/index.html' };
   let html = readFileSync(FILE, 'utf8');
 
@@ -1310,8 +1323,8 @@ ${END}`;
      upisuje napamet. Beograd trenutačno ima četiri medija, ne osam. */
   const beograd = items.filter((i) => i.channel.id === 'beograd');
   const beogradSources = new Set(beograd.map((i) => i.sourceName)).size;
-  const beogradCount = beograd.length || 0;
-  const zagrebCount = items.filter((i) => i.channel.id === 'zagreb').length;
+  const beogradCount = canonicalChannelCount('beograd');
+  const zagrebCount = canonicalChannelCount('zagreb');
   const promoBlock = (lang) => {
     const hr = lang !== 'en';
     const t = hr ? {
