@@ -66,10 +66,15 @@ jobs:
             git commit -m "Worker groups: sync s popisom automatizacija i flotom"
             branch="automation/worker-groups-${GITHUB_RUN_ID}"
             if git push origin "HEAD:refs/heads/$branch"; then
-              GH_TOKEN="${{ github.token }}" gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$branch" \
+              if GH_TOKEN="${{ github.token }}" gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$branch" \
                 --title "Worker groups: review generated status" \
-                --body "Autogenerirana ploča radnih skupina i flote. Bez izravnog zapisa u main; provjeriti CI prije spajanja."
-              echo "Worker group status proposed through a reviewable PR."
+                --body "Autogenerirana ploča radnih skupina i flote. Bez izravnog zapisa u main; provjeriti CI prije spajanja."; then
+                echo "Worker group status proposed through a reviewable PR."
+              else
+                echo "::warning::GitHub Actions cannot create pull requests in this repository. Generated branch is safely available for manual review."
+                echo "## Worker groups: review branch (NOT merged or deployed)" >> "$GITHUB_STEP_SUMMARY"
+                echo "https://github.com/$GITHUB_REPOSITORY/compare/main...$branch?expand=1" >> "$GITHUB_STEP_SUMMARY"
+              fi
               exit 0
             fi
             echo "::warning::Could not open review branch for worker group changes (attempt $attempt)."

@@ -1,0 +1,28 @@
+name: REGION hub consistency and image loading regression
+on:
+  pull_request:
+    paths:
+      - 'scripts/check-hub-counts-v1.mjs'
+      - 'apps/region/engine/aktual-central.mjs'
+      - 'tests/test-region-hub-counts-and-performance-v1.mjs'
+      - '.github/workflows/region-hub-regression.yml'
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and targeted regression
+        run: |
+          node --check scripts/check-hub-counts-v1.mjs
+          node --check apps/region/engine/aktual-central.mjs
+          node --check tests/test-region-hub-counts-and-performance-v1.mjs
+          node --test tests/test-hub-counts-v1.mjs
+          node tests/test-region-hub-counts-and-performance-v1.mjs
