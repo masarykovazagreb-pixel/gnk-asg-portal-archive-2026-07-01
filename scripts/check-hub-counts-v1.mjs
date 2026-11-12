@@ -9,7 +9,21 @@ export function checkHubCounts(html,channels,counts,lang){
  one(new RegExp(`<div class="am-mast-side right">AKTUAL MEDIA DESK<br>${rx(fmt(total))} ${mastWord} `),'zbroj u zaglavlju');
  one(new RegExp(`<ul class="amh-stats"><li><b>${rx(fmt(total))}</b><span>${archiveWord}</span>`),'zbroj u hero traci');
  const zagreb=counts.find(c=>c.id==='zagreb');
- if(zagreb) one(new RegExp(`<a href="/kanal/zagreb/"><b>Zagreb</b><i>${lang==='en'?'Croatia':'Hrvatska'} · ${zagreb.count} ${lang==='en'?'stories':'tekstova'}</i></a>`),'Zagreb u najavi');
+ // HR WORLD preview replaces the old six-item promo with a Croatia preview,
+ // while EN may still render the older promo. Do not require an element that
+ // is deliberately absent from the current HR layout. If present, its count
+ // must match the authoritative network count. Both languages ALWAYS check
+ // the Zagreb amx-link podium (and all other cities) below.
+ if(zagreb){
+   const promo=(html.match(/<ul class="am-promo-grid">([\s\S]*?)<\/ul>/)||[])[1]||'';
+   if(/<a href="\/kanal\/zagreb\/"/.test(promo)){
+     const word=lang==='en'?'stories':'tekstova';
+     const country=lang==='en'?'Croatia':'Hrvatska';
+     if(!new RegExp(`<a href="/kanal/zagreb/"><b>Zagreb</b><i>${country} · ${zagreb.count} ${word}</i></a>`).test(promo)){
+       errors.push('Zagreb u najavi');
+     }
+   }
+ }
  for(const c of channels){const x=counts.find(y=>y.id===c.id);if(!x){errors.push(`nedostaju brojevi ${c.id}`);continue}const w=lang==='en'?'stories':'tekstova';one(new RegExp(`<a class="amx-link" href="${rx(c.base)}"[^>]*aria-label="[^"]* — ${x.count} ${w} —`),`krug ${c.id}`)}
  const pins=[...html.matchAll(/<a class="amm-pin" href="([^"]+)"[^>]*aria-label="[^"]* — (\d+) (?:tekstova|stories) —/g)];if(pins.length!==8)errors.push('broj oznaka na karti');for(const [,href,n] of pins){let c=channels.find(x=>x.base===href);if(!c||counts.find(x=>x.id===c.id)?.count!==Number(n))errors.push(`oznaka karte ${href}`)}return errors;
 }
