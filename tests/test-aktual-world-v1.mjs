@@ -31,8 +31,8 @@ test('build includes only real generated URLs and no fake headlines',()=>{
       const feed=fs.readFileSync(path.join(tmp,'media',slug,'feed.xml'),'utf8');
       if (!(fresh && cache.countries?.[slug]?.length)) assert.ok(page.includes('Trenutačno nema provjerenog svježeg skupa naslova'));
       const station = externalStationSection(slug);
-      if (station) assert.ok(page.includes(station), `generated cross-link for ${slug}`);
-      else assert.ok(!page.includes('data-external-station="v1"'), `no guessed station for ${slug}`);
+      assert.ok(page.includes(station), `generated cross-link for ${slug}`);
+      assert.ok(page.includes('data-world-navigation="v1"'), `generated navigation for ${slug}`);
       assert.ok(!page.includes('Bot čita i prepisuje vijesti'));
       if (!(fresh && cache.countries?.[slug]?.length)) assert.ok(!feed.includes('<item>'));
       assert.match(feed,/<rss version="2\.0"/);

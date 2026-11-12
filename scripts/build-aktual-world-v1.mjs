@@ -22,6 +22,7 @@ import { fileURLToPath } from 'node:url';
 import { refreshTag } from '../apps/shared/refresh-tag-v1.mjs';
 import { impressumBlock } from '../apps/shared/impressum-v1.mjs';
 import { externalStationSection } from '../apps/shared/aktual-external-stations-v1.mjs';
+import { countryNavigation, cityNavigation } from '../apps/shared/aktual-world-navigation-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
@@ -32,12 +33,36 @@ const BASE = ((baseIndex >= 0 ? process.argv[baseIndex+1] : null) || process.env
 
 const data = JSON.parse(readFileSync(DATA, 'utf8'));
 if (new Set(data.countries.map(c=>c.slug)).size !== data.countries.length || new Set(data.countries.map(c=>c.code)).size !== data.countries.length) throw new Error('Duplicate country slug/code; refusing overwrite.');
-const CACHE_PATH = join(ROOT, 'apps', 'portal', 'data', 'aktual-world-headlines-v1.json');
+const CACHE_PATH = process.env.AKTUAL_WORLD_CACHE ? resolve(process.env.AKTUAL_WORLD_CACHE) : join(ROOT, 'apps', 'portal', 'data', 'aktual-world-headlines-v1.json');
 const cache = existsSync(CACHE_PATH) ? JSON.parse(readFileSync(CACHE_PATH, 'utf8')) : null;
 const maxCacheAgeMs = 24 * 60 * 60 * 1000;
 const cacheFresh = cache && Number.isFinite(Date.parse(cache.updatedAt)) && Date.now() - Date.parse(cache.updatedAt) < maxCacheAgeMs && Date.now() >= Date.parse(cache.updatedAt);
-const currentHeadlines = (slug) => cacheFresh ? (cache.countries?.[slug] || []) : [];
-const cityHeadlines = (slug) => cacheFresh ? (cache.cities?.[slug] || []) : [];
+function safeHeadlines(rows) {
+  if (!Array.isArray(rows)) return [];
+  const seen = new Set();
+  return rows.filter(row => {
+    if (!row || typeof row.title !== 'string' || !row.title.trim() || typeof row.source !== 'string' || !row.source.trim() || typeof row.url !== 'string') return false;
+    const date = Date.parse(row.publishedAt), age = Date.now() - date;
+    if (!Number.isFinite(date) || age < -3600000 || age > 72 * 3600000) return false;
+    try {
+      const url = new URL(row.url);
+      if (url.protocol !== 'https:' || url.username || url.password || !url.hostname || seen.has(url.href)) return false;
+      seen.add(url.href);
+      return true;
+    } catch { return false; }
+  });
+}
+const currentHeadlines = slug => cacheFresh ? safeHeadlines(cache.countries?.[slug]) : [];
+const cityHeadlines = slug => cacheFresh ? safeHeadlines(cache.cities?.[slug]) : [];
+function sourceCheckSummary(kind, slug) {
+  if (!cacheFresh || !Array.isArray(cache.sourceChecks)) return '';
+  const checks = cache.sourceChecks.filter(x => x && x.kind === kind && x.scope === slug);
+  if (!checks.length) return '';
+  const failed = checks.filter(x => x.status === 'failed').length;
+  const empty = checks.filter(x => x.status === 'no-eligible-headlines').length;
+  const withHeadlines = checks.filter(x => x.status === 'headlines').length;
+  return `Provjere pri zadnjem dohvatu: ${checks.length}; s prihvaćenim naslovima ${withHeadlines}, bez prihvatljivih naslova ${empty}, neuspješnih ${failed}. Ovo nije provjera svih konfiguriranih izvora.`;
+}
 
 
 // Helper: escape XML
@@ -168,7 +193,7 @@ a:hover{text-decoration:underline}
     </ul>
   </div>
 
-${externalStationSection(country.slug)}  <div class="section">
+${countryNavigation(country, data.cities, BASE)}${externalStationSection(country.slug)}  <div class="section">
     <h2>Izvori</h2>
     <p>${country.sources} konfiguriranih izvora za praćenje; dostupnost i prava korištenja provjeravaju se zasebno:</p>
     <div class="sources">${sources}</div>
@@ -177,7 +202,8 @@ ${externalStationSection(country.slug)}  <div class="section">
   <div class="section">
     <h2>Posljednje povezane vijesti</h2>
     <p>${currentHeadlines(country.slug).length ? `Naslovi vanjskih izvora osvježeni: ${escHtml(cache.updatedAt)}. Prikazuju se samo naslovi i poveznice.` : 'Trenutačno nema provjerenog svježeg skupa naslova. Slijedite izvorne medije za aktualne vijesti.'}</p>
-    <div class="sources">${currentHeadlines(country.slug).map(row=>`<a href="${escHtml(row.url)}" target="_blank" rel="noopener noreferrer nofollow">${escHtml(row.title)} · ${escHtml(row.source)}</a>`).join('')}</div>
+    ${sourceCheckSummary('country', country.slug) ? `<p>${escHtml(sourceCheckSummary('country', country.slug))}</p>` : ''}
+    <div class="sources">${currentHeadlines(country.slug).map(row=>`<a href="${escHtml(row.url)}" target="_blank" rel="noopener noreferrer nofollow">${escHtml(row.title)} · ${escHtml(row.source)} · <time datetime="${escHtml(new Date(row.publishedAt).toISOString())}">${escHtml(new Date(row.publishedAt).toISOString().slice(0, 10))} UTC</time></a>`).join('')}</div>
   </div>
   <div class="section">
     <h2>RSS feed</h2>
@@ -205,7 +231,7 @@ ${refreshTag('/')}
 function buildCityPage(city) {
   const url = `${BASE}grad/${city.slug}/`;
   const headlines = cityHeadlines(city.slug);
-  const headlineMarkup = headlines.map(item => `<li><a href="${escHtml(item.url)}" target="_blank" rel="noopener noreferrer nofollow">${escHtml(item.title)}</a> — ${escHtml(item.source)}</li>`).join('');
+  const headlineMarkup = headlines.map(item => `<li><a href="${escHtml(item.url)}" target="_blank" rel="noopener noreferrer nofollow">${escHtml(item.title)}</a> — ${escHtml(item.source)} · <time datetime="${escHtml(new Date(item.publishedAt).toISOString())}">${escHtml(new Date(item.publishedAt).toISOString().slice(0, 10))} UTC</time></li>`).join('');
   const title = `AKTUAL MEDIA ${city.nameLocal} — izvori`;
   const cityDescription = `Pregled izvora i poveznica za ${city.nameLocal}. Vijesti ostaju na webu izvornog izdavača; prikazuju se samo provjereni svježi naslovi.`;
   return `<!doctype html>
@@ -223,7 +249,7 @@ function buildCityPage(city) {
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'CollectionPage',name:title,url,description:cityDescription,inLanguage:'hr',isAccessibleForFree:true})}</script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebSite','@id':'https://gnk-asg.hr/#website',url:'https://gnk-asg.hr/',name:'GNK ASG',inLanguage:['hr','en'],publisher:{'@id':'https://gnk-asg.hr/#gnk-asg'}})}</script>
 <style>body{font:16px/1.7 system-ui;max-width:900px;margin:1rem auto;padding:1rem;background:#071522;color:#eee}a{color:#e3be70}li{margin:1rem 0}.muted{color:#b2c3d8}</style></head><body>
-<p><a href="${BASE}">AKTUAL MEDIA</a> · <a href="${BASE}media/${escHtml(city.country)}/">${escHtml(city.country)}</a></p>
+${cityNavigation(city, data.countries.find(c => c.slug === city.country), BASE)}
 <h1>${escHtml(city.flag)} AKTUAL MEDIA ${escHtml(city.nameLocal)}</h1>
 <p>Urednik: Nermin Sefić · GNK ASG · AKTUAL MEDIA</p>
 <p class="muted">${headlines.length ? `Poveznice na izvornike, zadnji uspješan dohvat: ${escHtml(cache.updatedAt)}.` : 'Nema svježih provjerenih naslova za ovo izdanje; vijesti nisu automatski objavljene.'}</p>
@@ -296,29 +322,36 @@ console.log(`   Base: ${BASE}`);
 console.log(`   Countries: ${data.countries.length}`);
 console.log(`   Cities: ${data.cities.length}`);
 
-let fileCount = 0;
-
-// Country pages + RSS
+// Existing published pages include independently maintained entity, author,
+// ribbon and other layers. Replace only the dynamic headline block; validate
+// every page before writing anything so an unexpected template fails closed.
+const countryBlock = /  <div class="section">\n    <h2>Posljednje povezane vijesti<\/h2>[\s\S]*?\n  <\/div>/g;
+const cityBlock = /<p class="muted">(?:Poveznice na izvornike, zadnji uspješan dohvat: [\s\S]*?|Nema svježih provjerenih naslova za ovo izdanje; vijesti nisu automatski objavljene\.)<\/p>\n<ul>[\s\S]*?<\/ul>(?=<p><a href="[^"\n]*feed\.xml")/g;
+function updateHeadlineBlock(path, generated, pattern) {
+  if (!existsSync(path)) return generated;
+  const previous = readFileSync(path, 'utf8');
+  const oldMatches = [...previous.matchAll(pattern)];
+  const newMatches = [...generated.matchAll(pattern)];
+  if (oldMatches.length !== 1 || newMatches.length !== 1) throw new Error(`Unexpected headline block in ${path}; no files written`);
+  return previous.slice(0, oldMatches[0].index) + newMatches[0][0] + previous.slice(oldMatches[0].index + oldMatches[0][0].length);
+}
+const writes = [];
 for (const country of data.countries) {
-  const dir = join(OUT, 'media', country.slug);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, 'index.html'), buildCountryPage(country));
-  writeFileSync(join(dir, 'feed.xml'), buildCountryRss(country));
-  fileCount += 2;
+  const dir = join(OUT, 'media', country.slug), page = join(dir, 'index.html');
+  writes.push([page, updateHeadlineBlock(page, buildCountryPage(country), countryBlock)]);
+  writes.push([join(dir, 'feed.xml'), buildCountryRss(country)]);
 }
-
-// City pages + RSS
 for (const city of data.cities) {
-  const dir = join(OUT, 'grad', city.slug);
-  mkdirSync(dir, {recursive:true});
-  writeFileSync(join(dir, 'index.html'), buildCityPage(city));
-  writeFileSync(join(dir, 'feed.xml'), buildCityRss(city));
-  fileCount += 2;
+  const dir = join(OUT, 'grad', city.slug), page = join(dir, 'index.html');
+  writes.push([page, updateHeadlineBlock(page, buildCityPage(city), cityBlock)]);
+  writes.push([join(dir, 'feed.xml'), buildCityRss(city)]);
 }
-
-// Sitemap
-writeFileSync(join(OUT, 'media', 'sitemap.xml'), buildSitemap());
-fileCount += 1;
+writes.push([join(OUT, 'media', 'sitemap.xml'), buildSitemap()]);
+for (const [path, content] of writes) {
+  mkdirSync(dirname(path), {recursive:true});
+  writeFileSync(path, content);
+}
+const fileCount = writes.length;
 
 console.log(`✅ Generirano ${fileCount} fajlova`);
 console.log(`   Sitemap: ${OUT}/media/sitemap.xml`);
