@@ -1,14 +1,14 @@
 {
   "note": "Groups are derived from real workflow files; worker profiles are a modeled catalogue.",
-  "total": 344,
+  "total": 351,
   "groups": [
     {
       "id": "izdanja",
       "name": "Izdanja i sadržaj",
       "nameEn": "Editions and content",
-      "automations": 67,
-      "scheduled": 9,
-      "runsPerDay": 43,
+      "automations": 70,
+      "scheduled": 10,
+      "runsPerDay": 47,
       "files": [
         {
           "file": "aktual-ai-governance-candidate-gate.yml",
@@ -34,6 +34,13 @@
           "file": "aktual-premium-image-quality.yml",
           "crons": [],
           "perDay": 0
+        },
+        {
+          "file": "aktual-world-source-refresh-v1.yml",
+          "crons": [
+            "23 1,7,13,19 * * *"
+          ],
+          "perDay": 4
         },
         {
           "file": "aktual-world-topic-promo.yml",
@@ -316,6 +323,11 @@
           "perDay": 0
         },
         {
+          "file": "region-canonical-hub-counts-v1.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
           "file": "region-daily.yml",
           "crons": [
             "7 0,4,8,12,16,20 * * *",
@@ -325,6 +337,11 @@
         },
         {
           "file": "region-deploy.yml",
+          "crons": [],
+          "perDay": 0
+        },
+        {
+          "file": "region-zagreb-preview-gate-v1.yml",
           "crons": [],
           "perDay": 0
         },
@@ -1830,9 +1847,9 @@
       "id": "ostalo",
       "name": "Ostalo",
       "nameEn": "Other",
-      "automations": 6,
-      "scheduled": 6,
-      "runsPerDay": 38,
+      "automations": 8,
+      "scheduled": 7,
+      "runsPerDay": 182,
       "files": [
         {
           "file": "agent-editorial-daily.yml",
@@ -1875,6 +1892,18 @@
             "17 * * * *"
           ],
           "perDay": 24
+        },
+        {
+          "file": "world201-10min-release-controller.yml",
+          "crons": [
+            "*/10 * * * *"
+          ],
+          "perDay": 144
+        },
+        {
+          "file": "world201-integration-stage.yml",
+          "crons": [],
+          "perDay": 0
         }
       ]
     }
@@ -1885,6 +1914,8 @@
     "autonomija-365.yml",
     "dnevnik-deploy.yml",
     "network-agents-daily.yml",
-    "sites-deploy.yml"
+    "sites-deploy.yml",
+    "world201-10min-release-controller.yml",
+    "world201-integration-stage.yml"
   ]
 }
