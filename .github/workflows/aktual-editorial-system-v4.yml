@@ -26,7 +26,7 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,24 +42,34 @@ jobs:
           node --check apps/region/engine/aktual-en-home-parity-v1.mjs
       - name: Run unified editorial quality contracts
         run: node --test tests/test-aktual-editorial-system-v4.mjs
-      - name: Rebuild a real city edition with bundled RSS data
+      - name: Rebuild and inspect all 17 city editions from bundled RSS data
+        shell: bash
         run: |
-          node apps/region/engine/build.mjs --channel zagreb
-          test -s apps/region/site/zagreb/assets/region.css
+          node apps/region/engine/build.mjs > /tmp/aktual-v4-region-build.json
           node --input-type=module <<'NODE'
-          import { readFileSync } from 'node:fs';
-          const css = readFileSync('apps/region/site/zagreb/assets/region.css', 'utf8');
-          const html = readFileSync('apps/region/site/zagreb/index.html', 'utf8');
-          const checks = {
-            'photo-grid CSS': css.includes('.grid .card:nth-child(7n+6)'),
-            'responsive CSS': css.includes('@media(max-width:520px)'),
-            'expanded image cards': html.includes('grid grid--more'),
-            'brand-image fallback': css.includes('aktual-media-mark.svg')
-          };
-          console.log({ cssBytes: css.length, htmlBytes: html.length, checks });
-          for (const [name, passed] of Object.entries(checks)) {
-            if (!passed) throw new Error('Generated Zagreb: missing '+name);
+          import {readFileSync,readdirSync,existsSync} from 'node:fs';
+          import {join} from 'node:path';
+          const root='apps/portal/kanal';
+          const cities=readdirSync(root).filter(city=>existsSync(join(root,city,'index.html')));
+          if(cities.length!==17)throw new Error('Expected 17 city editions, found '+cities.length);
+          const report=[];
+          for(const city of cities){
+            const dir=join(root,city);
+            const css=readFileSync(join(dir,'assets','region.css'),'utf8');
+            const html=readFileSync(join(dir,'index.html'),'utf8');
+            const checks={
+              'Editorial photo grid CSS':css.includes('.grid .card:nth-child(7n+6)'),
+              'Responsive city CSS':css.includes('@media(max-width:520px)'),
+              '12-card archive block':html.includes('grid grid--more'),
+              'Safe image fallback':css.includes('aktual-media-mark.svg'),
+              'Static news cards':(html.match(/class="card/g)||[]).length>=10
+            };
+            const failed=Object.keys(checks).filter(k=>!checks[k]);
+            report.push({city,htmlBytes:html.length,cssBytes:css.length,failed});
           }
+          console.log(JSON.stringify({count:cities.length,report},null,2));
+          const bad=report.filter(r=>r.failed.length);
+          if(bad.length)throw new Error('City design output failed: '+bad.map(r=>r.city+':'+r.failed.join(',')).join(' | '));
           NODE
       - name: Publish validation summary
         if: always()
