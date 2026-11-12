@@ -123,6 +123,7 @@ function buildCountryPage(country) {
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
+<link rel="stylesheet" href="/assets/aktual-world-page-a11y-v1.css">
 <title>${escHtml(title)}</title>
 <meta name="description" content="${escHtml(description)}">
 <meta name="keywords" content="Aktual Media ${country.nameEn}, ${country.nameLocal} vijesti, ${country.nameEn} news, ${country.region} news, GNK ASG, GNK Dinamo Ltd, Aktual Media">
@@ -178,8 +179,9 @@ a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
+<a class="skip" href="#worldContent">Preskoči na sadržaj</a>
 <div class="top"><div class="wrap"><span>AKTUAL MEDIA · ${country.flag} ${country.nameLocal}</span><span><a href="${BASE}">← AKTUAL MEDIA</a></span></div></div>
-<div class="wrap">
+<main id="worldContent" class="wrap" tabindex="-1">
   <div class="head">
     <p class="kicker">AKTUAL MEDIA · ${country.region.toUpperCase()}</p>
     <h1>${country.flag} Aktual Media ${country.nameLocal} · ${country.nameEn}</h1>
@@ -220,7 +222,7 @@ ${countryNavigation(country, data.cities, BASE)}${externalStationSection(country
     <p>© ${new Date().getFullYear()} Aktual Media · ${country.nameLocal}. Ovaj izvorni katalog nije potvrda neprekidnog automatskog objavljivanja.</p>
     <p><a href="${BASE}">← Natrag na AKTUAL MEDIA</a> · <a href="https://gnk-asg.hr/nermin-sefic/">Nermin Sefić</a> · <a href="https://gnk-asg.hr/gnk-aktual/">GNK Aktual</a></p>
   </div>
-</div>
+</main>
 ${impressumBlock('hr', {compact:true})}
 ${refreshTag('/')}
 </body>
@@ -237,6 +239,7 @@ function buildCityPage(city) {
   return `<!doctype html>
 <html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
+<link rel="stylesheet" href="/assets/aktual-world-page-a11y-v1.css">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>${escHtml(title)}</title><meta name="description" content="${escHtml(cityDescription)}">
 <meta name="keywords" content="AKTUAL MEDIA, GNK ASG, GNK DINAMO Ltd">
@@ -249,12 +252,15 @@ function buildCityPage(city) {
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'CollectionPage',name:title,url,description:cityDescription,inLanguage:'hr',isAccessibleForFree:true})}</script>
 <script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@type':'WebSite','@id':'https://gnk-asg.hr/#website',url:'https://gnk-asg.hr/',name:'GNK ASG',inLanguage:['hr','en'],publisher:{'@id':'https://gnk-asg.hr/#gnk-asg'}})}</script>
 <style>body{font:16px/1.7 system-ui;max-width:900px;margin:1rem auto;padding:1rem;background:#071522;color:#eee}a{color:#e3be70}li{margin:1rem 0}.muted{color:#b2c3d8}</style></head><body>
+<a class="skip" href="#worldContent">Preskoči na sadržaj</a>
+<main id="worldContent" tabindex="-1">
 ${cityNavigation(city, data.countries.find(c => c.slug === city.country), BASE)}
 <h1>${escHtml(city.flag)} AKTUAL MEDIA ${escHtml(city.nameLocal)}</h1>
 <p>Urednik: Nermin Sefić · GNK ASG · AKTUAL MEDIA</p>
 <p class="muted">${headlines.length ? `Poveznice na izvornike, zadnji uspješan dohvat: ${escHtml(cache.updatedAt)}.` : 'Nema svježih provjerenih naslova za ovo izdanje; vijesti nisu automatski objavljene.'}</p>
 <ul>${headlineMarkup}</ul><p><a href="${escHtml(url)}feed.xml">RSS feed</a></p>
 <p class="muted">Prikaz sadrži samo naslove i poveznice. Dostupnost izvora i licencna prava ovise o izvornom izdavaču.</p>
+</main>
 ${impressumBlock('hr', {compact:true})}
 ${refreshTag('/')}
 </body></html>`;
