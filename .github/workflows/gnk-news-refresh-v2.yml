@@ -78,6 +78,8 @@ jobs:
           node scripts/normalize-aktual-hourly-contract.mjs
           node scripts/render-aktual-noscript-v1.mjs
           node scripts/freshness-status-v2.mjs
+          # Same canonical writer, no additional cron or competing main writer.
+          node scripts/public-status-snapshot-v1.mjs
 
       - name: Validate AKTUAL output before commit
         if: steps.control.outputs.should_run == 'true'
@@ -91,6 +93,8 @@ jobs:
           if (!Array.isArray(news) || news.length < 50) throw new Error(`AKTUAL public feed too small: ${news.length}`);
           console.log(`AKTUAL validated: ${news.length} items, six-refresh daily contract active.`);
           NODE
+          node scripts/public-status-snapshot-v1.mjs --check
+          node --test apps/portal/tests/public-status-center.test.mjs
 
       - name: Commit refreshed news with bounded exact-main regeneration
         id: commit
@@ -113,6 +117,8 @@ jobs:
               node scripts/normalize-aktual-hourly-contract.mjs
               node scripts/render-aktual-noscript-v1.mjs
               node scripts/freshness-status-v2.mjs
+              node scripts/public-status-snapshot-v1.mjs
+              node scripts/public-status-snapshot-v1.mjs --check
               node - <<'NODE'
           const fs = require('fs');
           const status = JSON.parse(fs.readFileSync('apps/portal/data/news-automation-status.json','utf8'));
@@ -128,6 +134,8 @@ jobs:
               apps/portal/data/news_archive.json \
               apps/portal/data/news-automation-status.json \
               apps/portal/data/freshness-status.json \
+              apps/portal/data/public_service_status.json \
+              apps/portal/data/public_service_status_history.json \
               apps/portal/gnk-aktual/index.html \
               apps/portal/en/gnk-aktual/index.html
             if git diff --cached --quiet; then
