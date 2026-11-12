@@ -1,0 +1,47 @@
+name: REGION Canonical Hub Count Recovery
+on:
+  pull_request:
+    paths:
+      - 'apps/region/engine/aktual-central.mjs'
+      - 'scripts/check-hub-counts-v1.mjs'
+      - 'tests/test-hub-counts-v1.mjs'
+      - '.github/workflows/region-canonical-hub-counts-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/region/engine/aktual-central.mjs'
+      - 'scripts/check-hub-counts-v1.mjs'
+      - 'tests/test-hub-counts-v1.mjs'
+      - '.github/workflows/region-canonical-hub-counts-v1.yml'
+permissions:
+  contents: read
+jobs:
+  hub:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate source syntax
+        run: |
+          node --check apps/region/engine/aktual-central.mjs
+          node --check scripts/check-hub-counts-v1.mjs
+          node --test tests/test-hub-counts-v1.mjs
+      - name: Rebuild hub from actual archived content (no network and no push)
+        run: |
+          node apps/region/engine/hub.mjs
+          node scripts/check-hub-counts-v1.mjs
+          node scripts/build-network-counts-v1.mjs --check
+      - name: Report canonical Zagreb and Belgrade values
+        run: |
+          node --input-type=module -e "
+            import fs from 'node:fs';
+            const c=JSON.parse(fs.readFileSync('apps/portal/data/network-counts-v1.json'));
+            const n=id=>c.channels.find(x=>x.id===id)?.count;
+            if(!Number.isSafeInteger(n('zagreb'))||!Number.isSafeInteger(n('beograd')))process.exit(1);
+            console.log(JSON.stringify({total:c.texts,zagreb:n('zagreb'),beograd:n('beograd')}));
+          "
