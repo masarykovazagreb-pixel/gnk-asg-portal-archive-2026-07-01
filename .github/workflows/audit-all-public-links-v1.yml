@@ -1,0 +1,75 @@
+name: Audit All Public Pages and Links
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/audit-all-public-links-v1.mjs'
+      - 'scripts/audit-live-public-links-v1.mjs'
+      - '.github/workflows/audit-all-public-links-v1.yml'
+      - 'apps/portal/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: audit-all-public-links-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  link-graph:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: |
+          node --check scripts/audit-all-public-links-v1.mjs
+          node --check scripts/audit-live-public-links-v1.mjs
+      - name: Examine every public HTML page and resource link
+        id: static
+        run: node scripts/audit-all-public-links-v1.mjs
+      - name: Probe public live pages, all 17 city editions and selected external URLs
+        id: live
+        if: always() && steps.static.outcome == 'success'
+        continue-on-error: true
+        run: node scripts/audit-live-public-links-v1.mjs
+      - name: Publish evidence to workflow summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Complete public page/link audit"
+            echo
+            if [ -f artifacts/quality/all-pages-link-audit-v1.md ]; then
+              head -n 60 artifacts/quality/all-pages-link-audit-v1.md
+            fi
+            if [ -f artifacts/quality/live-link-probe-v1.md ]; then
+              echo
+              head -n 110 artifacts/quality/live-link-probe-v1.md
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve full machine-readable and human reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-public-links-${{ github.run_id }}
+          path: artifacts/quality/*link*.json
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Preserve human-readable report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-links-report-${{ github.run_id }}
+          path: artifacts/quality/*link*.md
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Block a verified internal 404/5xx
+        if: steps.live.outcome == 'failure'
+        run: exit 1
