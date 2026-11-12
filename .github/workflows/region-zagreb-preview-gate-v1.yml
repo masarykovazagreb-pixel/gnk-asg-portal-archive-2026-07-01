@@ -32,3 +32,8 @@ jobs:
           node --test tests/test-hub-counts-v1.mjs
       - name: Validate checked-in HR/EN hub against real network counts
         run: node scripts/check-hub-counts-v1.mjs
+      - name: Regenerate both HR/EN hub pages from archived source data
+        run: |
+          node --input-type=module -e "import {buildHub} from './apps/region/engine/hub.mjs'; await buildHub()"
+          node scripts/check-hub-counts-v1.mjs
+
