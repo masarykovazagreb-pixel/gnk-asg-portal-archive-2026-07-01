@@ -1,0 +1,57 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const read=p=>fs.readFileSync(p,'utf8');
+const portal='apps/portal/';
+const source=JSON.parse(read(portal+'data/aktual-world-external-source-v1.json'));
+assert.equal(source.id,'space-z-global');
+assert.equal(source.homepage,'https://j1hex9qg03f0-d.space-z.ai/');
+assert.equal(source.ingestionStatus,'pending_external_verification');
+assert.equal(source.allowArticleBodyCopy,false);
+assert.equal(source.allowRemoteImageCopy,false);
+assert.equal(source.feedUrl,null);
+const inventory=JSON.parse(read(portal+'data/world-countries-v1.json'));
+assert.equal(inventory.countries.length,201);
+assert.equal(inventory.cities.length,10);
+assert.equal(inventory.countries.reduce((n,c)=>n+c.sources,0),435);
+const dir=read(portal+'gnk-aktual/media/index.html');
+const hub=read(portal+'gnk-aktual/index.html');
+const desk=read(portal+'aktual-media/index.html');
+const manifest=read(portal+'gnk-aktual/media/sitemap.xml');
+const index=read(portal+'sitemap-index.xml');
+const robots=read(portal+'robots.txt');
+const css=read(portal+'assets/aktual-world-source-feature-v1.css');
+assert.match(dir,/rel="canonical" href="https:\/\/gnk-asg.hr\/gnk-aktual\/media\/"/);
+assert.match(dir,/name="robots" content="index,follow/);
+assert.equal((dir.match(/data-world-country\b/g)||[]).length,201);
+assert.match(dir,/aw-source-feature/);
+assert.match(dir,/aw-source-notice/);
+assert.match(dir,/assets\/editorial\/aktual-media-800.webp/);
+assert.match(dir,/href="#worldCountryList">Pregledaj svih 201 zemlju/);
+assert.match(hub,/aw-world-entry-cta/);
+assert.match(hub,/href="\/gnk-aktual\/media\/"/);
+assert.match(desk,/href="\/gnk-aktual\/media\/"/);
+assert.match(css,/aw-world-entry-cta/);
+for(const page of [dir,hub,desk])assert.match(page,/favicon.svg\?v=asg-red-gold-20261111/);
+for(const c of inventory.countries){
+  assert(manifest.includes('<loc>https://gnk-asg.hr/gnk-aktual/media/'+c.slug+'/</loc>'),c.slug+' missing from sitemap');
+  const file=portal+'gnk-aktual/media/'+c.slug+'/index.html';
+  assert(fs.existsSync(file),'missing page '+c.slug);
+  const head=read(file).split('</head>')[0];
+  assert(head.includes('rel="canonical" href="https://gnk-asg.hr/gnk-aktual/media/'+c.slug+'/"'),'bad country canonical '+c.slug);
+  assert(/name="robots" content="index,follow/.test(head) && !/noindex/i.test(head),'nonindexable country '+c.slug);
+}
+for(const c of inventory.cities){
+  assert(manifest.includes('<loc>https://gnk-asg.hr/gnk-aktual/grad/'+c.slug+'/</loc>'),c.slug+' missing city sitemap');
+  assert(fs.existsSync(portal+'gnk-aktual/grad/'+c.slug+'/index.html'),'missing city HTML '+c.slug);
+}
+assert.equal((manifest.match(/<loc>/g)||[]).length,212,'exactly 201 countries, 10 cities, 1 directory');
+const sub='https://gnk-asg.hr/gnk-aktual/media/sitemap.xml';
+assert.equal(index.split('<loc>'+sub+'</loc>').length-1,1,'world sitemap exactly once in index');
+assert(robots.includes('Sitemap: '+sub),'robots must declare world sitemap');
+const gen=read('scripts/generate-sitemaps.py');
+assert.match(gen,/ET\.parse\(fs_path\)/,'dynamic index validates XML');
+assert.match(gen,/country sitemap missing/,'dynamic generator protects world directory');
+const worldGenerator=read('scripts/build-aktual-world-v1.mjs');
+assert.match(worldGenerator,/lastmod>2026-11-11/);
+assert.match(worldGenerator,/favicon.svg\?v=asg-red-gold-20261111/);
+console.log('AKTUAL WORLD source, 201 country pages, 10 cities, 212 URLs, sitemap preservation and canonical navigation passed');

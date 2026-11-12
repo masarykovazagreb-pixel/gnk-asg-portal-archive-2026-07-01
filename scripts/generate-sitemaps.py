@@ -30,6 +30,7 @@ import re
 import subprocess
 from datetime import date
 from collections import defaultdict, Counter
+from xml.etree import ElementTree as ET
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PORTAL_DIR = os.path.join(REPO_ROOT, "apps", "portal")
@@ -189,26 +190,44 @@ def main():
             f.write(render_urlset(items))
         print(f"wrote {filename}: {len(items)} URLs")
 
+    # Sitemap index must include every real public sitemap, including
+    # /gnk-aktual/media/sitemap.xml (201 countries + 10 cities). A historical
+    # fixed 4-item index silently removed all networks and subdirectories.
     today = date.today().isoformat()
-    index_xml = f'''<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap>
-    <loc>{BASE_URL}/sitemap.xml</loc>
-    <lastmod>{today}</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>{BASE_URL}/editorial-sitemap.xml</loc>
-    <lastmod>{today}</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>{BASE_URL}/visual-sitemap.xml</loc>
-    <lastmod>{today}</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>{BASE_URL}/image-sitemap.xml</loc>
-    <lastmod>{today}</lastmod>
-  </sitemap>
-</sitemapindex>'''
+    submaps = {}
+    for dirpath, dirs, names in os.walk(PORTAL_DIR):
+        rel_dir = os.path.relpath(dirpath, PORTAL_DIR)
+        rel_dir = "" if rel_dir == "." else rel_dir.replace(os.sep, "/")
+        dirs[:] = [d for d in dirs if not d.startswith(".") and not
+                   is_excluded((rel_dir + "/" if rel_dir else "") + d + "/")]
+        for name in names:
+            if name == "sitemap-index.xml":
+                continue
+            if not (name == "sitemap.xml" or name.endswith("-sitemap.xml")
+                    or re.fullmatch(r"image-sitemap-\d+\.xml", name)):
+                continue
+            relative_path = (rel_dir + "/" if rel_dir else "") + name
+            if is_excluded(relative_path):
+                continue
+            fs_path = os.path.join(dirpath, name)
+            try:
+                root = ET.parse(fs_path).getroot()
+            except ET.ParseError:
+                print(f"Skipping invalid XML sitemap: {relative_path}")
+                continue
+            if root.tag != "{http://www.sitemaps.org/schemas/sitemap/0.9}urlset":
+                continue
+            submaps[relative_path] = today if relative_path in files else git_lastmod(fs_path)
+    if "gnk-aktual/media/sitemap.xml" not in submaps:
+        raise RuntimeError("AKTUAL WORLD 201 country sitemap missing; refusing truncated sitemap index")
+    ordered = sorted(submaps, key=lambda item: (0 if item in files else 1, item))
+    rows = [
+        f"  <sitemap><loc>{BASE_URL}/{item}</loc><lastmod>{submaps[item]}</lastmod></sitemap>"
+        for item in ordered
+    ]
+    index_xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+                 '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+                 + "\n".join(rows) + '\n</sitemapindex>')
     with open(os.path.join(PORTAL_DIR, "sitemap-index.xml"), "w", encoding="utf-8") as f:
         f.write(index_xml)
     print("wrote sitemap-index.xml")

@@ -21,6 +21,11 @@ jobs:
           node-version: '22'
       - name: Test registry and builder
         run: node --test tests/test-aktual-world-v1.mjs
+      - name: Validate priority external global source policy
+        run: node scripts/probe-aktual-world-external-v1.mjs
+      - name: Probe nominated global preview (advisory only, no ingestion)
+        continue-on-error: true
+        run: node scripts/probe-aktual-world-external-v1.mjs --probe
       - name: Fetch external headlines as links only
         env:
           AKTUAL_FEEDS_PER_COUNTRY: '2'
