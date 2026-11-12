@@ -1,0 +1,11 @@
+/* Shared improvements for country and city editions. */
+main#worldContent { min-width: 0; overflow-wrap: anywhere; }
+main#worldContent :where(a, button, summary, input, select, textarea):focus-visible {
+  outline: 3px solid #f8d781;
+  outline-offset: 3px;
+}
+/* Existing hashtag band uses a dark inline colour on these dark pages. */
+.gnk-hashtags { color: #cbd5e1 !important; }
+@media (max-width: 480px) {
+  main#worldContent :where(h1, h2) { overflow-wrap: anywhere; }
+}

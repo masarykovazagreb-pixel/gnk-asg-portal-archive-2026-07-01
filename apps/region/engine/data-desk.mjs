@@ -963,7 +963,7 @@ ${tagMetas(keywords)}
 <a class="dd-skip" href="#sadrzaj">${lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
 <div class="dd-top"><div class="dd-wrap">
   <span>${esc(t.top)}</span>
-  <span><a href="/gnk-aktual/">${esc(t.back)}</a> · <a href="/izdanja/">${esc(t.editions)}</a> · <a href="/kanal/">${esc(t.channels)}</a> · <a href="${lang === 'en' ? '/en/aktual-media/proizvodi/' : '/aktual-media/proizvodi/'}">${lang === 'en' ? 'All products' : 'Svi proizvodi'}</a> · <a href="/radio/">${esc(t.radio)}</a> · <a href="${lang === 'en' ? '/s-chat/?ctx=%2Fen%2Faktual-media%2F' : '/s-chat/?ctx=%2Faktual-media%2F'}">${esc(t.agent)}</a> · <a href="${alternate}" hreflang="${lang === 'en' ? 'hr' : 'en'}" lang="${lang === 'en' ? 'hr' : 'en'}">${esc(t.lang)}</a></span>
+  <span><a href="/gnk-aktual/">${esc(t.back)}</a> · <a href="/izdanja/">${esc(t.editions)}</a> · <a href="/kanal/">${esc(t.channels)}</a> · <a href="${lang === 'en' ? '/en/aktual-media/proizvodi/' : '/aktual-media/proizvodi/'}">${lang === 'en' ? 'All products' : 'Svi proizvodi'}</a> · <a href="/gnk-aktual/media/">${lang === 'en' ? 'World directory' : 'Svjetski imenik'}</a> · <a href="/radio/">${esc(t.radio)}</a> · <a href="${lang === 'en' ? '/s-chat/?ctx=%2Fen%2Faktual-media%2F' : '/s-chat/?ctx=%2Faktual-media%2F'}">${esc(t.agent)}</a> · <a href="${alternate}" hreflang="${lang === 'en' ? 'hr' : 'en'}" lang="${lang === 'en' ? 'hr' : 'en'}">${esc(t.lang)}</a></span>
 </div></div>
 <main id="sadrzaj" tabindex="-1">
   <header class="dd-head"><div class="dd-wrap">
