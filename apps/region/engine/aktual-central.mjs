@@ -99,6 +99,17 @@ const APP = join(HERE, '..');
 const ROOT = join(APP, '..', '..');
 const PORTAL = join(ROOT, 'apps', 'portal');
 const DATA = join(APP, 'data');
+
+// Shared finishing layer for both language editions. This is deliberately
+// idempotent: canonical generator reruns must not add duplicate CSS imports.
+const EDITORIAL_V4_HREF = '/assets/aktual-editorial-v4.css?v=20261112';
+function withEditorialV4(page) {
+  if (page.includes('/assets/aktual-editorial-v4.css')) return page;
+  if (!/<\/head>/i.test(page)) throw new Error('AKTUAL V4: missing head closing tag');
+  return page.replace(/<\/head>/i,
+    '<link rel="stylesheet" href="' + EDITORIAL_V4_HREF + '" data-am-editorial="v4">\n</head>');
+}
+
 const FILE = join(PORTAL, 'gnk-aktual', 'index.html');
 
 const START = '<!-- AKTUAL-CENTRAL:START -->';
@@ -1439,7 +1450,7 @@ ${adHtml}
   html = externalizeCatalogCss(html);
   html = withCatalogLink(html, writeCatalogSheet());
   html = strengthenAktualBrand(html, 'hr', jsonld);
-  writeFileSync(FILE, withSearchAssets(withPublisher(html)));
+  writeFileSync(FILE, withEditorialV4(withSearchAssets(withPublisher(html))));
 
   /* Engleska stranica dobiva istu traku krugova, s engleskim natpisima. */
   const EN = join(PORTAL, 'en', 'gnk-aktual', 'index.html');
@@ -1494,7 +1505,7 @@ ${adHtml}
     en = externalizeCatalogCss(en);
     en = withCatalogLink(en, writeCatalogSheet());
     en = strengthenAktualBrand(en, 'en', jsonld);
-    writeFileSync(EN, withSearchAssets(withPublisher(en)));
+    writeFileSync(EN, withEditorialV4(withSearchAssets(withPublisher(en))));
   }
 
   return { ok: true, items: items.length, sources: sources.size, channels: CHANNELS.length, tiles: 15, river: river.length, moda };
