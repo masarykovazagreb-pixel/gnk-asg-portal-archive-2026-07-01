@@ -1,0 +1,54 @@
+name: AKTUAL Editorial V4 Design and Generation
+
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/assets/aktual-editorial-v4.css'
+      - 'apps/portal/gnk-aktual/index.html'
+      - 'apps/portal/en/gnk-aktual/index.html'
+      - 'apps/region/engine/**'
+      - 'tests/test-aktual-editorial-system-v4.mjs'
+      - '.github/workflows/aktual-editorial-system-v4.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/portal/assets/aktual-editorial-v4.css'
+      - 'apps/region/engine/kanal-design-v2.mjs'
+      - 'tests/test-aktual-editorial-system-v4.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aktual-editorial-v4-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check engine syntax
+        run: |
+          node --check apps/region/engine/kanal-design-v2.mjs
+          node --check apps/region/engine/build.mjs
+          node --check apps/region/engine/aktual-central.mjs
+          node --check apps/region/engine/aktual-en-home-parity-v1.mjs
+      - name: Run unified editorial quality contracts
+        run: node --test tests/test-aktual-editorial-system-v4.mjs
+      - name: Rebuild a real city edition with bundled RSS data
+        run: |
+          node apps/region/engine/build.mjs --channel zagreb
+          test -s apps/region/site/zagreb/assets/region.css
+          grep -q 'Editorial V3: unified brand' apps/region/site/zagreb/assets/region.css
+          grep -q 'grid grid--more' apps/region/site/zagreb/index.html
+      - name: Publish validation summary
+        if: always()
+        run: |
+          echo "Editorial V4 checks and source generation completed. No production deploy and no external publishing." >> "$GITHUB_STEP_SUMMARY"
