@@ -82,8 +82,15 @@ const imageFrom = (node, base, decodedSummary = '') => {
   for (const raw of candidates) {
     const url = resolveUrl(decode(raw).trim(), base);
     if (!/^https:\/\//i.test(url)) continue;
-    if (!/\.[a-z0-9]{2,5}(?:[?#].*)?$/i.test(url)) continue;
-    return url;
+    // Keep candidate URLs aligned with the deployed /api/img security
+    // boundary: extensionless endpoints and documents are not served.
+    // A broken photo is worse than the existing branded fallback.
+    try {
+      const parsed = new URL(url);
+      if (parsed.username || parsed.password) continue;
+      if (!/\.(?:gif|jpe?g|png|webp|avif)$/i.test(parsed.pathname)) continue;
+      return url;
+    } catch { continue; }
   }
   return '';
 };
