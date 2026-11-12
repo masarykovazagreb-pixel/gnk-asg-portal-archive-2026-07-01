@@ -1,6 +1,7 @@
 name: Blog Mirror Publish
 
-# GNK ASG je kanonski izvor. Blogger, Dev.to, Tumblr i Telegraph su vanjski distribucijski kanali.
+# GNK ASG je kanonski izvor. Blogger, Dev.to, Tumblr i Telegraph su 4 kanala.
+# Telegram je opcionalni 5. kanal samo kad su konfigurirani bot i odredišni kanal.
 # Ovaj workflow je namjerno manual-only: push, raspored ili deploy ne znače odobrenje
 # za vanjsku objavu. Svaki run zahtijeva izričit opt-in za taj konkretan run.
 # Jedan workflow upravlja sva četiri izlaza; dedupe state ostaje na automation/blog-mirror-state.
@@ -9,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       confirm_external_distribution:
-        description: 'Confirm owner approval to publish externally to Blogger, Dev.to, Tumblr and Telegraph for this run'
+        description: 'Approve publishing to Blogger, Dev.to, Tumblr, Telegraph and optional configured Telegram for this run'
         required: true
         type: boolean
         default: false
@@ -39,6 +40,9 @@ jobs:
       TUMBLR_CONSUMER_SECRET: ${{ secrets.TUMBLR_CONSUMER_SECRET }}
       TUMBLR_TOKEN: ${{ secrets.TUMBLR_TOKEN }}
       TUMBLR_TOKEN_SECRET: ${{ secrets.TUMBLR_TOKEN_SECRET }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      GNK_ASG_EXTERNAL_DISTRIBUTION: ${{ vars.GNK_ASG_EXTERNAL_DISTRIBUTION }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -88,6 +92,7 @@ jobs:
           restore_state apps/portal/data/devto-content/published.json
           restore_state apps/portal/data/tumblr-content/published.json
           restore_state apps/portal/data/telegraph-content/published.json
+          restore_state apps/portal/data/telegram-distribution/published.json
           restore_state apps/portal/data/telegraph-content/account.json
 
           echo "Mirror state branch: $(git rev-parse --abbrev-ref HEAD)"
@@ -126,12 +131,15 @@ jobs:
           echo "BLOGGER_CREDENTIAL_STATE=$blogger" >> "$GITHUB_ENV"
           echo "DEVTO_CREDENTIAL_STATE=$devto" >> "$GITHUB_ENV"
           echo "TUMBLR_CREDENTIAL_STATE=$tumblr" >> "$GITHUB_ENV"
+          telegram=missing
+          if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then telegram=configured; fi
+          echo "TELEGRAM_CREDENTIAL_STATE=$telegram" >> "$GITHUB_ENV"
           if [ "$blogger" != ok ] || [ "$devto" != ok ] || [ "$tumblr" != ok ]; then
             echo "PARITY_BLOCKED=1" >> "$GITHUB_ENV"
           else
             echo "PARITY_BLOCKED=0" >> "$GITHUB_ENV"
           fi
-          printf 'Credential state: Blogger=%s Dev.to=%s Tumblr=%s\n' "$blogger" "$devto" "$tumblr"
+          printf 'Credential state: Blogger=%s Dev.to=%s Tumblr=%s Telegram=%s\n' "$blogger" "$devto" "$tumblr" "$telegram"
 
       - name: Build unified priority distribution registry overlay
         shell: bash
@@ -205,6 +213,14 @@ jobs:
           TELEGRAPH_PAUSE_MS: '2000'
         run: node scripts/telegraph-publish-v1.mjs
 
+      - name: Telegram distribution - optional fifth channel (verified canonical only)
+        id: telegram_publish
+        if: env.TELEGRAM_CREDENTIAL_STATE == 'configured'
+        continue-on-error: true
+        env:
+          TELEGRAM_PER_RUN: '3'
+        run: node scripts/telegram-distribution-v1.mjs --live
+
       - name: Write four-channel parity health
         if: always()
         shell: bash
@@ -218,6 +234,7 @@ jobs:
           const devto=read('apps/portal/data/devto-content/published.json',{posted:{}});
           const tumblr=read('apps/portal/data/tumblr-content/published.json',{posted:{}});
           const telegraph=read('apps/portal/data/telegraph-content/published.json',{posted:{}});
+          const telegram=read('apps/portal/data/telegram-distribution/published.json',{posted:{}});
           const countState=(v)=>Array.isArray(v)?v.length:(v&&v.posted?Object.keys(v.posted).length:(v&&v.items?Object.keys(v.items).length:Object.keys(v||{}).length));
           const health={
             version:'GNK_ASG_FOUR_BLOG_PARITY_V6_FEATURED_OVERLAY',
@@ -228,7 +245,8 @@ jobs:
               blogger:{credentials:process.env.BLOGGER_CREDENTIAL_STATE||'unknown',published:countState(blog)},
               devto:{credentials:process.env.DEVTO_CREDENTIAL_STATE||'unknown',published:countState(devto)},
               tumblr:{credentials:process.env.TUMBLR_CREDENTIAL_STATE||'unknown',published:countState(tumblr)},
-              telegraph:{credentials:'self-bootstrap',published:countState(telegraph)}
+              telegraph:{credentials:'self-bootstrap',published:countState(telegraph)},
+              telegram:{credentials:process.env.TELEGRAM_CREDENTIAL_STATE||'missing',published:countState(telegram),optional:true}
             },
             policy:{singleWriter:true,dedupeByPlatformState:true,featuredParity:true,priorityFirst:true,canonicalBacklinkRequired:true,stateBranch:'automation/blog-mirror-state',mainWrites:false,stateSync:'validated-overlay-force-with-lease-and-union-retry'}
           };
@@ -250,7 +268,8 @@ jobs:
           if [ -s apps/portal/data/blog-content/health.json ]; then
             node -e "const fs=require('fs'); try { const h=JSON.parse(fs.readFileSync('apps/portal/data/blog-content/health.json','utf8')); console.log('- Blogger pending after run: **'+h.pending+'**') } catch { console.log('- Blogger health JSON: **unavailable**') }" >> "$GITHUB_STEP_SUMMARY"
           fi
-          echo '- Featured priority overlay: **enabled for all four channels**' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Featured priority overlay: **enabled for the existing four channels**' >> "$GITHUB_STEP_SUMMARY"
+          echo "- Telegram optional 5th channel credentials: **${TELEGRAM_CREDENTIAL_STATE:-missing}**" >> "$GITHUB_STEP_SUMMARY"
           echo '- Canonical source: **https://gnk-asg.hr**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Durable state branch: **automation/blog-mirror-state**' >> "$GITHUB_STEP_SUMMARY"
           echo '- Direct writes to production main: **disabled**' >> "$GITHUB_STEP_SUMMARY"
@@ -263,7 +282,7 @@ jobs:
           test "$(git rev-parse --abbrev-ref HEAD)" = "automation/blog-mirror-state"
           git config user.name "gnk-blog-bot"
           git config user.email "actions@github.com"
-          git add apps/portal/data/blog-content/ apps/portal/data/devto-content/ apps/portal/data/tumblr-content/ apps/portal/data/telegraph-content/ || true
+          git add apps/portal/data/blog-content/ apps/portal/data/devto-content/ apps/portal/data/tumblr-content/ apps/portal/data/telegraph-content/ apps/portal/data/telegram-distribution/ || true
           if git diff --cached --quiet; then
             echo "Nema promjena za spremanje."
           else
@@ -282,7 +301,8 @@ jobs:
               apps/portal/data/blog-content/published.json \
               apps/portal/data/devto-content/published.json \
               apps/portal/data/tumblr-content/published.json \
-              apps/portal/data/telegraph-content/published.json; do
+              apps/portal/data/telegraph-content/published.json \
+              apps/portal/data/telegram-distribution/published.json; do
               remote_tmp="/tmp/remote-$(echo "$state" | tr '/' '_')"
               if git show "refs/remotes/origin/automation/blog-mirror-state:${state}" > "$remote_tmp" 2>/dev/null; then
                 node - "$remote_tmp" "$state" <<'NODE'
@@ -295,7 +315,7 @@ jobs:
           NODE
               fi
             done
-            git add apps/portal/data/blog-content/ apps/portal/data/devto-content/ apps/portal/data/tumblr-content/ apps/portal/data/telegraph-content/ || true
+            git add apps/portal/data/blog-content/ apps/portal/data/devto-content/ apps/portal/data/tumblr-content/ apps/portal/data/telegraph-content/ apps/portal/data/telegram-distribution/ || true
             if git diff --cached --quiet; then
               echo "Union nije dodao promjene."
             else
