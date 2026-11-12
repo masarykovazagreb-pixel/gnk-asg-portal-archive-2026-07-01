@@ -24,6 +24,7 @@ import { logoFor, logoAlternate, logoJsonLd } from './brand.mjs';
 import { deskArt, deskArtPath } from './desk-art.mjs';
 import { chromeOf } from '../src/chrome.mjs';
 import { applyWorldPreview } from './world-external-promo-v1.mjs';
+import { applyEnglishWorldParity } from './aktual-en-home-parity-v1.mjs';
 
 /* Broj jezika se računa iz channels.json, ne prepisuje u tekst: kad se doda
    izdanje na novom jeziku, naslov i opis ne smiju ostati na starom broju. */
@@ -1488,7 +1489,7 @@ ${adHtml}
     } else if (en.includes('<!-- AKTUAL-MREZA-BAND:START -->')) {
       en = en.replace('<!-- AKTUAL-MREZA-BAND:START -->', `${enBlock}\n<!-- AKTUAL-MREZA-BAND:START -->`);
     }
-    en = withPromo(en, 'en');
+    en = applyEnglishWorldParity(withPromo(en, 'en'));
     en = withAtlas(en, 'en');
     en = addPerf(addLogoAlternates(en, ['aktual-media-en', 'aktual-media-hr']));
     en = externalizeCatalogCss(en);
