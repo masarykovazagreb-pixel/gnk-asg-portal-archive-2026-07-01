@@ -38,7 +38,7 @@ const mreza = readJSON(join(ROOT, 'apps', 'portal', 'data', 'mreza-v1.json'), { 
 
 const WEBS = [
   { id: 'portal', name: 'GNK ASG (glavna domena)', url: 'https://gnk-asg.hr/', root: join(ROOT, 'apps', 'portal'), kind: 'portal' },
-  { id: 'world', name: 'GNK World — svjetski portali', url: 'https://gnk-asg.hr/svijet/', root: join(ROOT, 'apps', 'world', 'site'), kind: 'world' },
+  { id: 'world', name: 'AKTUAL MEDIA — svjetski pregled', url: 'https://gnk-asg.hr/gnk-aktual/media/', root: join(ROOT, 'apps', 'world', 'site'), kind: 'world' },
   { id: 'kanal', name: 'GNK ASG KANAL', url: 'https://gnk-asg-kanal.pages.dev/', root: join(ROOT, 'apps', 'kanal', 'site'), kind: 'kanal' },
   { id: 'arhiva', name: 'AKTUAL ARHIVA', url: 'https://gnk-asg-arhiva.pages.dev/', root: join(ROOT, 'apps', 'arhiva', 'site'), kind: 'arhiva' },
   { id: 'dnevnik', name: 'AKTUAL DNEVNIK', url: 'https://gnk-asg-dnevnik.pages.dev/', root: join(ROOT, 'apps', 'dnevnik', 'site'), kind: 'dnevnik' },
