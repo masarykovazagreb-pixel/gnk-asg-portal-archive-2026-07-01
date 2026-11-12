@@ -46,8 +46,21 @@ jobs:
         run: |
           node apps/region/engine/build.mjs --channel zagreb
           test -s apps/region/site/zagreb/assets/region.css
-          grep -q 'Editorial V3: unified brand' apps/region/site/zagreb/assets/region.css
-          grep -q 'grid grid--more' apps/region/site/zagreb/index.html
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const css = readFileSync('apps/region/site/zagreb/assets/region.css', 'utf8');
+          const html = readFileSync('apps/region/site/zagreb/index.html', 'utf8');
+          const checks = {
+            'photo-grid CSS': css.includes('.grid .card:nth-child(7n+6)'),
+            'responsive CSS': css.includes('@media(max-width:520px)'),
+            'expanded image cards': html.includes('grid grid--more'),
+            'brand-image fallback': css.includes('aktual-media-mark.svg')
+          };
+          console.log({ cssBytes: css.length, htmlBytes: html.length, checks });
+          for (const [name, passed] of Object.entries(checks)) {
+            if (!passed) throw new Error('Generated Zagreb: missing '+name);
+          }
+          NODE
       - name: Publish validation summary
         if: always()
         run: |
