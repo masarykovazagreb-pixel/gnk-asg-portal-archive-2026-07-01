@@ -15,6 +15,11 @@ test('verified cross-links use external station slugs and preserve local pages',
     assert.ok(page.includes('author-band-v1.css'));
   }
 });
-test('unknown local slug never guesses an external route', () => {
-  for (const slug of ['gvajana', 'toString', '__proto__', '']) assert.equal(externalStationSection(slug), '');
+test('unknown local slug links only to the central directory, never a guessed station', () => {
+  for (const slug of ['gvajana', 'toString', '__proto__', '']) {
+    const section = externalStationSection(slug);
+    assert.ok(section.includes('href="https://j1hex9qg03f0-d.space-z.ai/"'));
+    assert.ok(section.includes('još nije potvrđena'));
+    assert.ok(!section.includes('?country='));
+  }
 });

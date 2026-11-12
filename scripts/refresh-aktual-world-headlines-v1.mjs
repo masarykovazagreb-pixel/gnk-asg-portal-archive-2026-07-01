@@ -8,7 +8,7 @@
 import fs from 'node:fs';
 import { URL } from 'node:url';
 const input='apps/portal/data/world-countries-v1.json';
-const output='apps/portal/data/aktual-world-headlines-v1.json';
+const output=process.env.AKTUAL_WORLD_CACHE_OUT || 'apps/portal/data/aktual-world-headlines-v1.json';
 const data=JSON.parse(fs.readFileSync(input,'utf8'));
 const limitCountries=Number(process.env.AKTUAL_COUNTRY_LIMIT || data.countries.length);
 const feedLimit=Number(process.env.AKTUAL_FEEDS_PER_COUNTRY || 2);
@@ -51,15 +51,17 @@ const now=Date.now();
 const targets=data.countries.slice(0,limitCountries).flatMap(c=>(c.sourcesList||[]).filter(s=>s.rss&&safeUrl(s.rss)).slice(0,feedLimit).map(s=>({country:c.slug,source:s.name,url:s.rss})));
 const cityTargets = data.cities.map(city=>({city:city.slug,source:'Google News',url:`https://news.google.com/rss/search?q=${encodeURIComponent(city.nameEn)}&hl=en&gl=US&ceid=US:en`}));
 targets.push(...cityTargets);
-const items={}, cityItems={};const errors=[];
+const items={}, cityItems={};const errors=[], sourceChecks=[];
 let idx=0;
-async function worker(){while(idx<targets.length){const target=targets[idx++];try{
+async function worker(){while(idx<targets.length){const target=targets[idx++];const scope=target.city || target.country, kind=target.city ? 'city' : 'country';try{
   const headlines=await fetchFeed(target.url,now);
-  ((target.city ? cityItems : items)[target.city || target.country] ||= []).push(...headlines.map(x=>({...x,source:target.source})));
-}catch(e){errors.push({scope:target.country || target.city,source:target.source,error:String(e.message).slice(0,120)});}}}
+  ((target.city ? cityItems : items)[scope] ||= []).push(...headlines.map(x=>({...x,source:target.source})));
+  sourceChecks.push({kind,scope,source:target.source,status:headlines.length ? 'headlines' : 'no-eligible-headlines',acceptedHeadlines:headlines.length});
+}catch(e){const error=String(e.message).slice(0,120);errors.push({scope,source:target.source,error});sourceChecks.push({kind,scope,source:target.source,status:'failed',error});}}}
 await Promise.all(Array.from({length:Math.max(1,Math.min(10,concurrency))},worker));
 for(const records of [items,cityItems])for(const [country,rows] of Object.entries(records)){const seen=new Set();records[country]=rows.sort((a,b)=>b.publishedAt.localeCompare(a.publishedAt)).filter(x=>{let key=x.url.split('?')[0];if(seen.has(key))return false;seen.add(key);return true;}).slice(0,maxItems);}
-const report={version:'AKTUAL_WORLD_HEADLINE_CACHE_V1',updatedAt:new Date(now).toISOString(),origin:'external article titles and canonical links only; no republished bodies',countries:items,cities:cityItems,feedAttempts:targets.length,feedFailures:errors.length,errors};
+sourceChecks.sort((a,b)=>`${a.kind}:${a.scope}:${a.source}`.localeCompare(`${b.kind}:${b.scope}:${b.source}`));
+const report={version:'AKTUAL_WORLD_HEADLINE_CACHE_V1',updatedAt:new Date(now).toISOString(),origin:'external article titles and canonical links only; no republished bodies',countries:items,cities:cityItems,feedAttempts:targets.length,feedFailures:errors.length,errors,sourceChecks};
 if((strict&&errors.length)||!([...Object.values(items),...Object.values(cityItems)].some(x=>x.length))){console.error(JSON.stringify({error:'No acceptable updates; previous cache retained',feedAttempts:targets.length,feedFailures:errors.length},null,2));process.exit(1);}
 fs.writeFileSync(output,JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({updatedAt:report.updatedAt,feeds:targets.length,failures:errors.length,countriesWithHeadlines:Object.keys(items).length,headlines:[...Object.values(items),...Object.values(cityItems)].reduce((s,a)=>s+a.length,0)}));

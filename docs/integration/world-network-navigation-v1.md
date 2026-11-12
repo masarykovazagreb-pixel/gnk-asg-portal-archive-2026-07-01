@@ -1,0 +1,11 @@
+# AKTUAL WORLD — navigacija i provjere
+
+Imenik sadržava 201 lokalno registriranu zemlju/područje i 10 gradova. Filteri u imeniku rade lokalno u pregledniku (naziv, regija i konfigurirani jezik); bez JavaScripta ostaju dostupne sve poveznice. Hrvatski naziv u pretrazi izveden je iz ISO oznake kada je dostupan, uz postojeći lokalni i engleski naziv.
+
+Svaka lokalna stranica zemlje povezana je s imenikom i s registriranim gradovima, ako postoje. Šest prethodno provjerenih vanjskih stanica ima izravne poveznice; za ostalih 195 povezuje se isključivo s početnom stranicom vanjskog portala. On može nepoznatu oznaku prikazati kao središnju stanicu, stoga se adrese ne smiju nagađati. Prije dodavanja mapiranja provjeriti identitet stanice, ne samo HTTP 200. Vanjski portal može sadržavati demo i automatski obrađen sadržaj; veze nisu potvrda točnosti, prava, ljudske provjere niti indeksiranja.
+
+Pokrenuti `node scripts/audit-world-network-v1.mjs` za čitljiv JSON izvještaj o lokalnim rutama, kanoničkim adresama, sitemapu, RSS datotekama, duplikatima metapodataka i nepotvrđenim vanjskim mapiranjima. Izvještaj ne provjerava mrežnu dostupnost. `node --test tests/test-world-preservation-v1.mjs tests/test-world-directory-ui-v1.mjs tests/test-world-headlines-v1.mjs tests/test-external-stations-v1.mjs tests/test-aktual-world-v1.mjs` provjerava lokalne ugovore, uključujući zaštitu slojeva i ponašanje filtara.
+
+Generator pri postojećoj stranici mijenja samo blok naslova; kad se predložak ne može jednoznačno prepoznati, prekida prije pisanja. Novi izlaz i dalje se može izraditi u praznom direktoriju. Osvježavanje bilježi razliku između neuspjelog dohvata i dohvata bez prihvatljivih naslova za pokušane izvore; to nije stanje svih izvora. RSS datoteka bez stavki nije dokaz uspješne obnove.
+
+Nije provedeno pojedinačno mapiranje ostalih 195 vanjskih izdanja, provjera dostupnosti svih izvora, potpuna provjera pristupačnosti ili potvrda objave i indeksiranja. Objavu treba provesti kroz postojeće kontrole i zatim provjeriti javne stranice; ne zaobilaziti release fence ili zaštitu SHA-a. Prije javne objave tuđih sadržaja ili slika uredništvo zasebno provjerava prava, izvor, točnost, datum i potrebna odobrenja.

@@ -39,7 +39,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add apps/portal/data/aktual-world-headlines-v1.json apps/portal/gnk-aktual/media
+          git add apps/portal/data/aktual-world-headlines-v1.json apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad
           if git diff --cached --quiet; then
             echo 'No acceptable updated headlines.'
             exit 0
