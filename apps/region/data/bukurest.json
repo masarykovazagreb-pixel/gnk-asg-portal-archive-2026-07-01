@@ -4,17 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-13T00:17:30.217Z",
+  "updatedAt": "2026-11-13T02:37:54.456Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
       "url": "https://www.agerpres.ro/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-13T00:17:23.055Z"
+      "errors": [
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: HTTP 500"
+      ],
+      "checkedAt": "2026-11-13T02:37:47.535Z"
     },
     {
       "id": "hotnews",
@@ -24,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T00:17:23.281Z"
+      "checkedAt": "2026-11-13T02:37:47.716Z"
     },
     {
       "id": "zf",
@@ -34,7 +37,7 @@
       "fetched": 19,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T00:17:25.084Z"
+      "checkedAt": "2026-11-13T02:37:49.465Z"
     },
     {
       "id": "profit",
@@ -44,7 +47,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T00:17:25.356Z"
+      "checkedAt": "2026-11-13T02:37:49.842Z"
     },
     {
       "id": "digi24",
@@ -54,7 +57,7 @@
       "fetched": 312,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T00:17:28.202Z"
+      "checkedAt": "2026-11-13T02:37:51.897Z"
     },
     {
       "id": "g4media",
@@ -64,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T00:17:29.804Z"
+      "checkedAt": "2026-11-13T02:37:54.062Z"
     },
     {
       "id": "newsro",
@@ -74,10 +77,57 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T00:17:30.215Z"
+      "checkedAt": "2026-11-13T02:37:54.455Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-13-profit-video-foto-profit-ro-a-premiat-manageri-de-3c96a8",
+      "title": "VIDEO&FOTO Profit.ro a premiat manageri de top și companii românești de succes, dar și un tânăr olimpic de excepție al României, la Gala Povești cu Profit... Made în România…",
+      "summary": "Profit.ro a premiat joi seara, în cadrul Galei Povești cu Profit... made în România, transmisă în direct și de postul de televiziune PRIMA NEWS TV, manageri de top și companii românești de succes, care au dezvoltat branduri autohtone și au reușit să se impună pe piețe.",
+      "date": "2026-11-13T01:32:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/video-foto-profit-premiat-manageri-top-companii-romanesti-succes-tanar-olimpic-exceptie-romaniei-gala-povesti-profit-made-romania-invitat-surpriza-omagiu-adus-unei-legende-22969403?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Povești cu Profit"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://i0.1616.ro/media/2/2621/33209/22969403/86/profit-2026-401.jpg?width=800",
+      "imageAlt": "VIDEO&FOTO Profit.ro a premiat manageri de top și companii românești de succes, dar și un tânăr olimpic de excepție al României, la Gala Povești cu Profit... Made în România. Invit",
+      "addedAt": "2026-11-13T02:37:49.842Z"
+    },
+    {
+      "slug": "bukurest-2026-11-13-newsro-o-nava-de-razboi-rusa-a-fost-lovita-de-o-d3a017",
+      "title": "O navă de război rusă a fost lovită de o dronă ucraineană în Golful Finlandei, generând temeri că războiul s-ar putea extinde şi în Marea Baltică",
+      "summary": "Serviciul de securitate ucrainean SBU a declarat că a vizat miercuri nava rusă „Naro-Fominsk” în cadrul unei operaţiuni mai ample cu drone împotriva depozitului de petrol Ust-Luga de pe coasta Mării Baltice. Autorităţile finlandeze au confirmat că o navă de război rusă a fost atacată miercuri în Golful Finlandei. Deşi se cunosc puţine detalii despre acest atac, este pentru prima dată când dronele ucrainene au atacat o navă rusă într-o zonă a Mării Baltice deschisă traficului maritim civil, ceea ce ridică semne de întrebare cu privire la posibilitatea ca Ucraina să-şi extindă atacurile, scrie BBC.",
+      "date": "2026-11-13T00:45:59.000Z",
+      "url": "https://www.news.ro/externe/o-nava-de-razboi-rusa-a-fost-lovita-de-o-drona-ucraineana-in-golful-finlandei-generand-temeri-ca-razboiul-s-ar-putea-extinde-si-in-marea-baltica-1922404513592026110222984403",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "O navă de război rusă a fost lovită de o dronă ucraineană în Golful Finlandei, generând temeri că războiul s-ar putea extinde şi în Marea Baltică",
+      "addedAt": "2026-11-13T02:37:54.455Z"
+    },
+    {
+      "slug": "bukurest-2026-11-13-newsro-autorul-atacului-armat-din-washington-dc-a-a5b6b2",
+      "title": "Autorul atacului armat din Washington DC a fost identificat. El era doctor şi avusese o dispută în justiţie legată de apartamentul său",
+      "summary": "Autorităţile au făcut publice mai multe informaţii despre împuşcăturile mortale care au avut loc joi în zona Logan Circle din Washington, D.C., aflată la circa 1,6 km de Casa Albă. Poliţia l-a identificat pe Matt Wade Lambert, în vârstă de 55 de ani, ca fiind bărbatul care a împuşcat cinci persoane, ucigând una dintre ele, înainte de a se sinucide în apartamentul său, relatează CNN.",
+      "date": "2026-11-13T00:23:02.000Z",
+      "url": "https://www.news.ro/externe/autorul-atacului-armat-din-washington-dc-a-fost-identificat-el-era-doctor-si-avusese-o-disputa-in-justitie-legata-de-apartamentul-sau-1922402313022026110222984364",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Autorul atacului armat din Washington DC a fost identificat. El era doctor şi avusese o dispută în justiţie legată de apartamentul său",
+      "addedAt": "2026-11-13T02:37:54.455Z"
+    },
     {
       "slug": "bukurest-2026-11-13-agerpres-fotbal-victorie-spectaculoasa-pentru-italia-a8d041",
       "title": "Fotbal: Victorie spectaculoasă pentru Italia contra Franței (3-1), în Liga Națiunilor (FOTO/VIDEO)",
