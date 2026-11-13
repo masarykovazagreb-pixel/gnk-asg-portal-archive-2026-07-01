@@ -71,15 +71,25 @@ test('at most one draft, idempotent same candidate; never publishes',async()=>{
    channels:[{channel:'zagreb',leads:[lead,lead]}]
   }));
   const transport=async()=>({ok:true,json:async()=>response});
-  const first=await runDrafts({apiKey:'test-key',input:queueFile,outDir:dir,now,transport,limit:1});
+  const first=await runDrafts({apiKey:'test-key',input:queueFile,outDir:dir,now,transport,limit:1,storagePrivate:true});
   assert.equal(first.generated,1);
   assert.equal(readdirSync(dir).length,1);
-  const second=await runDrafts({apiKey:'test-key',input:queueFile,outDir:dir,now,transport,limit:1});
+  const second=await runDrafts({apiKey:'test-key',input:queueFile,outDir:dir,now,transport,limit:1,storagePrivate:true});
   assert.equal(second.outputs[0].status,'already-present');
   const saved=JSON.parse(readFileSync(join(dir,readdirSync(dir)[0]),'utf8'));
   assert.equal(saved.publication,false);
   assert.equal(saved.candidate.publication_enabled,false);
   assert.equal(saved.prepublication_gate.eligible,false);
-  await assert.rejects(runDrafts({apiKey:'test-key',input:queueFile,outDir:dir,now,limit:3}),/invalid-run-config/);
+  await assert.rejects(runDrafts({apiKey:'test-key',input:queueFile,outDir:dir,now,limit:3,storagePrivate:true}),/invalid-run-config/);
  }finally{rmSync(base,{recursive:true,force:true})}
+});
+
+test('public artifact storage rejects model use before any API call or filesystem access',async()=>{
+ let calls=0;
+ await assert.rejects(
+   runDrafts({apiKey:'nonempty',input:'missing-file',outDir:'missing-output',
+     transport:()=>{calls++;throw Error('must never be called')},storagePrivate:false}),
+   /private-draft-storage-required/
+ );
+ assert.equal(calls,0);
 });
