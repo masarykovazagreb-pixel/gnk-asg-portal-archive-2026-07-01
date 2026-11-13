@@ -37,6 +37,29 @@ const ROOT = join(APP, '..', '..');
 const DATA = join(APP, 'data');
 const SITE = join(ROOT, 'apps', 'portal', 'kanal');
 const LEGACY = join(APP, 'site');
+/**
+ * External images need demonstrable rights, not merely an RSS enclosure
+ * or permission to fetch them through the Cloudflare proxy.
+ * This registry is maintained by the publisher, never populated from feeds.
+ */
+const PHOTO_LICENSE_REGISTRY=JSON.parse(readFileSync(join(APP,'image-photo-rights-v1.json'),'utf8'));
+if(PHOTO_LICENSE_REGISTRY.schema_version!=='AKTUAL_REGION_IMAGE_RIGHTS_V1' ||
+   !Array.isArray(PHOTO_LICENSE_REGISTRY.approved_images))throw Error('invalid-photo-rights-registry');
+const APPROVED_PHOTOS=new Set();
+for(const photo of PHOTO_LICENSE_REGISTRY.approved_images){
+ let image,evidence;
+ try{image=new URL(photo.url);evidence=new URL(photo.evidence_url)}
+ catch{throw Error('invalid-photo-rights-link')}
+ if(image.protocol!=='https:'||evidence.protocol!=='https:'||image.username||image.password||
+    evidence.username||evidence.password||
+    !['owned','licensed','public-domain'].includes(photo.basis)||
+    !String(photo.credit||'').trim()||APPROVED_PHOTOS.has(image.toString())){
+   throw Error('unverifiable-photo-rights-entry');
+ }
+ APPROVED_PHOTOS.add(image.toString());
+}
+const licensedPhoto=item=>typeof item?.image==='string'&&APPROVED_PHOTOS.has(item.image);
+
 
 export const CHANNELS = JSON.parse(readFileSync(join(APP, 'channels.json'), 'utf8')).channels;
 /* Prijestolnica svakog izdanja: izdanje u glavnom gradu dobiva svoju stranicu
@@ -689,12 +712,11 @@ const DESK_ART_BY_THEME = {
 
 function cardMedia(channel, item, theme, labels, { lead = false, root = '' } = {}) {
   const href = `${root}clanak/${item.slug}/`;
-  const art = DESK_ART_BY_THEME[artThemeOf(item)];
-  if (/^https:\/\//.test(item.image || '')) {
+  const art = DESK_ART_BY_THEME[artThemeOf(item)] || 'svijet';
+  if (licensedPhoto(item)) {
     const width = lead ? 1200 : 800;
     return `<a class="cardmedia" href="${href}" tabindex="-1" aria-hidden="true"><img src="${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=${width}" alt="${esc(item.imageAlt || item.title)}" width="${width}" height="${Math.round((width * 9) / 16)}" loading="${lead ? 'eager' : 'lazy'}"${lead ? ' fetchpriority="high"' : ''} decoding="async" referrerpolicy="no-referrer"></a>`;
   }
-  if (!art) return '';
   const artTheme = artThemeOf(item);
   const label = labels[artTheme] || labels[theme] || theme;
   const kind = captionFor(channel.lang, 'artAlt');
@@ -979,13 +1001,14 @@ function articlePage(channel, strings, item, items) {
   /* Slika ide kroz naš posrednik: izdavač ne vidi čitatelja, a slika je
      keširana na rubu. Ako fotografije nema, članak dobiva ilustraciju teme
      koja je u podpisu jasno označena kao ilustracija — nikad kao fotografija. */
-  const artId = DESK_ART_BY_THEME[artThemeOf(item)];
-  const heroImage = /^https:\/\//.test(item.image || '')
+  const artId = DESK_ART_BY_THEME[artThemeOf(item)] || 'svijet';
+  const photoLicensed = licensedPhoto(item);
+  const heroImage = photoLicensed
     ? `${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=1200`
     : artId ? `/assets/desk/art/${artId}-1200.webp` : '';
   /* OG slika mora biti ista slika koju čitatelj vidi na stranici: fotografija
      izvora ili ilustracija teme, nikad gradska grafika druge namjene. */
-  const ogImage = item.image
+  const ogImage = photoLicensed
     ? heroImage
     : artId ? `${PUBLIC}/assets/desk/art/${artId}-og.jpg` : `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
   const body = `${header(channel, strings, '', root)}
@@ -998,7 +1021,7 @@ function articlePage(channel, strings, item, items) {
       <p class="artmeta"><time datetime="${esc(item.date)}">${esc(longDate(day, channel.lang))}</time> · ${esc(strings.source)}: <a href="${item.url}" target="_blank" rel="external noopener nofollow">${esc(item.sourceName)} ↗</a></p>
     </header>
 
-    ${heroImage ? `<figure class="artimg"><img src="${esc(heroImage)}" alt="${esc(item.image ? (item.imageAlt || item.title) : `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`)}" width="1200" height="675" loading="eager" decoding="async" ${item.image ? 'referrerpolicy="no-referrer"' : ''}><figcaption>${esc(item.image ? captionFor(channel.lang, 'photo') : captionFor(channel.lang, 'art'))}: ${esc(item.image ? item.sourceName : 'AKTUAL MEDIA')}</figcaption></figure>` : ''}
+    ${heroImage ? `<figure class="artimg"><img src="${esc(heroImage)}" alt="${esc(photoLicensed ? (item.imageAlt || item.title) : `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`)}" width="1200" height="675" loading="eager" decoding="async" ${photoLicensed ? 'referrerpolicy="no-referrer"' : ''}><figcaption>${esc(photoLicensed ? captionFor(channel.lang, 'photo') : captionFor(channel.lang, 'art'))}: ${esc(photoLicensed ? item.sourceName : 'AKTUAL MEDIA')}</figcaption></figure>` : ''}
 
     ${score ? `<div class="scorebox"><span class="scorelabel">${esc(strings.source)}</span><strong class="score">${esc(score.label)}</strong><span class="small">${esc(item.title)}</span></div>` : ''}
 
@@ -1095,7 +1118,7 @@ ${footer(channel, strings)}`;
     /* Kratak naslov (jedna riječ) nije dovoljan opis slike za mreže. Tada se
        dodaje tema i izvor, pa opis ostaje čitljiv i kad je naslov kratak. */
     ogAlt: (() => {
-      if (!item.image) return `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`;
+      if (!photoLicensed) return `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`;
       const base = (item.imageAlt || item.title || '').trim();
       if (base.length >= 12) return base;
       const themeName = strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme;
