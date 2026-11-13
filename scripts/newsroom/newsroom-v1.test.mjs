@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { triage, buildQueue } from './triage-v1.mjs';
-import { assessDraft } from './article-quality-gate-v1.mjs';
+import { assessDraft, editorialFingerprint } from './article-quality-gate-v1.mjs';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -55,22 +55,25 @@ test('queue reads source archives and writes nothing',()=>{
 });
 const body=Array.from({length:300},(_,i)=>'Urednička analiza izvora '+i+' razmatra relevantan institucionalni kontekst i metodološka ograničenja.').join(' ');
 function draft(){
- return {
+ const d={
   status:'draft', title:'Autorska analiza promjene poreznih pravila u regionalnom gospodarstvu',
   body, aiAssisted:true,
   disclosure:{visible:true,text:'Tekst je pripremljen uz AI i sadržajno pregledan.'},
   sources:[
-   {id:'a',url:'https://medij-a.hr/vijest/1',published_at:'2026-11-13T08:00:00Z',title:head,summary:'Vlada je iznijela prijedlog'},
-   {id:'b',url:'https://medij-b.hr/vijest/2',published_at:'2026-11-13T09:00:00Z',title:'Porezni zakon',summary:'O prijedlogu se raspravlja'}
+   {id:'a',url:'https://medij-a.hr/vijest/1',published_at:'2026-11-13T08:00:00Z',title:head,summary:'Vlada je iznijela prijedlog',editorialGroup:'group-a',materialType:'official-record',evidenceCheckedAt:'2026-11-13T10:00:00Z',evidenceNote:'Primary documentation reviewed in test fixture'},
+   {id:'b',url:'https://medij-b.hr/vijest/2',published_at:'2026-11-13T09:00:00Z',title:'Porezni zakon',summary:'O prijedlogu se raspravlja',editorialGroup:'group-b',materialType:'full-article',evidenceCheckedAt:'2026-11-13T10:30:00Z',evidenceNote:'Full article inspected in test fixture'}
   ],
   claims:[
    {text:'Prvi relevantni nalaz zahtijeva provjeru',evidence:['a','b']},
    {text:'Drugi relevantni nalaz zahtijeva kontekst',evidence:['a','b']}
   ],
+  substantiveResearchDone:true,evidence_level:'primary-and-secondary-verified',research_gaps:[],
   humanEditorialReview:{substantive:true,reviewer:'Odgovorni urednik',approvedAt:'2026-11-13T11:00:00Z',editorialResponsibilityAccepted:true},
   privacyAndRightsReviewed:true,
   correctionsUrl:'https://gnk-asg.hr/gnk-aktual/metodologija/'
  };
+ d.humanEditorialReview.article_sha256=editorialFingerprint(d);
+ return d;
 }
 test('quality gate only qualifies well-documented draft for manual release',()=>{
  const a=assessDraft(draft(),{now:NOW});
@@ -103,4 +106,39 @@ test('unlicensed remote image and ungrounded claims block',()=>{
  assert.equal(a.eligible,false);
  assert.ok(a.problems.includes('image-rights-not-verified'));
  assert.ok(a.problems.includes('claim-without-two-sources'));
+});
+
+test('an editorial approval becomes stale after any body or evidence change',()=>{
+ const d=draft();
+ assert.equal(assessDraft(d,{now:NOW}).eligible,true);
+ d.body+=' Značajna nova tvrdnja bez ponovnog pregleda.';
+ const result=assessDraft(d,{now:NOW});
+ assert.equal(result.eligible,false);
+ assert.ok(result.problems.includes('missing-substantive-human-review'));
+});
+test('RSS-only material can never be promoted to verified original reporting',()=>{
+ const d=draft();
+ d.substantiveResearchDone=false;
+ d.evidence_level='rss-headlines-only-not-fulltext-or-primary-records';
+ d.research_gaps=['Treba provjeriti primarni dokument'];
+ const result=assessDraft(d,{now:NOW});
+ assert.equal(result.eligible,false);
+ assert.ok(result.problems.includes('research-unverified'));
+});
+test('outlets sharing one editorial owner are not independent',()=>{
+ const d=draft();
+ d.sources[1].editorialGroup='group-a';
+ const a=assessDraft(d,{now:NOW});
+ assert.equal(a.eligible,false);
+ assert.ok(a.problems.includes('insufficient-independent-outlets'));
+ assert.ok(a.problems.includes('claim-without-two-sources'));
+});
+test('missing primary document or source inspection never passes',()=>{
+ const d=draft();
+ d.sources[0].materialType='full-article';
+ d.sources[1].evidenceCheckedAt='';
+ const a=assessDraft(d,{now:NOW});
+ assert.equal(a.eligible,false);
+ assert.ok(a.problems.includes('missing-primary-evidence'));
+ assert.ok(a.problems.includes('source-material-not-inspected'));
 });
