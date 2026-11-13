@@ -79,7 +79,7 @@ test('quality gate only qualifies well-documented draft for manual release',()=>
  const a=assessDraft(draft(),{now:NOW});
  assert.equal(a.eligible,true);
  assert.equal(a.stage,'eligible-for-manual-release');
- assert.ok(a.assessment_note.includes('not proved'));
+ assert.match(a.assessment_note,/not a signature/i);
 });
 test('no review / no disclosure / no sources means blocked',()=>{
  const d=draft();
