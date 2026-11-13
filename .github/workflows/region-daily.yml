@@ -115,13 +115,6 @@ jobs:
           test -f apps/portal/kanal/zagreb/index.html
           node -e 'const fs=require("fs");const f=JSON.parse(fs.readFileSync("apps/region/data/_status.json","utf8"));const r=f.lastRun;const ch=Object.values(r.channels);const ok=ch.reduce((a,c)=>a+c.sourcesOk,0);const all=ch.reduce((a,c)=>a+c.sourcesTotal,0);console.log("REGION kanala:",ch.length,"izvori:",ok+"/"+all);if(!ch.length)process.exit(1);if(ok<all)console.log("::warning title=Partial source coverage::"+(all-ok)+" source feeds unavailable; archived pages remain linked to originals.")'
 
-      - name: AKTUAL newsroom scout — samo istraživačka lista (bez automatske objave)
-        shell: bash
-        run: |
-          set -euo pipefail
-          node scripts/newsroom/triage-v1.mjs --out apps/region/data/_newsroom-candidates-v1.json
-          node -e 'const fs=require("fs");const q=JSON.parse(fs.readFileSync("apps/region/data/_newsroom-candidates-v1.json","utf8"));if(q.publication_enabled!==false||q.totals.publishable!==0)process.exit(1);console.log("Izbor tema:",q.totals.research_leads,"· automatskih objava: 0")'
-
       - name: Galerija i matična stranica izdanja
         shell: bash
         run: |-
