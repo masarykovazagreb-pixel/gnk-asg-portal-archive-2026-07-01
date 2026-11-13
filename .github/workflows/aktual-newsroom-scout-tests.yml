@@ -1,0 +1,32 @@
+name: AKTUAL Newsroom Scout and Quality Gates
+on:
+  pull_request:
+    paths:
+      - 'scripts/newsroom/**'
+      - '.github/workflows/aktual-newsroom-scout-tests.yml'
+      - '.github/workflows/region-daily.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  newsroom-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Script syntax and deterministic tests
+        run: |
+          node --check scripts/newsroom/triage-v1.mjs
+          node --check scripts/newsroom/article-quality-gate-v1.mjs
+          node --test scripts/newsroom/newsroom-v1.test.mjs
+      - name: Existing Zagreb source archive smoke test (no writes)
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/newsroom/triage-v1.mjs --channel zagreb --stdout > /tmp/aktual-scout.json
+          node --input-type=module -e "import {readFileSync} from 'node:fs';const q=JSON.parse(readFileSync('/tmp/aktual-scout.json'));if(q.publication_enabled!==false||q.totals.publishable!==0||q.totals.channels!==1)throw Error('fail-closed-contract');console.log(q.totals)"
+      - name: Confirm no new schedule or deployment in this job
+        run: echo "No cron, no external model calls, no Git push and no publishing."
