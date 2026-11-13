@@ -88,6 +88,7 @@ jobs:
         env:
           NEWSROOM_OPENAI_API_KEY: ${{ secrets.NEWSROOM_OPENAI_API_KEY }}
           NEWSROOM_STORAGE_PRIVATE: ${{ github.event.repository.private }}
+          NEWSROOM_CHANNEL: ${{ vars.AKTUAL_NEWSROOM_CHANNEL || 'zagreb' }}
           NEWSROOM_MODEL: ${{ vars.AKTUAL_NEWSROOM_MODEL || 'gpt-6-astra' }}
         shell: bash
         run: |
