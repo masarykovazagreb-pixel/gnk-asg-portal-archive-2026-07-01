@@ -1,18 +1,18 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-11-13T14:24:56+01:00",
+  "updated_at": "2026-11-13T19:01:55+01:00",
   "engine": "single_publication_engine_v14_github_actions",
   "cadence": "six times daily at 01:37, 05:37, 09:37, 13:37, 17:37 and 21:37 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
   "scheduled_interval_hours": 4,
   "max_items_per_source": 6,
   "feeds_configured": 84,
-  "feeds_http_ok": 73,
+  "feeds_http_ok": 72,
   "feeds_usable": 50,
-  "feeds_empty": 23,
-  "feeds_failed": 11,
-  "current_cycle_validated_items": 1338,
+  "feeds_empty": 22,
+  "feeds_failed": 12,
+  "current_cycle_validated_items": 1349,
   "current_cycle_distinct_sources": 49,
   "source_diversity_floor": 6,
   "public_items_target": 300,
@@ -55,14 +55,14 @@
       "source": "MarketWatch",
       "ok": true,
       "usable": true,
-      "items": 10,
+      "items": 8,
       "error": null
     },
     {
       "source": "The New York Times Business",
       "ok": true,
       "usable": true,
-      "items": 42,
+      "items": 43,
       "error": null
     },
     {
@@ -76,7 +76,7 @@
       "source": "The Independent Business",
       "ok": true,
       "usable": true,
-      "items": 4,
+      "items": 6,
       "error": null
     },
     {
@@ -118,14 +118,14 @@
       "source": "Ars Technica",
       "ok": true,
       "usable": true,
-      "items": 8,
+      "items": 7,
       "error": null
     },
     {
       "source": "Engadget",
       "ok": true,
       "usable": true,
-      "items": 13,
+      "items": 15,
       "error": null
     },
     {
@@ -160,7 +160,7 @@
       "source": "CoinDesk",
       "ok": true,
       "usable": true,
-      "items": 20,
+      "items": 21,
       "error": null
     },
     {
@@ -223,7 +223,7 @@
       "source": "Livemint",
       "ok": true,
       "usable": true,
-      "items": 35,
+      "items": 34,
       "error": null
     },
     {
@@ -244,7 +244,7 @@
       "source": "Channel News Asia",
       "ok": true,
       "usable": true,
-      "items": 7,
+      "items": 6,
       "error": null
     },
     {
@@ -293,7 +293,7 @@
       "source": "BBC News",
       "ok": true,
       "usable": true,
-      "items": 22,
+      "items": 25,
       "error": null
     },
     {
@@ -321,15 +321,15 @@
       "source": "The New York Times World",
       "ok": true,
       "usable": true,
-      "items": 55,
+      "items": 54,
       "error": null
     },
     {
       "source": "European Commission",
-      "ok": true,
+      "ok": false,
       "usable": false,
       "items": 0,
-      "error": null
+      "error": "This operation was aborted"
     },
     {
       "source": "The Guardian Pets",
@@ -370,14 +370,14 @@
       "source": "Poslovni dnevnik",
       "ok": true,
       "usable": true,
-      "items": 17,
+      "items": 18,
       "error": null
     },
     {
       "source": "tportal",
       "ok": true,
       "usable": true,
-      "items": 19,
+      "items": 20,
       "error": null
     },
     {
@@ -475,7 +475,7 @@
       "source": "The New York Times Arts",
       "ok": true,
       "usable": true,
-      "items": 29,
+      "items": 30,
       "error": null
     },
     {
@@ -489,7 +489,7 @@
       "source": "BBC Newsround",
       "ok": true,
       "usable": true,
-      "items": 72,
+      "items": 73,
       "error": null
     },
     {
@@ -545,14 +545,14 @@
       "source": "BBC Sport",
       "ok": true,
       "usable": true,
-      "items": 68,
+      "items": 69,
       "error": null
     },
     {
       "source": "The Guardian Sport",
       "ok": true,
       "usable": true,
-      "items": 28,
+      "items": 27,
       "error": null
     },
     {
@@ -601,7 +601,7 @@
       "source": "The Guardian Climate Crisis",
       "ok": true,
       "usable": true,
-      "items": 12,
+      "items": 13,
       "error": null
     },
     {
