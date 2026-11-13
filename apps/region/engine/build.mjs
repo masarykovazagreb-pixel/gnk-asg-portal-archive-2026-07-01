@@ -996,6 +996,14 @@ function articlePage(channel, strings, item, items) {
   const tags = [...new Set([...channel.hashtags, channel.country, channel.city, item.sourceName, strings.themeNames[theme] || theme])];
   const bot = BOT[channel.lang] || BOT.hr;
   const botText = `${bot.note} ${/\d/.test(item.title) ? bot.num : bot.nonum}`;
+  // RSS availability is not a republication licence. Show only a short,
+  // attributed excerpt, with a direct link to the original publisher.
+  const sourceText=String(item.summary || item.title || '').trim();
+  const sourceWords=sourceText.split(/\\s+/).filter(Boolean);
+  const shortWords=sourceWords.slice(0,20).join(' ');
+  const shortExcerpt=Array.from(shortWords).slice(0,160).join('');
+  const sourceExcerpt=shortExcerpt+(shortExcerpt.length<shortWords.length || sourceWords.length>20 ? '…' : '');
+
 
   const root = '../../';
   /* Slika ide kroz naš posrednik: izdavač ne vidi čitatelja, a slika je
@@ -1027,7 +1035,7 @@ function articlePage(channel, strings, item, items) {
 
     <section class="quote">
       <h2>${esc(strings.summary)}</h2>
-      <blockquote>${esc(item.summary || item.title)}</blockquote>
+      <blockquote>${esc(sourceExcerpt)}</blockquote>
       <p class="small">${esc(strings.quoteNote)}</p>
       <p><a class="cta" href="${item.url}" target="_blank" rel="external noopener nofollow">${esc(strings.readAtSource)} ↗</a></p>
     </section>
