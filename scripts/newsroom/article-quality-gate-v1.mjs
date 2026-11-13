@@ -4,6 +4,7 @@
  * Nothing here dispatches a publication or writes to the public site.
  */
 import {createHash} from 'node:crypto';
+import {ownershipGroupForHost} from './triage-v1.mjs';
 const words = value => String(value || '').normalize('NFKC')
   .toLowerCase().match(/[\p{L}\p{N}]+/gu) || [];
 const httpsUrl = str => {
@@ -62,6 +63,9 @@ export function assessDraft(draft, {now=Date.now()} = {}) {
     ids.add(s.id); hosts.add(host); validSources.push(s);
     // Two domains owned by the same publisher are not independent.
     const group=String(s.editorialGroup||'').trim().toLowerCase();
+    const authoritative=ownershipGroupForHost(host);
+    if(authoritative.verified && group!==authoritative.group)
+      problems.push('misstated-editorial-ownership');
     if(!group) problems.push('source-ownership-unverified');
     else groups.add(group);
     const checkedAt=Date.parse(String(s.evidenceCheckedAt||''));
