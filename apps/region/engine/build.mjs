@@ -999,16 +999,16 @@ function articlePage(channel, strings, item, items) {
   // RSS availability is not a republication licence. Show only a short,
   // attributed excerpt, with a direct link to the original publisher.
   const sourceText=String(item.summary || item.title || '').trim();
-  const sourceWords=sourceText.split(/\\s+/).filter(Boolean);
+  const sourceWords=sourceText.split(/\s+/).filter(Boolean);
   const shortWords=sourceWords.slice(0,20).join(' ');
   const shortExcerpt=Array.from(shortWords).slice(0,160).join('');
   const sourceExcerpt=shortExcerpt+(shortExcerpt.length<shortWords.length || sourceWords.length>20 ? '…' : '');
 
 
   const root = '../../';
-  /* Slika ide kroz naš posrednik: izdavač ne vidi čitatelja, a slika je
-     keširana na rubu. Ako fotografije nema, članak dobiva ilustraciju teme
-     koja je u podpisu jasno označena kao ilustracija — nikad kao fotografija. */
+  /* Dokazano licencirane vanjske fotografije idu preko privatizacijskog
+     posrednika; sve druge dobivaju naše vlastite ilustracije teme.
+     RSS ili slika dostupna javno ne daju pravo ponovne objave. */
   const artId = DESK_ART_BY_THEME[artThemeOf(item)] || 'svijet';
   const photoLicensed = licensedPhoto(item);
   const heroImage = photoLicensed
