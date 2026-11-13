@@ -4,7 +4,7 @@ on:
     paths:
       - 'scripts/newsroom/**'
       - '.github/workflows/aktual-newsroom-scout-tests.yml'
-      - '.github/workflows/region-daily.yml'
+      - '.github/workflows/agent-editorial-daily.yml'
   workflow_dispatch:
 permissions:
   contents: read
