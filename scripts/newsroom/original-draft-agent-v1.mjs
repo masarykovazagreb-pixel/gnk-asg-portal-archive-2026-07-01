@@ -103,13 +103,14 @@ export async function makeDraft(lead,{apiKey,model='gpt-6-astra',now=Date.now(),
  const gate=assessDraft(candidate,{now});
  return {candidate,prepublication_gate:gate,publication:false};
 }
-export async function runDrafts({input,outDir,apiKey,model,now=Date.now(),limit=1,transport=fetch,storagePrivate=false}={}){
+export async function runDrafts({input,outDir,apiKey,model,now=Date.now(),limit=1,transport=fetch,storagePrivate=false,channel='zagreb'}={}){
  if(!apiKey)return {status:'disabled',reason:'no-model-secret',generated:0,publication:false};
  if(storagePrivate!==true)throw Error('private-draft-storage-required');
  if(!input||!outDir||!Number.isSafeInteger(limit)||limit<1||limit>MAX)throw Error('invalid-run-config');
+ if(!['zagreb','beograd'].includes(channel))throw Error('unapproved-editorial-channel');
  const queue=JSON.parse(readFileSync(resolve(input),'utf8'));
  if(queue.publication_enabled!==false||queue.totals?.publishable!==0)throw Error('unsafe-source-queue');
- const leads=(queue.channels||[]).filter(x=>x.channel==='zagreb').flatMap(x=>x.leads||[]).slice(0,limit);
+ const leads=(queue.channels||[]).filter(x=>x.channel===channel).flatMap(x=>x.leads||[]).slice(0,limit);
  mkdirSync(resolve(outDir),{recursive:true});
  const outputs=[];
  for(const lead of leads){
@@ -127,7 +128,8 @@ if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
    outDir:process.env.NEWSROOM_PRIVATE_DRAFT_DIR,
    apiKey:process.env.NEWSROOM_OPENAI_API_KEY,
    model:process.env.NEWSROOM_MODEL||'gpt-6-astra',limit:1,
-   storagePrivate:process.env.NEWSROOM_STORAGE_PRIVATE==='true'})
+   storagePrivate:process.env.NEWSROOM_STORAGE_PRIVATE==='true',
+   channel:process.env.NEWSROOM_CHANNEL||'zagreb'})
  .then(r=>console.log(JSON.stringify(r,null,2)))
  .catch(e=>{console.error('Newsroom draft failed:',e.message);process.exitCode=1});
 }
