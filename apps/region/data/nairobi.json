@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-11-13T19:35:33.025Z",
+  "updatedAt": "2026-11-13T20:42:34.622Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,20 +14,19 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T19:35:10.452Z"
+      "checkedAt": "2026-11-13T20:42:18.302Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://nation.africa/kenya/rss.xml",
+      "ok": true,
+      "fetched": 25,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403",
-        "https://nation.africa/kenya/rss.xml: HTTP 404"
+        "https://nation.africa/kenya/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-13T19:35:12.239Z"
+      "checkedAt": "2026-11-13T20:42:19.372Z"
     },
     {
       "id": "standard",
@@ -39,7 +38,7 @@
       "errors": [
         "https://www.standardmedia.co.ke/rss: nije feed"
       ],
-      "checkedAt": "2026-11-13T19:35:13.915Z"
+      "checkedAt": "2026-11-13T20:42:20.339Z"
     },
     {
       "id": "star",
@@ -51,7 +50,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-13T19:35:16.095Z"
+      "checkedAt": "2026-11-13T20:42:22.191Z"
     },
     {
       "id": "businessdaily",
@@ -63,7 +62,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-13T19:35:16.956Z"
+      "checkedAt": "2026-11-13T20:42:23.345Z"
     },
     {
       "id": "citizen",
@@ -75,7 +74,7 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-11-13T19:35:25.362Z"
+      "checkedAt": "2026-11-13T20:42:31.893Z"
     },
     {
       "id": "kbc",
@@ -85,7 +84,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T19:35:31.207Z"
+      "checkedAt": "2026-11-13T20:42:33.316Z"
     },
     {
       "id": "eastafrican",
@@ -97,10 +96,25 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-13T19:35:33.024Z"
+      "checkedAt": "2026-11-13T20:42:34.622Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-11-13-nation-battling-kenya-hold-south-africa-away-in-737047",
+      "title": "Battling Kenya hold South Africa away in Johannesburg",
+      "summary": "Harambee Stars come from behind to spoil Bafana Bafana's party in Afcon qualifiers.",
+      "date": "2026-11-13T19:04:02.000Z",
+      "url": "https://nation.africa/kenya/sports/football/battling-kenya-hold-south-africa-in-johannesburg--5670310",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5670320/landscape_ratio16x9/1600/900/93abaea5c0de92e3212b679422a1dbeb/de/ogam.jpg",
+      "imageAlt": "Battling Kenya hold South Africa away in Johannesburg",
+      "addedAt": "2026-11-13T20:42:19.372Z"
+    },
     {
       "slug": "nairobi-2026-11-13-capitalfm-30-000-mfangano-residents-face-transport-cfa760",
       "title": "30,000 Mfangano residents face transport crisis as Senate pushes for second ferry",
@@ -159,6 +173,21 @@
       "addedAt": "2026-11-13T18:14:36.797Z"
     },
     {
+      "slug": "nairobi-2026-11-13-nation-we-are-not-for-sale-matiang-i-returns-to-629f4c",
+      "title": "‘We are not for sale’: Matiang'i returns to Gusii, two days after Ruto's tour",
+      "summary": "Jubilee presidential hopeful says Ruto has little to offer Abagusii community.",
+      "date": "2026-11-13T17:57:45.000Z",
+      "url": "https://nation.africa/kenya/news/politics/matiangi-returns-to-gusii-two-days-after-ruto-tour-5670228",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://nation.africa/resource/image/5670230/landscape_ratio16x9/1600/900/3c3c321556a9f44ddd3d655dee55bcf9/FM/matiang-i.jpg",
+      "imageAlt": "‘We are not for sale’: Matiang'i returns to Gusii, two days after Ruto's tour",
+      "addedAt": "2026-11-13T20:42:19.372Z"
+    },
+    {
       "slug": "nairobi-2026-11-13-capitalfm-ruto-promises-to-dual-nairobi-mombasa-48f65a",
       "title": "Ruto promises to dual Nairobi-Mombasa Highway within one year",
       "summary": "President William Ruto has pledged to dual the Nairobi-Mombasa Highway within the next year, saying the government has developed a plan for the expansion of the 461-kilometre transport corridor.",
@@ -197,6 +226,21 @@
       "image": "https://capitalfm.africa/wp-content/uploads/2026/11/Speaker-Wetangula-during-an-Interdenominational-Service-and-Empowerment-Drive-at-Sichei-KMTC-Grounds-Kabuchai-Constituency-Bungoma-County-1200x630.jpg",
       "imageAlt": "Wetang’ula insists on State House in 2032, says he wants to make Mulembe history",
       "addedAt": "2026-11-13T18:03:01.920Z"
+    },
+    {
+      "slug": "nairobi-2026-11-13-nation-ethiopia-crisis-stray-bullets-attacks-drive-221a7b",
+      "title": "Ethiopia crisis: Stray bullets, attacks drive 10,000 Kenyans from Moyale border homes",
+      "summary": "About 10,000 Kenyans displaced by conflict in the neighbouring country.",
+      "date": "2026-11-13T16:59:22.000Z",
+      "url": "https://nation.africa/kenya/counties/marsabit/ethiopia-stray-bullets-attacks-10000-kenyans-moyale-homes-5670166",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5670208/landscape_ratio16x9/1600/900/abf464ec02c9ceb395d40ffd749fbf53/Ce/moyale.jpg",
+      "imageAlt": "Ethiopia crisis: Stray bullets, attacks drive 10,000 Kenyans from Moyale border homes",
+      "addedAt": "2026-11-13T20:42:19.372Z"
     },
     {
       "slug": "nairobi-2026-11-13-capitalfm-mudavadi-mbadi-back-increased-african-29aa26",
@@ -239,6 +283,21 @@
       "addedAt": "2026-11-13T18:03:20.762Z"
     },
     {
+      "slug": "nairobi-2026-11-13-nation-sh6-3m-burglary-suspect-bank-deals-and-623ea4",
+      "title": "Sh6.3m burglary, suspect bank deals and petrol station car break-ins",
+      "summary": "Burglars targeting motorists with huge sums of cash in their vehicles.",
+      "date": "2026-11-13T16:09:31.000Z",
+      "url": "https://nation.africa/kenya/counties/nairobi/sh6-3m-burglary-suspect-bank-deals-petrol-station-car-break-ins-5670018",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://nation.africa/resource/image/5670094/landscape_ratio16x9/1600/900/e509bd70c2f46112d49475054f3c0ceb/Cf/carjacker.jpg",
+      "imageAlt": "Sh6.3m burglary, suspect bank deals and petrol station car break-ins",
+      "addedAt": "2026-11-13T20:42:19.372Z"
+    },
+    {
       "slug": "nairobi-2026-11-13-kbc-hassan-omar-daffa-appointed-kenya-s-new-055617",
       "title": "Hassan Omar Daffa appointed Kenya’s new Chief Kadhi",
       "summary": "The Judicial Service Commission (JSC) has appointed Hon. Hassan Omar Daffa as the new Chief Kadhi succeeding the late Sheikh AbdulHalim Hussein. In a statement, Chief Justice Martha Koome said Daffa brings extensive experience in Islamic jurisprudence and judicial service, having previously served as a Principal Kadhi. Simialrly, Koome noted that his appointment followed a […] The post Hassan Omar Daffa appointed Kenya’s new Chief Kadhi appeared first on KBC Digital .",
@@ -274,6 +333,36 @@
       "image": "https://capitalfm.africa/wp-content/uploads/2026/11/Tana-River-floods-cut-off-Kono-Ramadha-Mlanjo-road-1200x630.jpg",
       "imageAlt": "Tana River floods cut off Kono Ramadha-Mlanjo road",
       "addedAt": "2026-11-13T18:03:01.920Z"
+    },
+    {
+      "slug": "nairobi-2026-11-13-nation-after-200-year-sentence-mackenzie-faces-9e6612",
+      "title": "After 200-year sentence, Mackenzie faces three more Shakahola verdicts",
+      "summary": "Shadow of Shakahola massacre continues to loom over convicted cult leader.",
+      "date": "2026-11-13T15:33:19.000Z",
+      "url": "https://nation.africa/kenya/news/200-year-sentence-mackenzie-faces-three-shakahola-verdicts-5669910",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5669924/landscape_ratio16x9/1600/900/999389b9afbc59a53aeb083f11ca6df8/RJ/mackenzie.jpg",
+      "imageAlt": "After 200-year sentence, Mackenzie faces three more Shakahola verdicts",
+      "addedAt": "2026-11-13T20:42:19.372Z"
+    },
+    {
+      "slug": "nairobi-2026-11-13-nation-secrets-of-sifuna-s-ndc-and-the-unanswered-5dd6aa",
+      "title": "Secrets of Sifuna’s NDC and the unanswered questions around Linda Mwananchi",
+      "summary": "Delegates approve name change together with proposed changes to party's colours, symbol and...",
+      "date": "2026-11-13T15:24:59.000Z",
+      "url": "https://nation.africa/kenya/news/politics/sifuna-party-changes-name-to-linda-mwananchi-movement-5669424",
+      "source": "nation",
+      "sourceName": "Daily Nation",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://nation.africa/resource/image/5652700/landscape_ratio16x9/1600/900/4ae72381a07bacd8f399fe17d32ec8a0/WP/sifuna-1.jpg",
+      "imageAlt": "Secrets of Sifuna’s NDC and the unanswered questions around Linda Mwananchi",
+      "addedAt": "2026-11-13T20:42:19.372Z"
     },
     {
       "slug": "nairobi-2026-11-13-capitalfm-atandi-dismisses-opinion-polls-putting-de943a",
