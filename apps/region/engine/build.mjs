@@ -23,6 +23,7 @@ import { impressumBlock, IMPRESSUM_CSS } from '../../shared/impressum-v1.mjs';
 import { articleMetaDescription, clip } from '../../../scripts/lib/article-meta-v1.mjs';
 import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../../shared/author-band-v1.mjs';
 import { KANAL_DESIGN_V2_CSS } from './kanal-design-v2.mjs';
+import { CINEMATIC_CSS, CINEMATIC_JS } from './kanal-cinematic-v3.mjs';
 import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
@@ -539,6 +540,7 @@ ${ld}
 ${designTokensCss()}
 </head>
 <body data-channel="${channel.id}" data-lang="${channel.lang}">
+<div class="region-read-progress" aria-hidden="true"></div>
 <a class="skip" href="#sadrzaj">${esc(chromeOf(pageLang).skip)}</a>
 ${houseRibbon({ lang: pageLang, edition: channel.city || channel.title })}
 ${body}
@@ -547,6 +549,7 @@ ${cachedShellBlocks(channel, pageLang)}
 ${miniRail(channel)}
 <script src="/assets/aktual-radio-mini-v1.js?v=20261023-edmini" defer></script>
 <script src="${root}assets/spiderweb-v1.js?v=20261023" defer></script>
+<script src="${root}assets/kanal-cinematic-v3.js" defer></script>
 ${refreshTag('/')}
 </body>
 </html>`;
@@ -581,6 +584,7 @@ function header(channel, strings, active = '', root = '') {
       <p class="strap">${esc(strings.aboutText.split('.')[0])}.</p>
     </div>
     <div class="mastmeta">
+       <time class="region-clock" data-region-clock="${esc(channel.timezone || 'Europe/Zagreb')}" aria-label="Local city time">--:--</time>
       <span>${esc(strings.editor)}: <strong>Nermin Sefić</strong></span>
       <span>${esc(strings.director)}: <strong>Nermin Sefić</strong></span>
       <span>${esc(strings.publisher)}: AKTUAL MEDIA d.o.o.</span>
@@ -731,7 +735,7 @@ function homePage(channel, strings, data) {
       <p class="dateline">${esc(strings.daily)} · ${esc(longDate(new Date().toISOString().slice(0, 10), channel.lang))}${(() => { const st = stampLocal(data.updatedAt || BUILD_ISO, channel.lang, CHANNEL_TZ); return st ? ` · ${esc(strings.updated)} <time datetime="${esc(st.iso)}">${esc(st.stamp)}</time>` : ''; })()}</p>
       <h1>${esc(channel.title)}</h1>
       <p class="intro-text">${esc(strings.aboutText)}</p>
-      <p class="live"><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc(data.updatedAt || items[0]?.date || BUILD_ISO)}">${esc(strings.updated)} ${esc((stampLocal(data.updatedAt || items[0]?.date || BUILD_ISO, channel.lang, CHANNEL_TZ) || {}).stamp || shortDate((items[0]?.date || BUILD_ISO).slice(0, 10), channel.lang))}</time></span></p>
+      <p class="live"><span class="region-fresh" data-region-fresh="${esc(data.updatedAt || items[0]?.date || '')}">Nema potvrde vremena</span><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc(data.updatedAt || items[0]?.date || BUILD_ISO)}">${esc(strings.updated)} ${esc((stampLocal(data.updatedAt || items[0]?.date || BUILD_ISO, channel.lang, CHANNEL_TZ) || {}).stamp || shortDate((items[0]?.date || BUILD_ISO).slice(0, 10), channel.lang))}</time></span></p>
       <p class="intro-tags">${channel.hashtags.map((h) => `<span class="tag">${esc(h)}</span>`).join(' ')}</p>
       <p class="hero-tags">${esc(chromeOf(channel.lang).tagsLead)} <a href="/nermin-sefic/">#NerminSefić</a> · <a href="/nermin-sefic/">#NerminSefic</a> · <a href="/autorske-objave/">#SeficNermin</a> · <a href="/autorske-objave/">#SEFICNERMIN</a> · <a href="/nermin-sefic/">#UrednikNerminSefić</a> · #AKTUALMEDIA · #GNKASG · ${esc(channel.hashtags[0] || '')}</p>
     </div>
@@ -999,6 +1003,7 @@ function articlePage(channel, strings, item, items) {
       <p><a class="cta" href="${item.url}" target="_blank" rel="external noopener nofollow">${esc(strings.readAtSource)} ↗</a></p>
     </section>
 
+    <nav class="region-share" aria-label="Share this report"><span class="region-hashtags">#AktualMedia #GNKASG ${esc(channel.hashtags[0] || '')}</span><a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url(channel, 'clanak/' + item.slug + '/'))}" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(url(channel, 'clanak/' + item.slug + '/'))}&text=${encodeURIComponent(item.title + ' #AktualMedia')}" target="_blank" rel="noopener noreferrer">X</a><button type="button" data-region-copy="${esc(url(channel, 'clanak/' + item.slug + '/'))}">Copy link</button></nav>
     <section class="osvrt">
       ${paragraphs.map((p) => `<p>${esc(p)}</p>`).join('\n      ')}
     </section>
@@ -1467,8 +1472,9 @@ ${footer(channel, strings)}`;
   }));
 
   ensureAuthorPortrait(AUTHOR_PORTRAIT, dir);
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${EDITORIAL_INDEX_CSS}\n${IMPRESSUM_CSS}\n${AUTHOR_BAND_CSS}\n${KANAL_DESIGN_V2_CSS}`);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${EDITORIAL_INDEX_CSS}\n${IMPRESSUM_CSS}\n${AUTHOR_BAND_CSS}\n${KANAL_DESIGN_V2_CSS}\n${CINEMATIC_CSS}`);
   writeFileSync(join(dir, 'assets', 'spiderweb-v1.js'), SPIDER_JS);
+  writeFileSync(join(dir, 'assets', 'kanal-cinematic-v3.js'), CINEMATIC_JS);
 
   writeLegacyRedirect(channel);
   writeFileSync(join(dir, 'assets', 'favicon.svg'), favicon());
