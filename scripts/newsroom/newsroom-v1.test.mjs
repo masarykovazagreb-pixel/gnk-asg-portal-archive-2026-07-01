@@ -158,3 +158,15 @@ test('24sata, Vecernji and Poslovni are one known Styria ownership group',()=>{
  assert.equal(mixed[0].ownership_independence,'partially-unverified');
  assert.equal(mixed[0].publishable,false);
 });
+
+test('quality gate rejects forged independence of known Styria media brands',()=>{
+ const d=draft();
+ d.sources[0].url='https://www.24sata.hr/news/1';
+ d.sources[1].url='https://www.vecernji.hr/vijesti/2';
+ d.sources[0].editorialGroup='pretend-owner-a';
+ d.sources[1].editorialGroup='pretend-owner-b';
+ d.humanEditorialReview.article_sha256=editorialFingerprint(d);
+ const result=assessDraft(d,{now:NOW});
+ assert.equal(result.eligible,false);
+ assert.ok(result.problems.includes('misstated-editorial-ownership'));
+});
