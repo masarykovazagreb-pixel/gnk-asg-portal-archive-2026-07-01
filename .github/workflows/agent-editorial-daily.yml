@@ -19,6 +19,7 @@ on:
   push:
     paths:
       - 'apps/agents/**'
+      - 'scripts/newsroom/**'
       - 'scripts/validate-agent-editorial-queue-v1.mjs'
       - 'scripts/publish-agent-reviews-v1.mjs'
       - 'tests/test-agent-editorial-pipeline-v1.mjs'
