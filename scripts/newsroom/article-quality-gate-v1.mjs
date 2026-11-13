@@ -68,7 +68,7 @@ export function assessDraft(draft, {now=Date.now()} = {}) {
   flag('missing-substantive-human-review',review.substantive!==true ||
     !String(review.reviewer||'').trim() ||
     !review.editorialResponsibilityAccepted ||
-    !Number.isFinite(Date.parse(String(review.approvedAt||''))));
+    !Number.isFinite(Date.parse(String(review.approvedAt||''))) || Date.parse(String(review.approvedAt||'')) > now);
   flag('privacy-rights-screen-missing',draft.privacyAndRightsReviewed!==true);
   flag('corrections-policy-missing',!httpsUrl(draft.correctionsUrl));
   return {eligible:problems.length===0,stage:problems.length?'blocked':'eligible-for-manual-release',
