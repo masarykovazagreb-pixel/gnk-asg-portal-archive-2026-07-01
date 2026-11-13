@@ -38,6 +38,7 @@ jobs:
           test -s apps/portal/kanal/beograd/assets/kanal-cinematic-v3.js
           grep -q 'region-clock' apps/portal/kanal/beograd/index.html
           grep -q 'region-fresh' apps/portal/kanal/beograd/index.html
+          node --input-type=module -e "import {readFileSync} from 'node:fs';import assert from 'node:assert/strict';const items=JSON.parse(readFileSync('apps/region/data/beograd.json','utf8')).items;const latest=items.map(x=>x.date).filter(x=>x&&!Number.isNaN(Date.parse(x))).sort((a,b)=>Date.parse(b)-Date.parse(a))[0]||'';const html=readFileSync('apps/portal/kanal/beograd/index.html','utf8');const marker=html.match(/data-region-fresh=\"([^\"]*)\"/);assert(marker,'missing freshness marker');assert.equal(marker[1],latest,'badge must track latest article, not build time');"
           grep -q 'cinematic-ink' apps/portal/kanal/beograd/assets/region.css
           grep -R -q 'region-share' apps/portal/kanal/beograd/clanak/
       - name: No production publishing in QA
