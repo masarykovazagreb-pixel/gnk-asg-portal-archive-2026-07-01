@@ -29,7 +29,7 @@ const validHttps = raw => {
     return u;
   } catch { return null; }
 };
-const publisher = url => url.hostname.toLowerCase().replace(/^www\\./, '');
+const publisher = url => url.hostname.toLowerCase().replace(/^www\./, '');
 /**
  * Known shared corporate ownership; a domain is not proof of independent
  * reporting. Unknown ownership is explicitly marked UNVERIFIED, not claimed.
@@ -41,7 +41,7 @@ const KNOWN_OWNER_GROUPS = new Map([
  ['poslovni.hr','styria-media-hr']
 ]);
 export function ownershipGroupForHost(host) {
- const normalized=String(host||'').toLowerCase().replace(/^www\\./,'');
+ const normalized=String(host||'').toLowerCase().replace(/^www\./,'');
  const known=KNOWN_OWNER_GROUPS.get(normalized);
  return {group:known||'unverified-domain:'+normalized,verified:Boolean(known)};
 }
