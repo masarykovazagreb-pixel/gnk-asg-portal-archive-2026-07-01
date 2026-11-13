@@ -115,3 +115,13 @@ test('approved channels only: Beograd uses its own leads, no cross-city content'
     now,limit:1,storagePrivate:true,channel:'tokio',transport}),/unapproved-editorial-channel/);
  }finally{rmSync(base,{recursive:true,force:true})}
 });
+
+test('original AI writer rejects fabricated owner groups and Styria-only corroboration',()=>{
+ const sty=(host,i)=>({outlet:host,title:'Objavljeni su naslovi o istoj temi',
+   url:'https://'+host+'/clanak/'+i,published_at:'2026-11-13T09:00:00Z'});
+ const grouped={...lead,sources:[sty('24sata.hr',1),sty('vecernji.hr',2)]};
+ assert.throws(()=>validateLead(grouped,now),/insufficient-owner-groups/);
+ const forged={...lead,sources:[{...lead.sources[0],owner_group:'known-invented-owner'},
+   lead.sources[1]]};
+ assert.throws(()=>validateLead(forged,now),/owner-group-mismatch/);
+});
