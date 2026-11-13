@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'apps/kanal/**'
+      - 'apps/tjednik/**'
       - 'apps/region/engine/build.mjs'
       - 'apps/region/engine/kanal-cinematic-v3.mjs'
       - '.github/workflows/aktual-cinematic-qa.yml'
@@ -41,5 +42,16 @@ jobs:
           node --input-type=module -e "import {readFileSync} from 'node:fs';import assert from 'node:assert/strict';const items=JSON.parse(readFileSync('apps/region/data/beograd.json','utf8')).items;const latest=items.map(x=>x.date).filter(x=>x&&!Number.isNaN(Date.parse(x))).sort((a,b)=>Date.parse(b)-Date.parse(a))[0]||'';const html=readFileSync('apps/portal/kanal/beograd/index.html','utf8');const marker=html.match(/data-region-fresh=\"([^\"]*)\"/);assert(marker,'missing freshness marker');assert.equal(marker[1],latest,'badge must track latest article, not build time');"
           grep -q 'cinematic-ink' apps/portal/kanal/beograd/assets/region.css
           grep -R -q 'region-share' apps/portal/kanal/beograd/clanak/
+      - name: Build Business Tjednik
+        run: |
+          node --check apps/tjednik/build.mjs
+          node --check apps/tjednik/src/assets/tjednik.js
+          node apps/tjednik/build.mjs
+          test -s apps/tjednik/site/assets/og/tjednik.png
+          test -s apps/tjednik/site/assets/tjednik.js
+          grep -q 'tjednik-cinematic-hero' apps/tjednik/site/index.html
+          grep -q 'data-tjednik-clock' apps/tjednik/site/index.html
+          grep -q 'data-tjednik-fresh' apps/tjednik/site/index.html
+          grep -q 'tjednik-hero-visual' apps/tjednik/site/index.html
       - name: No production publishing in QA
         run: echo "This workflow runs offline build checks only; no deploy."
