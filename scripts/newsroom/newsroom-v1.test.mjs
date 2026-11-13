@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { triage, buildQueue } from './triage-v1.mjs';
+import { triage, buildQueue, ownershipGroupForHost } from './triage-v1.mjs';
 import { assessDraft, editorialFingerprint } from './article-quality-gate-v1.mjs';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -141,4 +141,20 @@ test('missing primary document or source inspection never passes',()=>{
  assert.equal(a.eligible,false);
  assert.ok(a.problems.includes('missing-primary-evidence'));
  assert.ok(a.problems.includes('source-material-not-inspected'));
+});
+
+test('24sata, Vecernji and Poslovni are one known Styria ownership group',()=>{
+ const owners=['www.24sata.hr','www.vecernji.hr','www.poslovni.hr'].map(ownershipGroupForHost);
+ assert.deepEqual(owners.map(o=>o.group),['styria-media-hr','styria-media-hr','styria-media-hr']);
+ assert.ok(owners.every(o=>o.verified));
+ const mk=(host,i)=>({title:head,url:'https://'+host+'/news/'+i,
+   date:'2026-11-13T10:00:00Z',sourceName:host,source:host});
+ const two=triage([mk('24sata.hr',1),mk('vecernji.hr',2)],{now:NOW});
+ assert.equal(two.length,0,'same-owner media cannot count as independent research corroboration');
+ const mixed=triage([mk('24sata.hr',1),mk('vecernji.hr',2),mk('index.hr',3)],{now:NOW});
+ assert.equal(mixed.length,1);
+ assert.equal(mixed[0].distinct_outlets,3);
+ assert.equal(mixed[0].distinct_owner_groups,2);
+ assert.equal(mixed[0].ownership_independence,'partially-unverified');
+ assert.equal(mixed[0].publishable,false);
 });
