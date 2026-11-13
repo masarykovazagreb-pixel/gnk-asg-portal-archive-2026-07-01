@@ -2,12 +2,15 @@
 /**
  * POSREDNIK SLIKA — pokrivenost.
  *
- * Posrednik ima zatvoren popis hostova. Ako podaci sadrže sliku s hosta
- * kojeg na popisu nema, stranica prikaže slomljenu minijaturu — to se
- * dogodilo na svih devet deskova /izdanja/*.
+ * Proxy dopušta samo poznate hostove, ali to samo po sebi nije licencija.
+ * Generator od 2026-11-13 prikazuje VANJSKU RSS sliku samo ako je njezin
+ * točan URL u publisher-owned rights registry, inače crta lokalnu ilustraciju.
  *
- * Ovaj test uspoređuje stvarne podatke s popisom i pada na svaki host
- * koji nedostaje, pa odluka o proširenju ne može promaći pregledu.
+ * Zato se tehnička host provjera odnosi SAMO na fotografije koje je sustav
+ * stvarno ovlašten prikazati. Ostale feed slike se EVIDENTIRAJU kao odbačene,
+ * a ne maskiraju kao licencirane ili kao pokvaren render.
+ * Ako licenciranu sliku dodamo iz novog hosta, test OBAVEZNO pada sve dok
+ * taj host nije posebno odobren u proxy host registru.
  */
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
@@ -17,6 +20,23 @@ import { REGION_IMAGE_HOSTS } from '../workers/gnk-asg-direct-operator/src/image
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const fails = [];
 const allowed = new Set(REGION_IMAGE_HOSTS.map(([host]) => host));
+const rights=JSON.parse(readFileSync(join(ROOT,'apps','region','image-photo-rights-v1.json'),'utf8'));
+if(rights.schema_version!=='AKTUAL_REGION_IMAGE_RIGHTS_V1'||!Array.isArray(rights.approved_images))
+  fails.push('registar prava fotografija nije valjan');
+const approvedImages=new Set();
+for(const item of rights.approved_images||[]){
+  let url,evidence;
+  try{url=new URL(item.url);evidence=new URL(item.evidence_url)}
+  catch{fails.push('registar prava sadrži nevaljan URL');continue}
+  if(url.protocol!=='https:'||evidence.protocol!=='https:'||
+     !['owned','licensed','public-domain'].includes(item.basis)||
+     !String(item.credit||'').trim()||approvedImages.has(url.toString())){
+     fails.push('registar prava sadrži nevaljan ili dupliciran unos');continue
+  }
+  approvedImages.add(url.toString());
+}
+let ignoredUnlicensedFeedImages=0;
+
 
 if (allowed.size !== REGION_IMAGE_HOSTS.length) fails.push('popis hostova sadrži dvostruki unos');
 for (const [host, outlet, country] of REGION_IMAGE_HOSTS) {
@@ -34,8 +54,14 @@ for (const file of readdirSync(dataDir).filter((name) => /^[a-z]+\.json$/.test(n
   try { parsed = JSON.parse(readFileSync(join(dataDir, file), 'utf8')); } catch { continue; }
   for (const item of parsed.items || []) {
     if (!item.image) continue;
+    // A raw feed image is *not* an approved publication asset.
+    if (!approvedImages.has(item.image)){
+      ignoredUnlicensedFeedImages+=1;
+      continue;
+    }
     let host;
-    try { host = new URL(item.image).hostname.toLowerCase(); } catch { fails.push(`${file}: slika nije valjana adresa (${String(item.image).slice(0, 60)})`); continue; }
+    try { host = new URL(item.image).hostname.toLowerCase(); }
+    catch { fails.push(`${file}: licencirana slika nema valjan URL`); continue; }
     found.set(host, (found.get(host) || 0) + 1);
   }
 }
@@ -51,8 +77,10 @@ const stale = missing;
 
 const report = {
   ok: fails.length === 0,
-  version: 'GNK_ASG_IMAGE_HOST_COVERAGE_V1_20261022',
+  version: 'GNK_ASG_IMAGE_HOST_LICENSED_COVERAGE_V2_20261113',
   allowedHosts: allowed.size,
+  approvedImageUrls: approvedImages.size,
+  ignoredUnlicensedFeedImages,
   hostsInData: found.size,
   imagesInData: [...found.values()].reduce((sum, n) => sum + n, 0),
   unusedAllowlistEntries: stale,
