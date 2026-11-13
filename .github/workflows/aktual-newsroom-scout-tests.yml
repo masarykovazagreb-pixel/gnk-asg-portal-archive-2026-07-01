@@ -21,7 +21,8 @@ jobs:
         run: |
           node --check scripts/newsroom/triage-v1.mjs
           node --check scripts/newsroom/article-quality-gate-v1.mjs
-          node --test scripts/newsroom/newsroom-v1.test.mjs
+          node --check scripts/newsroom/original-draft-agent-v1.mjs
+          node --test scripts/newsroom/newsroom-v1.test.mjs scripts/newsroom/original-draft-agent-v1.test.mjs
       - name: Existing Zagreb source archive smoke test (no writes)
         shell: bash
         run: |
