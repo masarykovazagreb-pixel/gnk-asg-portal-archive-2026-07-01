@@ -28,7 +28,7 @@ function copiedSpan(body, source) {
  * It is NOT a signature or proof that a human actually reviewed the text.
  */
 export function editorialFingerprint(draft) {
-  const keys=['title','dek','body','claims','sources','imageUrl','imageRights','disclosure','research_gaps'];
+  const keys=['title','dek','body','claims','sources','imageUrl','imageRights','disclosure','research_gaps','evidence_level','substantiveResearchDone','privacyAndRightsReviewed','correctionsUrl'];
   const payload={};
   for(const key of keys) payload[key]=draft?.[key] ?? null;
   return createHash('sha256').update(JSON.stringify(payload)).digest('hex');
