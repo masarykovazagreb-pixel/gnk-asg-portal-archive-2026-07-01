@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-13T08:08:31.253Z",
+  "updatedAt": "2026-11-13T13:26:51.350Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-13T08:08:27.389Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-13T13:26:46.774Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T08:08:27.564Z"
+      "checkedAt": "2026-11-13T13:26:46.990Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T08:08:27.726Z"
+      "checkedAt": "2026-11-13T13:26:47.230Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T08:08:28.488Z"
+      "checkedAt": "2026-11-13T13:26:48.216Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-13T08:08:30.286Z"
+      "checkedAt": "2026-11-13T13:26:50.827Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T08:08:30.490Z"
+      "checkedAt": "2026-11-13T13:26:50.909Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,431 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T08:08:31.252Z"
+      "checkedAt": "2026-11-13T13:26:51.350Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-13-hvg-az-oktatasi-miniszterium-feljelentest-tett-27c982",
+      "title": "Az oktatási minisztérium feljelentést tett az Erasmus+ megvalósításáért felelős alapítvány ügyében",
+      "summary": "Hankó Balázs és Varga-Bajusz neve is felmerült az ügyben.",
+      "date": "2026-11-13T13:19:16.000Z",
+      "url": "https://hvg.hu/itthon/20261113_lannert-judit-oktatasi-es-gyermekugyi-miniszterium-feljelentes-tempus-kozalapitvany-kulturalis-es-innovacios-miniszterium-hanko-balazs-varga-bajusz-veronika",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "bűnügyek",
+        "feljelentés",
+        "Lannert Judit"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/7c204203-65cc-439e-a46f-b44f5348ac84.jpg",
+      "imageAlt": "Az oktatási minisztérium feljelentést tett az Erasmus+ megvalósításáért felelős alapítvány ügyében",
+      "addedAt": "2026-11-13T13:26:47.230Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-hvg-meghalt-a-novicsok-idegmereg-egyik-cc285b",
+      "title": "Meghalt a Novicsok idegméreg egyik kifejlesztője, Vlagyimir Uglev orosz vegyész",
+      "summary": "Ezzel a hidegháborús időszakban kikísérletezett idegméreggel gyilkolták meg Alekszej Navalnijt, és korábban a Szkripal-merényletben is bevetették.",
+      "date": "2026-11-13T13:16:41.000Z",
+      "url": "https://hvg.hu/elet/20261113_vlagyimir-uglev-kemikus-novicsok-idegmereg-kifejlesztoje-meghalt-alekszej-navalnij-szkripal-merenylet",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "bűnügyek",
+        "novicsok",
+        "idegméreg"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/42e84cd6-837e-4992-9dc0-3af5cb270d05.jpg",
+      "imageAlt": "Meghalt a Novicsok idegméreg egyik kifejlesztője, Vlagyimir Uglev orosz vegyész",
+      "addedAt": "2026-11-13T13:26:47.230Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-okosotthon-karacsonyra-november-vegeig-tart-eb2f9b",
+      "title": "Okosotthon karácsonyra: november végéig tart a Xiaomi Black Friday",
+      "summary": "A legtöbben karácsonyi ajándékok vásárlására használják fel a Black Friday kedvezményeit. A Xiaomi november végéig akciós áron kínál egyes okosotthon-eszközöket és telefonokat. The post Okosotthon karácsonyra: november végéig tart a Xiaomi Black Friday first appeared on 24.hu .",
+      "date": "2026-11-13T13:13:02.000Z",
+      "url": "https://24.hu/tech/2026/11/13/okosotthon-karacsonyra-november-vegeig-tart-a-xiaomi-black-friday/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Tech",
+        "xiaomi"
+      ],
+      "author": "Hirdetés",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/xiaomi_black_friday_1280x720-1024x576.jpg",
+      "imageAlt": "Okosotthon karácsonyra: november végéig tart a Xiaomi Black Friday",
+      "addedAt": "2026-11-13T13:26:50.909Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-szazmilliokat-oszthattak-szet-hanko-balazs-86bac1",
+      "title": "Százmilliókat oszthattak szét Hankó Balázs tárcájának utasításai alapján a Tempus Közalapítványnál",
+      "summary": "Feljelentést tett az oktatási minisztérium. The post Százmilliókat oszthattak szét Hankó Balázs tárcájának utasításai alapján a Tempus Közalapítványnál first appeared on 24.hu .",
+      "date": "2026-11-13T13:10:37.000Z",
+      "url": "https://24.hu/belfold/2026/11/13/feljelentes-tempus-kozalapitvany-oktatasi-miniszterium/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "tempus",
+        "feljelentés",
+        "oktatási minisztérium"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/689704417_892177243872738_5646148751001436180_n-e1794575146416-1024x577.jpg",
+      "imageAlt": "Százmilliókat oszthattak szét Hankó Balázs tárcájának utasításai alapján a Tempus Közalapítványnál",
+      "addedAt": "2026-11-13T13:26:50.910Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-portfolio-szenzacios-siker-az-orvostudomanyban-aed976",
+      "title": "Szenzációs siker az orvostudományban: áttörést értek a sokakat sújtó népbetegség gyógyításában",
+      "summary": "A legfrissebb orvosi kutatások alapjaiban írhatják át a vér-agy gát működéséről alkotott ismereteinket, ami új utat nyithat az Alzheimer-kór kezelésében. Emellett a kutatók ígéretes eredményeket értek el a nehezen gyógyuló diabéteszes lábfekélyek őssejtterápiás gyógyításában, egy másik vizsgálat pedig a terhesség alatt belélegzett erdőtűzfüst és a gyermekkori asztma közötti összefüggésekre világított rá.",
+      "date": "2026-11-13T13:09:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261113/szenzacios-siker-az-orvostudomanyban-attorest-ertek-a-sokakat-sujto-nepbetegseg-gyogyitasaban-876302",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/t/u/d/tudomany-orvostudomany-agykutatas-alzheimer-kor-feherje-ossejt-cukorbetegseg-asztma-erdotuz-869516.jpg",
+      "imageAlt": "Szenzációs siker az orvostudományban: áttörést értek a sokakat sújtó népbetegség gyógyításában",
+      "addedAt": "2026-11-13T13:26:48.216Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-portfolio-tisza-kormany-tortenelmi-bejelenteseket-275770",
+      "title": "Tisza-kormány: történelmi bejelentéseket tett Magyar Péter a nők védelmében, jöhet a találkozó Zelenszkij elnökkel",
+      "summary": "Magyar Péter miniszterelnök péntek reggel telefoninterjút adott a Kossuth Rádió Felkelő című műsorában, ahol egyebek mellett arról beszélt, hogy november végén Kárpátalján találkozhat Volodimir Zelenszkij ukrán elnökkel. A kormányfő 1,7–1,8 százalékos idei és 2,4 százalékos jövő évi gazdasági növekedéssel számol, miközben a kormány 2027-re 3 százalékos inflációval tervez. Magyar azt is közölte, hogy az Isztambuli Egyezmény ratifikálásáról szóló javaslat haladéktalanul az Országgyűlés elé kerül, és szerinte Cseh Gergő Bendegúznak, az Állambiztonsági Szolgálatok Történeti Levéltára főigazgatójának az ügynökakták nyilvánosságra hozatalakor történt informatikai hiba rendezése után távoznia…",
+      "date": "2026-11-13T13:04:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261113/tisza-kormany-tortenelmi-bejelenteseket-tett-magyar-peter-a-nok-vedelmeben-johet-a-talalkozo-zelenszkij-elnokkel-876200",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-1967690224-orszaghaz-parlament-budapest-magyarorszag-varoskep-epiteszet-epulet-864954.jpg",
+      "imageAlt": "Tisza-kormány: történelmi bejelentéseket tett Magyar Péter a nők védelmében, jöhet a találkozó Zelenszkij elnökkel",
+      "addedAt": "2026-11-13T13:26:48.216Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-portfolio-orban-aron-letartoztatasa-elokerult-egy-3dcc6c",
+      "title": "Orbán Áron letartóztatása: előkerült egy Szijjártó Péterhez köthető szál",
+      "summary": "Külügyminisztériumi iratok bizonyítják, hogy a jelenleg letartóztatásban lévő Orbán Áron korábban közvetlenül Szijjártó Péternél lobbizott együttműködésért és stratégiai partnerségért – közölte Facebook-bejegyzésében Velkey György László, a Külügyminisztérium parlamenti államtitkára.",
+      "date": "2026-11-13T13:04:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261113/orban-aron-letartoztatasa-elokerult-egy-szijjarto-peterhez-kotheto-szal-876308",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/s/z/i/szijjarto-869518.jpg",
+      "imageAlt": "Orbán Áron letartóztatása: előkerült egy Szijjártó Péterhez köthető szál",
+      "addedAt": "2026-11-13T13:26:48.216Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-orban-aron-korabban-egyuttmukodest-ajanlott-a16640",
+      "title": "Orbán Áron korábban együttműködést ajánlott Szijjártó Péternek, felajánlotta saját főtanácsadója segítségét",
+      "summary": "„Maga Szijjártó már 2016 májusában valamiért személyesen fogadta a miniszteri irodájában a bukott miniszterelnök öccsét” – írta Velkey The post Orbán Áron korábban együttműködést ajánlott Szijjártó Péternek, felajánlotta saját főtanácsadója segítségét first appeared on 24.hu .",
+      "date": "2026-11-13T13:03:03.000Z",
+      "url": "https://24.hu/belfold/2026/11/13/orban-aron-szijjarto-peter-egyuttmukodes-fotanacsado/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "orbán áron",
+        "szijjártó péter",
+        "külügyminisztérium"
+      ],
+      "author": "Kovács Barna",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/11/oraban-aron-e1794574540470-1024x575.jpg",
+      "imageAlt": "Orbán Áron korábban együttműködést ajánlott Szijjártó Péternek, felajánlotta saját főtanácsadója segítségét",
+      "addedAt": "2026-11-13T13:26:50.910Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-hvg-az-atalakitot-beraktad-egy-140-wattos-tolto-a0c00d",
+      "title": "„Az átalakítót beraktad?” Egy 140 wattos töltő, amit elég egyszer megvenni, utána a világon mindenhol működik",
+      "summary": "Ideális esetben még otthon hangzik el a címbéli mondat. Ha már a repülőtéren, akkor jó eséllyel az „és szerinted a hotelben adnak?” kérdés követi. És a válasz sajnos nem minden szállodát illetően „igen”. A feledékeny utazón nem segít a Sandberg új, cserélhető hálózati fejekkel érkező adaptere, de ha bekerül a bőröndbe, akkor akkor Londontól Pekingen át Las Vegasig minden mást megold.",
+      "date": "2026-11-13T13:03:00.000Z",
+      "url": "https://hvg.hu/tudomany/20261113_utazas-adapter-atalakito-tolto-sandberg-travel-charger-display-140w-teszt-velemeny",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Tech",
+        "tech",
+        "sandberg",
+        "mobiltöltő"
+      ],
+      "author": "balogh.csaba@hvg.hu (Balogh Csaba)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/6a89c112-22ef-4584-b6da-75e827855024.jpg",
+      "imageAlt": "„Az átalakítót beraktad?” Egy 140 wattos töltő, amit elég egyszer megvenni, utána a világon mindenhol működik",
+      "addedAt": "2026-11-13T13:26:47.230Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-sarka-kata-nyilvanosan-valaszolt-a-ce946f",
+      "title": "Sarka Kata nyilvánosan válaszolt a gardróbvásárára vonatkozó kérdésekre",
+      "summary": "Tóth Ildikó is kommentelt a poszthoz. The post Sarka Kata nyilvánosan válaszolt a gardróbvásárára vonatkozó kérdésekre first appeared on 24.hu .",
+      "date": "2026-11-13T13:02:40.000Z",
+      "url": "https://24.hu/elet-stilus/2026/11/13/sarka-kata-gardrobvasar-toth-ildiko/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kikapcs",
+        "sarka kata",
+        "tóth ildikó",
+        "gardróbvásár"
+      ],
+      "author": "Csontos Kata",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-0330618085-e1794574424143-1024x575.jpg",
+      "imageAlt": "Sarka Kata nyilvánosan válaszolt a gardróbvásárára vonatkozó kérdésekre",
+      "addedAt": "2026-11-13T13:26:50.910Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-hvg-frappans-valaszt-adott-vitezy-tarcaja-a-8fd822",
+      "title": "Frappáns választ adott Vitézy tárcája a miniszter férfiasságát firtató Orbánnak",
+      "summary": "Szerintük a közlekedési szabályok betartása nemcsak férfias, hanem kötelező is, ezért javasolják a volt miniszterelnöknek is ezek betartását.",
+      "date": "2026-11-13T13:01:45.000Z",
+      "url": "https://hvg.hu/itthon/20261113_vitezy-david-kozlekedesi-es-beruhazasi-miniszterium-orban-viktor-jogositvany-ferfiassag",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "politika",
+        "Vitézy Dávid",
+        "Orbán Viktor"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/45c2d7f3-63a7-4c72-9760-fb5e93078bb8.jpg",
+      "imageAlt": "Frappáns választ adott Vitézy tárcája a miniszter férfiasságát firtató Orbánnak",
+      "addedAt": "2026-11-13T13:26:47.230Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-ket-meccset-meg-lenyom-haiti-ellen-ugy-42fede",
+      "title": "Két meccset még lenyom Haiti ellen, úgy érkezik meg a ManUnited új edzője",
+      "summary": "Nem történt meglepetés, az amerikai szövetség elengedte Mauricio Pochettinót. The post Két meccset még lenyom Haiti ellen, úgy érkezik meg a ManUnited új edzője first appeared on 24.hu .",
+      "date": "2026-11-13T13:00:57.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/13/manchester-united-edzovaltas-mauricio-pochettino/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "manchester united",
+        "edzőváltás",
+        "angol foci"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/pochettino-1024x576.jpg",
+      "imageAlt": "Két meccset még lenyom Haiti ellen, úgy érkezik meg a ManUnited új edzője",
+      "addedAt": "2026-11-13T13:26:50.910Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-portfolio-nezd-meg-te-is-a-professional-investment-74a8bd",
+      "title": "Nézd meg te is a Professional Investment Day és díjátadó legjobb pillanatait!",
+      "summary": "Pezsgő szakmai program, teltházas előadások, éles piaci viták és a hazai vagyonkezelési szakma talán legjobban várt díjátadója tette emlékezetessé az idei Portfolio Professional Investment Day 2026 konferenciát és az azt követő Portfolio Investment and Wealth Management Awards eseményt. A beszélgetésekben az AI, a geopolitikai kockázatok, a vagyonadó, az alternatív befektetések és a nagy vagyonok jövője került fókuszba, a rendezvény csúcspontjaként pedig a magyar alapkezelői, privátbanki és vagyonkezelési piac legjobb teljesítményeit ismerte el a Portfolio. A díjak rangját az objektív piaci adatokra, iparági szavazatokra, közönségvisszajelzésekre és független szakmai zsűrire épülő…",
+      "date": "2026-11-13T13:00:00.000Z",
+      "url": "https://www.portfolio.hu/befektetes/20261113/nezd-meg-te-is-a-professional-investment-day-es-dijatado-legjobb-pillanatait-876266",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Befektetés"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://pcdn.hu/articles/images-xl/v/a/l/val-04834-869436.jpg",
+      "imageAlt": "Nézd meg te is a Professional Investment Day és díjátadó legjobb pillanatait!",
+      "addedAt": "2026-11-13T13:26:48.217Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-hvg-velkey-orban-aron-vezerigazgato-barati-ba689d",
+      "title": "Velkey: Orbán Áron „Vezérigazgató” baráti levélben ajánlott együttműködést Szijjártónak 2023-ban",
+      "summary": "A Külügyminisztérium parlamenti államtitkára szerint az akkori tárcavezető szó nélkül továbbította Orbán Áron „Vezérigazgató” levelét a legközelebbi kollégáinak, ahogy azt tette korábban Dzsudzsák Balázs „Tesóka” esetében is.",
+      "date": "2026-11-13T12:59:57.000Z",
+      "url": "https://hvg.hu/itthon/20261113_velkey-gyorgy-laszlo-orban-aron-szijjarto-peter-barati-level-egyuttmukodes-fotanacsado",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "belpolitika",
+        "Orbán Áron",
+        "Szijjártó Péter"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/50b3e9c7-9d27-4f90-a8ac-4b50237d1789.jpg",
+      "imageAlt": "Velkey: Orbán Áron „Vezérigazgató” baráti levélben ajánlott együttműködést Szijjártónak 2023-ban",
+      "addedAt": "2026-11-13T13:26:47.230Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-budapest-az-egyik-legnepszerubb-karacsonyi-e683d7",
+      "title": "Budapest az egyik legnépszerűbb karácsonyi úti cél az európaiak körében",
+      "summary": "Már a téli hónapokban is egyre több turista érkezik Budapestre. The post Budapest az egyik legnépszerűbb karácsonyi úti cél az európaiak körében first appeared on 24.hu .",
+      "date": "2026-11-13T12:54:28.000Z",
+      "url": "https://24.hu/kultura/2026/11/13/budapest-az-egyik-legnepszerubb-karacsonyi-uti-cel-az-europaiak-koreben/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kultúra",
+        "karácsony"
+      ],
+      "author": "Hirdetés",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/vorosmarty-classic-xmas_kredit-vorosmarty-classic-xmas-1024x576.jpg",
+      "imageAlt": "Budapest az egyik legnépszerűbb karácsonyi úti cél az európaiak körében",
+      "addedAt": "2026-11-13T13:26:50.910Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-portfolio-vegre-megnyilik-az-unios-penzcsap-tobb-b509d6",
+      "title": "Végre megnyílik az uniós pénzcsap: több tízmilliárd forintos keretre csaphatnak le a magyar cégek",
+      "summary": "Decemberben 20 milliárd, jövő tavasszal pedig további 10 milliárd forintra pályázhatnak a vidéki mikro- és kisvállalkozások üzleti folyamataik megújítására. A GINOP Plusz innovációs konstrukciójában cégenként már akár 100 millió forint vissza nem térítendő támogatás is elérhető lesz. A bejelentés mögött egy korábban meghirdetett, összesen 75 milliárd forintos pályázat keretének átrendezése és két új jelentkezési szakasz megnyitása áll, amelynek lehetőségét már szeptemberben jeleztük a Portfolio-n .",
+      "date": "2026-11-13T12:54:00.000Z",
+      "url": "https://www.portfolio.hu/unios-forrasok/20261113/vegre-megnyilik-az-unios-penzcsap-tobb-tizmilliard-forintos-keretre-csaphatnak-le-a-magyar-cegek-876304",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Uniós források"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/p/a/l/palyazat-kkv-ginop-tamogatas-innovacio-vallalkozasfejlesztes-kisvallalkozas-kis-es-koz-869514.jpg",
+      "imageAlt": "Végre megnyílik az uniós pénzcsap: több tízmilliárd forintos keretre csaphatnak le a magyar cégek",
+      "addedAt": "2026-11-13T13:26:48.217Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-hvg-orban-viktor-szoboszlai-dominik-sikereivel-1708d9",
+      "title": "Orbán Viktor Szoboszlai Dominik sikereivel próbálta védeni a tao-rendszert",
+      "summary": "A volt miniszterelnök szerint tragikus következményei lesznek a tao-támogatások kivezetésének, de példaként pont azt a Szoboszlai Dominikot hozta fel, akinek a sikerei kevéssé köszönhetők annak.",
+      "date": "2026-11-13T12:47:33.000Z",
+      "url": "https://hvg.hu/elet/20261113_orban-viktor-tao-rendszer-szoboszlai-dominik-felcsut",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "itthon",
+        "tao-támogatás",
+        "Orbán Viktor"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "sigurnost",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/8f7e2a4c-ab59-4f87-84af-ca5d2e5a2e59.jpg",
+      "imageAlt": "Orbán Viktor Szoboszlai Dominik sikereivel próbálta védeni a tao-rendszert",
+      "addedAt": "2026-11-13T13:26:47.230Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-444-egy-volt-fideszes-kepviselo-feljelentette-304737",
+      "title": "Egy volt fideszes képviselő feljelentette Magyar Pétert",
+      "summary": "Ékes Ilona zsarolás és kapcsolati erőszak gyanúja miatt feljelentést tett a Központi Nyomozó Főügyészségnél.",
+      "date": "2026-11-13T12:41:55.000Z",
+      "url": "https://444.hu/2026/11/13/egy-volt-fideszes-kepviselo-feljelentette-magyar-petert?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Központi Nyomozó Főügyészség",
+        "ékes ilona",
+        "fidesz",
+        "magyar péter"
+      ],
+      "author": "Takács Lili",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PO7TLlr6sWJmOWHs.jpeg",
+      "imageAlt": "Egy volt fideszes képviselő feljelentette Magyar Pétert",
+      "addedAt": "2026-11-13T13:26:46.990Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-444-orban-aron-vezerigazgato-a-szijjarto-fele-5e7201",
+      "title": "Orbán Áron „Vezérigazgató” a Szijjártó-féle külüggyel is aktívan kereste az együttműködést",
+      "summary": "Szijjártó ugyanúgy kommentár nélkül továbbította Orbán Áron levelét a legközelebbi kollegáinak, ahogy Dzsudzsák Balázs „Tesóka” esetében tette.",
+      "date": "2026-11-13T12:23:41.000Z",
+      "url": "https://444.hu/2026/11/13/orban-aron-vezerigazgato-a-szijjarto-fele-kuluggyel-is-aktivan-kereste-az-egyuttmukodest?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "külügyminisztérium",
+        "orbán áron",
+        "Szijjártó Péter",
+        "Velkey György"
+      ],
+      "author": "Takács Lili",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PlPQDBF5c25zwYqs.jpeg",
+      "imageAlt": "Orbán Áron „Vezérigazgató” a Szijjártó-féle külüggyel is aktívan kereste az együttműködést",
+      "addedAt": "2026-11-13T13:26:46.991Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-444-orban-aron-vezetoszaron-durva-de-hallottad-4d5e22",
+      "title": "Orbán Áron vezetőszáron? Durva, de hallottad már a Szent Johanna Gimi szerzője vs. Refresher balhét?",
+      "summary": "Leiner Laura szerint bullyingnak és bántalmazásnak volt kitéve az elmúlt években, a sztori azóta már felütötte a fejét a Reddit-kommentelők között is, a Refresher pedig külön közleményben reagált a történtekre.",
+      "date": "2026-11-13T12:04:42.000Z",
+      "url": "https://444.hu/2026/11/13/orban-aron-vezetoszaron-durva-de-hallottad-mar-a-szent-johanna-gimi-szerzoje-vs-refresher-balhet?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Refresher",
+        "Szent Johanna Gimi",
+        "Leiner Laura",
+        "Szécsi Krisztián"
+      ],
+      "author": "Jelinek Anna",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PlqmVJYaKCJHmCSs.png",
+      "imageAlt": "Orbán Áron vezetőszáron? Durva, de hallottad már a Szent Johanna Gimi szerzője vs. Refresher balhét?",
+      "addedAt": "2026-11-13T13:26:46.991Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-444-nedves-november-protipp-itt-a-magyar-hygge-90107f",
+      "title": "Nedves november protipp: itt a magyar hygge, bámuld élőben a tízezernyi tatai vadludat otthonról",
+      "summary": "Talán az egész kontinensen nincs ekkora gyülekezés: élő webkamera a tóról meditatív gágogással.",
+      "date": "2026-11-13T12:01:14.000Z",
+      "url": "https://444.hu/2026/11/13/nedves-november-protipp-itt-a-magyar-hygge-bamuld-eloben-a-tizezernyi-tatai-vadludat-otthonrol?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "tatai öreg-tó",
+        "nagy lilik",
+        "vadlúd",
+        "nyári lúd"
+      ],
+      "author": "Kolozsi Ádám",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/87wwHBeHuvWXrTZes.jpeg",
+      "imageAlt": "Nedves november protipp: itt a magyar hygge, bámuld élőben a tízezernyi tatai vadludat otthonról",
+      "addedAt": "2026-11-13T13:26:46.991Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-444-orban-aron-pakkot-kapott-a-volt-b8b62e",
+      "title": "Orbán Áron pakkot kapott: a volt miniszterelnök továbbra se látogatja az öccsét a börtönben, de a szülei bementek hozzá",
+      "summary": "Erről pedig a börtönügyekben jártas Szabó Bálinttól értesülhettünk.",
+      "date": "2026-11-13T12:00:31.000Z",
+      "url": "https://444.hu/2026/11/13/orban-aron-pakkot-kapott-a-volt-miniszterelnok-tovabbra-se-latogatja-az-occset-a-bortonben-de-a-szulei-bementek-hozza?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "orbán áron",
+        "szabó bálint",
+        "Nagy Ignác utca",
+        "embercsempészet"
+      ],
+      "author": "Takács Lili",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8Pogp9OsLP5UGMAus.png",
+      "imageAlt": "Orbán Áron pakkot kapott: a volt miniszterelnök továbbra se látogatja az öccsét a börtönben, de a szülei bementek hozzá",
+      "addedAt": "2026-11-13T13:26:46.991Z"
+    },
     {
       "slug": "budimpesta-2026-11-13-hvg-van-ahol-egy-nap-alatt-lehullott-a-teljes-4f5458",
       "title": "Van, ahol egy nap alatt lehullott a teljes novemberi átlagos csapadékmennyiség",

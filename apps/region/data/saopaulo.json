@@ -4,7 +4,7 @@
   "lang": "pt",
   "city": "São Paulo",
   "country": "Brazil",
-  "updatedAt": "2026-11-13T08:10:48.968Z",
+  "updatedAt": "2026-11-13T13:28:30.219Z",
   "sources": [
     {
       "id": "g1",
@@ -14,7 +14,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T08:10:41.414Z"
+      "checkedAt": "2026-11-13T13:27:52.638Z"
     },
     {
       "id": "folha",
@@ -24,7 +24,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T08:10:42.434Z"
+      "checkedAt": "2026-11-13T13:27:54.118Z"
     },
     {
       "id": "uol",
@@ -34,7 +34,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T08:10:43.405Z"
+      "checkedAt": "2026-11-13T13:27:54.565Z"
     },
     {
       "id": "exame",
@@ -44,7 +44,7 @@
       "fetched": 25,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T08:10:43.637Z"
+      "checkedAt": "2026-11-13T13:27:54.787Z"
     },
     {
       "id": "agenciabrasil",
@@ -54,7 +54,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T08:10:44.418Z"
+      "checkedAt": "2026-11-13T13:27:55.395Z"
     },
     {
       "id": "estadao",
@@ -66,7 +66,7 @@
       "errors": [
         "https://www.estadao.com.br/rss/: HTTP 404"
       ],
-      "checkedAt": "2026-11-13T08:10:45.927Z"
+      "checkedAt": "2026-11-13T13:27:57.616Z"
     },
     {
       "id": "valor",
@@ -78,20 +78,357 @@
       "errors": [
         "https://valor.globo.com/rss/: HTTP 404"
       ],
-      "checkedAt": "2026-11-13T08:10:48.237Z"
+      "checkedAt": "2026-11-13T13:27:59.517Z"
     },
     {
       "id": "veja",
       "name": "Veja",
       "url": "https://veja.abril.com.br/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-13T08:10:48.967Z"
+      "errors": [
+        "https://veja.abril.com.br/rss: This operation was aborted"
+      ],
+      "checkedAt": "2026-11-13T13:28:30.218Z"
     }
   ],
   "items": [
+    {
+      "slug": "saopaulo-2026-11-13-folha-criminosos-invadem-locadora-e-roubam-oito-7c1ba9",
+      "title": "Criminosos invadem locadora e roubam oito veículos em SP; quatro são presos",
+      "summary": "Uma locadora de veículos foi invadida e teve oito veículos roubados no bairro Campo Belo, na zona sul de São Paulo , na madrugada desta sexta-feira (13). A Polícia Militar foi acionada e conseguiu prender quatro suspeitos. Leia mais (11/13/2026 - 10h20)",
+      "date": "2026-11-13T13:20:00.000Z",
+      "url": "https://redir.folha.com.br/redir/online/emcimadahora/rss091/*https://www1.folha.uol.com.br/cotidiano/2026/11/criminosos-invadem-locadora-e-roubam-oito-veiculos-em-sp-quatro-sao-presos.shtml",
+      "source": "folha",
+      "sourceName": "Folha de S.Paulo",
+      "categories": [],
+      "author": "Francisco Lima Neto",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Criminosos invadem locadora e roubam oito veículos em SP; quatro são presos",
+      "addedAt": "2026-11-13T13:27:54.118Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-g1-site-do-porto-de-santos-volta-ao-ar-quase-99828b",
+      "title": "Site do Porto de Santos volta ao ar quase uma semana após ataque hacker",
+      "summary": "Porto de Santos ainda opera sob contingência cinco dias após ataque hacker O site institucional da Autoridade Portuária de Santos (APS), responsável pela administração do maior porto da América do Sul, voltou ao ar na noite de quinta-feira (12), cerca de uma semana após o ataque cibernético que atingiu os sistemas da empresa pública. Segundo a APS, todos os arquivos armazenados nos backups já foram lidos e estão em processo de recuperação. Apesar do avanço, os principais serviços oferecidos aos usuários do porto ainda são prestados de forma alternativa. Internamente, os principais sistemas administrativos também estão em fase final de restabelecimento, segundo a companhia. ✅ Clique aqui…",
+      "date": "2026-11-13T13:17:16.000Z",
+      "url": "https://g1.globo.com/sp/santos-regiao/porto-mar/noticia/2026/11/13/site-do-porto-de-santos-volta-ao-ar-quase-uma-semana-apos-ataque-hacker.ghtml",
+      "source": "g1",
+      "sourceName": "G1",
+      "categories": [
+        "G1"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s2-g1.glbimg.com/XjIiymTdQ_7mgd95JpGD6PvWjfk=/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2026/I/k/AZ1t3vSFm9kFonMVubpA/porto-de-santos-2-.jpg",
+      "imageAlt": "Site do Porto de Santos volta ao ar quase uma semana após ataque hacker",
+      "addedAt": "2026-11-13T13:27:52.639Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-g1-rosa-e-azul-a-historia-sombria-do-quadro-7d7989",
+      "title": "'Rosa e Azul': a história sombria do quadro mais famoso do Masp — e o fim trágico de uma das meninas",
+      "summary": "Considerado um dos museus mais importantes de sua categoria, o Museu de Arte de São Paulo (Masp) recebeu 1,1 milhão de visitantes no ano passado. Não é nenhum exagero imaginar que a maior parte deles classificou como ponto alto da visita os minutos passados apreciando a obra Rosa e Azul, óleo sobre tela feito pelo impressionista francês Pierre-Auguste Renoir (1841-1919) em 1881. Trata-se de um retrato de duas irmãs, filhas de um rico banqueiro francês. A mais velha, vestindo azul; a outra, rosa. A trágica história de uma delas, que seria vítima da perseguição nazista décadas mais tarde, é contada no livro The Renoir Girls (\"As Meninas de Renoir\", em tradução livre), lançado neste ano e…",
+      "date": "2026-11-13T13:15:34.000Z",
+      "url": "https://g1.globo.com/pop-arte/noticia/2026/11/13/rosa-e-azul-a-historia-sombria-do-quadro-mais-famoso-do-masp-e-o-fim-tragico-de-uma-das-meninas.ghtml",
+      "source": "g1",
+      "sourceName": "G1",
+      "categories": [
+        "G1"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "'Rosa e Azul': a história sombria do quadro mais famoso do Masp — e o fim trágico de uma das meninas",
+      "addedAt": "2026-11-13T13:27:52.639Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-g1-video-gamba-e-flagrado-em-estante-de-ovos-284d22",
+      "title": "VÍDEO: gambá é flagrado em estante de ovos dentro de supermercado no interior de SP",
+      "summary": "Gambá é flagrado em estante de ovos dentro de supermercado em Rio Preto Um gambá surpreendeu clientes ao aparecer em uma estante de ovos dentro de um supermercado em São José do Rio Preto, no interior de São Paulo, na quinta-feira (12). O mecânico Wiliam Pedro da Silva, de 29 anos, estava no comércio no momento e registrou o animal em vídeo. Assista acima. Ao g1, ele afirmou que a aparição provocou espanto entre os clientes. “Fiquei surpreso e com nojo”, comenta Wiliam. 📲 Participe do canal do g1 Rio Preto e Araçatuba no WhatsApp Gambá é flagrado em estante de ovos dentro de supermercado em Rio Preto (SP) Wiliam Pedro da Silva/Arquivo pessoal Wiliam disse que os funcionários do…",
+      "date": "2026-11-13T13:15:06.000Z",
+      "url": "https://g1.globo.com/sp/sao-jose-do-rio-preto-aracatuba/noticia/2026/11/13/video-gamba-e-flagrado-em-estante-de-ovos-dentro-de-supermercado-no-interior-de-sp.ghtml",
+      "source": "g1",
+      "sourceName": "G1",
+      "categories": [
+        "G1"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s2-g1.glbimg.com/IBlu6_RlTUi28X1NfEdJt3mw1m8=/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2026/1/u/MkKFHAQ7STIBT6J33bow/foto-g1-31-.png",
+      "imageAlt": "VÍDEO: gambá é flagrado em estante de ovos dentro de supermercado no interior de SP",
+      "addedAt": "2026-11-13T13:27:52.639Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-g1-amazonia-queimando-afeta-a-saude-e-o-bolso-d951af",
+      "title": "Amazônia queimando afeta a saúde e o bolso do Brasil inteiro, diz bióloga dedicada a combater o fogo na floresta",
+      "summary": "Onde um leigo enxerga floresta queimada, Berenguer enxerga outras dimensões, como a quantidade de gases de efeito estufa emitidos e a perda irremediável de biodiversidade Marizilda Cruppe/Rede Amazônia Sustentável Erika Berenguer está rouca. A tosse constante ao longo da entrevista vem de inspirar a combustão da floresta que move sua carreira de bióloga desde cedo. Ainda menina, conheceu a Amazônia pelos livros das expedições do explorador francês Jacques Cousteau, folheando imagens de antas, tamanduás, botos cor-de-rosa e outros bichos estranhos que a encantaram — e fincaram a região em seu horizonte futuro. \"Eu sempre soube que iria trabalhar na Amazônia\", diz a carioca radicada em…",
+      "date": "2026-11-13T13:15:04.000Z",
+      "url": "https://g1.globo.com/meio-ambiente/noticia/2026/11/13/amazonia-queimando-afeta-a-saude-e-o-bolso-do-brasil-inteiro-diz-biologa-dedicada-a-combater-o-fogo-na-floresta.ghtml",
+      "source": "g1",
+      "sourceName": "G1",
+      "categories": [
+        "G1"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s2-g1.glbimg.com/8EZhtCXKradVCP2S_0n_YixfTfw=/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2026/5/G/y7Wcr6ROG6b2HAV1HGeA/onde-um-leigo-enxerga-floresta-queimada-berenguer-enxerga-outras-dimensoes-como-a-quantidade-de-gases-de-efeito-estufa-emitidos-e-a-perda-irremediavel-de-biodiversidade.jpeg",
+      "imageAlt": "Amazônia queimando afeta a saúde e o bolso do Brasil inteiro, diz bióloga dedicada a combater o fogo na floresta",
+      "addedAt": "2026-11-13T13:27:52.639Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-g1-ajuste-fiscal-veja-como-os-senadores-d7c4c1",
+      "title": "Ajuste fiscal: veja como os senadores baianos votaram",
+      "summary": "Senado Federal aprova texto-base de projeto que prevê ajuste fiscal de até R$ 60 bilhões O Senado aprovou o texto-base da proposta do governo do presidente Lula (PT) para um ajuste fiscal. A votação aconteceu nesta quinta-feira (12), em Brasília, e teve 45 votos a favor e 31 votos contra - dentre eles, o voto de um senador da Bahia. Com a proposta, o objetivo do governo é conter o crescimento das despesas públicas e aumentar a arrecadação para tentar estabilizar a dívida pública, preservando políticas sociais. Os senadores da Bahia Jaques Wagner (PT), Otto Alencar (PSD) e Angelo Coronel (Republicanos) participaram da votação. Confira como votou cada um deles: Angelo Coronel (Republicanos) …",
+      "date": "2026-11-13T13:15:04.000Z",
+      "url": "https://g1.globo.com/ba/bahia/noticia/2026/11/13/ajuste-fiscal-veja-como-os-senadores-baianos-votaram.ghtml",
+      "source": "g1",
+      "sourceName": "G1",
+      "categories": [
+        "G1"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s2-g1.glbimg.com/oiIEh8AimoNFw25dExWlJnzTvvk=/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2026/Y/j/ZmU4wRTAA33m2ggYCS2g/foto-2-barros-reis-4-.png",
+      "imageAlt": "Ajuste fiscal: veja como os senadores baianos votaram",
+      "addedAt": "2026-11-13T13:27:52.640Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-g1-mega-sena-3085-10-apostas-de-al-acertam-a-c0120d",
+      "title": "Mega-Sena 3085: 10 apostas de AL acertam a quatro números do sorteio; confira",
+      "summary": "G1 | Loterias - Mega-Sena 3085 Dez apostas feitas em Alagoas acertaram quatro números do concurso 3085 da Mega-Sena (confira abaixo). O sorteio foi realizado na quinta-feira (12), em São Paulo. 📱Participe do canal do g1 Alagoas As apostas premiadas foram registradas nas cidades de Arapiraca, Maceió, Matriz de Camaragibe, Minador do Negrão e Pilar. Os ganhadores vão receber prêmios que variam de R$ 698 a R$ 2.096. Os números sorteados foram: 10 – 27 – 29 – 37 – 39 – 59. Como ninguém acertou os seis números , o prêmio principal acumulou. O próximo sorteio será realizado no domingo (15), com prêmio estimado em R$ 27 milhões. Mega-Sena, concurso 3085 Reprodução Apostas que acertaram 4 números…",
+      "date": "2026-11-13T13:13:57.000Z",
+      "url": "https://g1.globo.com/al/alagoas/noticia/2026/11/13/mega-sena-3085-10-apostas-de-al-acertam-a-quatro-numeros-do-sorteio-confira.ghtml",
+      "source": "g1",
+      "sourceName": "G1",
+      "categories": [
+        "G1"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s2-g1.glbimg.com/cPy9FznlIgg4fJ10EWYQIxhIduo=/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2026/z/h/Nng0piQh6Wx7yj2b0l3Q/captura-de-tela-2026-11-12-210314.png",
+      "imageAlt": "Mega-Sena 3085: 10 apostas de AL acertam a quatro números do sorteio; confira",
+      "addedAt": "2026-11-13T13:27:52.640Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-folha-csn-tem-prejuizo-de-r-1-25-bilhao-no-3o-27b6c7",
+      "title": "CSN tem prejuízo de R$ 1,25 bilhão no 3º trimestre, com pressão de mineração e custos de frete",
+      "summary": "A CSN teve prejuízo líquido de R$ 1,25 bilhão no terceiro trimestre, revertendo resultado positivo de R$ 76 milhões obtido no mesmo período de 2025, segundo balanço divulgado na noite de quinta-feira. Leia mais (11/13/2026 - 10h07)",
+      "date": "2026-11-13T13:07:00.000Z",
+      "url": "https://redir.folha.com.br/redir/online/emcimadahora/rss091/*https://c-level.folha.uol.com.br/negocios/2026/11/csn-tem-prejuizo-de-r-125-bilhao-no-3o-trimestre-com-pressao-de-mineracao-e-custos-de-frete.shtml",
+      "source": "folha",
+      "sourceName": "Folha de S.Paulo",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "CSN tem prejuízo de R$ 1,25 bilhão no 3º trimestre, com pressão de mineração e custos de frete",
+      "addedAt": "2026-11-13T13:27:54.119Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-folha-ancelotti-diz-que-periodo-de-testes-acaba-8817dc",
+      "title": "Ancelotti diz que período de testes acaba nos jogos contra Japão e Singapura",
+      "summary": "Em busca de uma reformulação da seleção brasileira desde a eliminação precoce nas oitavas de final da Copa do Mundo de 2026, na América do Norte, o treinador Carlo Ancelotti afirmou que o período de testes está perto do fim. Leia mais (11/13/2026 - 10h07)",
+      "date": "2026-11-13T13:07:00.000Z",
+      "url": "https://redir.folha.com.br/redir/online/emcimadahora/rss091/*https://www1.folha.uol.com.br/esporte/2026/11/ancelotti-diz-que-periodo-de-testes-acaba-nos-jogos-contra-japao-e-singapura.shtml",
+      "source": "folha",
+      "sourceName": "Folha de S.Paulo",
+      "categories": [],
+      "author": "Lucas Bombana",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Ancelotti diz que período de testes acaba nos jogos contra Japão e Singapura",
+      "addedAt": "2026-11-13T13:27:54.119Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-folha-mario-prata-recebe-convidados-em-lancamento-8c5fc0",
+      "title": "Mario Prata recebe convidados em lançamento de 'O Chico' em SP",
+      "summary": "O escritor Mario Prata lançou na quarta (11) o livro 'O Chico', na livraria Espelho, em São Paulo . Na obra, ele conta histórias de bastidores e causos do músico Chico Buarque , seu amigo há mais de 50 anos. Leia mais (11/13/2026 - 10h02)",
+      "date": "2026-11-13T13:02:00.000Z",
+      "url": "https://redir.folha.com.br/redir/online/emcimadahora/rss091/*https://www1.folha.uol.com.br/colunas/monicabergamo/2026/11/mario-prata-recebe-convidados-em-lancamento-de-o-chico-em-sp.shtml",
+      "source": "folha",
+      "sourceName": "Folha de S.Paulo",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Mario Prata recebe convidados em lançamento de 'O Chico' em SP",
+      "addedAt": "2026-11-13T13:27:54.119Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-folha-livro-mostra-como-educacao-ainda-falha-em-4fc8ce",
+      "title": "Livro mostra como educação ainda falha em superar desigualdades",
+      "summary": "\"Por que exigimos tanto que os pobres se preparem para disputar oportunidades e tão pouco que a sociedade transforme a maneira como essas oportunidades são distribuídas?\". Leia mais (11/13/2026 - 10h00)",
+      "date": "2026-11-13T13:00:00.000Z",
+      "url": "https://redir.folha.com.br/redir/online/emcimadahora/rss091/*https://www1.folha.uol.com.br/mercado/2026/11/livro-mostra-como-educacao-ainda-falha-em-superar-desigualdades.shtml",
+      "source": "folha",
+      "sourceName": "Folha de S.Paulo",
+      "categories": [],
+      "author": "Isadora Laviola",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Livro mostra como educação ainda falha em superar desigualdades",
+      "addedAt": "2026-11-13T13:27:54.119Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-folha-bonde-no-centro-de-sao-paulo-tera-custo-de-cd3f36",
+      "title": "Bonde no centro de São Paulo terá custo de R$ 2,8 bilhões, e primeiro trecho é previsto para 2027",
+      "summary": "O prefeito Ricardo Nunes ( MDB ) assina na manhã desta sexta-feira (13) a autorização para implantação do projeto do VLE (veículo leve elétrico), que deverá circular pelo centro da cidade de São Paulo . Leia mais (11/13/2026 - 10h00)",
+      "date": "2026-11-13T13:00:00.000Z",
+      "url": "https://redir.folha.com.br/redir/online/emcimadahora/rss091/*https://www1.folha.uol.com.br/cotidiano/2026/11/bonde-no-centro-de-sao-paulo-tera-custo-de-r-28-bilhoes-e-primeiro-trecho-e-previsto-para-2027.shtml",
+      "source": "folha",
+      "sourceName": "Folha de S.Paulo",
+      "categories": [],
+      "author": "Fábio Pescarini",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Bonde no centro de São Paulo terá custo de R$ 2,8 bilhões, e primeiro trecho é previsto para 2027",
+      "addedAt": "2026-11-13T13:27:54.119Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-uol-maternidades-moveis-aguardam-entrada-em-df2282",
+      "title": "Maternidades móveis aguardam entrada em Gaza há dois anos; Israel é acusado",
+      "summary": "Oito unidades médicas móveis aguardam perto do Cairo autorização para entrar em Gaza, e grupos de ajuda acusam Israel de impedir a passagem, segundo o The Independent.",
+      "date": "2026-11-13T12:22:50.000Z",
+      "url": "https://noticias.uol.com.br/internacional/ultimas-noticias/2026/11/13/maternidades-moveis-aguardam-entrada-em-gaza-ha-ate-dois-anos.ghtm",
+      "source": "uol",
+      "sourceName": "UOL",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://conteudo.imguol.com.br/c/noticias/a8/2026/11/07/gaza-palestina-chuva-1794073099195_v2_142x100.jpg",
+      "imageAlt": "Maternidades móveis aguardam entrada em Gaza há dois anos; Israel é acusado",
+      "addedAt": "2026-11-13T13:27:54.565Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-uol-criminosos-invadem-locadora-e-roubam-oito-061666",
+      "title": "Criminosos invadem locadora e roubam oito veículos em SP; quatro são presos",
+      "summary": "",
+      "date": "2026-11-13T12:20:00.000Z",
+      "url": "https://www1.folha.uol.com.br/cotidiano/2026/11/criminosos-invadem-locadora-e-roubam-oito-veiculos-em-sp-quatro-sao-presos.shtml",
+      "source": "uol",
+      "sourceName": "UOL",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Criminosos invadem locadora e roubam oito veículos em SP; quatro são presos",
+      "addedAt": "2026-11-13T13:27:54.565Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-uol-meu-hotmail-sobreviveu-a-30-anos-de-spam-b1a594",
+      "title": "Meu Hotmail sobreviveu a 30 anos de spam, mas morreu na sexta-feira 13",
+      "summary": "Meu Hotmail nasceu em 1996, quando a internet fazia barulho de fax engasgado e a gente acreditava que a rede ia democratizar o mundo. Pausa para o riso.",
+      "date": "2026-11-13T12:18:01.000Z",
+      "url": "https://noticias.uol.com.br/colunas/leonardo-sakamoto/2026/11/13/meu-hotmail-sobreviveu-a-30-anos-de-spam-mas-morreu-na-sexta-feira-13.htm",
+      "source": "uol",
+      "sourceName": "UOL",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://conteudo.imguol.com.br/c/parceiros/74/2020/12/14/usuarios-do-hotmail-vivem-dia-gloria-apos-queda-do-google-1607955148856_v2_142x100.jpg",
+      "imageAlt": "Meu Hotmail sobreviveu a 30 anos de spam, mas morreu na sexta-feira 13",
+      "addedAt": "2026-11-13T13:27:54.565Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-uol-tarifaco-reduz-peso-dos-eua-mas-nao-muda-e046b7",
+      "title": "Tarifaço reduz peso dos EUA, mas não muda pauta exportadora do Brasil, mostra FGV",
+      "summary": "io, 13 - O tarifaço imposto pelo presidente dos Estados Unidos, Donald Trump, a produtos brasileiros reduziu o peso do mercado norte-americano em diversos setores exportadores do Brasil, mas não cheg...",
+      "date": "2026-11-13T12:14:00.000Z",
+      "url": "https://noticias.uol.com.br/ultimas-noticias/agencia-estado/2026/11/13/tarifaco-reduz-peso-dos-eua-mas-nao-muda-pauta-exportadora-do-brasil-mostra-fgv.htm",
+      "source": "uol",
+      "sourceName": "UOL",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Tarifaço reduz peso dos EUA, mas não muda pauta exportadora do Brasil, mostra FGV",
+      "addedAt": "2026-11-13T13:27:54.565Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-uol-randolfe-e-magno-malta-bateram-boca-antes-aefdeb",
+      "title": "Randolfe e Magno Malta bateram boca antes de o Senado aprovar pacote fiscal",
+      "summary": "Uma discussão entre os senadores Randolfe Rodrigues (PT-AP) e Magno Malta (PL-ES) interrompeu a votação do pacote de corte de gastos ontem (13) no Senado. A sessão depois foi retomada, e o texto-base do pacote foi aprovado.",
+      "date": "2026-11-13T12:11:16.000Z",
+      "url": "https://noticias.uol.com.br/politica/ultimas-noticias/2026/11/13/bate-boca-entre-senadores-interrompe-votacao-de-corte-de-gastos.ghtm",
+      "source": "uol",
+      "sourceName": "UOL",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://conteudo.imguol.com.br/c/noticias/c1/2026/11/10/plenario-do-senado-1794346023398_v2_142x100.jpg",
+      "imageAlt": "Randolfe e Magno Malta bateram boca antes de o Senado aprovar pacote fiscal",
+      "addedAt": "2026-11-13T13:27:54.565Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-exame-velozes-furiosos-volta-aos-cinemas-em-d0b1be",
+      "title": "'Velozes & Furiosos' volta aos cinemas em comemoração aos 25 anos da franquia; veja onde assistir",
+      "summary": "Longa com Vin Diesel e Paul Walker retorna às telonas nesta quinta-feira, 12, para celebrar 25 anos",
+      "date": "2026-11-13T09:11:07.000Z",
+      "url": "https://exame.com/pop/velozes-veja-onde-assistir/",
+      "source": "exame",
+      "sourceName": "Exame",
+      "categories": [
+        "Pop"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "'Velozes & Furiosos' volta aos cinemas em comemoração aos 25 anos da franquia; veja onde assistir",
+      "addedAt": "2026-11-13T13:27:54.787Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-exame-iniciativa-privada-triplicou-investimentos-d991a9",
+      "title": "Iniciativa privada triplicou investimentos em infraestrutura. Mas o que esperar do futuro?",
+      "summary": "Segurança jurídica, mercado de capitais e concessões estão entre os caminhos para atrair capital privado; tema será discutido no Fórum Infraestrutura da EXAME",
+      "date": "2026-11-13T09:08:55.000Z",
+      "url": "https://exame.com/brasil/infraestrutura/iniciativa-privada-triplicou-investimentos-em-infraestrutura-mas-o-que-esperar-do-futuro/",
+      "source": "exame",
+      "sourceName": "Exame",
+      "categories": [
+        "Brasil"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Iniciativa privada triplicou investimentos em infraestrutura. Mas o que esperar do futuro?",
+      "addedAt": "2026-11-13T13:27:54.787Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-exame-o-outlook-voltou-veja-como-saber-se-e-mail-091e76",
+      "title": "O Outlook voltou? Veja como saber se e-mail da Microsoft está funcionando",
+      "summary": "A Microsoft restabelece o Outlook aos poucos nesta sexta-feira, 13, com falhas intermitentes e sem prazo para a normalização completa. Veja como testar se o e-mail voltou na sua conta e por que mensagens atrasadas podem demorar a aparecer",
+      "date": "2026-11-13T09:06:39.000Z",
+      "url": "https://exame.com/tecnologia/o-outlook-voltou-veja-como-saber-se-e-mail-da-microsoft-esta-funcionando/",
+      "source": "exame",
+      "sourceName": "Exame",
+      "categories": [
+        "Tecnologia"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "O Outlook voltou? Veja como saber se e-mail da Microsoft está funcionando",
+      "addedAt": "2026-11-13T13:27:54.787Z"
+    },
+    {
+      "slug": "saopaulo-2026-11-13-exame-como-a-criacao-de-conteudo-virou-cdd2c0",
+      "title": "Como a criação de conteúdo virou empreendedorismo",
+      "summary": "Influenciadores expandem negócios com lives, afiliação e marcas próprias, enquanto anunciantes repensam como medir resultados",
+      "date": "2026-11-13T09:00:52.000Z",
+      "url": "https://exame.com/bussola/como-a-criacao-de-conteudo-virou-empreendedorismo/",
+      "source": "exame",
+      "sourceName": "Exame",
+      "categories": [
+        "Bússola"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Como a criação de conteúdo virou empreendedorismo",
+      "addedAt": "2026-11-13T13:27:54.787Z"
+    },
     {
       "slug": "saopaulo-2026-11-13-uol-eua-e-mexico-podem-perder-status-de-6e8c00",
       "title": "EUA e México podem perder status de eliminação do sarampo",
