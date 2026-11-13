@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-11-13T22:36:37.860Z",
+  "updatedAt": "2026-11-13T23:31:22.921Z",
   "sources": [
     {
       "id": "antara",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T22:36:21.611Z"
+      "checkedAt": "2026-11-13T23:30:55.144Z"
     },
     {
       "id": "kompas",
@@ -24,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: empty response",
-        "https://nasional.kompas.com/rss: empty response"
+        "https://www.kompas.com/rss: HTTP 404",
+        "https://nasional.kompas.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-13T22:36:23.176Z"
+      "checkedAt": "2026-11-13T23:30:58.166Z"
     },
     {
       "id": "detik",
@@ -39,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-11-13T22:36:35.303Z"
+      "checkedAt": "2026-11-13T23:31:19.354Z"
     },
     {
       "id": "tempo",
@@ -51,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-13T22:36:36.053Z"
+      "checkedAt": "2026-11-13T23:31:20.220Z"
     },
     {
       "id": "cnnindonesia",
@@ -61,7 +61,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T22:36:36.158Z"
+      "checkedAt": "2026-11-13T23:31:20.663Z"
     },
     {
       "id": "republika",
@@ -71,7 +71,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T22:36:36.617Z"
+      "checkedAt": "2026-11-13T23:31:21.309Z"
     },
     {
       "id": "cnbcindonesia",
@@ -81,7 +81,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T22:36:36.685Z"
+      "checkedAt": "2026-11-13T23:31:21.718Z"
     },
     {
       "id": "kumparan",
@@ -93,10 +93,273 @@
       "errors": [
         "https://kumparan.com/feed: nije feed"
       ],
-      "checkedAt": "2026-11-13T22:36:37.860Z"
+      "checkedAt": "2026-11-13T23:31:22.921Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-11-13-republika-bmkg-prakirakan-wilayah-jakarta-akan-73d163",
+      "title": "BMKG Prakirakan Wilayah Jakarta akan Diguyur Hujan Ringan pada Sabtu",
+      "summary": "JAKARTA -- Badan Meteorologi, Klimatologi, dan Geofisika (BMKG) memprakirakan wilayah DKI Jakarta akan diguyur hujan dengan intensitas ringan, pada Sabtu (14/11/2026). BMKG melalui laman resmi https://www.bmkg.go.id/ mencatat hujan terjadi di...",
+      "date": "2026-11-13T23:30:21.000Z",
+      "url": "https://news.republika.co.id/berita/togryl409/bmkg-prakirakan-wilayah-jakarta-akan-diguyur-hujan-ringan-pada-sabtu",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional News"
+      ],
+      "author": "Andri Saubani",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/049154100-1767346801-830-556.jpg",
+      "imageAlt": "BMKG Prakirakan Wilayah Jakarta akan Diguyur Hujan Ringan pada Sabtu",
+      "addedAt": "2026-11-13T23:31:21.309Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-antara-xu-kai-menyemangati-para-penggemar-di-9bd0f7",
+      "title": "Xu Kai menyemangati para penggemar di Jakarta",
+      "summary": "Aktor asal China, Xu Kai, menyemangati para penggemar dalam acara jumpa fan bersama iQIYI di Jakarta pada Jumat ...",
+      "date": "2026-11-13T23:29:13.000Z",
+      "url": "https://www.antaranews.com/berita/5853199/xu-kai-menyemangati-para-penggemar-di-jakarta",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/14/393d2e74-6c84-4427-bea2-6e020ec7ddbe.jpeg",
+      "imageAlt": "Xu Kai menyemangati para penggemar di Jakarta",
+      "addedAt": "2026-11-13T23:30:55.144Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-antara-akhir-pekan-di-jakarta-ada-pameran-kopi-cfae35",
+      "title": "Akhir pekan di Jakarta, ada pameran kopi lalu jumpa Ong Seong-wu",
+      "summary": "Akhir pekan ini di Jakarta, ada pameran sejumlah pameran dari puluhan tenant kopi serta panel diskusi dalam Jakarta ...",
+      "date": "2026-11-13T23:27:47.000Z",
+      "url": "https://www.antaranews.com/berita/5853195/akhir-pekan-di-jakarta-ada-pameran-kopi-lalu-jumpa-ong-seong-wu",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2025/11/06/jakarta-international-coffee-conference-2025-2661601.jpg",
+      "imageAlt": "Akhir pekan di Jakarta, ada pameran kopi lalu jumpa Ong Seong-wu",
+      "addedAt": "2026-11-13T23:30:55.144Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-antara-jerman-permalukan-serbia-3-1-florian-wirtz-57abe2",
+      "title": "Jerman permalukan Serbia 3-1, Florian Wirtz cetak gol lagi",
+      "summary": "Jerman mempermalukan Serbia 3-1 pada laga kelima Liga A Grup 2 UEFA Nations League di Rajko Mitic, Beogard, Serbia, ...",
+      "date": "2026-11-13T23:25:17.000Z",
+      "url": "https://www.antaranews.com/berita/5853191/jerman-permalukan-serbia-3-1-florian-wirtz-cetak-gol-lagi",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://img.antaranews.com/cache/800x533/2026/06/21/Jerman-Melawan-Pantai-Gading-210626-YS-4.jpg",
+      "imageAlt": "Jerman permalukan Serbia 3-1, Florian Wirtz cetak gol lagi",
+      "addedAt": "2026-11-13T23:30:55.145Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-cnnindonesia-daftar-32-daerah-indonesia-berpotensi-hujan-d0eed8",
+      "title": "Daftar 32 Daerah Indonesia Berpotensi Hujan Hari Ini",
+      "summary": "BMKG memperkirakan 32 daerah di Indonesia akan diguyur hujan bervariasi hari ini. Pengaruh Monsun Asia dan gelombang atmosfer meningkatkan potensi hujan.",
+      "date": "2026-11-13T23:25:14.000Z",
+      "url": "https://www.cnnindonesia.com/teknologi/20261113172431-641-1426976/bmkg-ungkap-daftar-32-wilayah-indonesia-berpotensi-hujan-hari-ini",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2017/12/16/dd14a4c5-cebd-4702-b679-ed8763acb71a_169.jpg?w=360&q=90",
+      "imageAlt": "Daftar 32 Daerah Indonesia Berpotensi Hujan Hari Ini",
+      "addedAt": "2026-11-13T23:31:20.663Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-antara-sim-keliling-tersedia-di-lima-lokasi-27f958",
+      "title": "SIM Keliling tersedia di lima lokasi Jakarta pada Sabtu",
+      "summary": "Direktorat Lalu Lintas Polda Metro Jaya menyediakan layanan surat izin mengemudi (SIM) Keliling di lima lokasi di ...",
+      "date": "2026-11-13T23:22:57.000Z",
+      "url": "https://www.antaranews.com/berita/5853183/sim-keliling-tersedia-di-lima-lokasi-jakarta-pada-sabtu",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/07/23/Layanan-akses-SIM-Digital-230726-RRY-6.jpg",
+      "imageAlt": "SIM Keliling tersedia di lima lokasi Jakarta pada Sabtu",
+      "addedAt": "2026-11-13T23:30:55.145Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-republika-ragnarok-online-3-siapkan-evolution-test-5c6377",
+      "title": "Ragnarok Online 3 Siapkan Evolution Test Januari 2027, Hadirkan Pertempuran Guild Skala Besar",
+      "summary": "Ragnarok Online 3 Sumber:SKOR.id - Ragnarok Online 3 (RO3) semakin memperlihatkan ambisinya untuk menghidupkan kembali kejayaan MMORPG legendaris dengan membawa sejumlah inovasi baru.Dalam ajang RO Festa 2026 yang berlangsung...",
+      "date": "2026-11-13T23:22:45.000Z",
+      "url": "https://skor.id/postsragnarok-online-3-siapkan-evolution-test-januari-2027-hadirkan-pertempuran-guild-skala-besar",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Skor"
+      ],
+      "author": "Partner",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/026788500-1794612165-261114062134-692jpg.jpg",
+      "imageAlt": "Ragnarok Online 3 Siapkan Evolution Test Januari 2027, Hadirkan Pertempuran Guild Skala Besar",
+      "addedAt": "2026-11-13T23:31:21.309Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-cnnindonesia-prediksi-setlist-konser-5sos-jakarta-2026-978efc",
+      "title": "Prediksi Setlist Konser 5SOS Jakarta 2026, Ada 26 Lagu",
+      "summary": "Berikut prediksi setlist konser 5SOS Jakarta 2026 pada 14 November dan 6 Desember di Indonesia Arena.",
+      "date": "2026-11-13T23:20:07.000Z",
+      "url": "https://www.cnnindonesia.com/hiburan/20261113094602-227-1426701/prediksi-setlist-konser-5sos-jakarta-2026-ada-26-lagu",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2022/09/22/5-seconds-of-summer-1_169.jpeg?w=360&q=90",
+      "imageAlt": "Prediksi Setlist Konser 5SOS Jakarta 2026, Ada 26 Lagu",
+      "addedAt": "2026-11-13T23:31:20.663Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-antara-sabtu-samsat-keliling-tersedia-di-13-032a19",
+      "title": "Sabtu, Samsat Keliling tersedia di 13 wilayah Jadetabek",
+      "summary": "Polda Metro Jaya menyediakan layanan Sistem Administrasi Manunggal Satu Atap (Samsat) Keliling untuk membantu para ...",
+      "date": "2026-11-13T23:19:34.000Z",
+      "url": "https://www.antaranews.com/berita/5853179/sabtu-samsat-keliling-tersedia-di-13-wilayah-jadetabek",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/05/04/1000806217_1.jpg",
+      "imageAlt": "Sabtu, Samsat Keliling tersedia di 13 wilayah Jadetabek",
+      "addedAt": "2026-11-13T23:30:55.145Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-republika-metaphor-refantazio-resmi-hadir-di-nintendo-2064da",
+      "title": "Metaphor: ReFantazio Resmi Hadir di Nintendo Switch 2, SEGA Bagikan Bonus",
+      "summary": "SEGA Luncurkan Game Terbarunya Metaphor: ReFantazio Sumber:SKOR.id - Kabar gembira bagi para penggemar game RPG. SEGA bersama Studio Zero dari ATLUS resmi merilis Metaphor: ReFantazio untuk Nintendo Switch 2...",
+      "date": "2026-11-13T23:18:57.000Z",
+      "url": "https://skor.id/postsmetaphor-refantazio-resmi-hadir-di-nintendo-switch-2-sega-bagikan-bonus",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Skor"
+      ],
+      "author": "Partner",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/018666700-1794611937-medium_Metaphor_Refantazio_SEG.png",
+      "imageAlt": "Metaphor: ReFantazio Resmi Hadir di Nintendo Switch 2, SEGA Bagikan Bonus",
+      "addedAt": "2026-11-13T23:31:21.310Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-republika-japan-masters-2026-hadapi-lakshya-sen-alwi-b48a81",
+      "title": "Japan Masters 2026: Hadapi Lakshya Sen, Alwi Farhan Bisa Ulangi Catatan Manis Macau Open 2025",
+      "summary": "Pebulu tangkis tunggal putra Indonesia, Alwi Farhan. Sumber:(Grafis: Deni Sulaeman/Skor.id)SKOR.id - Alwi Farhan memiliki kenangan manis saat berhadapan dengan Lakshya Sen. Pebulu tangkis tunggal putra Indonesia itu pernah mengalahkan...",
+      "date": "2026-11-13T23:18:48.000Z",
+      "url": "https://skor.id/posts/792577/japan-masters-2026-hadapi-lakshya-sen-alwi-farhan-bisa-ulangi-catatan-manis-macau-open-2025",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Skor"
+      ],
+      "author": "Partner",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/074192300-1794611928-260315232807-723jpg.jpg",
+      "imageAlt": "Japan Masters 2026: Hadapi Lakshya Sen, Alwi Farhan Bisa Ulangi Catatan Manis Macau Open 2025",
+      "addedAt": "2026-11-13T23:31:21.310Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-cnbcindonesia-bus-tabrak-truk-peti-kemas-23-orang-58e376",
+      "title": "Bus Tabrak Truk Peti Kemas, 23 Orang Meninggal Dunia",
+      "summary": "Bus menabrak truk peti kemas, 23 orang dinyatakan meninggal Dunia di wilayah India",
+      "date": "2026-11-13T23:15:03.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261113210354-4-785171/bus-tabrak-truk-peti-kemas-23-orang-meninggal-dunia",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/10/26/kecelakaan-maut-terjadi-di-jalan-raya-nairobi-mombasa-kenya-pada-minggu-25102026-1793010352489_169.png?w=1200&q=90",
+      "imageAlt": "Bus Tabrak Truk Peti Kemas, 23 Orang Meninggal Dunia",
+      "addedAt": "2026-11-13T23:31:21.719Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-antara-jakarta-diperkirakan-hujan-ringan-pada-bb5001",
+      "title": "Jakarta diperkirakan hujan ringan pada Sabtu",
+      "summary": "Badan Meteorologi, Klimatologi, dan Geofisika (BMKG) memprakirakan wilayah DKI Jakarta akan diguyur hujan dengan ...",
+      "date": "2026-11-13T23:13:52.000Z",
+      "url": "https://www.antaranews.com/berita/5853175/jakarta-diperkirakan-hujan-ringan-pada-sabtu",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/09/24/Puncak-Musim-Hujan-16102020-wpa-7.jpg",
+      "imageAlt": "Jakarta diperkirakan hujan ringan pada Sabtu",
+      "addedAt": "2026-11-13T23:30:55.145Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-cnnindonesia-tijjani-reijnders-ukir-3-rekor-saat-2bfd52",
+      "title": "Tijjani Reijnders Ukir 3 Rekor saat Hattrick di Belanda vs Yunani",
+      "summary": "Tijjani Reijnders mencetak hattrick saat Belanda menang 7-0 atas Yunani, menciptakan tiga rekor baru dalam UEFA Nations League.",
+      "date": "2026-11-13T23:10:22.000Z",
+      "url": "https://www.cnnindonesia.com/olahraga/20261114060114-142-1427070/tijjani-reijnders-ukir-3-rekor-saat-hattrick-di-belanda-vs-yunani",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/14/soccer-uefanations-nld-grc-1794611186226_169.jpeg?w=360&q=90",
+      "imageAlt": "Tijjani Reijnders Ukir 3 Rekor saat Hattrick di Belanda vs Yunani",
+      "addedAt": "2026-11-13T23:31:20.663Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-cnbcindonesia-pertamina-beri-hadiah-25-motor-untuk-mitra-2dcd1e",
+      "title": "Pertamina Beri Hadiah 25 Motor Untuk Mitra Ojek Online",
+      "summary": "Pertamina memberikan hadian 25 motor buat mitra ojol",
+      "date": "2026-11-13T23:05:35.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261113213643-4-785176/pertamina-beri-hadiah-25-motor-untuk-mitra-ojek-online",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/13/ojol-pertamina-1794581004033_169.jpeg?w=1200&q=90",
+      "imageAlt": "Pertamina Beri Hadiah 25 Motor Untuk Mitra Ojek Online",
+      "addedAt": "2026-11-13T23:31:21.719Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-cnnindonesia-apakah-gibran-bisa-maju-lagi-di-pilpres-c2cc88",
+      "title": "Apakah Gibran Bisa Maju Lagi di Pilpres Usai Mundur?",
+      "summary": "Masa depan politik Gibran Rakabuming Raka tetap terbuka meski mundur sebagai wapres. Tak ada larangan untuk maju kembali, asalkan memenuhi syarat pendidikan.",
+      "date": "2026-11-13T23:00:44.000Z",
+      "url": "https://www.cnnindonesia.com/nasional/20261113220010-32-1427059/apakah-gibran-bisa-maju-lagi-di-pilpres-usai-mundur",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/12/gibran-bertolak-ke-istana-presiden-1794472510158_169.jpeg?w=360&q=90",
+      "imageAlt": "Apakah Gibran Bisa Maju Lagi di Pilpres Usai Mundur?",
+      "addedAt": "2026-11-13T23:31:20.663Z"
+    },
+    {
+      "slug": "jakarta-2026-11-13-cnnindonesia-klasemen-uefa-nations-league-a-usai-belanda-74c117",
+      "title": "Klasemen UEFA Nations League A usai Belanda dan Jerman Pesta Gol",
+      "summary": "Belanda dan Jerman meraih kemenangan meyakinkan dalam UEFA Nations League A 2026/2027. Untuk sementara Belanda memuncaki klasemen Grup 2.",
+      "date": "2026-11-13T22:43:04.000Z",
+      "url": "https://www.cnnindonesia.com/olahraga/20261114052822-142-1427069/klasemen-uefa-nations-league-a-usai-belanda-dan-jerman-pesta-gol",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/14/soccer-uefanations-nld-grc-1794609294449_169.jpeg?w=360&q=90",
+      "imageAlt": "Klasemen UEFA Nations League A usai Belanda dan Jerman Pesta Gol",
+      "addedAt": "2026-11-13T23:31:20.663Z"
+    },
     {
       "slug": "jakarta-2026-11-13-republika-pss-sleman-incar-dampak-positif-jeda-ff41ec",
       "title": "PSS Sleman Incar Dampak Positif Jeda Internasional Jelang Lawan Arema FC",

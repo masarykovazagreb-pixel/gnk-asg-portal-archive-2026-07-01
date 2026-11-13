@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-13T22:34:43.406Z",
+  "updatedAt": "2026-11-13T23:30:09.735Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-13T22:34:40.208Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-13T23:30:05.213Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T22:34:40.365Z"
+      "checkedAt": "2026-11-13T23:30:05.465Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T22:34:40.701Z"
+      "checkedAt": "2026-11-13T23:30:05.894Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T22:34:41.241Z"
+      "checkedAt": "2026-11-13T23:30:06.627Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-13T22:34:42.990Z"
+      "checkedAt": "2026-11-13T23:30:08.489Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T22:34:43.138Z"
+      "checkedAt": "2026-11-13T23:30:08.739Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,50 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T22:34:43.405Z"
+      "checkedAt": "2026-11-13T23:30:09.734Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-13-24hu-fidesz-bizunk-benne-hogy-a-kepeknek-semmi-99bce3",
+      "title": "Fidesz: Bízunk benne, hogy a képeknek semmi közük Seszták Miklóshoz",
+      "summary": "Szűkszavú közleményben reagált az esti órákban a volt kormánypárt az erdőben előásott milliárdok hírére. The post Fidesz: Bízunk benne, hogy a képeknek semmi közük Seszták Miklóshoz first appeared on 24.hu .",
+      "date": "2026-11-13T22:48:34.000Z",
+      "url": "https://24.hu/belfold/2026/11/13/sesztak-miklos-nvvh-fidesz-breaking/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "fidesz",
+        "nemzeti vagyonvisszaszerzési és vagyonvédelmi hivatal",
+        "seszták milós"
+      ],
+      "author": "Rugli Tamás",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1138901368-e1794610095300-1024x577.jpg",
+      "imageAlt": "Fidesz: Bízunk benne, hogy a képeknek semmi közük Seszták Miklóshoz",
+      "addedAt": "2026-11-13T23:30:08.739Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-hollandia-het-golt-lott-szerbia-kilenc-0a66ba",
+      "title": "Hollandia hét gólt lőtt, Szerbia kilenc játékossal fejezte be",
+      "summary": "Beindult a Nemzetek Ligája. The post Hollandia hét gólt lőtt, Szerbia kilenc játékossal fejezte be first appeared on 24.hu .",
+      "date": "2026-11-13T22:32:11.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/13/nemzetek-ligaja-hollandia-gorogorszag-nemetorszag-szerbia/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "sport",
+        "foci",
+        "labdarúgás"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-2304477642-e1794609069126-1024x575.jpg",
+      "imageAlt": "Hollandia hét gólt lőtt, Szerbia kilenc játékossal fejezte be",
+      "addedAt": "2026-11-13T23:30:08.740Z"
+    },
     {
       "slug": "budimpesta-2026-11-13-telex-a-sesztak-ugyben-kiasott-milliardok-048c61",
       "title": "A Seszták-ügyben kiásott milliárdok árnyékában az Index három helyreigazítást is közzétett a kamu Tisza-adótervekről",
