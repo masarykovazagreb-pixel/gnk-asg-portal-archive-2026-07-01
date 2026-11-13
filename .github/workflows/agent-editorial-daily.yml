@@ -13,7 +13,7 @@ name: AGENTI — pisac i AI kontrola pregleda
 
 on:
   schedule:
-    # 05:52 UTC = 07:52 Zagreb: nakon jutarnjeg osvježavanja izvora, prije dnevnog izdanja.
+    # 05:52 UTC = 06:52 zimi (CET) / 07:52 ljeti (CEST) u Zagrebu; bez promjene postojećeg cron rasporeda.
     - cron: '52 5 * * *'
   workflow_dispatch:
   push:
