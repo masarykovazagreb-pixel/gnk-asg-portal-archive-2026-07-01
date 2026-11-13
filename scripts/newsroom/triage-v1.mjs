@@ -29,7 +29,22 @@ const validHttps = raw => {
     return u;
   } catch { return null; }
 };
-const publisher = url => url.hostname.toLowerCase().replace(/^www\./, '');
+const publisher = url => url.hostname.toLowerCase().replace(/^www\\./, '');
+/**
+ * Known shared corporate ownership; a domain is not proof of independent
+ * reporting. Unknown ownership is explicitly marked UNVERIFIED, not claimed.
+ * Sources: Styria's published corporate reports, 24sata (30 Sep 2026).
+ */
+const KNOWN_OWNER_GROUPS = new Map([
+ ['24sata.hr','styria-media-hr'],
+ ['vecernji.hr','styria-media-hr'],
+ ['poslovni.hr','styria-media-hr']
+]);
+export function ownershipGroupForHost(host) {
+ const normalized=String(host||'').toLowerCase().replace(/^www\\./,'');
+ const known=KNOWN_OWNER_GROUPS.get(normalized);
+ return {group:known||'unverified-domain:'+normalized,verified:Boolean(known)};
+}
 const canonicalLink = raw => {
   const url = validHttps(raw);
   if (!url) return '';
@@ -54,7 +69,9 @@ function record(item, now, horizonMs) {
   if (normalized.size < 2) return null;
   return {
     title, url, source: String(item.sourceName || item.source || '').slice(0, 100),
-    publisher: publisher(new URL(url)), published_at: new Date(published).toISOString(),
+    publisher: publisher(new URL(url)),
+    owner: ownershipGroupForHost(publisher(new URL(url))),
+    published_at: new Date(published).toISOString(),
     dateMs: published, normalized,
     source_id: String(item.source || '').slice(0, 64),
     summary: String(item.summary || '').slice(0, 480)
@@ -79,21 +96,30 @@ export function triage(items, {channel = 'zagreb', now = Date.now(), horizonHour
     }
     if (!group.records.some(x => x.publisher === rec.publisher)) group.records.push(rec);
   }
-  const result = groups.filter(x => x.records.length >= 2).map(group => {
+  const result = groups.filter(x =>
+    x.records.length >= 2 &&
+    new Set(x.records.map(r => r.owner.group)).size >= 2
+  ).map(group => {
     const sources = group.records.slice(0, 6).map(x => ({
-      publisher: x.publisher, outlet: x.source, title: x.title,
+      publisher: x.publisher, owner_group: x.owner.group,
+      ownership_verified: x.owner.verified,
+      outlet: x.source, title: x.title,
       url: x.url, published_at: x.published_at, source_id: x.source_id
     }));
     const freshnessHours = (clock - Math.max(...group.records.map(x=>x.dateMs))) / 3600000;
-    const score = Math.round(25 + Math.min(35, sources.length * 8) + Math.max(0, 30 - freshnessHours / 2));
+    const groupCount=new Set(sources.map(x=>x.owner_group)).size;
+    const allOwnershipKnown=sources.every(x=>x.ownership_verified);
+    const score = Math.round(25 + Math.min(35, groupCount * 8) + Math.max(0, 30 - freshnessHours / 2));
     const subjectTokens = [...group.anchor.normalized].slice(0, 7).sort();
     return {
       id: 'am-' + channel + '-' + hash(group.anchor.url),
       channel, kind: 'research_lead', status: 'research_required',
       title_hint: group.anchor.title, topic_terms: subjectTokens,
       importance_score: score, distinct_outlets: sources.length,
+      distinct_owner_groups:groupCount,
+      ownership_independence:allOwnershipKnown?'grouped-by-known-owner':'partially-unverified',
       sources, verified_claims: 0, publishable: false,
-      evidence_level: 'multiple-outlet-headlines-only',
+      evidence_level: 'multiple-outlet-headlines-only-ownership-not-fully-verified',
       next_step: 'Check primary documents and actual article claims; write original angle; run independent fact and rights review.'
     };
   });
