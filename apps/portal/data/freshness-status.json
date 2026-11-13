@@ -1,6 +1,6 @@
 {
   "version": "GNK_ASG_FRESHNESS_V2",
-  "generatedAt": "2026-11-13T09:25:29.903Z",
+  "generatedAt": "2026-11-13T13:24:57.269Z",
   "overall": "stale",
   "resources": {
     "weather": {
@@ -8,7 +8,7 @@
       "state": "stale",
       "path": "apps/portal/data/weather-zagreb.json",
       "observedAt": "2026-11-12T21:25:23.241Z",
-      "ageMinutes": 720,
+      "ageMinutes": 960,
       "maxAgeMinutes": 420,
       "sourceState": "stale"
     },
@@ -16,17 +16,17 @@
       "name": "News/AKTUAL",
       "state": "fresh",
       "path": "apps/portal/data/news-automation-status.json",
-      "observedAt": "2026-11-13T07:53:21.000Z",
-      "ageMinutes": 92,
+      "observedAt": "2026-11-13T13:24:56.000Z",
+      "ageMinutes": 0,
       "maxAgeMinutes": 290,
       "sourceState": true
     },
     "digitalAssets": {
       "name": "Digital Assets",
-      "state": "fresh",
+      "state": "stale",
       "path": "apps/portal/data/fast_market_status.json",
       "observedAt": "2026-11-12T15:55:05.062Z",
-      "ageMinutes": 1050,
+      "ageMinutes": 1290,
       "maxAgeMinutes": 1080,
       "sourceState": "ok"
     }
