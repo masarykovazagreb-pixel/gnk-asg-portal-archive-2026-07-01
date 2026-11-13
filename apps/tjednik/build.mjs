@@ -757,6 +757,11 @@ for (const f of existsSync(ASSETS) ? readdirSync(ASSETS) : []) {
   if (f.endsWith('.png') || f.endsWith('.svg') || f.endsWith('.css') || f.endsWith('.js') || f.endsWith('.webp') || f.endsWith('.jpg')) copyFileSync(from, to);
 
 }
+// The visual hero and existing OpenGraph image are nested under assets/og/.
+// Copy explicitly: the flat asset loop above intentionally ignores directories.
+mkdirSync(join(OUT_ASSETS, 'og'), { recursive: true });
+copyFileSync(join(ASSETS, 'og', 'tjednik.png'), join(OUT_ASSETS, 'og', 'tjednik.png'));
+
 // Override any legacy source favicon with the network-wide canonical mark.
 copyFileSync(join(HERE, '..', 'shared', 'brand', 'favicon.svg'), join(OUT_ASSETS, 'favicon.svg'));
 
