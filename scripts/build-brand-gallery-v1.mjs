@@ -288,9 +288,11 @@ ${tagMetas(entry.tags)}
 <meta name="twitter:image:alt" content="${esc(entry.caption)}">
 <script type="application/ld+json">${safeJson(jsonld)}</script>
 <style>${cardCss()}</style>
+<link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">
 </head>
 <body>
-<main>
+<a class="skip" href="#galleryContent">${entry.lang === 'en' ? 'Skip to content' : 'Preskoči na sadržaj'}</a>
+<main id="galleryContent" tabindex="-1">
 <p class="crumb"><a href="/">GNK ASG</a> / <a href="/gnk-aktual/">AKTUAL MEDIA</a> / <a href="/galerija/">Galerija</a> / ${esc(entry.title)}</p>
 <article class="bg-card">
   <div class="bg-media${entry.plate ? ' bg-media--plate' : ''}">
