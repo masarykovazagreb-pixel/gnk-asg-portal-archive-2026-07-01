@@ -68,6 +68,14 @@ jobs:
         if: ${{ steps.editorial_switch.outputs.enabled == 'true' }}
         run: node apps/agents/writer-agent-v1.mjs
 
+      - name: Newsroom Scout — izdvoji istraživačke teme iz postojećih izdanja
+        if: ${{ steps.editorial_switch.outputs.enabled == 'true' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/newsroom/triage-v1.mjs --out "$AGENT_OUT/research-leads.json"
+          node -e 'const fs=require("fs");const d=JSON.parse(fs.readFileSync(process.env.AGENT_OUT+"/research-leads.json"));if(d.publication_enabled!==false||d.totals.publishable!==0)process.exit(1);console.log("Istraživačke teme:",d.totals.research_leads,"; automatski objavljeno: 0")'
+
       - name: AI kontrola — odobri ili odbij svaku objavu
         if: ${{ steps.editorial_switch.outputs.enabled == 'true' }}
         run: node apps/agents/control-agent-v1.mjs
