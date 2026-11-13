@@ -77,10 +77,17 @@ jobs:
           node scripts/newsroom/triage-v1.mjs --out "$AGENT_OUT/research-leads.json"
           node -e 'const fs=require("fs");const d=JSON.parse(fs.readFileSync(process.env.AGENT_OUT+"/research-leads.json"));if(d.publication_enabled!==false||d.totals.publishable!==0)process.exit(1);console.log("Istraživačke teme:",d.totals.research_leads,"; automatski objavljeno: 0")'
 
+      - name: Zabrani AI nacrte u javnom repozitoriju
+        if: ${{ github.ref == 'refs/heads/main' && steps.editorial_switch.outputs.enabled == 'true' && vars.AKTUAL_NEWSROOM_DRAFTS_ENABLED == 'true' && github.event.repository.private != true }}
+        run: |
+          echo "::error::Repository is public: GitHub Actions artifacts are not acceptable private editorial storage. Use a separate private workspace before enabling AI drafts."
+          exit 1
+
       - name: Originalni AI analitički nacrt — privatni artefakt, bez objave
-        if: ${{ github.ref == 'refs/heads/main' && steps.editorial_switch.outputs.enabled == 'true' && vars.AKTUAL_NEWSROOM_DRAFTS_ENABLED == 'true' }}
+        if: ${{ github.ref == 'refs/heads/main' && github.event.repository.private == true && steps.editorial_switch.outputs.enabled == 'true' && vars.AKTUAL_NEWSROOM_DRAFTS_ENABLED == 'true' }}
         env:
           NEWSROOM_OPENAI_API_KEY: ${{ secrets.NEWSROOM_OPENAI_API_KEY }}
+          NEWSROOM_STORAGE_PRIVATE: ${{ github.event.repository.private }}
           NEWSROOM_MODEL: ${{ vars.AKTUAL_NEWSROOM_MODEL || 'gpt-6-astra' }}
         shell: bash
         run: |
