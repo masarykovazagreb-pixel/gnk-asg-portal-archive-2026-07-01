@@ -720,6 +720,12 @@ function card(channel, strings, item, { lead = false, root = '' } = {}) {
 function homePage(channel, strings, data) {
   const CHANNEL_TZ = channel.timezone || 'Europe/Zagreb';
   const items = data.items;
+  // Freshness is about actual published article timestamps, NOT the time a
+  // feed sync or build ran. No items => unknown, never green by default.
+  const newestItemAt = items
+    .map((item) => item.date)
+    .filter((value) => value && Number.isFinite(Date.parse(value)))
+    .sort((a, b) => Date.parse(b) - Date.parse(a))[0] || '';
   const lead = items[0];
   const rest = items.slice(1, 13);
   const more = items.slice(13, 30);
@@ -735,7 +741,7 @@ function homePage(channel, strings, data) {
       <p class="dateline">${esc(strings.daily)} · ${esc(longDate(new Date().toISOString().slice(0, 10), channel.lang))}${(() => { const st = stampLocal(data.updatedAt || BUILD_ISO, channel.lang, CHANNEL_TZ); return st ? ` · ${esc(strings.updated)} <time datetime="${esc(st.iso)}">${esc(st.stamp)}</time>` : ''; })()}</p>
       <h1>${esc(channel.title)}</h1>
       <p class="intro-text">${esc(strings.aboutText)}</p>
-      <p class="live"><span class="region-fresh" data-region-fresh="${esc(data.updatedAt || items[0]?.date || '')}">Nema potvrde vremena</span><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc(data.updatedAt || items[0]?.date || BUILD_ISO)}">${esc(strings.updated)} ${esc((stampLocal(data.updatedAt || items[0]?.date || BUILD_ISO, channel.lang, CHANNEL_TZ) || {}).stamp || shortDate((items[0]?.date || BUILD_ISO).slice(0, 10), channel.lang))}</time></span></p>
+      <p class="live"><span class="region-fresh" data-region-fresh="${esc(newestItemAt)}" title="Starost najnovijeg stvarnog članka; nije provjera rada sustava">Nema potvrde vremena</span><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc(data.updatedAt || items[0]?.date || BUILD_ISO)}">${esc(strings.updated)} ${esc((stampLocal(data.updatedAt || items[0]?.date || BUILD_ISO, channel.lang, CHANNEL_TZ) || {}).stamp || shortDate((items[0]?.date || BUILD_ISO).slice(0, 10), channel.lang))}</time></span></p>
       <p class="intro-tags">${channel.hashtags.map((h) => `<span class="tag">${esc(h)}</span>`).join(' ')}</p>
       <p class="hero-tags">${esc(chromeOf(channel.lang).tagsLead)} <a href="/nermin-sefic/">#NerminSefić</a> · <a href="/nermin-sefic/">#NerminSefic</a> · <a href="/autorske-objave/">#SeficNermin</a> · <a href="/autorske-objave/">#SEFICNERMIN</a> · <a href="/nermin-sefic/">#UrednikNerminSefić</a> · #AKTUALMEDIA · #GNKASG · ${esc(channel.hashtags[0] || '')}</p>
     </div>
