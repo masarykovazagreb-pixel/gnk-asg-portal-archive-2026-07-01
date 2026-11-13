@@ -276,6 +276,7 @@ function header({ active = '', root }) {
     </a>
     <div class="mast-tools">
       <span class="mast-date">${new Intl.DateTimeFormat('hr-HR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(LATEST))}</span>
+       <time class="city-clock" data-local-clock="Europe/Zagreb" aria-label="Lokalno vrijeme u Zagrebu">Zagreb · --:--</time>
       <button class="icon-btn" type="button" data-theme-toggle aria-label="Promijeni temu">☾</button>
     </div>
   </div>
@@ -288,7 +289,8 @@ function disclosure(root = '', desk = false) {
   const label = desk ? 'Automatski sastavljeno · Dnevni desk' : SITE.editorial.statusLabel;
   return `<div class="status-strip"><div class="wrap">
   <a class="badge ${pending ? 'badge--pending' : ''}" href="${root}${desk ? 'dnevnik/' : 'metodologija/'}"><span class="dot"></span>${esc(label)}</a>
-  <span>Izvori su navedeni uz svaki tekst · ispravci se objavljuju javno</span>
+  <span class="freshness-indicator" data-freshness data-updated="${esc(LATEST)}" role="status" aria-live="off"><span class="fresh-dot" aria-hidden="true"></span><span data-freshness-label>Provjera svježine…</span></span>
+   <span>Izvori su navedeni uz svaki tekst · ispravci se objavljuju javno</span>
 </div></div>`;
 }
 
@@ -499,6 +501,7 @@ function buildArticle(a) {
           <span class="sep">·</span><span>${a.words.toLocaleString('hr-HR')} riječi</span>
         </div>
         <div class="share" aria-label="Podijeli">
+           <span class="share-hashtags" aria-label="Tematske oznake">#AktualMedia #KanalZagreb #GNKASG</span>
           <a href="${xShare}" rel="noopener nofollow" target="_blank" aria-label="Podijeli na X" title="Podijeli na X">X</a>
           <a href="${liShare}" rel="noopener nofollow" target="_blank" aria-label="Podijeli na LinkedIn" title="Podijeli na LinkedIn">in</a>
           <a href="${fbShare}" rel="noopener nofollow" target="_blank" aria-label="Podijeli na Facebook" title="Podijeli na Facebook">f</a>
@@ -696,7 +699,10 @@ function buildHome() {
   const comments = ARTICLES.filter((a) => a.section === 'komentar').slice(0, 2);
 
   const content = `<div class="wrap">
-  <section class="home-hero">
+  <section class="cinematic-intro" aria-label="Urednička naslovnica">
+     <div class="cinematic-intro__glass"><span class="eyebrow">AKTUAL MEDIA / KANAL ZAGREB</span><h2>Vijesti imaju kontekst.<br>Analiza ima težinu.</h2><p>Autorski tekstovi, provjerljivi izvori i regionalni pogled. Bez kopiranja tuđih članaka.</p><a href="objave/">Otvori sve objave <span aria-hidden="true">↗</span></a></div>
+   </section>
+   <section class="home-hero">
     <article class="lead">
       <a class="lead-media" href="${lead.slug}/"><img src="${lead.og || lead.image}" alt="${esc(lead.imageAlt || lead.title)}" width="1200" height="630" fetchpriority="high" decoding="async"></a>
       <div class="lead-body">
