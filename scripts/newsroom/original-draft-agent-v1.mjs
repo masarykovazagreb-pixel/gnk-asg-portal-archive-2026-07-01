@@ -81,7 +81,7 @@ export function assemblePrivateDraft(lead,sources,data,{now=Date.now(),model='un
   editorial_note:'PRIVATNI NACRT: bez primarnih izvora, provjere činjenica, prava i stvarnog ljudskog uredničkog odobrenja nema objave.'
  };
 }
-export async function makeDraft(lead,{apiKey,model='gpt-6-astra',now=Date.now(),transport=fetch}={}){
+export async function makeDraft(lead,{apiKey,model='gpt-6.1-terra',now=Date.now(),transport=fetch}={}){
  if(!apiKey||!/^[a-z0-9._:-]+$/i.test(model))throw Error('model-configuration-missing');
  const sources=validateLead(lead,now);
  const content=JSON.stringify({lead_id:lead.id,topic:lead.title_hint,
@@ -127,7 +127,7 @@ if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  runDrafts({input:process.env.NEWSROOM_RESEARCH_QUEUE,
    outDir:process.env.NEWSROOM_PRIVATE_DRAFT_DIR,
    apiKey:process.env.NEWSROOM_OPENAI_API_KEY,
-   model:process.env.NEWSROOM_MODEL||'gpt-6-astra',limit:1,
+   model:process.env.NEWSROOM_MODEL||'gpt-6.1-terra',limit:1,
    storagePrivate:process.env.NEWSROOM_STORAGE_PRIVATE==='true',
    channel:process.env.NEWSROOM_CHANNEL||'zagreb'})
  .then(r=>console.log(JSON.stringify(r,null,2)))
