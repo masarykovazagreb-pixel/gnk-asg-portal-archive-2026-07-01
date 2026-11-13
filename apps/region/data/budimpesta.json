@@ -4,23 +4,17 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-13T02:36:43.759Z",
+  "updatedAt": "2026-11-13T08:08:31.253Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 50,
       "corrupt": 0,
-      "errors": [
-        "https://telex.hu/rss: HTTP 403",
-        "https://telex.hu/rss/belfold: HTTP 403",
-        "https://telex.hu/rss/kulfold: HTTP 403",
-        "https://telex.hu/rss/gazdasag: HTTP 403",
-        "https://telex.hu/rss/sport: HTTP 403"
-      ],
-      "checkedAt": "2026-11-13T02:36:39.941Z"
+      "errors": [],
+      "checkedAt": "2026-11-13T08:08:27.389Z"
     },
     {
       "id": "444",
@@ -30,7 +24,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T02:36:40.167Z"
+      "checkedAt": "2026-11-13T08:08:27.564Z"
     },
     {
       "id": "hvg",
@@ -40,7 +34,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T02:36:40.346Z"
+      "checkedAt": "2026-11-13T08:08:27.726Z"
     },
     {
       "id": "portfolio",
@@ -50,7 +44,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T02:36:41.059Z"
+      "checkedAt": "2026-11-13T08:08:28.488Z"
     },
     {
       "id": "index",
@@ -62,7 +56,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-13T02:36:43.070Z"
+      "checkedAt": "2026-11-13T08:08:30.286Z"
     },
     {
       "id": "24hu",
@@ -72,7 +66,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T02:36:43.275Z"
+      "checkedAt": "2026-11-13T08:08:30.490Z"
     },
     {
       "id": "mandiner",
@@ -82,10 +76,536 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T02:36:43.759Z"
+      "checkedAt": "2026-11-13T08:08:31.252Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-13-hvg-van-ahol-egy-nap-alatt-lehullott-a-teljes-4f5458",
+      "title": "Van, ahol egy nap alatt lehullott a teljes novemberi átlagos csapadékmennyiség",
+      "summary": "A Kékesen közel 60 milliméter eső esett.",
+      "date": "2026-11-13T08:03:00.000Z",
+      "url": "https://hvg.hu/zhvg/20261113_esozes-csapadek-mennyiseg-balaton-meteorologia",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Zhvg",
+        "időjárás",
+        "csapadék",
+        "eső"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/1ac93249-97fd-489e-aa75-187be4699d6a.jpg",
+      "imageAlt": "Van, ahol egy nap alatt lehullott a teljes novemberi átlagos csapadékmennyiség",
+      "addedAt": "2026-11-13T08:08:27.726Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-portfolio-senki-ne-varjon-feleslegesen-a-januari-kgfb-6920bf",
+      "title": "Senki ne várjon feleslegesen a januári KGFB-fordulóra - így lehet néhány perc alatt tízezreket spórolni a kötelezőn",
+      "summary": "Sokan vannak, akik évek óta ugyanazzal az autóval járnak, pontosan tudják, melyik szervizben bíznak, mennyit fogyaszt a kocsijuk, és mikor kell gumit cserélni. A kötelező biztosításukhoz viszont ritkán nyúlnak hozzá, pedig lehet, hogy éppen ott fizetnek feleslegesen többet. A KGFB-díjak papíron csökkennek, sok autós mégis drágulást lát a saját szerződésén, miközben a casco, az avultatás, a gazdasági totálkár és az elektromos autók javítási költségei is egyre több kérdést vetnek fel. Szobonya Lászlóval, a Groupama Biztosító lakossági nem-életbiztosítás termékmenedzsment vezetőjével beszélgettünk arról, miért érdemes újra elővenni a régen megkötött biztosítást, hogyan lehet elkerülni a…",
+      "date": "2026-11-13T08:00:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261113/senki-ne-varjon-feleslegesen-a-januari-kgfb-fordulora-igy-lehet-nehany-perc-alatt-tizezreket-sporolni-a-kotelezon-875448",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://cdn.portfolio.hu/articles/images-xl/0/w/3/0w3a9456-868218.jpg",
+      "imageAlt": "Senki ne várjon feleslegesen a januári KGFB-fordulóra - így lehet néhány perc alatt tízezreket spórolni a kötelezőn",
+      "addedAt": "2026-11-13T08:08:28.488Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-portfolio-szeretnek-oket-is-nem-is-tudod-igy-van-ez-9d4ea0",
+      "title": "Szeretnék őket is + nem is, tudod, így van ez − Kérdések a külföldiek hazai foglalkoztatása körül",
+      "summary": "A Portfolio Checklist csütörtöki adásában többek között arról volt szó, hogy milyen problémákat okoz a külföldi munkavállalók magyarországi foglalkoztatásának jelenlegi szabályozása, és miért félrevezető minden külföldi dolgozót vendégmunkásként kezelni. Megnéztük, milyen változtatásokra lenne szükség ahhoz, hogy a rendszer a hazai munkavállalók védelme mellett a cégek munkaerőigényére is jobban reagáljon. Vendégünk Ürögdy Barbara , az üzleti és bevándorlási szolgáltatásokat nyújtó Helpers Hungary egyik alapítója és ügyvezetője volt. A témával részletesen is foglalkozunk a november 17-i HR (R)evolution 2026 konferencián , amelyre korlátozott számban még kaphatók jegyek. (A megszólalás…",
+      "date": "2026-11-13T08:00:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261113/szeretnek-oket-is-nem-is-tudod-igy-van-ez-kerdesek-a-kulfoldiek-hazai-foglalkoztatasa-korul-876086",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-1463305344-675721.jpg",
+      "imageAlt": "Szeretnék őket is + nem is, tudod, így van ez − Kérdések a külföldiek hazai foglalkoztatása körül",
+      "addedAt": "2026-11-13T08:08:28.489Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-hvg-russell-brandet-ujabb-hat-no-vadolja-f59325",
+      "title": "Russell Brandet újabb hat nő vádolja szexuális visszaéléssel",
+      "summary": "A brit színész-humoristát hétfőn ítélték tíz és fél év börtönre hasonló esetek miatt.",
+      "date": "2026-11-13T07:59:01.000Z",
+      "url": "https://hvg.hu/elet/20261113_russell-brand-szexualis-visszaeles-kizsakmanyolas-ujabb-aldozatok-vad-borton-buntetes-itelet",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "bűnügyek",
+        "Russell Brand",
+        "szexuális visszaélés"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/0f8ceee8-0ddf-408b-ad8e-a4fe26a1b162.jpg",
+      "imageAlt": "Russell Brandet újabb hat nő vádolja szexuális visszaéléssel",
+      "addedAt": "2026-11-13T08:08:27.727Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-portfolio-veszelyes-utakra-tereli-a-lakobuszokat-a-304e37",
+      "title": "Veszélyes utakra tereli a lakóbuszokat a navigáció Horvátországban - Erre érdemes figyelni!",
+      "summary": "Életveszélyes közlekedési helyzetekre és rendszeres útlezárásokra panaszkodnak az észak-isztriai lakosok, miután a navigációs alkalmazások a keskeny helyi utakra terelik a nagyméretű lakóautókat és a hajószállító utánfutókat. A horvát–szlovén határ mentén élők azonnali korlátozásokat, hosszabb távon pedig a két ország közötti úthálózat fejlesztését követelik a hatóságoktól - tudósított a Croatia Week .",
+      "date": "2026-11-13T07:59:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261113/veszelyes-utakra-tereli-a-lakobuszokat-a-navigacio-horvatorszagban-erre-erdemes-figyelni-876220",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/h/o/r/horvatorszag-kozlekedes-infrastruktura-turizmus-szlovenia-forgalom-navigacio-kozuthaloza-869352.jpg",
+      "imageAlt": "Veszélyes utakra tereli a lakóbuszokat a navigáció Horvátországban - Erre érdemes figyelni!",
+      "addedAt": "2026-11-13T08:08:28.489Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-telex-a-kongresszus-elott-kell-vallomast-tennie-a-1b50f7",
+      "title": "A kongresszus előtt kell vallomást tennie a feltételezett kínai kémmel folytatott viszonyáról az Nvidia volt vezérének",
+      "summary": "Jensen Huang mellett Trump kereskedelmi miniszterét is beidézték a szenátusi meghallgatásra.",
+      "date": "2026-11-13T07:55:09.000Z",
+      "url": "https://telex.hu/kulfold/2026/11/13/jensen-huang-nvidia-volt-vezerigazgato-botrany-lemondas-kinai-kemno-szereto-amerikai-kongresszus-meghallgatas-vallomas",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "Pál Tamás",
+      "theme": "politika",
+      "image": "https://assets.telex.hu/images/20261113/1794556192-temp-1t34ghst641l1cekoah_cimlap-normal.jpg",
+      "imageAlt": "A kongresszus előtt kell vallomást tennie a feltételezett kínai kémmel folytatott viszonyáról az Nvidia volt vezérének",
+      "addedAt": "2026-11-13T08:08:27.389Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-hvg-posfai-gabor-elhult-irigykedett-a-nemet-5be536",
+      "title": "Pósfai Gábor: Elhűlt, irigykedett a német sportminiszter, amikor elmondtam neki, mennyit szánunk a magyar sportra",
+      "summary": "Marad a mindennapos tetstnevelés, a magyar fél NOB-bal folytatott párbeszédét az olimpiarendezésről pedig nagyítóval figyeli a sportért felelős államtitkárság – hangzott el a Merre tovább, magyar sport? című konferencián. A belügyminiszter a sportfinanszírozás rendszerének átalakítását és a nagy sportesemények rendezésének új feltételeit is ismertette.",
+      "date": "2026-11-13T07:55:00.000Z",
+      "url": "https://hvg.hu/gazdasag/20261113_posfai-gabor-kalnoki-kiss-attila-sport-finanszirozas-konferencia",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "csapatsportok",
+        "Pósfai Gábor",
+        "Kálnoki-Kiss Attila"
+      ],
+      "author": "szerzo@hvg.hu (Horn Andrea)",
+      "theme": "sport",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/6dae0c60-2f4f-4e4c-9557-88637859a98b.jpg",
+      "imageAlt": "Pósfai Gábor: Elhűlt, irigykedett a német sportminiszter, amikor elmondtam neki, mennyit szánunk a magyar sportra",
+      "addedAt": "2026-11-13T08:08:27.727Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-portfolio-szolt-az-fbi-lecsaptak-a-magyar-hatosagok-3c2987",
+      "title": "Szólt az FBI, lecsaptak a magyar hatóságok: elképesztő módon bukott le a Budapesten gyilkosságot tervező nő",
+      "summary": "Az amerikai Szövetségi Nyomozó Iroda (FBI) jelzése alapján fogtak el egy Budapesten élő külföldi nőt, aki egy mesterséges intelligencia alapú chatbottal osztotta meg gyilkossági terveit. Bár a rendőrség emberölés előkészülete miatt őrizetbe vette a huszonkét éves diákot, az ügyészség végül szabadlábra helyezte.",
+      "date": "2026-11-13T07:53:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261113/szolt-az-fbi-lecsaptak-a-magyar-hatosagok-elkepeszto-modon-bukott-le-a-budapesten-gyilkossagot-tervezo-no-876218",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://pcdn.hu/articles/images-xl/m/e/s/mestersges-intelligencia-fbi-nyomozs-gyanstott-rendrsg-bncselekmny-gyszsg-mer-869348.jpg",
+      "imageAlt": "Szólt az FBI, lecsaptak a magyar hatóságok: elképesztő módon bukott le a Budapesten gyilkosságot tervező nő",
+      "addedAt": "2026-11-13T08:08:28.489Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-portfolio-nvidia-botrany-utan-mutatjuk-mi-var-a-54edc0",
+      "title": "Nvidia-botrány után: mutatjuk, mi vár a tőzsdékre",
+      "summary": "Nyomás alatt voltak tegnap az amerikai részvénypiacok, hiszen az Nvidia vezérigazgatójának botrányos távozása mellett az olajárak megugrása is rontotta a hangulatot, miután Donald Trump újabb kijelentései felerősítették az elhúzódó iráni konfliktussal kapcsolatos aggodalmakat. Ma elsősorban az amerikai termelői árindexre figyelhetnek a befektetők, ez ugyanis fontos jelzést adhat az infláció alakulásáról és a Fed következő lépéseiről. Az előzetes adatok alapján bizonytalan hangulatban indulhat a kereskedés Európában.",
+      "date": "2026-11-13T07:52:00.000Z",
+      "url": "https://www.portfolio.hu/uzlet/20261113/nvidia-botrany-utan-mutatjuk-mi-var-a-tozsdekre-876198",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Üzlet"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://pcdn.hu/articles/images-xl/t/o/z/tozsde-makronaptar-broker-cac40-tozsde-reszvenypiac-kereskedes-arfolyam-technikai-elemze-800481.jpg",
+      "imageAlt": "Nvidia-botrány után: mutatjuk, mi vár a tőzsdékre",
+      "addedAt": "2026-11-13T08:08:28.489Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-444-belso-vizsgalatot-rendelt-el-az-uj-legfobb-c93824",
+      "title": "Belső vizsgálatot rendelt el az új legfőbb ügyész az aranykonvoj-ügy miatt",
+      "summary": "Annyi feljelentés jön az előző kormány ügyei miatt, hogy arra az ügyészség nincs felkészülve Fejes Péter szerint.",
+      "date": "2026-11-13T07:51:08.000Z",
+      "url": "https://444.hu/2026/11/13/belso-vizsgalatot-rendelt-el-az-uj-legfobb-ugyesz-az-aranykonvoj-ugy-miatt?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Fejes Péter",
+        "Nemzeti Vagyonvisszaszerzési és Vagyonvédelmi Hivatal",
+        "kossuth rádió",
+        "aranykonvoj-ügy"
+      ],
+      "author": "Kolozsi Ádám",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8Jdqmwr0xB5x15xcEs.jpeg",
+      "imageAlt": "Belső vizsgálatot rendelt el az új legfőbb ügyész az aranykonvoj-ügy miatt",
+      "addedAt": "2026-11-13T08:08:27.564Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-hvg-szenatus-ele-citaljak-a-lemondott-nvidia-1d392f",
+      "title": "Szenátus elé citálják a lemondott Nvidia-vezért, akiről már egy harmadik házasságtörő viszony miatt is írnak",
+      "summary": "A feltételezett kínai kémnő mellett viszonyt folytathatott cége egyik alelnökével és egy másik, meg nem nevezett alkalmazottjával is Jensen Huang, az Nvidia csütörtökön lemondott elnök-vezérigazgatója. Huanggal már az amerikai szenátorok is el akarnak beszélgetni.",
+      "date": "2026-11-13T07:51:00.000Z",
+      "url": "https://hvg.hu/gazdasag/20261113_nvidia-chipgyarto-jensen-huang-szenatusi-meghallgatas-hazzasagtores-viszony-kinai-kemno",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "tech",
+        "Nvidia",
+        "Jensen Huang"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/8ead39c1-fb46-46a3-b86a-2ea4b7f2bc47.jpg",
+      "imageAlt": "Szenátus elé citálják a lemondott Nvidia-vezért, akiről már egy harmadik házasságtörő viszony miatt is írnak",
+      "addedAt": "2026-11-13T08:08:27.727Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-chatbottal-tervezett-gyilkossagot-egy-117b32",
+      "title": "Chatbottal tervezett gyilkosságot egy külföldi nő Budapesten, az FBI figyelmeztette a rendőrséget",
+      "summary": "A 22 éves Budapesten tanuló nő szerint részeg volt, amikor az MI-vel beszélgetett. A rendőrség szerint a történet ismét bizonyítja: az internet nem felejt. The post Chatbottal tervezett gyilkosságot egy külföldi nő Budapesten, az FBI figyelmeztette a rendőrséget first appeared on 24.hu .",
+      "date": "2026-11-13T07:48:25.000Z",
+      "url": "https://24.hu/tech/2026/11/13/rendorseg-fbi-kulfoldi-no-gyilkossag-chatbot/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Tech",
+        "rendőrség",
+        "fbi",
+        "chatbot"
+      ],
+      "author": "Lányi Örs",
+      "theme": "ai",
+      "image": "https://s.24.hu/app/uploads/2026/11/galeria-fekvo2_121-e1794556009142-1024x577.jpg",
+      "imageAlt": "Chatbottal tervezett gyilkosságot egy külföldi nő Budapesten, az FBI figyelmeztette a rendőrséget",
+      "addedAt": "2026-11-13T08:08:30.491Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-telex-elakadt-autok-utakra-dolt-fak-ezt-is-hozta-2a1451",
+      "title": "Elakadt autók, utakra dőlt fák – ezt is hozta az esőzés és a szél",
+      "summary": "Budapesten, a Ferencvárosi pályaudvarnál egy időre le kellett zárni az Illatos úti aluljárót, ahol a felgyülemlett esővíz miatt két autó is elakadt – közölte az Országos Katasztrófavédelmi Főigazgatóság.",
+      "date": "2026-11-13T07:46:23.000Z",
+      "url": "https://telex.hu/belfold/2026/11/13/idojaras-esozes-szel-karok",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "Iván-Nagy Szilvia",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261113/1794555928-temp-uvb77epre0lhbnlcinl_cimlap-normal.jpg",
+      "imageAlt": "Elakadt autók, utakra dőlt fák – ezt is hozta az esőzés és a szél",
+      "addedAt": "2026-11-13T08:08:27.390Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-kobol-anita-magam-is-ateltem-bantalmazast-ff4b03",
+      "title": "Köböl Anita: Magam is átéltem bántalmazást",
+      "summary": "A kormányszóvivő az Isztambuli Egyezmény ratifikációjának és a távoltartási szabályok szigorításának bejelentése után szólalt meg. The post Köböl Anita: Magam is átéltem bántalmazást first appeared on 24.hu .",
+      "date": "2026-11-13T07:44:10.000Z",
+      "url": "https://24.hu/elet-stilus/2026/11/13/kobol-anita-bantalmazas/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kikapcs",
+        "köböl anita",
+        "bántalmazás"
+      ],
+      "author": "Csontos Kata",
+      "theme": "rat",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1100200779-e1794554974489-1024x577.jpg",
+      "imageAlt": "Köböl Anita: Magam is átéltem bántalmazást",
+      "addedAt": "2026-11-13T08:08:30.491Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-hvg-5-hengeres-sportmotorral-vadul-meg-a-gyori-763189",
+      "title": "5 hengeres sportmotorral vadul meg a győri Cupra",
+      "summary": "Érkezőben a Cupra Terramar vadonatúj csúcsmodellje, a VZ5.",
+      "date": "2026-11-13T07:41:00.000Z",
+      "url": "https://hvg.hu/cegauto/20261113_5-hengeres-sportmotor-gyor-cupra-terramar-vz5",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Autó",
+        "autó",
+        "Cupra Terramar",
+        "Cupra Formentor"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "sport",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/ed919562-1fe9-43b8-a2ad-7364c7f2bf4a.jpg",
+      "imageAlt": "5 hengeres sportmotorral vadul meg a győri Cupra",
+      "addedAt": "2026-11-13T08:08:27.727Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-hvg-magyar-peter-a-leveltar-vezetojerol-50556c",
+      "title": "Magyar Péter a levéltár vezetőjéről: Nyilvánvalóan nem fogja folytatni a munkáját",
+      "summary": "A 2 százalékos infláció, a csütörtöki dublini egyeztetések, Orbán Viktor Ultrahang-interjúja, az ügynökakták nyilvánosságra hozásával kapcsolatos hiba és az isztambuli egyezmény ratifikálásával egy időben bejelentett intézkedések is szóba kerültek a miniszterelnök rádióintejrúja során.",
+      "date": "2026-11-13T07:40:36.000Z",
+      "url": "https://hvg.hu/itthon/20261113_magyar-peter-kossuth-radio-isztambuli-egyezmeny-ugynokaktak-inflacio",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "politika",
+        "Magyar Péter",
+        "Állambiztonsági Szolgálatok Történeti Levéltára"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "rat",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/2fd9135c-d437-4c90-9f11-6193b9d50d9e.jpg",
+      "imageAlt": "Magyar Péter a levéltár vezetőjéről: Nyilvánvalóan nem fogja folytatni a munkáját",
+      "addedAt": "2026-11-13T08:08:27.727Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-csak-egy-kicsit-elvesztettem-a-fejem-hol-4f0d1b",
+      "title": "„Csak egy kicsit elvesztettem a fejem” – hol kezdődik a párkapcsolati bántalmazás?",
+      "summary": "Egy falhoz vágott borosüveg sokkal többet jelent egy elrontott esténél Az RTL+ Premium Panelhősök című The post „Csak egy kicsit elvesztettem a fejem” – hol kezdődik a párkapcsolati bántalmazás? first appeared on 24.hu .",
+      "date": "2026-11-13T07:39:55.000Z",
+      "url": "https://24.hu/szorakozas/2026/11/13/csak-egy-kicsit-elvesztettem-a-fejem-hol-kezdodik-a-parkapcsolati-bantalmazas/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Szórakozás",
+        "panelhősök",
+        "sorozat",
+        "párkapcsolati erőszak"
+      ],
+      "author": "Szponzorált tartalom",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/ph_e2-1024x554.png",
+      "imageAlt": "„Csak egy kicsit elvesztettem a fejem” – hol kezdődik a párkapcsolati bántalmazás?",
+      "addedAt": "2026-11-13T08:08:30.491Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-evtizedek-ota-nem-volt-olyan-csatara-az-5b0b09",
+      "title": "Évtizedek óta nem volt olyan csatára az olaszoknak, aki így termelte volna a gólokat",
+      "summary": "Olaszország Pio Esposito lábai előtt hever, az Inter 21 éves csatára 14 meccs alatt utolérte a legendás Francesco Tottit. The post Évtizedek óta nem volt olyan csatára az olaszoknak, aki így termelte volna a gólokat first appeared on 24.hu .",
+      "date": "2026-11-13T07:35:19.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/13/nemzetek-ligaja-olasz-valogatott-pio-esposito/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "nemzetek ligája",
+        "olasz válogatott",
+        "pio esposito"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/pio-1024x576.jpg",
+      "imageAlt": "Évtizedek óta nem volt olyan csatára az olaszoknak, aki így termelte volna a gólokat",
+      "addedAt": "2026-11-13T08:08:30.491Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-kiados-eso-varhato-budapesten-de-orszagosan-b8f558",
+      "title": "Kiadós eső várható Budapesten, de országosan csökken a felhőzet",
+      "summary": "A legmagasabb nappali hőmérséklet 6 és 17 fok között alakul. The post Kiadós eső várható Budapesten, de országosan csökken a felhőzet first appeared on 24.hu .",
+      "date": "2026-11-13T07:29:35.000Z",
+      "url": "https://24.hu/belfold/2026/11/13/eso-budapest-felho-szel-pentek/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "időjárás",
+        "eső",
+        "szél"
+      ],
+      "author": "Kovács Barna",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/eso-1-e1794554908458-1024x577.jpg",
+      "imageAlt": "Kiadós eső várható Budapesten, de országosan csökken a felhőzet",
+      "addedAt": "2026-11-13T08:08:30.491Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-24hu-a-legfobb-ugyesz-belso-vizsgalatot-inditott-dee620",
+      "title": "A legfőbb ügyész belső vizsgálatot indított az aranykonvoj-ügyben",
+      "summary": "Nyomozás is zajlik az eset elrendelésének és végrehajtásának körülményeire, valamint bizonyos utólagos jogszabályi legalizálásokra vonatkozóan. The post A legfőbb ügyész belső vizsgálatot indított az aranykonvoj-ügyben first appeared on 24.hu .",
+      "date": "2026-11-13T07:26:40.000Z",
+      "url": "https://24.hu/belfold/2026/11/13/fejes-peter-legfobb-ugyesz-aranykonvoj-belso-vizsgalat/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "fejes péter",
+        "legfőbb ügyész",
+        "aranykonvoj"
+      ],
+      "author": "Török László",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/fejes_peter_central-1142822166-e1794554510776-1024x577.jpg",
+      "imageAlt": "A legfőbb ügyész belső vizsgálatot indított az aranykonvoj-ügyben",
+      "addedAt": "2026-11-13T08:08:30.491Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-444-magyar-peter-szerint-az-abtl-vezetoje-nem-c470cf",
+      "title": "Magyar Péter szerint az ÁBTL vezetője nem maradhat a levéltár élén a hiba után",
+      "summary": "Még novemberben összejöhet a találkozó Kárpátalján Zelenszkijjel - mondta a miniszterelnök a rádióban.",
+      "date": "2026-11-13T07:25:06.000Z",
+      "url": "https://444.hu/2026/11/13/magyar-peter-szerint-az-abtl-vezetoje-nem-maradhat-a-leveltar-elen-a-hiba-utan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Volodimir Zelenszkij",
+        "magyar péter",
+        "ábtl",
+        "lezsák sándor"
+      ],
+      "author": "Kolozsi Ádám",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8PCxZSyyqf2a1fq17Ds.jpeg",
+      "imageAlt": "Magyar Péter szerint az ÁBTL vezetője nem maradhat a levéltár élén a hiba után",
+      "addedAt": "2026-11-13T08:08:27.564Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-telex-rona-peter-szerint-nem-igaz-hogy-varga-5c4fff",
+      "title": "Róna Péter szerint nem igaz, hogy Varga Mihálynak ne jelezték volna az MNB-alapítványok problémás milliárdjait",
+      "summary": "Az MNB felügyelőbizottságának korábbi tagja szerint 2014-es jegyzőkönyvek is bizonyítják, hogy Varga már nemzetgazdasági miniszterként értesült az aggályokról.",
+      "date": "2026-11-13T07:21:34.000Z",
+      "url": "https://telex.hu/gazdasag/2026/11/13/rona-peter-szerint-nem-igaz-hogy-varga-mihalynak-ne-jeleztek-volna-az-mnb-alapitvanyok-problemas-milliardjait-5",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "Kovács Pál",
+      "theme": "politika",
+      "image": "https://assets.telex.hu/images/20261113/1794554242-temp-ptshsc5dg29qfipgnhd_cimlap-normal.jpg",
+      "imageAlt": "Róna Péter szerint nem igaz, hogy Varga Mihálynak ne jelezték volna az MNB-alapítványok problémás milliárdjait",
+      "addedAt": "2026-11-13T08:08:27.390Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-telex-csetbottal-beszelte-meg-a-budapesten-tanulo-0dc6b4",
+      "title": "Csetbottal beszélte meg a Budapesten tanuló nő, hogy emberölést tervez, az FBI figyelmeztette a magyar rendőröket",
+      "summary": "A 22 éves külföldi nő azt vallotta, részeg volt, amikor erről írt.",
+      "date": "2026-11-13T07:12:51.000Z",
+      "url": "https://telex.hu/belfold/2026/11/13/csetbottal-beszelte-meg-a-budapesten-tanulo-no-hogy-emberolest-tervez-az-fbi-figyelmeztette-a-magyar-rendoroket",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "Pál Tamás",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261113/1794553704-temp-ip6bea6ojlvo6fildip_cimlap-normal.jpg",
+      "imageAlt": "Csetbottal beszélte meg a Budapesten tanuló nő, hogy emberölést tervez, az FBI figyelmeztette a magyar rendőröket",
+      "addedAt": "2026-11-13T08:08:27.390Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-444-elfogtak-a-budapesten-elo-kulfoldi-not-aki-215abc",
+      "title": "Elfogták a Budapesten élő külföldi nőt, aki mesterséges intelligenciával chatelt arról, hogy ölni fog",
+      "summary": "A 22 éves nő ballomásában úgy nyilatkozott, hogy részeg volt, míg a mesterséges intelligenciával csevegett, és nem emlékszik rá, de nem áll szándékában senkit sem megölni.",
+      "date": "2026-11-13T07:10:33.000Z",
+      "url": "https://444.hu/2026/11/13/elfogtak-a-budapesten-elo-kulfoldi-not-aki-mesterseges-intelligenciaval-chatelt-arrol-hogy-olni-fog?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "fbi",
+        "Budapest",
+        "mesterséges intelligencia",
+        "emberölés"
+      ],
+      "author": "Takács Lili",
+      "theme": "ai",
+      "image": "https://assets.4cdn.hu/kraken/8PoNE1vKvUSGOCG8s.jpeg",
+      "imageAlt": "Elfogták a Budapesten élő külföldi nőt, aki mesterséges intelligenciával chatelt arról, hogy ölni fog",
+      "addedAt": "2026-11-13T08:08:27.565Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-444-otthon-hagyhatod-a-fotostaskat-kiprobaltuk-d754e1",
+      "title": "Otthon hagyhatod a fotóstáskát: kipróbáltuk a vivo X500 Pro-t",
+      "summary": "A legjobb pillanatok ritkán várják meg, amíg előbányászod a többkilós kamerát a hátizsák mélyéről. Egy profi mobilfotós telefont teszteltünk, amire még teleobjektívet is lehet csatlakoztatni.",
+      "date": "2026-11-13T07:06:10.000Z",
+      "url": "https://444.hu/2026/11/13/otthon-hagyhatod-a-fotostaskat-kiprobaltuk-a-vivo-x500-pro-t?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "teszt",
+        "vivo x500 pro",
+        "okostelefon",
+        "fényképezés"
+      ],
+      "author": "Promó Ottó",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PiepmWJR7Be1Ixrys.jpeg",
+      "imageAlt": "Otthon hagyhatod a fotóstáskát: kipróbáltuk a vivo X500 Pro-t",
+      "addedAt": "2026-11-13T08:08:27.565Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-telex-a-legfobb-ugyesz-belso-vizsgalatot-rendelt-f72c1f",
+      "title": "A legfőbb ügyész belső vizsgálatot rendelt el az aranykonvoj-ügyben, szoros határidőt szabott meg",
+      "summary": "Fejes Péter szerint ez egy egyedi ügy volt, és nem rendszerszintű probléma.",
+      "date": "2026-11-13T06:56:34.000Z",
+      "url": "https://telex.hu/belfold/2026/11/13/fejes-peter-legfobb-ugyesz-kossuth-radio-interju",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "Kovács Pál",
+      "theme": "sigurnost",
+      "image": "https://assets.telex.hu/images/20261113/1794552921-temp-u4blgnsg0jrt5dglbjm_cimlap-normal.jpg",
+      "imageAlt": "A legfőbb ügyész belső vizsgálatot rendelt el az aranykonvoj-ügyben, szoros határidőt szabott meg",
+      "addedAt": "2026-11-13T08:08:27.390Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-444-hanko-balazsnak-kozvetlenul-a-valasztasok-2a763a",
+      "title": "Hankó Balázsnak közvetlenül a választások előtt még arra is volt gondja, hogy egy bazári trükkel még öt évre meghosszabbítsa Fekete Pétert a Nemzeti Cirkuszművészeti Központ élén",
+      "summary": "Hüpp-hüpp-hüpp, Barba trükk!",
+      "date": "2026-11-13T06:44:27.000Z",
+      "url": "https://444.hu/2026/11/13/hanko-balazsnak-kozvetlenul-a-valasztasok-elott-meg-arra-is-volt-gondja-hogy-egy-bazari-trukkel-meg-ot-evre-meghosszabbitsa-fekete-petert-a-nemzeti-cirkuszmuveszeti-kozpont-elen?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "fekete péter",
+        "hankó balázs",
+        "fővárosi nagycirkusz",
+        "Nemzeti Cirkuszművészeti Központ"
+      ],
+      "author": "Takács Lili",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/7hQd4X00UWh51fD16os.jpeg",
+      "imageAlt": "Hankó Balázsnak közvetlenül a választások előtt még arra is volt gondja, hogy egy bazári trükkel még öt évre meghosszabbítsa Fekete Pétert a Nemzeti Cirkuszművészeti Központ élén",
+      "addedAt": "2026-11-13T08:08:27.565Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-13-telex-magyar-peter-szerint-cseh-gergo-bendeguz-fca338",
+      "title": "Magyar Péter szerint Cseh Gergő Bendegúz nem maradhat a levéltár élén, de ezt nem neki kell eldöntenie",
+      "summary": "A magyar miniszterelnök a Kossuth rádióban arról is beszélt, hogy Volodimir Zelenszkijjel leült negyedórára Dublinban, ahol egy későbbi kárpátaljai találkozó is szóba került.",
+      "date": "2026-11-13T06:41:14.000Z",
+      "url": "https://telex.hu/belfold/2026/11/13/magyar-peter-kossuth-radio-felkelo",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Belföld"
+      ],
+      "author": "Iván-Nagy Szilvia",
+      "theme": "politika",
+      "image": "https://assets.telex.hu/images/20261113/1794551479-temp-1ajdl6l9bdga4dpjkml_cimlap-normal.jpg",
+      "imageAlt": "Magyar Péter szerint Cseh Gergő Bendegúz nem maradhat a levéltár élén, de ezt nem neki kell eldöntenie",
+      "addedAt": "2026-11-13T08:08:27.390Z"
+    },
     {
       "slug": "budimpesta-2026-11-12-telex-nl-az-olaszok-elvertek-a-franciakat-a-28cc64",
       "title": "NL: az olaszok elverték a franciákat, a rekorddöntő Kane gólt lőtt a Wembleyben",
