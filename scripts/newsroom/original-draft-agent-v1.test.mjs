@@ -93,3 +93,25 @@ test('public artifact storage rejects model use before any API call or filesyste
  );
  assert.equal(calls,0);
 });
+
+test('approved channels only: Beograd uses its own leads, no cross-city content',async()=>{
+ const base=mkdtempSync(join(tmpdir(),'aktual-beograd-'));
+ try{
+  const queueFile=join(base,'queue.json'),outDir=join(base,'out');
+  writeFileSync(queueFile,JSON.stringify({
+   publication_enabled:false,totals:{publishable:0},
+   channels:[{channel:'zagreb',leads:[]},
+             {channel:'beograd',leads:[{...lead,id:'am-beograd-001',channel:'beograd'}]}]
+  }));
+  let calls=0;
+  const transport=async()=>{calls++;return {ok:true,json:async()=>response}};
+  const result=await runDrafts({apiKey:'test-key',input:queueFile,outDir,
+    now,limit:1,storagePrivate:true,channel:'beograd',transport});
+  assert.equal(result.generated,1);
+  assert.equal(calls,1);
+  const saved=JSON.parse(readFileSync(join(outDir,readdirSync(outDir)[0]),'utf8'));
+  assert.equal(saved.candidate.candidate_id,'am-beograd-001');
+  await assert.rejects(runDrafts({apiKey:'test-key',input:queueFile,outDir,
+    now,limit:1,storagePrivate:true,channel:'tokio',transport}),/unapproved-editorial-channel/);
+ }finally{rmSync(base,{recursive:true,force:true})}
+});
