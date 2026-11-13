@@ -1,0 +1,9 @@
+# Uredničke stranice — preskok navigacije
+
+Na 437 lokalnih HR/EN stranica objava, komentara i analiza s prepoznatim predloškom dodani su poveznica za preskok i fokusabilna meta na postojećem `<main>` elementu. Poveznica je prvi element nakon otvaranja `<body>` i na jeziku dokumenta. Postojeći zajednički CSS pruža vidljivost pri fokusu. Ostali bajtovi tih 437 stranica uspoređeni su s početnom verzijom nakon uklanjanja samo ove dvije izmjene; nije bilo drugih razlika.
+
+`scripts/apply-editorial-skip-scoped-v1.mjs` je read-only bez `--apply`, ograničen na šest izričitih rubrika, i izostavlja zaštićene rute, stranice koje sadrže `504-milijuna`, preusmjeravanja, neprepoznate predloške i simboličke poveznice. Na ovoj snimci drugi prolaz pronalazi 437 već izmijenjenih, 9 zaštićenih i 25 nepodržanih datoteka. Nije korišten nad `podijeli/vijest`. Dva uređivačka generatora imaju odgovarajuću poveznicu i stil za nove stranice; testovi njihove predloške provjeravaju izolirano, bez objave.
+
+Statistički lokalni pregled `node scripts/audit-portal-design-basics-v1.mjs` na ovoj snimci obuhvaća 23.882 HTML datoteke svih njegovih kategorija. U skupini 23.639 ostalih portalnih ruta, uz osam meta-refresh preusmjeravanja, prijavljuje 1.169 kandidata bez prepoznatog preskoka, 49 bez `<main>` i 12 bez `<h1>`. Broj može uključivati neuobičajene predloške i nejavne datoteke; nalaz nije dokaz stvarne pogreške. Ostale skupine poput administracije i previewa prijavljuju se zasebno. Nisu sve stranice vizualno prikazane u pregledniku.
+
+Provjere: `node --test tests/test-editorial-skip-scoped-v1.mjs tests/test-editorial-generator-skip-v1.mjs`, `node tests/test-design-system-v1.mjs`, `node tests/test-a11y-skip-v1.mjs`, `node scripts/test-editorial-publish-seo-v1.mjs` i `node scripts/test-aktual-world-directory-v1.mjs`. Nisu dokaz potpunog WCAG audita ni produkcijskog deploya. Produkcijska objava i provjera uživo ostaju odvojeni koraci.

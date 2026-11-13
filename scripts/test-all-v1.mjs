@@ -26,6 +26,7 @@ const JSON_OUT = args.has('--json');
 const GATES = [
   { name: 'Operativni agenti — ugovor i sigurnost', cmd: ['node', '--test', 'tests/test-operations-30-v1.mjs', 'tests/test-operations-triage-v1.mjs', 'tests/test-agent-review-packet-v1.mjs'], required: true },
   { name: 'Galerija i vizualni indeks — pristupačnost', cmd: ['node', '--test', 'tests/test-gallery-a11y-v1.mjs'], required: true },
+  { name: 'Uredničke stranice — pristupačnost i zaštita', cmd: ['node', '--test', 'tests/test-editorial-skip-scoped-v1.mjs', 'tests/test-editorial-generator-skip-v1.mjs'], required: true },
   { name: 'AKTUAL WORLD — navigacija i zaštita slojeva', cmd: ['node', '--test', 'tests/test-external-stations-v1.mjs', 'tests/test-aktual-world-v1.mjs', 'tests/test-world-preservation-v1.mjs', 'tests/test-world-a11y-v1.mjs', 'tests/test-portal-design-audit-v1.mjs', 'tests/test-world-directory-ui-v1.mjs', 'tests/test-world-headlines-v1.mjs', 'tests/test-world-source-checks-v1.mjs'], required: true },
   { name: 'SEO — poveznice entiteta i metapodaci', cmd: ['node', '--test', 'tests/test-entity-navigation-seo-v1.mjs', 'tests/test-seo-coverage-helpers-v1.mjs'], required: true },
   { name: 'Pretraga — ponašanje sučelja', cmd: ['node', '--test', 'tests/test-public-title-search-browser-v1.mjs'], required: true },
