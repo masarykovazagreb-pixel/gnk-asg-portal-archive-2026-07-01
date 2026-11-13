@@ -1,0 +1,44 @@
+name: AKTUAL Cinematic Channels QA
+on:
+  pull_request:
+    paths:
+      - 'apps/kanal/**'
+      - 'apps/region/engine/build.mjs'
+      - 'apps/region/engine/kanal-cinematic-v3.mjs'
+      - '.github/workflows/aktual-cinematic-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  channel-design:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check apps/kanal/build.mjs
+          node --check apps/region/engine/build.mjs
+          node --check apps/region/engine/kanal-cinematic-v3.mjs
+          node --check apps/kanal/src/assets/kanal.js
+          node --input-type=module -e "import {CINEMATIC_JS} from './apps/region/engine/kanal-cinematic-v3.mjs'; new Function(CINEMATIC_JS)"
+      - name: Build Zagreb KANAL
+        run: |
+          node apps/kanal/build.mjs
+          grep -q 'cinematic-intro' apps/kanal/site/index.html
+          grep -q 'data-local-clock' apps/kanal/site/index.html
+          grep -q 'data-freshness' apps/kanal/site/index.html
+          grep -q 'share-hashtags' apps/kanal/site/index.html || grep -R -q 'share-hashtags' apps/kanal/site/*/index.html
+      - name: Build Beograd regional channel
+        run: |
+          node apps/region/engine/build.mjs --channel beograd
+          test -s apps/portal/kanal/beograd/assets/kanal-cinematic-v3.js
+          grep -q 'region-clock' apps/portal/kanal/beograd/index.html
+          grep -q 'region-fresh' apps/portal/kanal/beograd/index.html
+          grep -q 'cinematic-ink' apps/portal/kanal/beograd/assets/region.css
+          grep -R -q 'region-share' apps/portal/kanal/beograd/clanak/
+      - name: No production publishing in QA
+        run: echo "This workflow runs offline build checks only; no deploy."
