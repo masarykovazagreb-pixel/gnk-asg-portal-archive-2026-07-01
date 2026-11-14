@@ -12,6 +12,7 @@ on:
       - 'apps/region/engine/signal-desk-v1.test.mjs'
       - 'apps/region/image-photo-rights-v1.json'
       - 'tests/test-region-editorial-rights-v1.mjs'
+      - 'tests/test-aktual-prototype-preservation-v1.mjs'
       - 'tests/test-image-proxy-coverage-v1.mjs'
       - '.github/workflows/aktual-cinematic-qa.yml'
   workflow_dispatch:
@@ -30,6 +31,7 @@ jobs:
         run: |
           node --check apps/kanal/build.mjs
           node --check apps/region/engine/build.mjs
+          node tests/test-aktual-prototype-preservation-v1.mjs
           node --check apps/region/engine/kanal-cinematic-v3.mjs
           node --check apps/region/engine/signal-desk-v1.mjs
           node --check apps/region/engine/signal-desk-v1.js
