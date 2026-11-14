@@ -24,6 +24,7 @@ import { articleMetaDescription, clip } from '../../../scripts/lib/article-meta-
 import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../../shared/author-band-v1.mjs';
 import { KANAL_DESIGN_V2_CSS } from './kanal-design-v2.mjs';
 import { CINEMATIC_CSS, CINEMATIC_JS } from './kanal-cinematic-v3.mjs';
+import { renderSignalPulse, renderSignalDesk, signalNavLabel } from './signal-desk-v1.mjs';
 import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
@@ -32,6 +33,8 @@ import { editorialIndexBlock, EDITORIAL_INDEX_CSS } from '../../../scripts/lib/p
 import { refreshTag } from '../../shared/refresh-tag-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
+const SIGNAL_CSS = readFileSync(join(HERE, 'signal-desk-v1.css'), 'utf8');
+const SIGNAL_JS = readFileSync(join(HERE, 'signal-desk-v1.js'), 'utf8');
 const APP = join(HERE, '..');
 const ROOT = join(APP, '..', '..');
 const DATA = join(APP, 'data');
@@ -573,6 +576,7 @@ ${miniRail(channel)}
 <script src="/assets/aktual-radio-mini-v1.js?v=20261023-edmini" defer></script>
 <script src="${root}assets/spiderweb-v1.js?v=20261023" defer></script>
 <script src="${root}assets/kanal-cinematic-v3.js" defer></script>
+<script src="${root}assets/region-signal-v1.js" defer></script>
 ${refreshTag('/')}
 </body>
 </html>`;
@@ -594,6 +598,7 @@ function header(channel, strings, active = '', root = '') {
   const nav = [
     ['', strings.latest],
     ['mravinjak/', mrvLabel],
+    ['signal/', signalNavLabel(channel.lang)],
     ['izvori/', strings.sources],
     ['metodologija/', strings.methodology]
   ].map(([href, label]) => `<a href="${root}${href}"${href === active ? ' aria-current="page"' : ''}>${esc(label)}</a>`).join('');
@@ -788,6 +793,8 @@ function homePage(channel, strings, data) {
     <ul class="list">${more.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10), channel.lang))}</time><a href="clanak/${i.slug}/">${esc(i.title)}</a><span class="src">${esc(i.sourceName)}</span></li>`).join('')}</ul>
   </section>` : ''}
 
+  ${renderSignalPulse(channel, data, esc)}
+
   ${mravinjakSection(channel, strings, data)}
 
   <section class="band">
@@ -837,6 +844,7 @@ ${footer(channel, strings)}`;
     hasPart: [
       { '@type': 'WebPage', url: url(channel, 'mravinjak/'), name: `${channel.title} — arhiva` },
       { '@type': 'WebPage', url: url(channel, 'izvori/'), name: `${channel.title} — izvori` },
+      { '@type': 'WebPage', url: url(channel, 'signal/'), name: `AKTUAL SIGNAL — ${channel.city}` },
       { '@type': 'WebPage', url: url(channel, 'metodologija/'), name: `${channel.title} — metodologija` }
     ]
   };
@@ -874,6 +882,23 @@ ${footer(channel, strings)}`;
 }
 
 
+/* ---------- AKTUAL SIGNAL — first-party media intelligence ---------- */
+function signalPage(channel, strings, data) {
+  const body = `${header(channel, strings, 'signal/', '../')}<main id='sadrzaj' class='signal-page'>${renderSignalDesk(channel, data, esc, themeOf)}</main>${footer(channel, strings)}`;
+  const canonical = url(channel, 'signal/');
+  return shell(channel, strings, {
+    title: `AKTUAL SIGNAL — ${channel.city} | ${channel.title}`,
+    description: `${channel.title} — pogled u javnu arhivu medijskih izvora, uspješnost posljednje provjere RSS-a i vremenske trendove. Nije potvrda istinitosti vijesti.`,
+    path: 'signal/',root:'../',keywords:[...channel.hashtags, channel.city, 'AKTUAL SIGNAL', 'media coverage'],
+    jsonld: [{
+      '@context':'https://schema.org','@type':'CollectionPage','@id':canonical+'#webpage',
+      url:canonical,name:`AKTUAL SIGNAL — ${channel.city}`,inLanguage:channel.lang,
+      publisher:{'@id':AKTUAL_NEWS_ENTITY_ID},isPartOf:{'@id':channel.base+'#edition'},
+      about:{'@type':'Place',name:channel.city},
+      dateModified:data.updatedAt||data.items[0]?.date||BUILD_ISO
+    }],body
+  });
+}
 /* ---------- komentar redakcijskog bota (označen kao automatiziran) ---------- */
 
 const BOT = {
@@ -1407,6 +1432,7 @@ export function buildChannel(channel) {
   };
 
   write('index.html', homePage(channel, strings, data));
+  write('signal/index.html', signalPage(channel, strings, data));
   for (const item of data.items) write(`clanak/${item.slug}/index.html`, articlePage(channel, strings, item, data.items));
 
   const byTheme = new Map();
@@ -1509,9 +1535,10 @@ ${footer(channel, strings)}`;
   }));
 
   ensureAuthorPortrait(AUTHOR_PORTRAIT, dir);
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${EDITORIAL_INDEX_CSS}\n${IMPRESSUM_CSS}\n${AUTHOR_BAND_CSS}\n${KANAL_DESIGN_V2_CSS}\n${CINEMATIC_CSS}`);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${EDITORIAL_INDEX_CSS}\n${IMPRESSUM_CSS}\n${AUTHOR_BAND_CSS}\n${KANAL_DESIGN_V2_CSS}\n${CINEMATIC_CSS}\n${SIGNAL_CSS}`);
   writeFileSync(join(dir, 'assets', 'spiderweb-v1.js'), SPIDER_JS);
   writeFileSync(join(dir, 'assets', 'kanal-cinematic-v3.js'), CINEMATIC_JS);
+  writeFileSync(join(dir, 'assets', 'region-signal-v1.js'), SIGNAL_JS);
 
   writeLegacyRedirect(channel);
   writeFileSync(join(dir, 'assets', 'favicon.svg'), favicon());
