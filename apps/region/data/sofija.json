@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-11-14T00:53:24.617Z",
+  "updatedAt": "2026-11-14T07:00:27.392Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-14T00:53:16.298Z"
+      "checkedAt": "2026-11-14T07:00:19.700Z"
     },
     {
       "id": "capital",
@@ -27,20 +27,17 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T00:53:16.955Z"
+      "checkedAt": "2026-11-14T07:00:20.813Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 10,
       "corrupt": 0,
-      "errors": [
-        "https://www.mediapool.bg/rss: HTTP 304",
-        "https://www.mediapool.bg/rss/: HTTP 304"
-      ],
-      "checkedAt": "2026-11-14T00:53:19.352Z"
+      "errors": [],
+      "checkedAt": "2026-11-14T07:00:21.971Z"
     },
     {
       "id": "dnevnikbg",
@@ -52,7 +49,7 @@
       "errors": [
         "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-14T00:53:20.588Z"
+      "checkedAt": "2026-11-14T07:00:23.300Z"
     },
     {
       "id": "actualno",
@@ -62,17 +59,17 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T00:53:20.948Z"
+      "checkedAt": "2026-11-14T07:00:23.998Z"
     },
     {
       "id": "sega",
       "name": "Sega.bg",
       "url": "https://www.segabg.com/rss",
       "ok": true,
-      "fetched": 95,
+      "fetched": 91,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T00:53:21.204Z"
+      "checkedAt": "2026-11-14T07:00:24.216Z"
     },
     {
       "id": "novinite",
@@ -84,7 +81,7 @@
       "errors": [
         "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-14T00:53:22.761Z"
+      "checkedAt": "2026-11-14T07:00:25.608Z"
     },
     {
       "id": "btaen",
@@ -96,10 +93,427 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-14T00:53:24.617Z"
+      "checkedAt": "2026-11-14T07:00:27.391Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-11-14-mediapool-v-zdusnoto-prostranstvo-na-sa-otnovo-e-04c18d",
+      "title": "Въздушното пространство на САЩ отново е отворено",
+      "summary": "САЩ възстановиха въздушния си трафик след няколкочасово спиране на всички излитания, причинено от проблеми с комуникационните системи за управление на въздушното движение. „В 20:15 ч. източноамериканско време отворихме отново въздушното пространство“, заяви министърът на транспорта Шон Дъфи на пресконференция в Белия дом…",
+      "date": "2026-11-14T06:50:08.000Z",
+      "url": "https://www.mediapool.bg/svyat/vazdushnoto-prostranstvo-na-sasht-otnovo-e-otvoreno/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Въздушното пространство на САЩ отново е отворено",
+      "addedAt": "2026-11-14T07:00:21.971Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-actualno-bezsumno-zaplasvane-kita-provede-neob-veni-f3e239",
+      "title": "\"Безшумно заплашване\": Китай проведе необявени военни учения около Тайван",
+      "summary": "В началото на ноември Китай проведе мащабни, необявени военни учения в западната част на Тихия океан и около Тайван. Офи...",
+      "date": "2026-11-14T06:44:00.000Z",
+      "url": "https://www.actualno.com/asia/bezshumno-zaplashvane-kitaj-provede-neobjaveni-voenni-uchenija-okolo-tajvan-news_2662798.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Азия"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/14/381727428e7ca895d61a54c52f6aa78e_2662798_1920x1080.jpg",
+      "imageAlt": "\"Безшумно заплашване\": Китай проведе необявени военни учения около Тайван",
+      "addedAt": "2026-11-14T07:00:23.998Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-mediapool-ukra-na-za-vi-ce-se-e-naucila-da-otklon-va-8a295c",
+      "title": "Украйна заяви, че се е научила да отклонява от курса ракетите \"Орешник\"",
+      "summary": "Украинските военни заявиха, че са успели да отклонят от курса руските ракети „Орешник“ с помощта на системата за радиоелектронна борба Lima Quant. Това съобщава The New York Times (NYT), позовавайки се на разработчиците на системата и военнослужещи от подразделението „Ночной дозор“ („Нощна стража“).По думите на командира на подразделението с позивна Алхимик на 24 май Русия е изстреляла две ракети „Орешник“ по Киевска област. Украинските военни получили предварително предупреждение за подготвяния удар от американското разузнаване и задействали Lima Quant…",
+      "date": "2026-11-14T06:43:00.000Z",
+      "url": "https://www.mediapool.bg/voina-v-ukraina/ukraina-zayavi-che-se-e-nauchila-da-otklonyava-ot-kursa-raketite-oreshnik/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Война в Украйна",
+        "Русия",
+        "Украйна",
+        "Лима"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Украйна заяви, че се е научила да отклонява от курса ракетите \"Орешник\"",
+      "addedAt": "2026-11-14T07:00:21.971Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-dnevnikbg-festival-e-prenese-v-sofi-muzika-detski-42a427",
+      "title": "Фестивал ще пренесе в София музика, детски спектакли, кино и книги от \"Градините на Испания\"",
+      "summary": "Виртуозна музика, детски спектакли, световно кино и първа среща на български с един от най-големите философски умове на XX в. - това предвижда програмата на фестивала \"Градините на Испания\", чието първо издание ще се състои идната седмица в...",
+      "date": "2026-11-14T06:39:00.000Z",
+      "url": "https://www.dnevnik.bg/kultura/2026/11/14/4979194_festival_shte_prenese_v_sofiia_muzika_detski_spektakli/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "4048"
+      ],
+      "author": "Елена Геловска",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4979722.jpg",
+      "imageAlt": "Фестивал ще пренесе в София музика, детски спектакли, кино и книги от \"Градините на Испания\"",
+      "addedAt": "2026-11-14T07:00:23.300Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-capital-vks-i-vas-ostaviha-bez-otgovor-v-prosa-za-a7756e",
+      "title": "ВКС и ВАС оставиха без отговор въпроса за правото на юридическите лица да търсят неимуществени вреди",
+      "summary": "Общото събрание на съдиите от Върховния касационен съд (ВКС) и Върховния административен съд (ВАС) отклони искането за приемане на съвместно тълкувателно постановление на двете съдилища за правото на юридическите лица да търсят обезщетение за неимуществени вреди от деликт. Тълкувателно дело № 1/2023 г. по описа на ВКС беше образувано преди три години през юли 2023 г. по искане на състав на ВКС заради противоречива практика на съдилищата. Въпросът, който бе поставен пред тях, е \"Притежават ли юр...",
+      "date": "2026-11-14T06:30:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/pravo/2026/11/14/4979786_vks_i_vas_ostaviha_bez_otgovor_vuprosa_za_pravoto_na/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "4904"
+      ],
+      "author": "Мирела Веселинова",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "ВКС и ВАС оставиха без отговор въпроса за правото на юридическите лица да търсят неимуществени вреди",
+      "addedAt": "2026-11-14T07:00:20.814Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-actualno-putin-se-meri-s-nato-dokato-armi-ta-mu-v-d3695f",
+      "title": "Путин се мери с НАТО, докато армията му в Украйна измира: Z-вой, че украинците контраатакуват (ОБЗОР - ВИДЕО)",
+      "summary": "Близо 40% от всички смъртни случаи на руски военни са настъпили в битките за Авдеевка, Бахмут и Покровск – т.е. на...",
+      "date": "2026-11-14T06:30:00.000Z",
+      "url": "https://www.actualno.com/europe/putin-se-meri-s-nato-dokato-armijata-mu-v-ukrajna-izmira-z-voj-che-ukraincite-kontraatakuvat-obzor-video-news_2662746.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/14/a2bb018132e2902486010065f5928229_2662746_1920x1080.jpg",
+      "imageAlt": "Путин се мери с НАТО, докато армията му в Украйна измира: Z-вой, че украинците контраатакуват (ОБЗОР - ВИДЕО)",
+      "addedAt": "2026-11-14T07:00:23.998Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-actualno-v-pros-t-za-finansiraneto-na-ukra-na-trese-a8268f",
+      "title": "\"Въпросът за финансирането на Украйна тресе Европа\": Льо Пен е готова да се срещне със Зеленски",
+      "summary": "Крайнодесеният кандидат за президент на Франция Марин льо Пен е готова да се срещне с украинския президент Володимир Зел...",
+      "date": "2026-11-14T06:24:00.000Z",
+      "url": "https://www.actualno.com/europe/vyprosyt-za-finansiraneto-na-ukrajna-trese-evropa-lio-pen-e-gotova-da-se-sreshtne-sys-zelenski-news_2662796.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/14/0c9d5472eb935166b6a3f1a356c387d1_2662796_1920x1080.jpg",
+      "imageAlt": "\"Въпросът за финансирането на Украйна тресе Европа\": Льо Пен е готова да се срещне със Зеленски",
+      "addedAt": "2026-11-14T07:00:23.998Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-sega-tr-mp-si-i-putin-e-se-sre-nat-v-kita-328a47",
+      "title": "Тръмп, Си и Путин ще се срещнат в Китай",
+      "summary": "",
+      "date": "2026-11-14T06:12:57.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/trump-si-i-putin-shte-se-sreshtnat-kitay",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/09/2026-09-01_20.43.53.jpg",
+      "imageAlt": "Тръмп, Си и Путин ще се срещнат в Китай",
+      "addedAt": "2026-11-14T07:00:24.216Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-mediapool-ivkoni-ekspres-vzima-92-lokomotiva-i-vagoni-f99bca",
+      "title": "\"Ивкони Експрес\" взима 92 локомотива и вагони под наем от БДЖ",
+      "summary": "Първият частен пътнически жп превозвач \"Ивкони Експрес\" взима под наем от държавната \"БДЖ Пътнически превози\" общо 92 локомотива, мотрисни влакове и вагони. Предстои двете компании да се разберат за цената, която трябва да е пазарна. Това става ясно от публикуваното решение на Министерския съвет, което беше взето в сряда…",
+      "date": "2026-11-14T06:08:00.000Z",
+      "url": "https://www.mediapool.bg/biznes/ivkoni-ekspres-vzima-92-lokomotiva-i-vagoni-pod-naem-ot-bdzh/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Бизнес",
+        "мотриси",
+        "Ивкони Експрес",
+        "вагони"
+      ],
+      "author": "Лили Границка",
+      "theme": "ekonomija",
+      "image": "",
+      "imageAlt": "\"Ивкони Експрес\" взима 92 локомотива и вагони под наем от БДЖ",
+      "addedAt": "2026-11-14T07:00:21.971Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-mediapool-az-s-m-gero-v-kniga-za-momce-koeto-kopnee-6805da",
+      "title": "Аз съм герой в книга за момче, което копнее да има истински баща",
+      "summary": "„Моите седем бащи“, Андрев, Валден, превод Ева Кънева, издателство „Емас“ „Майките и децата принадлежат към един вид, а бащите – към друг, и двата вида водят хилядолетна война“ – си мисли Андрев, докато с майка си и по-малките си сестриче и братче се лутат от квартира на квартира с разпадащи се автомобили, мизерни дрехи в кашони от банани, от град на град, кой от кой по-неуютен и студен. В началото на историята Андрев е на 7 години, към края й – на 14, и през това време в орбитата на майката се завъртат 7 мъже, за които момчето си е задавало въпроса какво ли е да нарече този човек „татко“. Всеки от седмината – ужасен по свой собствен начин…",
+      "date": "2026-11-14T06:03:00.000Z",
+      "url": "https://www.mediapool.bg/procheti-tova/az-sam-geroi-v-kniga-za-momche-koeto-kopnee-da-ima-istinski-bashta/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Прочети това",
+        "Валден",
+        "Андрев",
+        "превод Ева Кънева"
+      ],
+      "author": "Мария Донева",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Аз съм герой в книга за момче, което копнее да има истински баща",
+      "addedAt": "2026-11-14T07:00:21.971Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-capital-v-erata-na-ai-agentite-dobre-opisani-t-e598b8",
+      "title": "В ерата на AI агентите добре описаният процес струва повече от всяка нова функционалност",
+      "summary": "Компанията \"ФТС България\" е водещ партньор на Microsoft за Dynamics 365 и помага на клиентите си да използват AI агенти в ежедневната си работа. Искра Тодорова - управител на \"ФТС България\", коментира какво показва практиката, когато агентите започнат да работят с реалните данни и процеси на компанията. Г-жо Тодорова, напоследък се среща понятието Agentic ERP, но за повечето хора то все още звучи непознато. Бихте ли обяснили какво стои зад него? Досега ERP системата беше място, където хор...",
+      "date": "2026-11-14T06:00:00.000Z",
+      "url": "https://www.capital.bg/biznes/tehnologii_i_nauka/2026/11/14/4961625_v_erata_na_ai_agentite_dobre_opisaniiat_proces_struva/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2274"
+      ],
+      "author": "\"ФТС България\"",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "В ерата на AI агентите добре описаният процес струва повече от всяка нова функционалност",
+      "addedAt": "2026-11-14T07:00:20.814Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-capital-infrastrukturata-e-novi-t-ai-s-rv-r-blok-po-c4b5d8",
+      "title": "Инфраструктурата е новият AI сървър. Блок по блок",
+      "summary": "Допреди няколко години изборът на сървър се решаваше с три въпроса - колко ядра, колко памет и колко дисково пространство. Днес този подход е недостатъчен. Едно напълно окомплектовано решение с ASUS XA VR721-E3 - Vera Rubin тежи около 1.8 тона и консумира до 230 kW - толкова, колкото 25 обикновени сървърни шкафа. Еквивалентът на AMD - ASUS - XA AI Helios - тежи близо 3.2 тона (по думите на нейния изпълнителен директор - \"колкото две компактни коли\") и консумира приблизително 240 kW. Това е физик...",
+      "date": "2026-11-14T06:00:00.000Z",
+      "url": "https://www.capital.bg/biznes/tehnologii_i_nauka/2026/11/14/4965591_infrastrukturata_e_noviiat_ai_survur_blok_po_blok/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2274"
+      ],
+      "author": "PERSY",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Инфраструктурата е новият AI сървър. Блок по блок",
+      "addedAt": "2026-11-14T07:00:20.814Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-capital-n-zlet-r-prezident-t-radev-obicase-2def5d",
+      "title": "Нюзлетър | Президентът Радев обичаше германски инвестиции, премиерът Радев - не. Европа няма нужда от нова архитектура за сигурност",
+      "summary": "Как да се ориентираме в хаоса? Това е авторският нюзлетър на Александър Андреев за случилото се в България и по света през изминалата седмица - с личните и субективни акценти на автора, който се опитва да подреди новините, да ги свърже с историята, а да види и смешното в тях. Ако искате да го получавате всяка събота в електронната си поща, може да се абонирате тук 100 броя по-късно: положението си остава безизходно, но не и сериозно. Здравейте със стотното издание на \"Политиката, мен ако п...",
+      "date": "2026-11-14T06:00:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/bulgaria/2026/11/14/4979585_njuzletur_prezidentut_radev_obichashe_germanski/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2249"
+      ],
+      "author": "Александър Андреев",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Нюзлетър | Президентът Радев обичаше германски инвестиции, премиерът Радев - не. Европа няма нужда от нова архитектура за сигурност",
+      "addedAt": "2026-11-14T07:00:20.814Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-dnevnikbg-astliveca-i-constantinoff-izkustvoto-na-b3be56",
+      "title": "\"Щастливеца\" и Constantinoff: изкуството на винената селекция",
+      "summary": "В кулинарния свят винената листа често е просто допълнение към менюто, но \"Щастливеца\" и Constantinoff я превръщат в част от своята идентичност. Всеки от двата ресторанта, част от една обща история, започнала преди близо 30 години, предлага селекция...",
+      "date": "2026-11-14T06:00:00.000Z",
+      "url": "https://www.dnevnik.bg/bacchus/2026/11/14/4961818_shtastliveca_i_constantinoff_izkustvoto_na_vinenata/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5061"
+      ],
+      "author": "\"Щастливеца\" и Constantinoff",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4961807.jpg",
+      "imageAlt": "\"Щастливеца\" и Constantinoff: изкуството на винената селекция",
+      "addedAt": "2026-11-14T07:00:23.300Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-sega-pet-evrope-ski-strani-se-vkl-cvat-v-a93236",
+      "title": "Пет европейски страни се включват в преговорите с Русия",
+      "summary": "",
+      "date": "2026-11-14T05:49:58.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/pet-evropeyski-strani-se-vklyuchvat-pregovorite-rusiya",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/2026-11-10_09.57.05.jpg",
+      "imageAlt": "Пет европейски страни се включват в преговорите с Русия",
+      "addedAt": "2026-11-14T07:00:24.216Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-dnevnikbg-ikonomist-t-l-cezar-bogdanov-b-dzet-2027-e-90084c",
+      "title": "Икономистът Лъчезар Богданов: Бюджет 2027 е плах и с много рискове",
+      "summary": "Бюджет 2027 е плах и с много рискове Има всякакви възможни рискове, които могат да влошат икономическата картина България може да изпадне в ситуацията на Гърция от преди 15 години и ситуацията на Румъния от последните няколко години 2026...",
+      "date": "2026-11-14T05:47:00.000Z",
+      "url": "https://www.dnevnik.bg/duma_na_sedmitsa/2026/11/14/4979861_ikonomistut_luchezar_bogdanov_bjudjet_2027_e_plah_i_s/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5059"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4979858.jpg",
+      "imageAlt": "Икономистът Лъчезар Богданов: Бюджет 2027 е плах и с много рискове",
+      "addedAt": "2026-11-14T07:00:23.300Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-actualno-14-noemvri-s-rbi-ob-v-va-vo-na-na-b-lgari-d3151d",
+      "title": "14 ноември: Сърбия обявява война на България. Започват бомбардировките над София",
+      "summary": "България има с какво да се гордее, но много често българите или забравяме, или не знаем за важните събития и личности в ...",
+      "date": "2026-11-14T05:45:00.000Z",
+      "url": "https://www.actualno.com/society/14-noemvri-syrbija-objavjava-vojna-na-bylgarija-zapochvat-bombardirovkite-nad-sofija-news_2662487.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "rat",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/13/2327a202b64805d3cb3cdc55205e4ad0_2662487_1920x1080.jpg",
+      "imageAlt": "14 ноември: Сърбия обявява война на България. Започват бомбардировките над София",
+      "addedAt": "2026-11-14T07:00:23.998Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-dnevnikbg-pocti-seme-na-firma-haos-t-v-nvidia-povdiga-bd45a7",
+      "title": "Почти семейна фирма: хаосът в Nvidia повдига въпроси за бъдещето",
+      "summary": "Преди около десетилетие и половина Дженсън Хуанг облече кожено яке. Тази седмица крахът му след информация за поне две интимни връзки, оказали се по-късно поне три, стана повод американските медии да си припомнят кой му го сложи: Лори и Медисън...",
+      "date": "2026-11-14T05:41:00.000Z",
+      "url": "https://www.dnevnik.bg/izkustven-intelekt/2026/11/14/4979874_pochti_semeina_firma_haosut_v_nvidia_povdiga_vuprosi/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5014"
+      ],
+      "author": "Ангел Петров",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4979873.jpg",
+      "imageAlt": "Почти семейна фирма: хаосът в Nvidia повдига въпроси за бъдещето",
+      "addedAt": "2026-11-14T07:00:23.300Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-capital-20-v-prosa-vihra-peseva-galeristkata-ko-to-73d2af",
+      "title": "20 въпроса | Вихра Пешева, галеристката, която се натъжава от липсата на вкус",
+      "summary": "Галерия \"Астри\" е уютно пространство, където артистите и почитателите на изкуството се чувстват еднакво у дома си. Причината е една от създателките, Вихра Пешева, която през 1995 г. рискува и заедно с Таня Пешева навлиза в дълбоките води на изкуството. Създават кръг от приятели - и сред художниците, и сред хората, които ценят създаденото от тях. Набират толкова скорост и популярност, че през 2001 г. представят \"Астри\" като галерия за съвременно изящно и приложно изкуство с основен галерист и кур...",
+      "date": "2026-11-14T05:35:00.000Z",
+      "url": "https://www.capital.bg/moiat_capital/lica/2026/11/14/4978031_20_vuprosa_vihra_pesheva_galeristkata_koiato_se/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2279"
+      ],
+      "author": "Краси Генова",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "20 въпроса | Вихра Пешева, галеристката, която се натъжава от липсата на вкус",
+      "addedAt": "2026-11-14T07:00:20.814Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-sega-ostar-la-tehnika-spr-vremenno-hil-di-poleti-c28bd7",
+      "title": "Остаряла техника спря временно хиляди полети в САЩ",
+      "summary": "",
+      "date": "2026-11-14T05:30:06.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/ostaryala-tehnika-sprya-vremenno-hilyadi-poleti-sasht",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/screenshot_2026-11-13_at_22.57.20.png",
+      "imageAlt": "Остаряла техника спря временно хиляди полети в САЩ",
+      "addedAt": "2026-11-14T07:00:24.216Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-dnevnikbg-tri-set-godini-sre-u-ta-nite-na-d-rzavata-70f1c5",
+      "title": "Трийсет години срещу тайните на държавата: историята на \"Програма Достъп до Информация\"",
+      "summary": "Днес всеки може да прочете стенограмите от заседанията на правителството. Но преди две десетилетия журналист трябва да води дело, за да получи такава информация. Договорът на държавата с британската компания \"Краун Ейджънтс\" за реформа на митниците...",
+      "date": "2026-11-14T05:30:00.000Z",
+      "url": "https://www.dnevnik.bg/bulgaria/2026/11/14/4971272_triiset_godini_sreshtu_tainite_na_durjavata_istoriiata/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1657"
+      ],
+      "author": "Лора Филева",
+      "theme": "politika",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4976850.jpg",
+      "imageAlt": "Трийсет години срещу тайните на държавата: историята на \"Програма Достъп до Информация\"",
+      "addedAt": "2026-11-14T07:00:23.300Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-actualno-senzacionnoto-otkritie-koeto-nakara-edin-be19ff",
+      "title": "Сензационното откритие, което накара един учен да се съблече гол пред колегите си",
+      "summary": "Събота сутрин е време за чаша ароматно кафе и разказ, който ни пренася отвъд познатия ни свят. В новата ни рубрика \"Исто...",
+      "date": "2026-11-14T05:30:00.000Z",
+      "url": "https://www.actualno.com/faces/senzacionnoto-otkritie-koeto-nakara-edin-uchen-da-se-sybleche-gol-pred-kolegite-si-news_2650440.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Лица"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/02/d03c5a4ea04838e013b5a0ff98842558_2650440_1920x1080.jpg",
+      "imageAlt": "Сензационното откритие, което накара един учен да се съблече гол пред колегите си",
+      "addedAt": "2026-11-14T07:00:23.998Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-capital-ot-bitaka-do-galeri-ta-misticnite-broderii-212914",
+      "title": "От битака до галерията: мистичните бродерии на Искрен Лозанов",
+      "summary": "Мистиката обгръща обектите от първата самостоятелна изложба на артиста Искрен Лозанов в София. Озаглавена Rebirth, тя представя трансформацията на вече използвани предмети в бродирани произведения на изкуството. Хиляди часове работа и преплитането на символи и орнаменти от културите на древни цивилизации, изграждат колекцията от 11 обекта и седем брошки. Изложбата се състои по покана на галерия MONUMENT | MNMNT и продължава до 17 ноември. След това обектите ще останат в пространството, достъпни ...",
+      "date": "2026-11-14T05:00:00.000Z",
+      "url": "https://www.capital.bg/light/neshta/2026/11/14/4978758_chervenata_nishka_v_purvata_samostoiatelna_izlojba_na/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2280"
+      ],
+      "author": "Сирма Пенкова",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "От битака до галерията: мистичните бродерии на Искрен Лозанов",
+      "addedAt": "2026-11-14T07:00:20.814Z"
+    },
+    {
+      "slug": "sofija-2026-11-14-actualno-ko-ima-imen-den-dnes-14-noemvri-2026-g-69b5e6",
+      "title": "Кой има имен ден днес, 14 ноември 2026 г. Честито!",
+      "summary": "На 14 ноември 2026 г. своя имен ден отбелязват хората, които са кръстени с името Филип, Фильо, Филка, Филипина, Фил...",
+      "date": "2026-11-14T03:55:00.000Z",
+      "url": "https://www.actualno.com/society/koj-ima-imen-den-dnes-14-noemvri-2026-g-chestito-news_2662757.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/13/12d94d7e1345bc6c29c3ca3e2236dfaf_2662757_1920x1080.jpg",
+      "imageAlt": "Кой има имен ден днес, 14 ноември 2026 г. Честито!",
+      "addedAt": "2026-11-14T07:00:23.998Z"
+    },
     {
       "slug": "sofija-2026-11-13-actualno-polsa-spira-finansiraneto-na-or-zi-po-593ee1",
       "title": "Полша спира финансирането на оръжия по програмата PURL за Украйна",
@@ -133,6 +547,25 @@
       "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/14/7f8f443b2e4de29c0b3abb699f2375d9_2662777_1920x1080.jpg",
       "imageAlt": "Заради публикация в Instagram: Задържаха \"най-младия и известен политик в Русия\"",
       "addedAt": "2026-11-14T00:53:20.949Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-mediapool-vsicki-poleti-v-sa-sa-spreni-04e16c",
+      "title": "Всички полети в САЩ са спрени",
+      "summary": "Федералната авиационна администрация на САЩ (FAA) разпореди в петък спиране на всички излитащи полети на територията на страната \"поради извънредни обстоятелства и съображения за сигурност\". Необичайното предупреждение не съдържаше друга информация, освен указанието, че \"всички излитащи полети трябва да останат на земята до второ нареждане\". \"Международните пристигащи полети ще бъдат разглеждани поотделно\", съобщиха от FAA…",
+      "date": "2026-11-13T22:40:16.000Z",
+      "url": "https://www.mediapool.bg/svyat/vsichki-poleti-v-sasht-sa-spreni/",
+      "source": "mediapool",
+      "sourceName": "Mediapool",
+      "categories": [
+        "Свят",
+        "САЩ",
+        "спрени"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Всички полети в САЩ са спрени",
+      "addedAt": "2026-11-14T07:00:21.971Z"
     },
     {
       "slug": "sofija-2026-11-13-actualno-prognoza-za-vremeto-14-noemvri-2026-g-s-01234f",
