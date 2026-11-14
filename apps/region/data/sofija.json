@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-11-13T20:42:13.078Z",
+  "updatedAt": "2026-11-14T00:53:24.617Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-13T20:42:05.994Z"
+      "checkedAt": "2026-11-14T00:53:16.298Z"
     },
     {
       "id": "capital",
@@ -27,17 +27,20 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T20:42:07.255Z"
+      "checkedAt": "2026-11-14T00:53:16.955Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": true,
-      "fetched": 10,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-13T20:42:08.156Z"
+      "errors": [
+        "https://www.mediapool.bg/rss: HTTP 304",
+        "https://www.mediapool.bg/rss/: HTTP 304"
+      ],
+      "checkedAt": "2026-11-14T00:53:19.352Z"
     },
     {
       "id": "dnevnikbg",
@@ -49,7 +52,7 @@
       "errors": [
         "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-13T20:42:09.479Z"
+      "checkedAt": "2026-11-14T00:53:20.588Z"
     },
     {
       "id": "actualno",
@@ -59,7 +62,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T20:42:09.803Z"
+      "checkedAt": "2026-11-14T00:53:20.948Z"
     },
     {
       "id": "sega",
@@ -69,7 +72,7 @@
       "fetched": 95,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-13T20:42:10.121Z"
+      "checkedAt": "2026-11-14T00:53:21.204Z"
     },
     {
       "id": "novinite",
@@ -81,7 +84,7 @@
       "errors": [
         "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-13T20:42:11.177Z"
+      "checkedAt": "2026-11-14T00:53:22.761Z"
     },
     {
       "id": "btaen",
@@ -93,10 +96,231 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-13T20:42:13.078Z"
+      "checkedAt": "2026-11-14T00:53:24.617Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-11-13-actualno-polsa-spira-finansiraneto-na-or-zi-po-593ee1",
+      "title": "Полша спира финансирането на оръжия по програмата PURL за Украйна",
+      "summary": "Полша спира вноските си по програмата PURL, по която европейските страни финансират покупките на оръжия за Украйна. Нови...",
+      "date": "2026-11-13T23:10:00.000Z",
+      "url": "https://www.actualno.com/europe/polsha-spira-finansiraneto-na-oryjija-po-programata-purl-za-ukrajna-news_2662779.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/14/1c0903adb271371d6d9ca4fffc2e4f1f_2662779_1920x1080.jpg",
+      "imageAlt": "Полша спира финансирането на оръжия по програмата PURL за Украйна",
+      "addedAt": "2026-11-14T00:53:20.949Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-actualno-zaradi-publikaci-v-instagram-zad-rzaha-na-86d0c2",
+      "title": "Заради публикация в Instagram: Задържаха \"най-младия и известен политик в Русия\"",
+      "summary": "Районният съд „Смолни“ в Санкт Петербург задържа за седем дни 21-годишния Владислав Тюлпанов — син на ...",
+      "date": "2026-11-13T22:46:00.000Z",
+      "url": "https://www.actualno.com/europe/zaradi-publikacija-v-instagram-zadyrjaha-naj-mladija-i-izvesten-politik-v-rusija-news_2662777.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/14/7f8f443b2e4de29c0b3abb699f2375d9_2662777_1920x1080.jpg",
+      "imageAlt": "Заради публикация в Instagram: Задържаха \"най-младия и известен политик в Русия\"",
+      "addedAt": "2026-11-14T00:53:20.949Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-actualno-prognoza-za-vremeto-14-noemvri-2026-g-s-01234f",
+      "title": "Прогноза за времето - 14 ноември 2026 г. (събота)",
+      "summary": "През втората половина нощта oт северозапад облачността ще продължи да се увеличава и вплътнява. На места в Северна Бълга...",
+      "date": "2026-11-13T22:32:00.000Z",
+      "url": "https://www.actualno.com/society/prognoza-za-vremeto-14-noemvri-2026-g-sybota-news_2662773.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/14/2805eaed7a9f10824547667f20d84ab5_2662773_1920x1080.jpg",
+      "imageAlt": "Прогноза за времето - 14 ноември 2026 г. (събота)",
+      "addedAt": "2026-11-14T00:53:20.949Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-actualno-ako-ne-bese-politikata-hme-da-sme-dobri-pri-f3df22",
+      "title": "\"Ако не беше политиката, щяхме да сме добри приятели\": Тръмп изненадал Байдън с изявление",
+      "summary": "В новите си мемоари бившият американски президент Джо Байдън разкрива, че Доналд Тръмп му е казал, че те биха могли да б...",
+      "date": "2026-11-13T22:26:00.000Z",
+      "url": "https://www.actualno.com/america/ako-ne-beshe-politikata-shtjahme-da-sme-dobri-prijateli-trymp-iznenadal-bajdyn-s-izjavlenie-news_2662772.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Америка"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/14/0d0a2eb27a6f7ccbfe4979a03d0b2235_2662772_1920x1080.jpg",
+      "imageAlt": "\"Ако не беше политиката, щяхме да сме добри приятели\": Тръмп изненадал Байдън с изявление",
+      "addedAt": "2026-11-14T00:53:20.949Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-actualno-tren-or-t-na-b-lgari-ne-dade-logicno-ob-91471c",
+      "title": "Треньорът на България не даде логично обяснение след позора от Исландия на \"Колежа\"",
+      "summary": "Селекционерът на българския национален отбор по футбол Атанас Рибарски говори след разгромната загуба от Исландия. \"Лъво...",
+      "date": "2026-11-13T22:22:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/trenioryt-na-bylgarija-ne-dade-logichno-objasnenie-sled-pozora-ot-islandija-na-koleja-news_2662771.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "sport",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/14/eb462a3d81a0b7df93828bab8a1f41a4_2662771_1920x1080.jpg",
+      "imageAlt": "Треньорът на България не даде логично обяснение след позора от Исландия на \"Колежа\"",
+      "addedAt": "2026-11-14T00:53:20.949Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-actualno-tren-or-t-na-islandi-iskahme-da-napravim-7564ba",
+      "title": "Треньорът на Исландия: Искахме да направим живота на българите труден",
+      "summary": "Селекционерът на Исландия Арнар Гунлаугсон говори след разгромната победа на неговия тим над българския национ...",
+      "date": "2026-11-13T22:17:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/trenioryt-na-islandija-iskahme-da-napravim-jivota-na-bylgarite-truden-news_2662770.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/14/74943f986472b4e1445c8c9c809ba04a_2662770_1920x1080.jpg",
+      "imageAlt": "Треньорът на Исландия: Искахме да направим живота на българите труден",
+      "addedAt": "2026-11-14T00:53:20.949Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-sega-ostavka-be-na-slaboto-sled-novi-proval-na-c0d207",
+      "title": "\"Оставка!\" бе най-слабото след новия провал на националите ни",
+      "summary": "",
+      "date": "2026-11-13T22:08:59.000Z",
+      "url": "https://www.segabg.com/hot/category-sport/ostavka-be-nay-slaboto-sled-noviya-proval-na-nacionalite-ni",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/iceland.jpg",
+      "imageAlt": "\"Оставка!\" бе най-слабото след новия провал на националите ни",
+      "addedAt": "2026-11-14T00:53:21.204Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-dnevnikbg-islandi-razgromi-b-lgari-v-ligata-na-7ce9aa",
+      "title": "Исландия разгроми България в Лигата на нациите",
+      "summary": "Националният отбор по футбол допусна тежка загуба с 0:5 при домакинството си на Исландия. Това беше петият мач на националите от група С4 в Лигата на нациите. Хеттрик за успеха на исландците на стадион \"Христо Ботев\" в...",
+      "date": "2026-11-13T22:03:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/14/4979912_islandiia_razgromi_bulgariia_v_ligata_na_naciite/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "sport",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4979911.jpg",
+      "imageAlt": "Исландия разгроми България в Лигата на нациите",
+      "addedAt": "2026-11-14T00:53:20.588Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-sega-tanker-s-asfalt-potopi-p-tniceski-korab-4c3777",
+      "title": "Танкер с асфалт потопи пътнически кораб",
+      "summary": "",
+      "date": "2026-11-13T22:01:11.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/tanker-asfalt-potopi-putnicheski-korab",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/2026-11-13_23.30.22.jpg",
+      "imageAlt": "Танкер с асфалт потопи пътнически кораб",
+      "addedAt": "2026-11-14T00:53:21.204Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-dnevnikbg-vsicki-izlita-i-poleti-v-sa-spr-ha-zaradi-1506c1",
+      "title": "Всички излитащи полети в САЩ спряха заради \"комуникационна грешка\"",
+      "summary": "Всички излитащи полети в САЩ спряха заради \"комуникационна грешка\". Федералната авиационна администрация на САЩ (FAA) нареди общонационално спиране на всички заминаващи полети в петък \"поради извънредни обстоятелства и от съображения за сигурност\",...",
+      "date": "2026-11-13T21:44:00.000Z",
+      "url": "https://www.dnevnik.bg/sviat/2026/11/13/4979910_vsichki_izlitashti_poleti_v_sasht_spriaha_zaradi/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1658"
+      ],
+      "author": "Ройтерс",
+      "theme": "sigurnost",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4979909.jpg",
+      "imageAlt": "Всички излитащи полети в САЩ спряха заради \"комуникационна грешка\"",
+      "addedAt": "2026-11-14T00:53:20.588Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-dnevnikbg-s-d-t-ne-uvazi-iskaneto-na-ekoinspekci-ta-726531",
+      "title": "Съдът не уважи искането на екоинспекцията \"Кроношпан\" да бъде затворен веднага",
+      "summary": "Съдът отказа да уважи искането на екоинспекцията във Велико Търново за незабавно затваряне на \"Кроношпан\". Решението на Върховния административен съд (ВАС) е окончателно. То засяга само предварителното изпълнение на заповедта на директора на...",
+      "date": "2026-11-13T21:22:00.000Z",
+      "url": "https://www.dnevnik.bg/bulgaria/2026/11/13/4979908_sudut_ne_uvaji_iskaneto_na_ekoinspekciiata_vuv_veliko/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4888049.jpg",
+      "imageAlt": "Съдът не уважи искането на екоинспекцията \"Кроношпан\" да бъде затворен веднага",
+      "addedAt": "2026-11-14T00:53:20.588Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-dnevnikbg-tanker-se-sbl-ska-s-kruizen-korab-v-sa-bc0f30",
+      "title": "Танкер се сблъска с круизен кораб в САЩ",
+      "summary": "В петък танкер се сблъска с пътнически кораб на компанията American Cruise Lines. Последният е бил акостирал в Ню Орлиънс на река Мисисипи. Местни телевизионни канали показаха кадри на пътници във водата, облечени в спасителни жилетки, предаде...",
+      "date": "2026-11-13T21:15:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/13/4979907_tanker_se_sbluska_s_kruizen_kora_v_sasht/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4979905.jpg",
+      "imageAlt": "Танкер се сблъска с круизен кораб в САЩ",
+      "addedAt": "2026-11-14T00:53:20.588Z"
+    },
+    {
+      "slug": "sofija-2026-11-13-sega-sa-spr-ha-vsicki-poleti-f911bb",
+      "title": "САЩ спряха всички полети",
+      "summary": "",
+      "date": "2026-11-13T21:02:06.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/sasht-spryaha-vsichki-poleti",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/screenshot_2026-11-13_at_22.57.20.png",
+      "imageAlt": "САЩ спряха всички полети",
+      "addedAt": "2026-11-14T00:53:21.204Z"
+    },
     {
       "slug": "sofija-2026-11-13-actualno-mickoski-b-lgari-n-ma-osnovani-da-komentira-c24fbc",
       "title": "Мицкоски: България няма основания да коментира човешките права",
