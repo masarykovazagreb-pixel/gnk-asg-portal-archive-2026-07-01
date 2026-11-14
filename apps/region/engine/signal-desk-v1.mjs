@@ -39,7 +39,8 @@ export function signalMetrics(data,{now=Date.now()}={}){
    sourceShares:[...bySource.values()].sort((a,b)=>b.count-a.count||a.id.localeCompare(b.id)),
    trend,items:items.slice(0,100)};
 }
-const number=x=>new Intl.NumberFormat('en-US').format(x);
+export function signalNavLabel(lang){return local(lang).desk;}
+const safeRemote=raw=>{try{const u=new URL(raw);return u.protocol==='https:'&&!u.username&&!u.password?u.toString():'';}catch{return '';}};
 const safeId=s=>String(s||'').replace(/[^a-z0-9_-]/gi,'').slice(0,64);
 function barList(metrics,esc){
  const max=Math.max(1,...metrics.sourceShares.map(x=>x.count));
@@ -70,20 +71,21 @@ export function renderSignalPulse(channel,data,esc){
 }
 export function renderSignalDesk(channel,data,esc,themeOf){
  const t=local(channel.lang),m=signalMetrics(data);
- const topicLabels=new Set(m.items.map(x=>themeOf(x)).filter(Boolean));
+
  const sourceNames=new Map();
  for(const item of m.items)sourceNames.set(String(item.source||''),name(item));
  const filterSources=[...sourceNames].sort((a,b)=>a[1].localeCompare(b[1]));
  const snapshots=m.items.map(item=>{
   const when=ms(item.date),age=ago(when,Date.now()),group=age<=24?'day':age<=72?'days':'older';
   const title=String(item.title||'').slice(0,260),outlet=name(item),slug=String(item.slug||'');
+  const sourceUrl=safeRemote(item.url);
   return '<article class="signal-story" data-signal-story data-source="'+esc(safeId(item.source))+
    '" data-window="'+group+'" data-search="'+esc((title+' '+outlet).toLowerCase())+'">'+
    '<span class="signal-story-time">'+esc(String(item.date).slice(0,16).replace('T',' · '))+'</span>'+
    '<div class="signal-story-text"><h3><a href="../clanak/'+encodeURIComponent(slug)+'/">'+esc(title)+'</a></h3>'+
    '<p>'+esc(outlet)+'</p></div>'+
    '<div class="signal-story-actions"><a href="../clanak/'+encodeURIComponent(slug)+'/">'+esc(t.link)+'</a>'+
-   '<a href="'+esc(item.url)+'" rel="external noopener nofollow" target="_blank">'+esc(t.original)+'</a></div></article>';
+   (sourceUrl?'<a href="'+esc(sourceUrl)+'" rel="external noopener nofollow" target="_blank">'+esc(t.original)+'</a>':'')+'</div></article>';
  }).join('');
  const checkRows=(Array.isArray(data?.sources)?data.sources:[]).map(src=>{
   const state=src.ok===true?'ok':src.ok===false?'fail':'unknown';
@@ -91,7 +93,8 @@ export function renderSignalDesk(channel,data,esc,themeOf){
   return '<div class="signal-source-check"><span class="signal-health-dot signal-health-'+state+'" aria-hidden="true"></span><div><strong>'+esc(String(src.name||src.id||'').slice(0,100))+'</strong><small>'+esc(String(src.checkedAt||'').slice(0,16).replace('T',' · '))+'</small></div><span class="signal-health-label">'+esc(label)+'</span></div>';
  }).join('');
  return '<div class="signal-desk" data-signal-desk>'+
-  '<section class="signal-desk-hero"><div class="signal-desk-top"><span class="signal-eyebrow">AKTUAL / FIRST-PARTY RESEARCH</span><span>'+esc(channel.city)+' · '+esc(channel.country)+'</span></div>'+
+  '<section class="signal-desk-hero"><img class="signal-desk-backdrop" src="/assets/izdanja/'+safeId(channel.id)+'-1200.webp" alt="" aria-hidden="true" width="1200" height="675" decoding="async">'+
+  '<div class="signal-desk-top"><span class="signal-eyebrow">AKTUAL / FIRST-PARTY RESEARCH</span><span>'+esc(channel.city)+' · '+esc(channel.country)+'</span></div>'+
   '<h1>'+esc(t.desk)+'</h1><p>'+esc(t.subtitle)+'</p>'+
   '<div class="signal-source-update">'+esc(t.generated)+': <time datetime="'+esc(m.updatedAt)+'">'+esc(m.updatedAt?m.updatedAt.replace('T',' · ').slice(0,19)+' UTC':'—')+'</time></div>'+
   statsHtml(m,t,esc)+'</section>'+
