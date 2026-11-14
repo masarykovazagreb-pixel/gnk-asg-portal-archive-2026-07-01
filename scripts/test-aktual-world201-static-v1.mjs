@@ -35,3 +35,5 @@ test('static routes do not invent published articles',()=>{
  assert.match(html,/No independently verified published reports/);
  assert.match(html,/External results are operated by their publishers/);
 });
+
+test('new WORLD pages carry canonical house brand and design tokens',()=>{const dirs=readdirSync(root,{withFileTypes:true}).filter(x=>x.isDirectory()).map(x=>x.name);for(const dir of dirs){const html=read(join(dir,'index.html'));assert.match(html,/data-am-design="v1"/);assert.match(html,/rel="icon" href="\/assets\/favicon.svg"/);assert.match(html,/name="publisher" content="AKTUAL MEDIA d.o.o."/);}const index=read('index.html');assert.match(index,/data-am-design="v1"/);assert.match(index,/href="\/world\/maršalovi\/"/);});
