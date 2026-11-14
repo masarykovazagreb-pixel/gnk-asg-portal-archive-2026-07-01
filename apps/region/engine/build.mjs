@@ -25,6 +25,7 @@ import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } fr
 import { KANAL_DESIGN_V2_CSS } from './kanal-design-v2.mjs';
 import { CINEMATIC_CSS, CINEMATIC_JS } from './kanal-cinematic-v3.mjs';
 import { renderSignalPulse, renderSignalDesk, signalNavLabel } from './signal-desk-v1.mjs';
+import { signalHubPage } from './signal-hub-v1.mjs';
 import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
@@ -1802,11 +1803,27 @@ body.mrv-wall main.page{max-width:none}
 @media(prefers-reduced-motion:no-preference){.cardtitle a{transition:color .15s}.cardtitle a:hover{color:#8c2f2f}}
 `;
 
+/* Globalno AKTUAL SIGNAL središte generira ISTI kanonski REGION writer. */
+function buildSignalHub() {
+  const targetDir = join(ROOT, 'apps', 'portal', 'gnk-aktual', 'signal');
+  const assets = join(targetDir, 'assets');
+  mkdirSync(assets, { recursive: true });
+  writeFileSync(join(assets, 'aktual-signal-hub-v1.css'), readFileSync(join(HERE, 'signal-hub-v1.css'), 'utf8'));
+  writeFileSync(join(assets, 'aktual-signal-hub-v1.js'), readFileSync(join(HERE, 'signal-hub-v1.js'), 'utf8'));
+  const html = signalHubPage(CHANNELS, {
+    refresh: refreshTag('/'),
+    ribbon: houseRibbon({ lang: 'hr', edition: 'AKTUAL SIGNAL' }),
+    author: authorBand('hr', 'signal'),
+    impressum: impressumBlock('hr')
+  });
+  writeFileSync(join(targetDir, 'index.html'), html);
+}
 /* Pokreni gradnju samo kad je OVA datoteka ulazna točka. Bez ovoga svaki
    import (npr. iz apps/world/build.mjs) slučajno pregradi sva izdanja. */
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const only = process.argv.includes('--channel') ? process.argv[process.argv.indexOf('--channel') + 1] : '';
   const targets = CHANNELS.filter((c) => !only || c.id === only);
   const report = targets.map((channel) => buildChannel(channel));
+  buildSignalHub();
   console.log(JSON.stringify({ ok: true, channels: report }, null, 2));
 }
