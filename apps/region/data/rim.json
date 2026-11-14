@@ -4,7 +4,7 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-11-14T01:46:50.383Z",
+  "updatedAt": "2026-11-14T07:10:32.550Z",
   "sources": [
     {
       "id": "ansa",
@@ -14,17 +14,22 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T01:46:45.297Z"
+      "checkedAt": "2026-11-14T07:10:23.107Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
-      "ok": true,
-      "fetched": 30,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-14T01:46:45.536Z"
+      "errors": [
+        "https://www.repubblica.it/rss/homepage/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/politica/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/economia/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/sport/rss2.0.xml: HTTP 403"
+      ],
+      "checkedAt": "2026-11-14T07:10:26.264Z"
     },
     {
       "id": "ilpost",
@@ -36,7 +41,7 @@
       "errors": [
         "https://www.ilpost.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-14T01:46:47.452Z"
+      "checkedAt": "2026-11-14T07:10:27.962Z"
     },
     {
       "id": "sole24",
@@ -46,7 +51,7 @@
       "fetched": 37,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T01:46:47.771Z"
+      "checkedAt": "2026-11-14T07:10:28.469Z"
     },
     {
       "id": "corriere",
@@ -56,17 +61,19 @@
       "fetched": 69,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T01:46:48.270Z"
+      "checkedAt": "2026-11-14T07:10:29.171Z"
     },
     {
       "id": "lastampa",
       "name": "La Stampa",
       "url": "https://www.lastampa.it/rss",
-      "ok": true,
-      "fetched": 57,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-14T01:46:48.757Z"
+      "errors": [
+        "https://www.lastampa.it/rss: HTTP 403"
+      ],
+      "checkedAt": "2026-11-14T07:10:30.176Z"
     },
     {
       "id": "fanpage",
@@ -78,7 +85,7 @@
       "errors": [
         "https://www.fanpage.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-14T01:46:49.617Z"
+      "checkedAt": "2026-11-14T07:10:31.168Z"
     },
     {
       "id": "adnkronos",
@@ -90,7 +97,7 @@
       "errors": [
         "https://www.adnkronos.com/rss: nije feed"
       ],
-      "checkedAt": "2026-11-14T01:46:50.383Z"
+      "checkedAt": "2026-11-14T07:10:32.550Z"
     }
   ],
   "items": [
