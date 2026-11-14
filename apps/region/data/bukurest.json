@@ -4,17 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-14T16:36:43.463Z",
+  "updatedAt": "2026-11-14T17:18:53.392Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
       "url": "https://www.agerpres.ro/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-14T16:36:35.899Z"
+      "errors": [
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: HTTP 500"
+      ],
+      "checkedAt": "2026-11-14T17:18:46.739Z"
     },
     {
       "id": "hotnews",
@@ -24,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T16:36:36.088Z"
+      "checkedAt": "2026-11-14T17:18:46.960Z"
     },
     {
       "id": "zf",
@@ -34,7 +37,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T16:36:37.733Z"
+      "checkedAt": "2026-11-14T17:18:48.643Z"
     },
     {
       "id": "profit",
@@ -44,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T16:36:37.946Z"
+      "checkedAt": "2026-11-14T17:18:48.866Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 218,
+      "fetched": 219,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T16:36:40.681Z"
+      "checkedAt": "2026-11-14T17:18:51.182Z"
     },
     {
       "id": "g4media",
@@ -64,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T16:36:42.538Z"
+      "checkedAt": "2026-11-14T17:18:52.610Z"
     },
     {
       "id": "newsro",
@@ -74,10 +77,205 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T16:36:43.462Z"
+      "checkedAt": "2026-11-14T17:18:53.391Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-14-newsro-prima-gala-a-premiilor-pentru-muzica-2cdb0f",
+      "title": "Prima gală a premiilor pentru muzica generată cu inteligenţă artificială, organizată în SUA; Artiştii AI câştigă teren, în ciuda controverselor",
+      "summary": "Prima ediţie a AI Music Awards din Statele Unite a avut loc vineri, la Los Angeles, premiind melodiile create integral sau parţial cu ajutorul inteligenţei artificiale şi persoanele din spatele acestora, într-un moment în care muzica generată de AI provoacă dispute în industria muzicală, dar atrage milioane de ascultări şi începe să intre în clasamente, transmite Reuters.",
+      "date": "2026-11-14T17:15:00.000Z",
+      "url": "https://www.news.ro/economic/prima-gala-a-premiilor-pentru-muzica-generata-cu-inteligenta-artificiala-organizata-in-sua-artistii-ai-castiga-teren-in-ciuda-controverselor-1922401514002026111922987953",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Prima gală a premiilor pentru muzica generată cu inteligenţă artificială, organizată în SUA; Artiştii AI câştigă teren, în ciuda controverselor",
+      "addedAt": "2026-11-14T17:18:53.391Z"
+    },
+    {
+      "slug": "bukurest-2026-11-14-digi24-rezidentiat-2026-aproape-10-000-de-2ff817",
+      "title": "Rezidenţiat 2026: Aproape 10.000 de candidaţi înscrişi la concurs, din care 3.736 - la UMF „Carol Davila” Bucureşti",
+      "summary": "Aproape zece mii de candidaţi s-au înscris la concursul de intrare în Rezidenţiat, care se va desfăşura duminică în centrele universitare Bucureşti, Cluj-Napoca, Craiova, Iaşi, Târgu-Mureş şi Timişoara.",
+      "date": "2026-11-14T17:10:52.000Z",
+      "url": "https://www.digi24.ro/stiri/rezidentiat-2026-aproape-10-000-de-candidati-inscrisi-la-concurs-din-care-3-736-la-umf-carol-davila-bucuresti-4036787",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjI2JTJGMzAzMjE3MV8zMDMy/MTcxX21lZGljLXByb2ZpbWVkaWEuanBn/Jmhhc2g9NDUxZTIwYjEyZTQxZjMwMDMyMjgxMDA3ZmNmYzM0Y2M=.jpg",
+      "imageAlt": "Rezidenţiat 2026: Aproape 10.000 de candidaţi înscrişi la concurs, din care 3.736 - la UMF „Carol Davila” Bucureşti",
+      "addedAt": "2026-11-14T17:18:51.182Z"
+    },
+    {
+      "slug": "bukurest-2026-11-14-digi24-incendii-devastatoare-canicula-mortala-si-ad7f2e",
+      "title": "Incendii devastatoare, caniculă mortală și inundații catastrofale: 2026, un an al fenomenelor meteorologice extreme",
+      "summary": "Incendii de vegetație care au mistuit milioane de hectare, valuri de căldură care au provocat zeci de mii de decese, inundații devastatoare și furtuni de o intensitate fără precedent. Anul 2026 a fost marcat de o succesiune de fenomene meteorologice extreme, pe fondul accelerării crizei climatice. Potrivit unei analize realizate de The Guardian, bilanțul victimelor este deja de ordinul zecilor de mii, iar efectele încălzirii globale devin tot mai vizibile pe toate continentele.",
+      "date": "2026-11-14T17:04:10.000Z",
+      "url": "https://www.digi24.ro/stiri/sci-tech/natura-si-mediu/incendii-devastatoare-canicula-mortala-si-inundatii-catastrofale-2026-un-an-al-fenomenelor-meteorologice-extreme-4036757",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjMl/MkYxMiUyRjA2JTJGMTg1NTEzNV8xODU1/MTM1X3BhbWFudC1hcG9jYWxpcHNhLWNs/aW1hdGljYS5qcGcmaGFzaD1kOGE3NDFj/ZWU1MWYzNjZiYjAzM2M1ZTU4ZTBlZmVjYQ==.jpg",
+      "imageAlt": "Incendii devastatoare, caniculă mortală și inundații catastrofale: 2026, un an al fenomenelor meteorologice extreme",
+      "addedAt": "2026-11-14T17:18:51.182Z"
+    },
+    {
+      "slug": "bukurest-2026-11-14-profit-finlanda-ii-transmite-un-mesaj-dur-lui-76d570",
+      "title": "Finlanda îi transmite un mesaj dur lui Putin: Nu negociem ieșirea din NATO",
+      "summary": "Helsinki a respins o presupusă condiție a Rusiei, care ar fi fost pusă în cadrul negocierilor de pace privind Ucraina, și anume ca Finlanda să părăsească NATO.",
+      "date": "2026-11-14T17:04:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/vecini/finlanda-ii-transmite-un-mesaj-dur-lui-putin-nu-negociem-iesirea-din-nato-22987664?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "VECINI"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://i0.1616.ro/media/2/2621/35706/22987664/1/flag-40828-1280.png?width=800",
+      "imageAlt": "Finlanda îi transmite un mesaj dur lui Putin: Nu negociem ieșirea din NATO",
+      "addedAt": "2026-11-14T17:18:48.866Z"
+    },
+    {
+      "slug": "bukurest-2026-11-14-hotnews-mobilizare-in-croatia-dupa-moartea-unui-ed51a8",
+      "title": "Mobilizare în Croația după moartea unui pacient psihiatric",
+      "summary": "Sute de persoane s-au adunat sâmbătă la Zagreb pentru a aduce un omagiu unui pacient psihiatric a cărui moarte ar fi fost cauzată de utilizarea excesivă a forței de către infirmieri, conform unei înregistrări video care a șocat întreaga țară, relatează AFP, conform Agerpres. Patru infirmieri de sex masculin de la un spital psihiatric din …",
+      "date": "2026-11-14T16:57:42.000Z",
+      "url": "https://hotnews.ro/mobilizare-in-croatia-dupa-moartea-unui-pacient-psihiatric-2404577",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Mobilizare în Croația după moartea unui pacient psihiatric",
+      "addedAt": "2026-11-14T17:18:46.960Z"
+    },
+    {
+      "slug": "bukurest-2026-11-14-digi24-ucraina-si-danemarca-au-finalizat-primele-604e0c",
+      "title": "Ucraina și Danemarca au finalizat primele componente ale sistemului antibalistic FREYJA. Anunțul lui Zelenski",
+      "summary": "Ucraina a finalizat racheta și lansatorul pentru sistemul antibalistic FREYJA, iar Danemarca a construit radarul acestuia, a anunțat vineri președintele Volodimir Zelenski. Proiectul multinațional urmărește dezvoltarea unei alternative europene la sistemele americane Patriot și reducerea dependenței de tehnologia militară a SUA.",
+      "date": "2026-11-14T16:55:11.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/ue/ucraina-si-danemarca-au-finalizat-primele-componente-ale-sistemului-antibalistic-freyja-anuntul-lui-zelenski-4036725",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOCUyRjIzJTJGMjkyMTQ4OV8yOTIx/NDg5X2xhbnNhcmUtcmFjaGV0YS1wYXRy/aW90LTEtMS5qcGcmaGFzaD04YzVhZTU5/Yzk2OWEwNzY5MmJhNjMwNzY5NTkwNWY0Mw==.jpg",
+      "imageAlt": "Ucraina și Danemarca au finalizat primele componente ale sistemului antibalistic FREYJA. Anunțul lui Zelenski",
+      "addedAt": "2026-11-14T17:18:51.182Z"
+    },
+    {
+      "slug": "bukurest-2026-11-14-digi24-italia-a-amendat-meta-cu-887-milioane-usd-704a52",
+      "title": "Italia a amendat Meta cu 887 milioane USD pentru accesarea fotografiilor şi videoclipurilor utilizatorilor Android fără consimțământ",
+      "summary": "Autoritatea italiană pentru protecţia datelor personale a anunţat sâmbătă că a amendat Meta Platforms, compania care deţine Facebook şi Instagram, cu 805 milioane de euro (887 de milioane de dolari), pentru presupusa accesare a fotografiilor şi videoclipurilor utilizatorilor Android fără consimţământul acestora şi fără informarea lor prealabilă, transmite Reuters.",
+      "date": "2026-11-14T16:50:00.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/ue/italia-a-amendat-meta-cu-887-de-milioane-de-dolari-pentru-accesarea-fotografiilor-si-videoclipurilor-utilizatorilor-android-fara-consim-4036761",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjUl/MkYwNyUyRjI1JTJGMjMxNDEzNF8yMzE0/MTM0X01ldGEtMS5qcGcmaGFzaD1hMDgw/M2ZiMTdlZDdkZjc2NWQxOWVhMGE4NzRlYTA1OQ==.jpg",
+      "imageAlt": "Italia a amendat Meta cu 887 milioane USD pentru accesarea fotografiilor şi videoclipurilor utilizatorilor Android fără consimțământ",
+      "addedAt": "2026-11-14T17:18:51.182Z"
+    },
+    {
+      "slug": "bukurest-2026-11-14-newsro-fia-a-revocat-acreditarea-unui-jurnalist-80d388",
+      "title": "FIA a revocat acreditarea unui jurnalist care l-a criticat pe Charles Leclerc",
+      "summary": "The Daily Mail va boicota ultimele trei curse ale sezonului de Formula 1 după ce FIA i-a revocat acreditarea de presă jurnalistului Jonathan McEvoy, ca urmare a unui articol de opinie în care îl critica pe pilotul Ferrari, Charles Leclerc, relatează Reuters.",
+      "date": "2026-11-14T16:47:25.000Z",
+      "url": "https://www.news.ro/sport/fia-a-revocat-acreditarea-unui-jurnalist-care-l-a-criticat-pe-charles-leclerc-1922404714252026111822987950",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "FIA a revocat acreditarea unui jurnalist care l-a criticat pe Charles Leclerc",
+      "addedAt": "2026-11-14T17:18:53.391Z"
+    },
+    {
+      "slug": "bukurest-2026-11-14-hotnews-cauza-care-a-dus-la-suspendarea-decolarilor-682f2d",
+      "title": "Cauza care a dus la suspendarea decolărilor în SUA și a dat peste cap traficul aerian. Primele explicații oficiale",
+      "summary": "Secretarul american al Transporturilor, Sean Duffy, a oferit sâmbătă după-amiază primele explicații oficiale despre problemele care au dus în cele din urmă la decizia drastică a guvernului SUA de a suspenda decolările la nivel național. „Era un cablu atât de vechi încât era în curs de scoatere din uz, ceea ce înseamnă că linia urma …",
+      "date": "2026-11-14T16:46:49.000Z",
+      "url": "https://hotnews.ro/cauza-care-a-dus-la-oprirea-decolarilor-in-sua-si-a-dat-peste-cap-traficul-aerian-explicatiile-oferite-de-secretarul-transporturilor-2404561",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "hnpremium",
+        "sean duffy",
+        "sua"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Cauza care a dus la suspendarea decolărilor în SUA și a dat peste cap traficul aerian. Primele explicații oficiale",
+      "addedAt": "2026-11-14T17:18:46.960Z"
+    },
+    {
+      "slug": "bukurest-2026-11-14-g4media-dupa-o-pauza-de-73-de-ani-tara-galilor-de91c4",
+      "title": "După o pauză de 73 de ani, Țara Galilor învinge Noua Zeelandă la rugby",
+      "summary": "Naționala de rugby a Țării Galilor a învins sâmbătă Noua Zeelandă, scor 35-28, într-un meci disputat la Cardiff, în Nations Championship, transmite Mediafax. Țara Galilor a început spectaculos partida de pe Principality Stadium și conducea cu 14-0 după numai câteva minute, datorită eseurilor reușite de Tomos Williams și Dewi Lake, potrivit The Guardian. Noua Zeelandă […] © G4Media.ro .",
+      "date": "2026-11-14T16:45:20.000Z",
+      "url": "https://www.g4media.ro/dupa-o-pauza-de-73-de-ani-tara-galilor-invinge-noua-zeelanda-la-rugby.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Sportz",
+        "noua zeelenda",
+        "rugby",
+        "țara galilor"
+      ],
+      "author": "Redacția",
+      "theme": "sport",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/tara-galilor-rugby.jpg",
+      "imageAlt": "După o pauză de 73 de ani, Țara Galilor învinge Noua Zeelandă la rugby",
+      "addedAt": "2026-11-14T17:18:52.610Z"
+    },
+    {
+      "slug": "bukurest-2026-11-14-digi24-o-analiza-de-sange-pentru-depistarea-d6e164",
+      "title": "O analiză de sânge pentru depistarea cancerului de sân şi prezicerea riscului de recidivă a fost dezvoltată de cercetători",
+      "summary": "O echipă internaţională de cercetători a dezvoltat o analiză de sânge capabilă să detecteze cancerul de sân în stadiu incipient şi să contribuie la prezicerea riscului de recidivă după tratament, a anunţat miercuri Institutul Weizmann de Ştiinţă din Israel într-un comunicat.",
+      "date": "2026-11-14T16:43:05.000Z",
+      "url": "https://www.digi24.ro/stiri/sci-tech/descoperiri/o-analiza-de-sange-pentru-depistarea-cancerului-de-san-si-prezicerea-riscului-de-recidiva-a-fost-dezvoltata-de-cercetatori-4032917",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjEyJTJGMzA2NDgwN18zMDY0/ODA3X2NhbmNlci1zYW4tcHJvZmltZWRp/YS0xMTUxMzI0MTg0LmpwZyZoYXNoPWNi/MzM2OWQ0MGU1NGIwN2Y4YzA0OTFlOGEzOTJlZDhj.jpg",
+      "imageAlt": "O analiză de sânge pentru depistarea cancerului de sân şi prezicerea riscului de recidivă a fost dezvoltată de cercetători",
+      "addedAt": "2026-11-14T17:18:51.183Z"
+    },
+    {
+      "slug": "bukurest-2026-11-14-newsro-italia-sustine-participarea-germaniei-la-826f39",
+      "title": "Italia susţine participarea Germaniei la proiectul de dezvoltare a unui avion de luptă de nouă generaţie şi neagă că ar fi încercat să blocheze participarea Berlinului",
+      "summary": "Guvernul italian a anunţat sâmbătă că susţine pe deplin participarea Germaniei la Global Combat Air Programme (GCAP), proiectul internaţional pentru dezvoltarea unui avion de luptă de nouă generaţie, respingând informaţiile potrivit cărora Roma ar fi încercat să împiedice aderarea Berlinului, transmite Reuters.",
+      "date": "2026-11-14T16:40:00.000Z",
+      "url": "https://www.news.ro/economic/italia-sustine-participarea-germaniei-la-proiectul-de-dezvoltare-a-unui-avion-de-lupta-de-noua-generatie-si-neaga-ca-ar-fi-incercat-sa-blocheze-participarea-berlinului-1922404014002026111822987949",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Italia susţine participarea Germaniei la proiectul de dezvoltare a unui avion de luptă de nouă generaţie şi neagă că ar fi încercat să blocheze participarea Berlinului",
+      "addedAt": "2026-11-14T17:18:53.392Z"
+    },
     {
       "slug": "bukurest-2026-11-14-agerpres-fotbal-romania-invinsa-dramatic-de-israel-43d4ae",
       "title": "Fotbal: România, învinsă dramatic de Israel, în preliminariile Campionatului European Under-19",
@@ -169,6 +367,21 @@
       "addedAt": "2026-11-14T16:36:35.899Z"
     },
     {
+      "slug": "bukurest-2026-11-14-newsro-italia-a-amendat-meta-cu-887-de-milioane-de-987de5",
+      "title": "Italia a amendat Meta cu 887 de milioane de dolari pentru accesarea fotografiilor şi videoclipurilor utilizatorilor Android fără consimţământ",
+      "summary": "Autoritatea italiană pentru protecţia datelor personale a anunţat sâmbătă că a amendat Meta Platforms, compania care deţine Facebook şi Instagram, cu 805 milioane de euro (887 de milioane de dolari), pentru presupusa accesare a fotografiilor şi videoclipurilor utilizatorilor Android fără consimţământul acestora şi fără informarea lor prealabilă, transmite Reuters.",
+      "date": "2026-11-14T16:36:00.000Z",
+      "url": "https://www.news.ro/economic/italia-a-amendat-meta-cu-887-de-milioane-de-dolari-pentru-accesarea-fotografiilor-si-videoclipurilor-utilizatorilor-android-fara-consimtamant-1922403614002026111822987904",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Italia a amendat Meta cu 887 de milioane de dolari pentru accesarea fotografiilor şi videoclipurilor utilizatorilor Android fără consimţământ",
+      "addedAt": "2026-11-14T17:18:53.392Z"
+    },
+    {
       "slug": "bukurest-2026-11-14-digi24-marturia-unei-femei-aflate-pe-nava-de-67c249",
       "title": "Mărturia unei femei aflate pe nava de croazieră lovită de un petrolier în SUA: „Apa a început să intre ca pe Titanic”",
       "summary": "O femeie de 65 de ani, aflată la bordul navei de croazieră American Heritage, care a fost lovită vineri de un petrolier pe fluviul Mississippi, în New Orleans, a povestit momentele dramatice prin care au trecut pasagerii. Impactul a fost atât de puternic încât geamurile sălii de mese s-au spart, iar apa a început să pătrundă în interiorul vasului. Femeia a comparat scenele cu cele din filmul „Titanic”.",
@@ -182,6 +395,23 @@
       "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE0JTJGMzA2OTI0NF8zMDY5/MjQ0X3Byb2ZpbWVkaWEtMTE1MjQxMDIy/NS5qcGcmaGFzaD02MjJiMGEwZGM3ODhhMTBkNTliNjgzZjA0NDA1MjllNA==.jpg",
       "imageAlt": "Mărturia unei femei aflate pe nava de croazieră lovită de un petrolier în SUA: „Apa a început să intre ca pe Titanic”",
       "addedAt": "2026-11-14T16:36:40.682Z"
+    },
+    {
+      "slug": "bukurest-2026-11-14-profit-elon-musk-incepe-sa-vanda-cybercab-1314c1",
+      "title": "Elon Musk începe să vândă Cybercab publicului. Cât costă robotaxiul Tesla care nu are volan și pedale VIDEO",
+      "summary": "Tesla invită o parte dintre clienții săi să cumpere modelul Cybercab pentru uz personal.",
+      "date": "2026-11-14T16:32:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/elon-musk-incepe-sa-vanda-cybercab-publicului-cat-costa-robotaxiul-tesla-care-nu-are-volan-si-pedale-video-22986846?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://i0.1616.ro/media/2/2621/33217/22986846/1/tesla-cybercab-robotaxi.jpg?width=800",
+      "imageAlt": "Elon Musk începe să vândă Cybercab publicului. Cât costă robotaxiul Tesla care nu are volan și pedale VIDEO",
+      "addedAt": "2026-11-14T17:18:48.866Z"
     },
     {
       "slug": "bukurest-2026-11-14-newsro-circulatia-feroviara-oprita-in-zona-valu-106d5b",
