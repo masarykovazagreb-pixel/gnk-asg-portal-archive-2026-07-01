@@ -45,7 +45,7 @@ export function signalHubPage(channels,{refresh='',ribbon='',author='',impressum
  '<meta property="og:url" content="https://gnk-asg.hr/gnk-aktual/signal/">'+
  '<meta name="twitter:card" content="summary_large_image">'+
  '<script type="application/ld+json">'+JSON.stringify(ld).replace(/</g,'\\u003c')+'</script>'+
- '<link rel="stylesheet" href="/assets/aktual-signal-hub-v1.css"></head>'+
+ '<link rel="stylesheet" href="/gnk-aktual/signal/assets/aktual-signal-hub-v1.css"></head>'+
  '<body><a class="sh-skip" href="#signal-main">Preskoči na sadržaj</a>'+ribbon+
  '<header class="sh-header"><a href="/gnk-aktual/" class="sh-brand"><span>AKTUAL</span> MEDIA.</a>'+
  '<nav aria-label="Primarna navigacija"><a href="/gnk-aktual/">Naslovnica</a><a href="/izdanja/">Izdanja</a><a href="/status/">Status</a><a href="/gnk-aktual/metodologija/">Metodologija</a></nav></header>'+
@@ -71,5 +71,5 @@ export function signalHubPage(channels,{refresh='',ribbon='',author='',impressum
  '<a href="/kanal/zagreb/signal/">Otvori zagrebački radar →</a></section></main>'+
  '<footer class="sh-footer"><a href="/gnk-aktual/">AKTUAL MEDIA</a><span>Izdavač: AKTUAL MEDIA d.o.o. · Pregled javnih izvora</span>'+
  '<a href="/gnk-aktual/metodologija/">Metodologija i ispravci</a></footer>'+author+impressum+
- '<script src="/assets/aktual-signal-hub-v1.js" defer></script>'+refresh+'</body></html>';
+ '<script src="/gnk-aktual/signal/assets/aktual-signal-hub-v1.js" defer></script>'+refresh+'</body></html>';
 }
