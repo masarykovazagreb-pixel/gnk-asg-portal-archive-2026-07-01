@@ -72,6 +72,9 @@ try {
   assert.equal(built.status, 0, built.stderr || built.stdout);
   const hr = readFileSync(path.join(temp, 'apps/portal/gnk-aktual/kolumne/index.html'), 'utf8');
   const en = readFileSync(path.join(temp, 'apps/portal/en/gnk-aktual/columns/index.html'), 'utf8');
+  assert(hr.includes('<body><a class="skip" href="#columnContent">Preskoči na sadržaj</a>'));
+  assert(en.includes('<body><a class="skip" href="#columnContent">Skip to content</a>'));
+  for (const html of [hr, en]) assert(html.includes('<main id="columnContent" tabindex="-1" class="wrap">'));
   assert(hr.includes('Najavljena testna kolumna'));
   assert(en.includes('Announced test column'));
   assert(hr.includes('2. studenoga 2026. u 10:30'));
