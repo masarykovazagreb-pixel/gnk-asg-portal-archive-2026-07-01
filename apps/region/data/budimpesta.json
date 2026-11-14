@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-14T08:55:44.429Z",
+  "updatedAt": "2026-11-14T10:17:29.272Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-14T08:55:40.853Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-14T10:17:24.742Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T08:55:40.999Z"
+      "checkedAt": "2026-11-14T10:17:24.940Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T08:55:41.151Z"
+      "checkedAt": "2026-11-14T10:17:25.324Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T08:55:41.776Z"
+      "checkedAt": "2026-11-14T10:17:26.088Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-14T08:55:43.594Z"
+      "checkedAt": "2026-11-14T10:17:28.532Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T08:55:43.799Z"
+      "checkedAt": "2026-11-14T10:17:28.711Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,358 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T08:55:44.429Z"
+      "checkedAt": "2026-11-14T10:17:29.271Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-14-hvg-nagymajtenyi-gabor-a-kerdes-mar-nem-az-hogy-08d476",
+      "title": "Nagymajtényi Gábor: A kérdés már nem az, hogy lesz-e még ilyen leállás, hanem az, hogy van-e egyáltalán B-tervünk",
+      "summary": "Négy incidens, egyetlen kíméletlen tanulság: totális a kiszolgáltatottság.",
+      "date": "2026-11-14T10:11:17.000Z",
+      "url": "https://hvg.hu/360/20261114_nagymajtenyi-gabor-tech-leallas-microsoft",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "hvg360",
+        "tech",
+        "Microsoft",
+        "AI"
+      ],
+      "author": "szerzo@hvg.hu (Nagymajtényi Gábor)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/4f3a4039-69c8-49ed-be30-a3df42616d6b.jpg",
+      "imageAlt": "Nagymajtényi Gábor: A kérdés már nem az, hogy lesz-e még ilyen leállás, hanem az, hogy van-e egyáltalán B-tervünk",
+      "addedAt": "2026-11-14T10:17:25.324Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-24hu-bencsik-andras-a-sesztak-ugyrol-tenyleg-f00274",
+      "title": "Bencsik András a Seszták-ügyről: Tényleg ennyire hülyék vagyunk és mindent elhiszünk?",
+      "summary": "Bencsik egyelőre nehezen hiszi, amit lát. Óvatos duhajként rettentő mennyiségű kérdést tett fel publicisztikájában, ami az Abszolút filmszínház? címet kapta. The post Bencsik András a Seszták-ügyről: Tényleg ennyire hülyék vagyunk és mindent elhiszünk? first appeared on 24.hu .",
+      "date": "2026-11-14T10:08:52.000Z",
+      "url": "https://24.hu/belfold/2026/11/14/bencsik-andras-sesztak-ugy-publicisztika/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "bencsik andrás",
+        "seszták-ügy",
+        "nvvh"
+      ],
+      "author": "Besenyei Balázs",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-0882036193-e1794650699156-1024x575.jpg",
+      "imageAlt": "Bencsik András a Seszták-ügyről: Tényleg ennyire hülyék vagyunk és mindent elhiszünk?",
+      "addedAt": "2026-11-14T10:17:28.711Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-portfolio-trump-felvazolta-hogyan-dontene-be-a-5aab51",
+      "title": "Trump felvázolta, hogyan döntené be a rezsimet három nap alatt, de az egyik legfontosabb szövetségese az összeomlás szélére került",
+      "summary": "Donald Trump amerikai elnök egy pénteken megjelent interjúban arról beszélt, hogy a jemeni húszik rakéta- és dróntámadásaival küzdő Szaúd-Arábia éppen \"széthullóban van\". Az elnök emellett azzal kérkedett, hogy három nap alatt képes lenne elpusztítani Iránt, ám a saját gyengeségeikkel küzdő öböl menti államok kérésére egyelőre lemondott erről a lépésről - tudósított a Middle East Eye .",
+      "date": "2026-11-14T10:05:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261114/trump-felvazolta-hogyan-dontene-be-a-rezsimet-harom-nap-alatt-de-az-egyik-legfontosabb-szovetsegese-az-osszeomlas-szelere-kerult-876458",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/r/e/u/reuters-forrasmegjeleloles-tomahawk-ukrajna-oroszorszag-orosz-ukran-haboru-amerikai-egyesult-allam-765617.jpg",
+      "imageAlt": "Trump felvázolta, hogyan döntené be a rezsimet három nap alatt, de az egyik legfontosabb szövetségese az összeomlás szélére került",
+      "addedAt": "2026-11-14T10:17:26.088Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-24hu-carlo-rovelli-a-24-hu-nak-a-mesterseges-bd78f3",
+      "title": "Carlo Rovelli a 24.hu-nak: A mesterséges intelligenciával akár százszorosára is növelhetjük az atomháború kockázatát",
+      "summary": "A jelenlegi politikai vezetők nem elég bölcsek, és nem érzik át olyan erősen a nukleáris katasztrófa veszélyét – Carlo Rovellivel, a világ egyik legismertebb fizikusával beszéltünk tudományról, politikáról és az emberiség túlélési esélyeiről. The post Carlo Rovelli a 24.hu-nak: A mesterséges intelligenciával akár százszorosára is növelhetjük az atomháború kockázatát first appeared on 24.hu .",
+      "date": "2026-11-14T10:00:51.000Z",
+      "url": "https://24.hu/kultura/2026/11/14/carlo-rovelli-interju-fizika-nuklearis-katasztrofa-tudomany/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kultúra",
+        "atombomba",
+        "carlo rovelli",
+        "fizika"
+      ],
+      "author": "Jankovics Márton",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1137003575_kiemelt-1024x576.jpg",
+      "imageAlt": "Carlo Rovelli a 24.hu-nak: A mesterséges intelligenciával akár százszorosára is növelhetjük az atomháború kockázatát",
+      "addedAt": "2026-11-14T10:17:28.711Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-24hu-navracsics-gondolata-sesztak-ugyben-magyar-f365aa",
+      "title": "Navracsics gondolata Seszták-ügyben: Magyar Péternek mennie kell",
+      "summary": "Amennyiben! The post Navracsics gondolata Seszták-ügyben: Magyar Péternek mennie kell first appeared on 24.hu .",
+      "date": "2026-11-14T09:59:06.000Z",
+      "url": "https://24.hu/belfold/2026/11/14/navracsics-sesztak-magyar-peter-szappanopera/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "navracsics tibor",
+        "seszták miklós",
+        "magyar péter"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1118120486-e1793738657196-1024x575.jpg",
+      "imageAlt": "Navracsics gondolata Seszták-ügyben: Magyar Péternek mennie kell",
+      "addedAt": "2026-11-14T10:17:28.711Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-hvg-tota-w-ideje-szettepni-az-ezusthatu-2d222f",
+      "title": "Tóta W.: „Ideje széttépni az ezüsthátú gorillát”",
+      "summary": "„Vagy megszabadultok tőle, vagy vele pusztultok” – írja a HVG publicistája a Facebookon közzétett bejegyzésében azok után, hogy az NVVH nyomozói megtalálták Seszták Miklós elásott milliárdjait.",
+      "date": "2026-11-14T09:59:00.000Z",
+      "url": "https://hvg.hu/elet/20261114_tota-w-arpad-sesztak-miklos-elasott-milliardok-lopas-nvvh",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "bűnügyek",
+        "Seszták Miklós",
+        "Orbán Viktor"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/8a4f830e-e84c-440b-93cd-521efca599b9.jpg",
+      "imageAlt": "Tóta W.: „Ideje széttépni az ezüsthátú gorillát”",
+      "addedAt": "2026-11-14T10:17:25.324Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-portfolio-tisza-kormany-volt-miniszterhez-kotheto-183bcb",
+      "title": "Tisza-kormány: volt miniszterhez köthető milliárdokat ásott ki az NVVH, kijött a régóta várt rendelet",
+      "summary": "Több mint hatmilliárd forintnyi készpénzt foglalt le a Nemzeti Vagyonvisszaszerzési és Vagyonvédelmi Hivatal (NVVH) az Orbán Viktor volt minisztere, Seszták Miklós ellen folyó büntetőügyben – közölte Facebook-bejegyzésében Magyar Péter miniszterelnök . Hatalmas mennyiségű készpénzt foglalt le a Nemzeti Vagyonvisszaszerzési és Vagyonvédelmi Hivatal a Seszták Miklós ellen folyó büntetőügyben. A hatóság, Magyar Péter miniszterelnök és Kármán András pénzügyminiszter is megosztott fotókat és videókat a pénzösszegről, és a legutóbbi fejleményeket Török Gábor politikai elemző is kommentálta. Megjelent a december 24-ét munkaszüneti nappá nyilvánító törvényhez kapcsolódó miniszteri rendelet. A…",
+      "date": "2026-11-14T09:56:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261114/tisza-kormany-volt-miniszterhez-kotheto-milliardokat-asott-ki-az-nvvh-kijott-a-regota-vart-rendelet-876438",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/p/a/r/parlament-724933.jpg",
+      "imageAlt": "Tisza-kormány: volt miniszterhez köthető milliárdokat ásott ki az NVVH, kijött a régóta várt rendelet",
+      "addedAt": "2026-11-14T10:17:26.088Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-portfolio-beindult-a-kamatverseny-a-wekerle-plusznal-583d80",
+      "title": "Beindult a kamatverseny a Wekerle Plusznál: itt az első 3% alatti lakáshitel",
+      "summary": "November 15-éig, vagyis utoljára most vasárnap nyújthatják be Otthon Start-hitelkérelmüket azok, akik október 31-éig aláírták a lakás adásvételi szerződését. A kifutó Otthon Starthoz hasonlóan a helyébe lépő Wekerle Plusz nál is elkezdtek a bankok kamat- és jóváírási kedvezménnyel versenyezni egymással. Új lakásoknál 3% alatti, használt lakásoknál 5% alatti kamattal is elérhető a kölcsön hétfőtől.",
+      "date": "2026-11-14T09:56:00.000Z",
+      "url": "https://www.portfolio.hu/bank/20261114/beindult-a-kamatverseny-a-wekerle-plusznal-itt-az-elso-3-alatti-lakashitel-876460",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Bank"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-lg/m/b/h/mbh-bank-2-598512.jpg",
+      "imageAlt": "Beindult a kamatverseny a Wekerle Plusznál: itt az első 3% alatti lakáshitel",
+      "addedAt": "2026-11-14T10:17:26.088Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-24hu-meghalt-don-macadam-a-magyar-jegkorong-3d50da",
+      "title": "Meghalt Don MacAdam, a magyar jégkorong-válogatott korábbi szövetségi kapitánya",
+      "summary": "76 éves volt a kanadai szakember. The post Meghalt Don MacAdam, a magyar jégkorong-válogatott korábbi szövetségi kapitánya first appeared on 24.hu .",
+      "date": "2026-11-14T09:55:53.000Z",
+      "url": "https://24.hu/sport/2026/11/14/meghalt-don-macadam-magyar-jegkorong-valogatott/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Sport",
+        "jégkorong",
+        "jégkorong válogatott",
+        "don macadam"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/don-macadam-7571a1da-881d-4b72-87ab-5ce5bc37f854-1024x576.jpg",
+      "imageAlt": "Meghalt Don MacAdam, a magyar jégkorong-válogatott korábbi szövetségi kapitánya",
+      "addedAt": "2026-11-14T10:17:28.711Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-portfolio-szintet-lephet-a-fegyverkezes-europat-es-6fb70d",
+      "title": "Szintet léphet a fegyverkezés: Európát és Amerikát is célba veheti az iszlamista rezsim a rakétáival",
+      "summary": "Az iráni Forradalmi Gárda olyan rakéták fejlesztésébe kezdhet, amivel akár a világ másik felén is le tudnának csapni – szemlézte a Tasznim közlését az Iran International.",
+      "date": "2026-11-14T09:52:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261114/szintet-lephet-a-fegyverkezes-europat-es-amerikat-is-celba-veheti-az-iszlamista-rezsim-a-raketaival-876456",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://pcdn.hu/articles/images-xl/e/s/z/eszak-koreai-ballisztikus-raketa-345553.jpg",
+      "imageAlt": "Szintet léphet a fegyverkezés: Európát és Amerikát is célba veheti az iszlamista rezsim a rakétáival",
+      "addedAt": "2026-11-14T10:17:26.088Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-24hu-valik-sebestyen-balazs-es-a-felesege-1c7b26",
+      "title": "Válik Sebestyén Balázs és a felesége",
+      "summary": "Sebestyén Balázs és felesége külön utakon folytatják. A rádiós-műsorvezető közleményben számolt be a döntésükről szombat délelőtt. The post Válik Sebestyén Balázs és a felesége first appeared on 24.hu .",
+      "date": "2026-11-14T09:50:22.000Z",
+      "url": "https://24.hu/elet-stilus/2026/11/14/valik-sebestyen-balazs-es-a-felesege/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kikapcs",
+        "sebestyén balázs",
+        "sebestyén viki",
+        "válás"
+      ],
+      "author": "Besenyei Balázs",
+      "theme": "sigurnost",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-0739292782-e1794649755600-1024x577.jpg",
+      "imageAlt": "Válik Sebestyén Balázs és a felesége",
+      "addedAt": "2026-11-14T10:17:28.712Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-hvg-kuba-komolyan-veszi-trump-fenyegeteset-ecce19",
+      "title": "Kuba komolyan veszi Trump fenyegetését",
+      "summary": "Készülnek egy esetleges amerikai támadásra, miután az amerikai elnök ismét pedzegeti, hogy „lezárná Kuba ügyét”.",
+      "date": "2026-11-14T09:46:46.000Z",
+      "url": "https://hvg.hu/vilag/20261114_kuba-amerikai-tamadas-donald-trump-felkeszules",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "Egyesült Államok",
+        "Kuba",
+        "Donald Trump"
+      ],
+      "author": "szerzo@hvg.hu (MTI)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/2512fc70-5654-420a-9925-11f76aa7048e.jpg",
+      "imageAlt": "Kuba komolyan veszi Trump fenyegetését",
+      "addedAt": "2026-11-14T10:17:25.324Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-444-bayer-zsolt-szerint-nincs-olyan-hulye-aki-ce6c26",
+      "title": "Bayer Zsolt szerint „nincs olyan hülye, aki ennyi lopott pénzt a huszonegyedik században erdőkben ás el”",
+      "summary": "Biztos ez?",
+      "date": "2026-11-14T09:42:29.000Z",
+      "url": "https://444.hu/2026/11/14/bayer-zsolt-szerint-nincs-olyan-hulye-aki-ennyi-lopott-penzt-a-huszonegyedik-szazadban-erdokben-as-el?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "fidesz",
+        "Seszták Miklós",
+        "bayer zsolt",
+        "navracsics tibor"
+      ],
+      "author": "Diószegi-Horváth Nóra",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PpIYF1yiu6hX2M1s.jpeg",
+      "imageAlt": "Bayer Zsolt szerint „nincs olyan hülye, aki ennyi lopott pénzt a huszonegyedik században erdőkben ás el”",
+      "addedAt": "2026-11-14T10:17:24.940Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-24hu-marco-rossi-dontott-ok-negyen-biztosan-bb4378",
+      "title": "Marco Rossi döntött: ők négyen biztosan kihagyják a Georgia elleni mérkőzést",
+      "summary": "Kijött a hivatalos meccskeret. The post Marco Rossi döntött: ők négyen biztosan kihagyják a Georgia elleni mérkőzést first appeared on 24.hu .",
+      "date": "2026-11-14T09:37:03.000Z",
+      "url": "https://24.hu/sport/2026/11/14/nemzetek-ligaja-georgia-magyarorszag-meccskeret-kimaradok/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Sport",
+        "labdarúgás",
+        "nemzetek ligája",
+        "lukács dániel"
+      ],
+      "author": "Futó Csaba",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/marco-rossi-d__yt20261113019-1024x576.jpg",
+      "imageAlt": "Marco Rossi döntött: ők négyen biztosan kihagyják a Georgia elleni mérkőzést",
+      "addedAt": "2026-11-14T10:17:28.712Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-hvg-varszegi-asztrik-azzal-razta-le-zaklatojat-9debd0",
+      "title": "Várszegi Asztrik azzal rázta le zaklatóját, hogy ha megjelenik, el fogja kiáltani magát: „Itt egy BM-es!”",
+      "summary": "Az egyháziak között nem volt több beszervezett, mint egyéb társadalmi rétegekben, de esetükben a morális szempontoknak különös súlyuk van. A III/III az erről szóló anyagokat is manipulálta: olyanokról is készültek 6-os kartonok, akik nem is érzékelték, hogy őket beszervezték volna. Mit lehet tudni azoknak az egyházi személyeknek az érintettségéről, akiknek a neve most előkerült?",
+      "date": "2026-11-14T09:30:00.000Z",
+      "url": "https://hvg.hu/360/20261114_egyhazak-es-allambiztonsag-ugynokok-iii-iii-hvg",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "hvg360",
+        "ügynökakták",
+        "egyházak",
+        "Kádár-rendszer"
+      ],
+      "author": "janos.dobszay@hvg.hu (Dobszay János)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/c6d3e012-4a13-4055-85bd-40c96153bfe8.jpg",
+      "imageAlt": "Várszegi Asztrik azzal rázta le zaklatóját, hogy ha megjelenik, el fogja kiáltani magát: „Itt egy BM-es!”",
+      "addedAt": "2026-11-14T10:17:25.325Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-444-ruhfertozes-terjed-a-szent-janos-korhaz-d4bacd",
+      "title": "Rühfertőzés terjed a Szent János kórház pszichiátriai osztályán",
+      "summary": "A kórház közölte, hogy elindította a járványügyi intézkedéseket.",
+      "date": "2026-11-14T09:27:24.000Z",
+      "url": "https://444.hu/2026/11/14/ruhfertozes-terjed-a-szent-janos-korhaz-pszichiatriai-osztalyan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "pszichiátriai osztály",
+        "rühfertőzés",
+        "infekciókontroll",
+        "Észak-budai Szent János Centrumkórház"
+      ],
+      "author": "Jelinek Anna",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8HBAHhBM1VjfmOWGs.jpeg",
+      "imageAlt": "Rühfertőzés terjed a Szent János kórház pszichiátriai osztályán",
+      "addedAt": "2026-11-14T10:17:24.940Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-hvg-pont-mint-escobar-sesztak-elasott-929d2e",
+      "title": "Pont, mint Escobar? Seszták elásott milliárdjai, a mítosz és a valóság",
+      "summary": "A hírhedt kolumbiai drogbáró is előszeretettel ásta el a millióit. Az elrejtett pénze ma is legendák tárgya.",
+      "date": "2026-11-14T09:21:09.000Z",
+      "url": "https://hvg.hu/elet/20261114_sesztak-miklos-elasott-milliok-pablo-escobar-drogbaro",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "bűnügyek",
+        "Seszták Miklós",
+        "Nemzeti Vagyonvisszaszerzési és -védelmi Hivatal (NVVH)"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/c65bde20-dc36-48ca-943d-136e9cd0d15c.jpg",
+      "imageAlt": "Pont, mint Escobar? Seszták elásott milliárdjai, a mítosz és a valóság",
+      "addedAt": "2026-11-14T10:17:25.325Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-14-hvg-ingyenes-lehetoseg-minden-magyar-kkv-nak-99df6d",
+      "title": "Ingyenes lehetőség minden magyar kkv-nak: 2027-ben indul a Mastercard biztonsági képzése",
+      "summary": "Jövőre Magyarországon is elindul a Mastercard kiberbiztonsági platformja. Az ingyenes digitális tananyag abban segíti a kisvállalkozásokat, hogy magabiztosabban kezeljék a kiberbiztonsági kockázatokat, és hatékony megelőző lépéseket tegyenek a leggyakoribb kiberfenyegetések ellen.",
+      "date": "2026-11-14T09:03:00.000Z",
+      "url": "https://hvg.hu/tudomany/20261114_mastercard-sme-academy-cybersecurity-kiberbiztonsagi-oktatasi-program",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Tech",
+        "tech",
+        "kiberbiztonság",
+        "Mastercard"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "ai",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/ee71ac5b-8330-4fef-ab23-245c49492ba5.jpg",
+      "imageAlt": "Ingyenes lehetőség minden magyar kkv-nak: 2027-ben indul a Mastercard biztonsági képzése",
+      "addedAt": "2026-11-14T10:17:25.325Z"
+    },
     {
       "slug": "budimpesta-2026-11-14-portfolio-hiba-csuszott-a-tesztekbe-csuszik-a-483ede",
       "title": "Hiba csúszott a tesztekbe: csúszik a forgalomindítás a megújult magyar vasútvonalon",
