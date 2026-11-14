@@ -4,6 +4,38 @@
   var doc = document.documentElement;
   var body = document.body;
 
+
+  /* ---------- verified freshness and local timezone (no network) ---------- */
+  function updateClock() {
+    document.querySelectorAll('[data-local-clock]').forEach(function (node) {
+      var timezone = node.getAttribute('data-local-clock') || 'Europe/Zagreb';
+      try {
+        node.textContent = 'Zagreb · ' + new Intl.DateTimeFormat('hr-HR', {
+          timeZone: timezone, hour: '2-digit', minute: '2-digit', hour12: false
+        }).format(new Date());
+      } catch (e) { node.textContent = 'Zagreb · vrijeme nedostupno'; }
+    });
+  }
+  function updateFreshness() {
+    document.querySelectorAll('[data-freshness]').forEach(function (node) {
+      var date = Date.parse(node.getAttribute('data-updated') || '');
+      var label = node.querySelector('[data-freshness-label]');
+      var age = Date.now() - date;
+      var state = 'unknown';
+      var message = 'Svježina nije potvrđena';
+      if (Number.isFinite(date) && age >= 0) {
+        state = age <= 86400000 ? 'fresh' : age <= 259200000 ? 'aging' : 'stale';
+        message = state === 'fresh' ? 'Objava unutar 24 h' : state === 'aging' ? 'Objava starija od 24 h' : 'Objava starija od 72 h';
+      }
+      node.dataset.state = state;
+      if (label) label.textContent = message;
+      node.title = 'Starost najnovije objave; ne potvrđuje stanje automatizacija niti dostupnost izvora';
+    });
+  }
+  updateClock(); updateFreshness();
+  window.setInterval(updateClock, 60000);
+  window.setInterval(updateFreshness, 300000);
+
   /* ---------- tema ---------- */
   var KEY = 'kanal-theme';
   try {

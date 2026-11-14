@@ -23,6 +23,9 @@ import { impressumBlock, IMPRESSUM_CSS } from '../../shared/impressum-v1.mjs';
 import { articleMetaDescription, clip } from '../../../scripts/lib/article-meta-v1.mjs';
 import { authorBand, AUTHOR_BAND_CSS, ensureAuthorPortrait, AUTHOR_PORTRAIT } from '../../shared/author-band-v1.mjs';
 import { KANAL_DESIGN_V2_CSS } from './kanal-design-v2.mjs';
+import { CINEMATIC_CSS, CINEMATIC_JS } from './kanal-cinematic-v3.mjs';
+import { renderSignalPulse, renderSignalDesk, signalNavLabel } from './signal-desk-v1.mjs';
+import { signalHubPage } from './signal-hub-v1.mjs';
 import { spiderWeb, SPIDER_CSS, SPIDER_JS } from '../../satellites/lib/spiderweb-v1.mjs';
 import { meshBlock, MESH_CSS } from '../../satellites/lib/network-v1.mjs';
 import { HOUSE_CSS, houseRibbon } from '../../satellites/lib/house-style-v1.mjs';
@@ -31,11 +34,36 @@ import { editorialIndexBlock, EDITORIAL_INDEX_CSS } from '../../../scripts/lib/p
 import { refreshTag } from '../../shared/refresh-tag-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
+const SIGNAL_CSS = readFileSync(join(HERE, 'signal-desk-v1.css'), 'utf8');
+const SIGNAL_JS = readFileSync(join(HERE, 'signal-desk-v1.js'), 'utf8');
 const APP = join(HERE, '..');
 const ROOT = join(APP, '..', '..');
 const DATA = join(APP, 'data');
 const SITE = join(ROOT, 'apps', 'portal', 'kanal');
 const LEGACY = join(APP, 'site');
+/**
+ * External images need demonstrable rights, not merely an RSS enclosure
+ * or permission to fetch them through the Cloudflare proxy.
+ * This registry is maintained by the publisher, never populated from feeds.
+ */
+const PHOTO_LICENSE_REGISTRY=JSON.parse(readFileSync(join(APP,'image-photo-rights-v1.json'),'utf8'));
+if(PHOTO_LICENSE_REGISTRY.schema_version!=='AKTUAL_REGION_IMAGE_RIGHTS_V1' ||
+   !Array.isArray(PHOTO_LICENSE_REGISTRY.approved_images))throw Error('invalid-photo-rights-registry');
+const APPROVED_PHOTOS=new Set();
+for(const photo of PHOTO_LICENSE_REGISTRY.approved_images){
+ let image,evidence;
+ try{image=new URL(photo.url);evidence=new URL(photo.evidence_url)}
+ catch{throw Error('invalid-photo-rights-link')}
+ if(image.protocol!=='https:'||evidence.protocol!=='https:'||image.username||image.password||
+    evidence.username||evidence.password||
+    !['owned','licensed','public-domain'].includes(photo.basis)||
+    !String(photo.credit||'').trim()||APPROVED_PHOTOS.has(image.toString())){
+   throw Error('unverifiable-photo-rights-entry');
+ }
+ APPROVED_PHOTOS.add(image.toString());
+}
+const licensedPhoto=item=>typeof item?.image==='string'&&APPROVED_PHOTOS.has(item.image);
+
 
 export const CHANNELS = JSON.parse(readFileSync(join(APP, 'channels.json'), 'utf8')).channels;
 /* Prijestolnica svakog izdanja: izdanje u glavnom gradu dobiva svoju stranicu
@@ -539,6 +567,7 @@ ${ld}
 ${designTokensCss()}
 </head>
 <body data-channel="${channel.id}" data-lang="${channel.lang}">
+<div class="region-read-progress" aria-hidden="true"></div>
 <a class="skip" href="#sadrzaj">${esc(chromeOf(pageLang).skip)}</a>
 ${houseRibbon({ lang: pageLang, edition: channel.city || channel.title })}
 ${body}
@@ -547,6 +576,8 @@ ${cachedShellBlocks(channel, pageLang)}
 ${miniRail(channel)}
 <script src="/assets/aktual-radio-mini-v1.js?v=20261023-edmini" defer></script>
 <script src="${root}assets/spiderweb-v1.js?v=20261023" defer></script>
+<script src="${root}assets/kanal-cinematic-v3.js" defer></script>
+<script src="${root}assets/region-signal-v1.js" defer></script>
 ${refreshTag('/')}
 </body>
 </html>`;
@@ -568,6 +599,7 @@ function header(channel, strings, active = '', root = '') {
   const nav = [
     ['', strings.latest],
     ['mravinjak/', mrvLabel],
+    ['signal/', signalNavLabel(channel.lang)],
     ['izvori/', strings.sources],
     ['metodologija/', strings.methodology]
   ].map(([href, label]) => `<a href="${root}${href}"${href === active ? ' aria-current="page"' : ''}>${esc(label)}</a>`).join('');
@@ -581,6 +613,7 @@ function header(channel, strings, active = '', root = '') {
       <p class="strap">${esc(strings.aboutText.split('.')[0])}.</p>
     </div>
     <div class="mastmeta">
+       <time class="region-clock" data-region-clock="${esc(channel.timezone || 'Europe/Zagreb')}" aria-label="Local city time">--:--</time>
       <span>${esc(strings.editor)}: <strong>Nermin Sefić</strong></span>
       <span>${esc(strings.director)}: <strong>Nermin Sefić</strong></span>
       <span>${esc(strings.publisher)}: AKTUAL MEDIA d.o.o.</span>
@@ -685,12 +718,11 @@ const DESK_ART_BY_THEME = {
 
 function cardMedia(channel, item, theme, labels, { lead = false, root = '' } = {}) {
   const href = `${root}clanak/${item.slug}/`;
-  const art = DESK_ART_BY_THEME[artThemeOf(item)];
-  if (/^https:\/\//.test(item.image || '')) {
+  const art = DESK_ART_BY_THEME[artThemeOf(item)] || 'svijet';
+  if (licensedPhoto(item)) {
     const width = lead ? 1200 : 800;
     return `<a class="cardmedia" href="${href}" tabindex="-1" aria-hidden="true"><img src="${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=${width}" alt="${esc(item.imageAlt || item.title)}" width="${width}" height="${Math.round((width * 9) / 16)}" loading="${lead ? 'eager' : 'lazy'}"${lead ? ' fetchpriority="high"' : ''} decoding="async" referrerpolicy="no-referrer"></a>`;
   }
-  if (!art) return '';
   const artTheme = artThemeOf(item);
   const label = labels[artTheme] || labels[theme] || theme;
   const kind = captionFor(channel.lang, 'artAlt');
@@ -716,6 +748,12 @@ function card(channel, strings, item, { lead = false, root = '' } = {}) {
 function homePage(channel, strings, data) {
   const CHANNEL_TZ = channel.timezone || 'Europe/Zagreb';
   const items = data.items;
+  // Freshness is about actual published article timestamps, NOT the time a
+  // feed sync or build ran. No items => unknown, never green by default.
+  const newestItemAt = items
+    .map((item) => item.date)
+    .filter((value) => value && Number.isFinite(Date.parse(value)))
+    .sort((a, b) => Date.parse(b) - Date.parse(a))[0] || '';
   const lead = items[0];
   const rest = items.slice(1, 13);
   const more = items.slice(13, 30);
@@ -731,7 +769,7 @@ function homePage(channel, strings, data) {
       <p class="dateline">${esc(strings.daily)} · ${esc(longDate(new Date().toISOString().slice(0, 10), channel.lang))}${(() => { const st = stampLocal(data.updatedAt || BUILD_ISO, channel.lang, CHANNEL_TZ); return st ? ` · ${esc(strings.updated)} <time datetime="${esc(st.iso)}">${esc(st.stamp)}</time>` : ''; })()}</p>
       <h1>${esc(channel.title)}</h1>
       <p class="intro-text">${esc(strings.aboutText)}</p>
-      <p class="live"><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc(data.updatedAt || items[0]?.date || BUILD_ISO)}">${esc(strings.updated)} ${esc((stampLocal(data.updatedAt || items[0]?.date || BUILD_ISO, channel.lang, CHANNEL_TZ) || {}).stamp || shortDate((items[0]?.date || BUILD_ISO).slice(0, 10), channel.lang))}</time></span></p>
+      <p class="live"><span class="region-fresh" data-region-fresh="${esc(newestItemAt)}" title="Starost najnovijeg stvarnog članka; nije provjera rada sustava">Nema potvrde vremena</span><span class="live-n"><b>${items.length}</b> ${esc(strings.latest).toLowerCase()}</span><span class="live-sep">·</span><span class="live-t"><time datetime="${esc(data.updatedAt || items[0]?.date || BUILD_ISO)}">${esc(strings.updated)} ${esc((stampLocal(data.updatedAt || items[0]?.date || BUILD_ISO, channel.lang, CHANNEL_TZ) || {}).stamp || shortDate((items[0]?.date || BUILD_ISO).slice(0, 10), channel.lang))}</time></span></p>
       <p class="intro-tags">${channel.hashtags.map((h) => `<span class="tag">${esc(h)}</span>`).join(' ')}</p>
       <p class="hero-tags">${esc(chromeOf(channel.lang).tagsLead)} <a href="/nermin-sefic/">#NerminSefić</a> · <a href="/nermin-sefic/">#NerminSefic</a> · <a href="/autorske-objave/">#SeficNermin</a> · <a href="/autorske-objave/">#SEFICNERMIN</a> · <a href="/nermin-sefic/">#UrednikNerminSefić</a> · #AKTUALMEDIA · #GNKASG · ${esc(channel.hashtags[0] || '')}</p>
     </div>
@@ -755,6 +793,8 @@ function homePage(channel, strings, data) {
     <div class="bandhead"><h2>${esc(strings.allNews)}</h2></div>
     <ul class="list">${more.map((i) => `<li><time datetime="${esc(i.date)}">${esc(shortDate(i.date.slice(0, 10), channel.lang))}</time><a href="clanak/${i.slug}/">${esc(i.title)}</a><span class="src">${esc(i.sourceName)}</span></li>`).join('')}</ul>
   </section>` : ''}
+
+  ${renderSignalPulse(channel, data, esc)}
 
   ${mravinjakSection(channel, strings, data)}
 
@@ -805,6 +845,7 @@ ${footer(channel, strings)}`;
     hasPart: [
       { '@type': 'WebPage', url: url(channel, 'mravinjak/'), name: `${channel.title} — arhiva` },
       { '@type': 'WebPage', url: url(channel, 'izvori/'), name: `${channel.title} — izvori` },
+      { '@type': 'WebPage', url: url(channel, 'signal/'), name: `AKTUAL SIGNAL — ${channel.city}` },
       { '@type': 'WebPage', url: url(channel, 'metodologija/'), name: `${channel.title} — metodologija` }
     ]
   };
@@ -842,6 +883,23 @@ ${footer(channel, strings)}`;
 }
 
 
+/* ---------- AKTUAL SIGNAL — first-party media intelligence ---------- */
+function signalPage(channel, strings, data) {
+  const body = `${header(channel, strings, 'signal/', '../')}<main id='sadrzaj' class='signal-page'>${renderSignalDesk(channel, data, esc, themeOf)}</main>${footer(channel, strings)}`;
+  const canonical = url(channel, 'signal/');
+  return shell(channel, strings, {
+    title: `AKTUAL SIGNAL — ${channel.city} | ${channel.title}`,
+    description: `${channel.title} — pogled u javnu arhivu medijskih izvora, uspješnost posljednje provjere RSS-a i vremenske trendove. Nije potvrda istinitosti vijesti.`,
+    path: 'signal/',root:'../',keywords:[...channel.hashtags, channel.city, 'AKTUAL SIGNAL', 'media coverage'],
+    jsonld: [{
+      '@context':'https://schema.org','@type':'CollectionPage','@id':canonical+'#webpage',
+      url:canonical,name:`AKTUAL SIGNAL — ${channel.city}`,inLanguage:channel.lang,
+      publisher:{'@id':AKTUAL_NEWS_ENTITY_ID},isPartOf:{'@id':channel.base+'#edition'},
+      about:{'@type':'Place',name:channel.city},
+      dateModified:data.updatedAt||data.items[0]?.date||BUILD_ISO
+    }],body
+  });
+}
 /* ---------- komentar redakcijskog bota (označen kao automatiziran) ---------- */
 
 const BOT = {
@@ -964,18 +1022,27 @@ function articlePage(channel, strings, item, items) {
   const tags = [...new Set([...channel.hashtags, channel.country, channel.city, item.sourceName, strings.themeNames[theme] || theme])];
   const bot = BOT[channel.lang] || BOT.hr;
   const botText = `${bot.note} ${/\d/.test(item.title) ? bot.num : bot.nonum}`;
+  // RSS availability is not a republication licence. Show only a short,
+  // attributed excerpt, with a direct link to the original publisher.
+  const sourceText=String(item.summary || item.title || '').trim();
+  const sourceWords=sourceText.split(/\s+/).filter(Boolean);
+  const shortWords=sourceWords.slice(0,20).join(' ');
+  const shortExcerpt=Array.from(shortWords).slice(0,160).join('');
+  const sourceExcerpt=shortExcerpt+(shortExcerpt.length<shortWords.length || sourceWords.length>20 ? '…' : '');
+
 
   const root = '../../';
-  /* Slika ide kroz naš posrednik: izdavač ne vidi čitatelja, a slika je
-     keširana na rubu. Ako fotografije nema, članak dobiva ilustraciju teme
-     koja je u podpisu jasno označena kao ilustracija — nikad kao fotografija. */
-  const artId = DESK_ART_BY_THEME[artThemeOf(item)];
-  const heroImage = /^https:\/\//.test(item.image || '')
+  /* Dokazano licencirane vanjske fotografije idu preko privatizacijskog
+     posrednika; sve druge dobivaju naše vlastite ilustracije teme.
+     RSS ili slika dostupna javno ne daju pravo ponovne objave. */
+  const artId = DESK_ART_BY_THEME[artThemeOf(item)] || 'svijet';
+  const photoLicensed = licensedPhoto(item);
+  const heroImage = photoLicensed
     ? `${PUBLIC}/api/img?u=${encodeURIComponent(item.image)}&w=1200`
     : artId ? `/assets/desk/art/${artId}-1200.webp` : '';
   /* OG slika mora biti ista slika koju čitatelj vidi na stranici: fotografija
      izvora ili ilustracija teme, nikad gradska grafika druge namjene. */
-  const ogImage = item.image
+  const ogImage = photoLicensed
     ? heroImage
     : artId ? `${PUBLIC}/assets/desk/art/${artId}-og.jpg` : `${PUBLIC}/assets/izdanja/${channel.id}-og.jpg`;
   const body = `${header(channel, strings, '', root)}
@@ -988,17 +1055,18 @@ function articlePage(channel, strings, item, items) {
       <p class="artmeta"><time datetime="${esc(item.date)}">${esc(longDate(day, channel.lang))}</time> · ${esc(strings.source)}: <a href="${item.url}" target="_blank" rel="external noopener nofollow">${esc(item.sourceName)} ↗</a></p>
     </header>
 
-    ${heroImage ? `<figure class="artimg"><img src="${esc(heroImage)}" alt="${esc(item.image ? (item.imageAlt || item.title) : `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`)}" width="1200" height="675" loading="eager" decoding="async" ${item.image ? 'referrerpolicy="no-referrer"' : ''}><figcaption>${esc(item.image ? captionFor(channel.lang, 'photo') : captionFor(channel.lang, 'art'))}: ${esc(item.image ? item.sourceName : 'AKTUAL MEDIA')}</figcaption></figure>` : ''}
+    ${heroImage ? `<figure class="artimg"><img src="${esc(heroImage)}" alt="${esc(photoLicensed ? (item.imageAlt || item.title) : `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`)}" width="1200" height="675" loading="eager" decoding="async" ${photoLicensed ? 'referrerpolicy="no-referrer"' : ''}><figcaption>${esc(photoLicensed ? captionFor(channel.lang, 'photo') : captionFor(channel.lang, 'art'))}: ${esc(photoLicensed ? item.sourceName : 'AKTUAL MEDIA')}</figcaption></figure>` : ''}
 
     ${score ? `<div class="scorebox"><span class="scorelabel">${esc(strings.source)}</span><strong class="score">${esc(score.label)}</strong><span class="small">${esc(item.title)}</span></div>` : ''}
 
     <section class="quote">
       <h2>${esc(strings.summary)}</h2>
-      <blockquote>${esc(item.summary || item.title)}</blockquote>
+      <blockquote>${esc(sourceExcerpt)}</blockquote>
       <p class="small">${esc(strings.quoteNote)}</p>
       <p><a class="cta" href="${item.url}" target="_blank" rel="external noopener nofollow">${esc(strings.readAtSource)} ↗</a></p>
     </section>
 
+    <nav class="region-share" aria-label="Share this report"><span class="region-hashtags">#AktualMedia #GNKASG ${esc(channel.hashtags[0] || '')}</span><a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url(channel, 'clanak/' + item.slug + '/'))}" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(url(channel, 'clanak/' + item.slug + '/'))}&text=${encodeURIComponent(item.title + ' #AktualMedia')}" target="_blank" rel="noopener noreferrer">X</a><button type="button" data-region-copy="${esc(url(channel, 'clanak/' + item.slug + '/'))}">Copy link</button></nav>
     <section class="osvrt">
       ${paragraphs.map((p) => `<p>${esc(p)}</p>`).join('\n      ')}
     </section>
@@ -1084,7 +1152,7 @@ ${footer(channel, strings)}`;
     /* Kratak naslov (jedna riječ) nije dovoljan opis slike za mreže. Tada se
        dodaje tema i izvor, pa opis ostaje čitljiv i kad je naslov kratak. */
     ogAlt: (() => {
-      if (!item.image) return `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`;
+      if (!photoLicensed) return `${strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme} — ${captionFor(channel.lang, 'artAlt')}`;
       const base = (item.imageAlt || item.title || '').trim();
       if (base.length >= 12) return base;
       const themeName = strings.themeNames[artThemeOf(item)] || strings.themeNames[theme] || theme;
@@ -1365,6 +1433,7 @@ export function buildChannel(channel) {
   };
 
   write('index.html', homePage(channel, strings, data));
+  write('signal/index.html', signalPage(channel, strings, data));
   for (const item of data.items) write(`clanak/${item.slug}/index.html`, articlePage(channel, strings, item, data.items));
 
   const byTheme = new Map();
@@ -1467,8 +1536,10 @@ ${footer(channel, strings)}`;
   }));
 
   ensureAuthorPortrait(AUTHOR_PORTRAIT, dir);
-  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${EDITORIAL_INDEX_CSS}\n${IMPRESSUM_CSS}\n${AUTHOR_BAND_CSS}\n${KANAL_DESIGN_V2_CSS}`);
+  writeFileSync(join(dir, 'assets', 'region.css'), `${CSS}\n${MESH_CSS}\n${SPIDER_CSS}\n${HOUSE_CSS}\n${EXCHANGE_CSS}\n${EDITORIAL_INDEX_CSS}\n${IMPRESSUM_CSS}\n${AUTHOR_BAND_CSS}\n${KANAL_DESIGN_V2_CSS}\n${CINEMATIC_CSS}\n${SIGNAL_CSS}`);
   writeFileSync(join(dir, 'assets', 'spiderweb-v1.js'), SPIDER_JS);
+  writeFileSync(join(dir, 'assets', 'kanal-cinematic-v3.js'), CINEMATIC_JS);
+  writeFileSync(join(dir, 'assets', 'region-signal-v1.js'), SIGNAL_JS);
 
   writeLegacyRedirect(channel);
   writeFileSync(join(dir, 'assets', 'favicon.svg'), favicon());
@@ -1732,11 +1803,27 @@ body.mrv-wall main.page{max-width:none}
 @media(prefers-reduced-motion:no-preference){.cardtitle a{transition:color .15s}.cardtitle a:hover{color:#8c2f2f}}
 `;
 
+/* Globalno AKTUAL SIGNAL središte generira ISTI kanonski REGION writer. */
+function buildSignalHub() {
+  const targetDir = join(ROOT, 'apps', 'portal', 'gnk-aktual', 'signal');
+  const assets = join(targetDir, 'assets');
+  mkdirSync(assets, { recursive: true });
+  writeFileSync(join(assets, 'aktual-signal-hub-v1.css'), readFileSync(join(HERE, 'signal-hub-v1.css'), 'utf8'));
+  writeFileSync(join(assets, 'aktual-signal-hub-v1.js'), readFileSync(join(HERE, 'signal-hub-v1.js'), 'utf8'));
+  const html = signalHubPage(CHANNELS, {
+    refresh: refreshTag('/'),
+    ribbon: houseRibbon({ lang: 'hr', edition: 'AKTUAL SIGNAL' }),
+    author: authorBand('hr', 'signal'),
+    impressum: impressumBlock('hr')
+  });
+  writeFileSync(join(targetDir, 'index.html'), html);
+}
 /* Pokreni gradnju samo kad je OVA datoteka ulazna točka. Bez ovoga svaki
    import (npr. iz apps/world/build.mjs) slučajno pregradi sva izdanja. */
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const only = process.argv.includes('--channel') ? process.argv[process.argv.indexOf('--channel') + 1] : '';
   const targets = CHANNELS.filter((c) => !only || c.id === only);
   const report = targets.map((channel) => buildChannel(channel));
+  buildSignalHub();
   console.log(JSON.stringify({ ok: true, channels: report }, null, 2));
 }

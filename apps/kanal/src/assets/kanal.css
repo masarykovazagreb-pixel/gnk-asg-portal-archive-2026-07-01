@@ -518,3 +518,32 @@ footer li a:hover{color:var(--ink);text-decoration:underline;text-decoration-col
 .am-author nav a{font:700 11px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(128,128,128,.4);border-radius:999px;padding:7px 11px;text-decoration:none;color:inherit}
 .am-author nav a:hover{border-color:currentColor}
 @media(max-width:640px){.am-author{grid-template-columns:56px minmax(0,1fr)}.am-author img{width:56px;height:56px}.am-author nav{grid-column:1/-1}}
+
+
+/* AKTUAL KANAL cinematic editorial V5 — layered but legible, responsive, no remote assets */
+:root{--cinematic-night:#0a101c;--cinematic-gold:#efd19a;--cinematic-red:#b7363a}
+.city-clock{font:700 12px/1.2 var(--sans);white-space:nowrap;letter-spacing:.04em;padding:9px 12px;border:1px solid var(--line);border-radius:30px;background:var(--card)}
+.freshness-indicator{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:750}
+.fresh-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#64748b;box-shadow:0 0 0 3px rgba(100,116,139,.12)}
+.freshness-indicator[data-state="fresh"] .fresh-dot{background:#17834b;box-shadow:0 0 0 3px rgba(23,131,75,.17)}
+.freshness-indicator[data-state="aging"] .fresh-dot{background:#b97908;box-shadow:0 0 0 3px rgba(185,121,8,.17)}
+.freshness-indicator[data-state="stale"] .fresh-dot{background:#cb3745;box-shadow:0 0 0 3px rgba(203,55,69,.17)}
+.cinematic-intro{position:relative;isolation:isolate;min-height:340px;display:flex;align-items:center;overflow:hidden;margin:26px 0 12px;padding:clamp(20px,4vw,50px);border-radius:18px;color:#fff;background:radial-gradient(ellipse at 78% 25%,rgba(205,77,66,.43),transparent 36%),radial-gradient(ellipse at 20% 80%,rgba(226,175,84,.18),transparent 40%),linear-gradient(125deg,#090d17 5%,#1a273c 62%,#3c171c 100%);box-shadow:0 24px 62px -30px rgba(5,10,22,.55)}
+.cinematic-intro:after{content:"";position:absolute;z-index:-1;inset:0;opacity:.22;background:repeating-linear-gradient(115deg,transparent 0,transparent 46px,rgba(255,255,255,.13) 47px,transparent 48px);pointer-events:none}
+.cinematic-intro__glass{max-width:760px;padding:clamp(20px,3vw,34px);background:rgba(9,14,27,.5);border:1px solid rgba(255,255,255,.24);border-radius:16px;box-shadow:0 18px 48px rgba(0,0,0,.25);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.cinematic-intro .eyebrow{color:var(--cinematic-gold);letter-spacing:.19em;font:800 11px/1.4 var(--sans)}
+.cinematic-intro h2{font:700 clamp(2.1rem,5.4vw,4.3rem)/1.03 var(--serif);letter-spacing:-.04em;margin:14px 0 18px;color:#fff}
+.cinematic-intro p{font-size:clamp(1rem,2vw,1.18rem);line-height:1.55;max-width:58ch;color:#e6e8eb}
+.cinematic-intro a{display:inline-flex;align-items:center;gap:12px;padding:11px 16px;background:#efcd8a;color:#161719;border-radius:6px;font-weight:800;text-decoration:none;margin-top:8px}
+.home-hero .lead-media{display:block;border-radius:12px;box-shadow:0 22px 52px -32px rgba(0,0,0,.6)}
+.home-hero .lead-media img{aspect-ratio:16/9;object-fit:cover}
+.home-hero .lead-media:after{content:"";position:absolute;inset:auto 0 0;height:34%;background:linear-gradient(transparent,rgba(8,12,18,.38));pointer-events:none}
+.card{border-radius:10px;overflow:hidden}
+.card-media img{transition:transform .4s ease}
+.card:hover .card-media img{transform:scale(1.035)}
+.article-body>p:first-of-type:not(.fine):first-letter{float:left;font:700 3.3em/.83 var(--serif);padding:.075em .13em .01em 0;color:var(--gold);text-shadow:1px 1px 0 var(--line)}
+.article-body .share-hashtags,.share-hashtags{font:750 11px/1.4 var(--sans);letter-spacing:.02em;color:var(--gold);margin-right:8px;align-self:center}
+#progress{height:4px;z-index:100;background:linear-gradient(90deg,#c83e41,#e4b667,#fff0bb)}
+@media(max-width:700px){.cinematic-intro{min-height:300px;margin:14px 0;padding:12px;border-radius:12px}.cinematic-intro__glass{padding:20px;background:rgba(9,14,27,.72)}.city-clock{font-size:10px;padding:6px 8px}.mast-tools{gap:6px}.share-hashtags{flex-basis:100%}}
+@media(prefers-reduced-motion:reduce){.card,.card-media img,.lead-media img{transition:none!important}.card:hover,.card:hover img,.lead-media:hover img{transform:none!important}}
+@media(forced-colors:active){.cinematic-intro,.cinematic-intro__glass{border:1px solid CanvasText;background:Canvas;color:CanvasText}.cinematic-intro h2,.cinematic-intro p{color:CanvasText}}

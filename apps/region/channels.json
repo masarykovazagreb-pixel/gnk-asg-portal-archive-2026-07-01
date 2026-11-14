@@ -114,6 +114,27 @@
           "urls": [
             "https://telegram.hr/feed/"
           ]
+        },
+        {
+          "id": "24sata",
+          "name": "24sata",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.24sata.hr/feeds/news.xml",
+            "https://www.24sata.hr/feeds/aktualno.xml"
+          ]
+        },
+        {
+          "id": "vecernji",
+          "name": "Večernji list",
+          "type": "rss",
+          "cap": 4,
+          "optional": true,
+          "urls": [
+            "https://www.vecernji.hr/feeds/latest"
+          ]
         }
       ],
       "legacyBase": "https://gnk-asg-kanal-zagreb.pages.dev/",

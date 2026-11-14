@@ -191,3 +191,30 @@ footer{border-top:1px solid var(--line);margin-top:20px;background:#040d14}
 .am-author nav a{font:700 11px/1 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(128,128,128,.4);border-radius:999px;padding:7px 11px;text-decoration:none;color:inherit}
 .am-author nav a:hover{border-color:currentColor}
 @media(max-width:640px){.am-author{grid-template-columns:56px minmax(0,1fr)}.am-author img{width:56px;height:56px}.am-author nav{grid-column:1/-1}}
+
+
+/* AKTUAL BUSINESS TJEDNIK cinematic editorial layer, original locally-owned OG artwork */
+.tjednik-cinematic-hero{position:relative;isolation:isolate;overflow:hidden;min-height:450px;display:flex;align-items:center;padding:clamp(18px,4vw,48px);margin-top:24px;margin-bottom:24px;border:1px solid rgba(47,211,192,.28);border-radius:18px;background:linear-gradient(125deg,#05141f,#153045 64%,#1e202d);box-shadow:0 28px 60px -30px rgba(0,0,0,.72)}
+.tjednik-hero-visual{position:absolute;inset:0;margin:0;z-index:-2}
+.tjednik-hero-visual img{height:100%;width:100%;object-fit:cover;opacity:.68}
+.tjednik-hero-visual figcaption{position:absolute;bottom:10px;right:14px;font:700 10px/1.3 system-ui,sans-serif;letter-spacing:.08em;color:#d1dfdf;text-shadow:0 1px 3px #000}
+.tjednik-cinematic-hero:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(3,11,19,.96) 0%,rgba(3,11,19,.88) 52%,rgba(3,11,19,.37) 100%)}
+.tjednik-hero-glass{width:min(760px,100%);padding:clamp(18px,3vw,34px);background:rgba(8,23,33,.52);border:1px solid rgba(213,234,236,.28);border-radius:16px;backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px)}
+.tjednik-cinematic-hero h1{font-size:clamp(2.1rem,5.5vw,4.6rem);max-width:22ch;letter-spacing:-.045em;line-height:1.04;text-wrap:balance}
+.tjednik-cinematic-hero .lead{color:#f0f5f5}
+.tjednik-clock{display:inline-flex;border:1px solid rgba(47,211,192,.32);border-radius:50px;padding:4px 9px;font:700 11px/1.3 system-ui,sans-serif;color:#b8e4df;white-space:nowrap}
+.tjednik-fresh{display:inline-flex;gap:7px;align-items:center;border:1px solid rgba(255,255,255,.2);border-radius:40px;padding:3px 9px;font-weight:750;color:#dce5e6}
+.tjednik-fresh:before{content:"";height:9px;width:9px;background:#7a8a92;border-radius:50%}
+.tjednik-fresh[data-state="fresh"]:before{background:#1edb7a}
+.tjednik-fresh[data-state="aging"]:before{background:#f9c557}
+.tjednik-fresh[data-state="stale"]:before{background:#fc6477}
+#tjednik-read-progress{position:fixed;top:0;left:0;height:4px;width:0;z-index:200;pointer-events:none;background:linear-gradient(90deg,#2fd3c0,#7aa7ff,#e9bf76)}
+.article > p:first-of-type:not(.dek)::first-letter{float:left;font:700 3.2em/.9 Georgia,serif;padding:.04em .12em 0 0;color:var(--teal)}
+.tjednik-share{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 14px;border-radius:10px;background:rgba(47,211,192,.07);border:1px solid var(--line)}
+.tjednik-share button{font:700 12px/1.4 system-ui,sans-serif;background:var(--panel);border:1px solid var(--teal);border-radius:6px;color:var(--ink);padding:7px 10px;cursor:pointer}
+.tjednik-hashtags{color:var(--teal);font-weight:800}
+.card{transition:transform .2s ease,border-color .2s ease}
+.card:hover{transform:translateY(-2px)}
+@media(max-width:680px){.tjednik-cinematic-hero{min-height:380px;margin-top:12px;padding:10px;border-radius:12px}.tjednik-hero-glass{padding:18px;background:rgba(5,18,29,.8);backdrop-filter:none}.tjednik-cinematic-hero h1{font-size:clamp(1.8rem,7vw,3.3rem)}.tjednik-clock{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
+@media(forced-colors:active){.tjednik-cinematic-hero,.tjednik-hero-glass,.tjednik-fresh{border:1px solid CanvasText;background:Canvas}}
