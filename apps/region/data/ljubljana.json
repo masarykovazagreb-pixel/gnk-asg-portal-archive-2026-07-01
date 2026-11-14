@@ -4,7 +4,7 @@
   "lang": "sl",
   "city": "Ljubljana",
   "country": "Slovenija",
-  "updatedAt": "2026-11-14T17:03:01.461Z",
+  "updatedAt": "2026-11-14T17:56:21.210Z",
   "sources": [
     {
       "id": "sta",
@@ -14,11 +14,11 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.sta.si/rss: nije feed",
-        "https://english.sta.si/rss.php: HTTP 404",
-        "https://www.sta.si/rss.php: HTTP 404"
+        "https://www.sta.si/rss: HTTP 403",
+        "https://english.sta.si/rss.php: HTTP 403",
+        "https://www.sta.si/rss.php: HTTP 403"
       ],
-      "checkedAt": "2026-11-14T17:02:43.907Z"
+      "checkedAt": "2026-11-14T17:55:59.381Z"
     },
     {
       "id": "delo",
@@ -30,7 +30,7 @@
       "errors": [
         "https://www.delo.si/feed/: HTTP 404"
       ],
-      "checkedAt": "2026-11-14T17:02:46.137Z"
+      "checkedAt": "2026-11-14T17:56:02.536Z"
     },
     {
       "id": "dnevnik",
@@ -43,7 +43,7 @@
         "https://www.dnevnik.si/rss: HTTP 404",
         "https://www.dnevnik.si/feed: HTTP 404"
       ],
-      "checkedAt": "2026-11-14T17:02:48.960Z"
+      "checkedAt": "2026-11-14T17:56:05.243Z"
     },
     {
       "id": "siol",
@@ -57,7 +57,7 @@
         "https://siol.net/rss: HTTP 404",
         "https://www.siol.net/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-14T17:02:53.366Z"
+      "checkedAt": "2026-11-14T17:56:10.520Z"
     },
     {
       "id": "n1si",
@@ -67,7 +67,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T17:02:54.018Z"
+      "checkedAt": "2026-11-14T17:56:11.620Z"
     },
     {
       "id": "24ur",
@@ -77,7 +77,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T17:02:54.183Z"
+      "checkedAt": "2026-11-14T17:56:11.947Z"
     },
     {
       "id": "mladina",
@@ -89,7 +89,7 @@
       "errors": [
         "https://www.mladina.si/feed/: nije feed"
       ],
-      "checkedAt": "2026-11-14T17:02:54.554Z"
+      "checkedAt": "2026-11-14T17:56:12.472Z"
     },
     {
       "id": "rtvslo",
@@ -101,7 +101,7 @@
       "errors": [
         "https://www.rtvslo.si/rss: nije feed"
       ],
-      "checkedAt": "2026-11-14T17:02:55.824Z"
+      "checkedAt": "2026-11-14T17:56:14.229Z"
     },
     {
       "id": "slovenskenovice",
@@ -111,7 +111,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T17:02:57.143Z"
+      "checkedAt": "2026-11-14T17:56:15.986Z"
     },
     {
       "id": "zurnal24",
@@ -123,7 +123,7 @@
       "errors": [
         "https://www.zurnal24.si/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-14T17:02:58.817Z"
+      "checkedAt": "2026-11-14T17:56:17.827Z"
     },
     {
       "id": "primorske",
@@ -135,7 +135,7 @@
       "errors": [
         "https://www.primorske.si/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-14T17:03:00.544Z"
+      "checkedAt": "2026-11-14T17:56:19.743Z"
     },
     {
       "id": "vecer",
@@ -145,7 +145,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-14T17:03:00.979Z"
+      "checkedAt": "2026-11-14T17:56:20.444Z"
     },
     {
       "id": "staslo",
@@ -155,12 +155,110 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.sta.si/rss: nije feed"
+        "https://www.sta.si/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-14T17:03:01.461Z"
+      "checkedAt": "2026-11-14T17:56:21.210Z"
     }
   ],
   "items": [
+    {
+      "slug": "ljubljana-2026-11-14-delo-vec-kot-sto-tisoc-nezadovoljnih-francozov-9c6092",
+      "title": "Več kot sto tisoč nezadovoljnih Francozov spet na ulicah",
+      "summary": "Francijo že več kot mesec dni zaznamujejo blokade srednjih šol in demonstracije.",
+      "date": "2026-11-14T17:42:00.000Z",
+      "url": "https://www.delo.si/novice/svet/vec-kot-sto-tisoc-nezadovoljnih-francozov-spet-na-ulicah",
+      "source": "delo",
+      "sourceName": "Delo",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.delo.si/media/images/20261114/3772782.width-660.format-webp.webp",
+      "imageAlt": "Več kot sto tisoč nezadovoljnih Francozov spet na ulicah",
+      "addedAt": "2026-11-14T17:56:02.536Z"
+    },
+    {
+      "slug": "ljubljana-2026-11-14-vecer-beljak-ali-celo-jajce-kaj-je-boljse-za-ff7e49",
+      "title": "Beljak ali celo jajce, kaj je boljše za mišice? Odgovor vas bo morda presenetil",
+      "summary": "Prosti čas",
+      "date": "2026-11-14T17:35:00.000Z",
+      "url": "https://vecer.com/prosti-cas/jajca-beljak-rumenjak-telesna-aktivnost-10433322",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "A.B.",
+      "theme": "drustvo",
+      "image": "https://iasstorage.vecer.com/data/Resources/00/00/00/00/00/00/40/90/57/54/40905754qFF101B183F1C86B2D3924BE8EF080836_1200.jpg",
+      "imageAlt": "Beljak ali celo jajce, kaj je boljše za mišice? Odgovor vas bo morda presenetil",
+      "addedAt": "2026-11-14T17:56:20.444Z"
+    },
+    {
+      "slug": "ljubljana-2026-11-14-vecer-obupana-mama-razdelila-splet-njen-bf9d88",
+      "title": "Obupana mama razdelila splet: Njen devetletnik sovraži šolo, kdo je v resnici kriv?",
+      "summary": "Prosti čas",
+      "date": "2026-11-14T17:30:00.000Z",
+      "url": "https://vecer.com/prosti-cas/obupana-mama-sin-tezave-sola-brez-interesa-10433409",
+      "source": "vecer",
+      "sourceName": "Večer",
+      "categories": [
+        "Prosti čas"
+      ],
+      "author": "D.Ži",
+      "theme": "drustvo",
+      "image": "https://iasstorage.vecer.com/data/Resources/00/00/00/00/00/00/43/97/97/76/43979776q00E5D59557060637042F4A472C9F6A40_1200.jpg",
+      "imageAlt": "Obupana mama razdelila splet: Njen devetletnik sovraži šolo, kdo je v resnici kriv?",
+      "addedAt": "2026-11-14T17:56:20.444Z"
+    },
+    {
+      "slug": "ljubljana-2026-11-14-n1si-na-obmocju-ljubljane-nasli-pogresanega-86-757bc8",
+      "title": "Na območju Ljubljane našli pogrešanega 86-letnika",
+      "summary": "Na območju Ljubljane so našli pogrešanega 86-letnika.",
+      "date": "2026-11-14T17:28:46.000Z",
+      "url": "https://n1info.si/novice/crna-kronika/policija-isce-pogresanega-86-letnika-njegovo-zdravstveno-stanje-je-lahko-ogrozeno/",
+      "source": "n1si",
+      "sourceName": "N1 Slovenija",
+      "categories": [
+        "Črna kronika",
+        "policijska uprava ljubljana",
+        "pogrešana oseba"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.si/media/images/2026/9/12/1789236718_AI5_4312tc.width-1200.jpg",
+      "imageAlt": "Na območju Ljubljane našli pogrešanega 86-letnika",
+      "addedAt": "2026-11-14T17:56:11.620Z"
+    },
+    {
+      "slug": "ljubljana-2026-11-14-slovenskenovice-borut-pahor-razkril-skrivnost-ki-je-5eca03",
+      "title": "Borut Pahor razkril skrivnost, ki je marsikdo ni poznal: že od mladosti ima zdravstvene težave (VIDEO)",
+      "summary": "Čeprav velja za velikega športnega navdušenca, mu ena od najbolj priljubljenih slovenskih aktivnosti povzroča precejšnje težave.",
+      "date": "2026-11-14T17:26:00.000Z",
+      "url": "https://slovenskenovice.delo.si/bulvar/domaci-traci/borut-pahor-razkril-skrivnost-ki-je-marsikdo-ni-poznal-ze-od-mladosti-ima-zdravstvene-tezave-video",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://slovenskenovice.delo.si/media/images/20261114/3772701.width-660.format-webp.webp",
+      "imageAlt": "Borut Pahor razkril skrivnost, ki je marsikdo ni poznal: že od mladosti ima zdravstvene težave (VIDEO)",
+      "addedAt": "2026-11-14T17:56:15.986Z"
+    },
+    {
+      "slug": "ljubljana-2026-11-14-slovenskenovice-pomembno-opozorilo-v-hladnejsih-dneh-preden-440a83",
+      "title": "Pomembno opozorilo v hladnejših dneh: preden se usedete v avto, nujno storite to (FOTO)",
+      "summary": "Še posebej ranljivi so mladiči ter bolehne živali s slabšimi refleksi.",
+      "date": "2026-11-14T17:13:00.000Z",
+      "url": "https://slovenskenovice.delo.si/novice/slovenija/pomembno-opozorilo-v-hladnejsih-dneh-preden-se-usedete-v-avto-nujno-storite-to-foto",
+      "source": "slovenskenovice",
+      "sourceName": "Slovenske novice",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://slovenskenovice.delo.si/media/images/20261112/3771142.width-660.format-webp.webp",
+      "imageAlt": "Pomembno opozorilo v hladnejših dneh: preden se usedete v avto, nujno storite to (FOTO)",
+      "addedAt": "2026-11-14T17:56:15.986Z"
+    },
     {
       "slug": "ljubljana-2026-11-14-n1si-zda-po-25-letih-izgubile-status-drzave-kjer-e19916",
       "title": "ZDA po 25 letih izgubile status države, kjer so ošpice izkoreninjene",
