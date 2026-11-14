@@ -6,6 +6,10 @@ on:
       - 'apps/tjednik/**'
       - 'apps/region/engine/build.mjs'
       - 'apps/region/engine/kanal-cinematic-v3.mjs'
+      - 'apps/region/engine/signal-desk-v1.mjs'
+      - 'apps/region/engine/signal-desk-v1.css'
+      - 'apps/region/engine/signal-desk-v1.js'
+      - 'apps/region/engine/signal-desk-v1.test.mjs'
       - 'apps/region/image-photo-rights-v1.json'
       - 'tests/test-region-editorial-rights-v1.mjs'
       - 'tests/test-image-proxy-coverage-v1.mjs'
@@ -27,6 +31,9 @@ jobs:
           node --check apps/kanal/build.mjs
           node --check apps/region/engine/build.mjs
           node --check apps/region/engine/kanal-cinematic-v3.mjs
+          node --check apps/region/engine/signal-desk-v1.mjs
+          node --check apps/region/engine/signal-desk-v1.js
+          node --test apps/region/engine/signal-desk-v1.test.mjs
           node --check apps/kanal/src/assets/kanal.js
           node --input-type=module -e "import {CINEMATIC_JS} from './apps/region/engine/kanal-cinematic-v3.mjs'; new Function(CINEMATIC_JS)"
       - name: Build Zagreb KANAL
@@ -40,6 +47,13 @@ jobs:
         run: |
           node apps/region/engine/build.mjs --channel beograd
           test -s apps/portal/kanal/beograd/assets/kanal-cinematic-v3.js
+          test -s apps/portal/kanal/beograd/assets/region-signal-v1.js
+          test -s apps/portal/kanal/beograd/signal/index.html
+          grep -q 'data-signal-desk' apps/portal/kanal/beograd/signal/index.html
+          grep -q 'data-signal-search' apps/portal/kanal/beograd/signal/index.html
+          grep -q 'signal-pulse' apps/portal/kanal/beograd/index.html
+          grep -q 'signal-desk-hero' apps/portal/kanal/beograd/assets/region.css
+          if grep -q 'space-z.ai' apps/portal/kanal/beograd/signal/index.html; then exit 1; fi
           grep -q 'region-clock' apps/portal/kanal/beograd/index.html
           grep -q 'region-fresh' apps/portal/kanal/beograd/index.html
           node --input-type=module -e "import {readFileSync} from 'node:fs';import assert from 'node:assert/strict';const items=JSON.parse(readFileSync('apps/region/data/beograd.json','utf8')).items;const latest=items.map(x=>x.date).filter(x=>x&&!Number.isNaN(Date.parse(x))).sort((a,b)=>Date.parse(b)-Date.parse(a))[0]||'';const html=readFileSync('apps/portal/kanal/beograd/index.html','utf8');const marker=html.match(/data-region-fresh=\"([^\"]*)\"/);assert(marker,'missing freshness marker');assert.equal(marker[1],latest,'badge must track latest article, not build time');"
@@ -53,6 +67,14 @@ jobs:
             exit 1
           fi
           node --input-type=module -e "import {readFileSync} from 'node:fs';const d=JSON.parse(readFileSync('apps/region/image-photo-rights-v1.json','utf8'));if(d.schema_version!=='AKTUAL_REGION_IMAGE_RIGHTS_V1'||!Array.isArray(d.approved_images))throw Error('photo-rights-registry-missing');console.log('External image licences:',d.approved_images.length)"
+
+      - name: Build global English sample (Singapore)
+        run: |
+          node apps/region/engine/build.mjs --channel singapur
+          test -s apps/portal/kanal/singapur/signal/index.html
+          grep -q 'data-signal-desk' apps/portal/kanal/singapur/signal/index.html
+          grep -q 'AKTUAL SIGNAL' apps/portal/kanal/singapur/index.html
+          node --check apps/portal/kanal/singapur/assets/region-signal-v1.js
 
       - name: Build Business Tjednik
         run: |
