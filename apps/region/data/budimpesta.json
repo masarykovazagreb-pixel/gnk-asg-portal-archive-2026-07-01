@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-15T17:02:42.864Z",
+  "updatedAt": "2026-11-15T22:07:52.223Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-15T17:02:37.165Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-15T22:07:47.275Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T17:02:37.857Z"
+      "checkedAt": "2026-11-15T22:07:47.516Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T17:02:38.181Z"
+      "checkedAt": "2026-11-15T22:07:47.750Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T17:02:39.284Z"
+      "checkedAt": "2026-11-15T22:07:48.670Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-15T17:02:41.163Z"
+      "checkedAt": "2026-11-15T22:07:51.065Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T17:02:41.490Z"
+      "checkedAt": "2026-11-15T22:07:51.274Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,375 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T17:02:42.864Z"
+      "checkedAt": "2026-11-15T22:07:52.223Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-15-24hu-sesztak-ugy-het-eve-nem-nyomtatjak-azt-az-ced993",
+      "title": "Seszták-ügy: hét éve nem nyomtatják azt az 500 eurós címletet, amelyből rengeteget találtak elásva",
+      "summary": "Épp azért nem gyártják újra, mert bűnözői körökben olyan népszerű volt a „Bin Laden-bankó.” The post Seszták-ügy: hét éve nem nyomtatják azt az 500 eurós címletet, amelyből rengeteget találtak elásva first appeared on 24.hu .",
+      "date": "2026-11-15T20:59:33.000Z",
+      "url": "https://24.hu/belfold/2026/11/15/sesztak-miklos-bin-landen-banko-euro/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "seszták miklós",
+        "nemzeti vagyonvisszaszerzési és vagyonvédelmi hivatal",
+        "euró"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/seszt-1-e1794771277646.jpg",
+      "imageAlt": "Seszták-ügy: hét éve nem nyomtatják azt az 500 eurós címletet, amelyből rengeteget találtak elásva",
+      "addedAt": "2026-11-15T22:07:51.274Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-hvg-a-fidesznek-az-osszeomlas-jutott-eszebe-d0b279",
+      "title": "A Fidesznek az összeomlás jutott eszébe Unger Anna Seszták-ügyben adott interjújáról",
+      "summary": "Kínos, önleleplező vallomás, ami után több a gyanús körülmény és a megválaszolatlan kérdés, mint valaha - értékelte az ellenzéki párt az NVVH-elnök szereplését.",
+      "date": "2026-11-15T20:46:25.000Z",
+      "url": "https://hvg.hu/itthon/20261115_fidesznek-unger-anna-sesztak-interju-reakcio",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "belpolitika",
+        "Unger Anna",
+        "Fidesz"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/8a4f830e-e84c-440b-93cd-521efca599b9.jpg",
+      "imageAlt": "A Fidesznek az összeomlás jutott eszébe Unger Anna Seszták-ügyben adott interjújáról",
+      "addedAt": "2026-11-15T22:07:47.750Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-hvg-orban-viktoron-kivul-mar-gyakorlatilag-e58afe",
+      "title": "Orbán Viktoron kívül már gyakorlatilag mindenki elmondta, mit gondol a Seszták-ügy milliárdjairól",
+      "summary": "A hétvége folyamán politikusok, elemzők és a kulturális élet szereplői is megfejtették az elásott vagyon rejtélyét.",
+      "date": "2026-11-15T20:30:10.000Z",
+      "url": "https://hvg.hu/itthon/20261115_sesztak-miklos-nvvh-hatmilliard-reakciok",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "politika",
+        "Nemzeti Vagyonvisszaszerzési és Vagyonvédelmi Hivatal",
+        "Seszták Miklós"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/8a4f830e-e84c-440b-93cd-521efca599b9.jpg",
+      "imageAlt": "Orbán Viktoron kívül már gyakorlatilag mindenki elmondta, mit gondol a Seszták-ügy milliárdjairól",
+      "addedAt": "2026-11-15T22:07:47.750Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-24hu-december-13-tol-valtozik-a-vasuti-menetrend-593c60",
+      "title": "December 13-tól változik a vasúti menetrend",
+      "summary": "December 13-án lép életbe a MÁV új menetrendje, amely a valós pályaállapotokhoz igazítja a menetidőket. Nő Kelenföld szerepe, és Miskolcig járnak a Railjetek. The post December 13-tól változik a vasúti menetrend first appeared on 24.hu .",
+      "date": "2026-11-15T20:25:08.000Z",
+      "url": "https://24.hu/belfold/2026/11/15/mav-menetrend-valtozas-vonat/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "máv",
+        "vasúti menetrend"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1019612280-e1794774098465-1024x577.jpg",
+      "imageAlt": "December 13-tól változik a vasúti menetrend",
+      "addedAt": "2026-11-15T22:07:51.274Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-24hu-a-kutyapartos-kovacs-gergelyt-segiti-b06981",
+      "title": "A kutyapártos Kovács Gergelyt segíti tanácsaival a korábbi MSZP-s miniszter",
+      "summary": "Lamperth Mónika szerint a hegyvidéki önkormányzat bajban van, ő közvetlenül a polgármestert támogatná tudásával. The post A kutyapártos Kovács Gergelyt segíti tanácsaival a korábbi MSZP-s miniszter first appeared on 24.hu .",
+      "date": "2026-11-15T20:23:45.000Z",
+      "url": "https://24.hu/belfold/2026/11/15/kovacs-gergely-polgar-mester-lamperth-monika/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "kovács gergely",
+        "lamperth mónika",
+        "mszp"
+      ],
+      "author": "24.hu",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1091418644-e1794774180774-1024x589.jpg",
+      "imageAlt": "A kutyapártos Kovács Gergelyt segíti tanácsaival a korábbi MSZP-s miniszter",
+      "addedAt": "2026-11-15T22:07:51.274Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-portfolio-karacsony-gergely-meghosszabbitjak-a-metrot-11075f",
+      "title": "Karácsony Gergely: meghosszabbítják a metrót és négy hidat is felújítanak, hatalmas beruházások indulnak a fővárosban",
+      "summary": "Összesen 68 közlekedési, közterület-megújítási és infrastrukturális beruházás határozhatja meg a főváros következő éveit – ismertette a terveket Facebook-bejegyzésében Karácsony Gergely, Budapest főpolgármestere.",
+      "date": "2026-11-15T20:17:00.000Z",
+      "url": "https://www.portfolio.hu/ingatlan/20261115/karacsony-gergely-meghosszabbitjak-a-metrot-es-negy-hidat-is-felujitanak-hatalmas-beruhazasok-indulnak-a-fovarosban-876572",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Ingatlan"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/b/u/d/budapest-duna-395270.jpg",
+      "imageAlt": "Karácsony Gergely: meghosszabbítják a metrót és négy hidat is felújítanak, hatalmas beruházások indulnak a fővárosban",
+      "addedAt": "2026-11-15T22:07:48.671Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-portfolio-megallhat-a-munka-a-cegeknel-tomegek-e902ee",
+      "title": "Megállhat a munka a cégeknél: tömegek vesznek ki szabadságot a legjobban várt videójáték miatt",
+      "summary": "Tizenhárom évvel a legutóbbi rész után, november 19-én jelenik meg a Grand Theft Auto VI, amely az elemzők szerint minden idők legnagyobb videójáték-piaci debütálását hozhatja el. A több mint egymilliárd dollárból fejlesztett alkotás iránti érdeklődés már most rekordokat dönt, a hatása pedig messze túlmutat a játékiparon, mivel a tartalomgyártóktól kezdve a zenei streamingpiacon át egészen a munkaerőpiacig számos területen érezteti majd a súlyát - írta meg a CNBC .",
+      "date": "2026-11-15T19:59:00.000Z",
+      "url": "https://www.portfolio.hu/uzlet/20261115/megallhat-a-munka-a-cegeknel-tomegek-vesznek-ki-szabadsagot-a-legjobban-vart-videojatek-miatt-876570",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Üzlet"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/g/t/a/gta-6-grand-theft-auto-vi-869728.jpg",
+      "imageAlt": "Megállhat a munka a cégeknél: tömegek vesznek ki szabadságot a legjobban várt videójáték miatt",
+      "addedAt": "2026-11-15T22:07:48.671Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-24hu-gyerekeket-bantalmazhatott-egy-ovono-f6ebe4",
+      "title": "Gyerekeket bántalmazhatott egy óvónő Kecskeméten, a rendőrség is nyomoz",
+      "summary": "Hét-nyolc gyerek is hasonló bántalmazásokról számolt be. The post Gyerekeket bántalmazhatott egy óvónő Kecskeméten, a rendőrség is nyomoz first appeared on 24.hu .",
+      "date": "2026-11-15T19:55:38.000Z",
+      "url": "https://24.hu/belfold/2026/11/15/kecskemet-ovoda-bantalmazas-gyerekek/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "kecskemét",
+        "bántalmazás",
+        "óvoda"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/080_hl_nguyonnet_3278518-e1794772362397-1024x628.jpg",
+      "imageAlt": "Gyerekeket bántalmazhatott egy óvónő Kecskeméten, a rendőrség is nyomoz",
+      "addedAt": "2026-11-15T22:07:51.275Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-hvg-itt-vannak-a-hatoslotto-nyeroszamai-dead1b",
+      "title": "Itt vannak a hatoslottó nyerőszámai",
+      "summary": "Nagyon sokan vihettek haza fejenként háromezer forintot.",
+      "date": "2026-11-15T19:47:29.000Z",
+      "url": "https://hvg.hu/elet/20261115_itt-vannak-a-hatoslotto-nyeroszamai",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "életmód",
+        "hatoslottó",
+        "Szerencsejáték Zrt."
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/fc4c79ee-a72c-4d51-9d6d-3e0af1eb9313.jpg",
+      "imageAlt": "Itt vannak a hatoslottó nyerőszámai",
+      "addedAt": "2026-11-15T22:07:47.750Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-24hu-ennyi-elelmiszer-vegzi-a-kukaban-egy-beeef1",
+      "title": "Ennyi élelmiszer végzi a kukában egy átlagos magyar háztartásban",
+      "summary": "Meglepő számok, bár a helyzet sokat javult az elmúlt tíz évben. The post Ennyi élelmiszer végzi a kukában egy átlagos magyar háztartásban first appeared on 24.hu .",
+      "date": "2026-11-15T19:40:42.000Z",
+      "url": "https://24.hu/otthon/2026/11/15/elelmiszerhulladek-magyar-haztartas-atlag/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Otthon",
+        "otthon",
+        "otthon 2026",
+        "élelmiszer-hulladék"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-162980721-e1794771561389-1024x577.jpg",
+      "imageAlt": "Ennyi élelmiszer végzi a kukában egy átlagos magyar háztartásban",
+      "addedAt": "2026-11-15T22:07:51.275Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-24hu-a-nap-legfontosabb-hirei-2026-11-15-8d24d6",
+      "title": "A nap legfontosabb hírei – 2026.11.15.",
+      "summary": "Seszták-ügy: nem tudni, kinek a pénze az elásott vagyon. Schadl György elhagyta a házi őrizetet. Íme az ötöslottó számai. The post A nap legfontosabb hírei – 2026.11.15. first appeared on 24.hu .",
+      "date": "2026-11-15T19:34:46.000Z",
+      "url": "https://24.hu/belfold/2026/11/15/a-nap-legfontosabb-hirei-2026-11-15/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "unger anna",
+        "nvvh",
+        "seszták miklós"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/seszt-1-e1794771277646.jpg",
+      "imageAlt": "A nap legfontosabb hírei – 2026.11.15.",
+      "addedAt": "2026-11-15T22:07:51.275Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-portfolio-financial-times-megindult-a-lobbi-a-9a0825",
+      "title": "Financial Times: megindult a lobbi a háttérben, a Fehér Ház segítségével térne vissza Jensen Huag az Nvidia élére",
+      "summary": "Visszatérését fontolgatja Jensen Huang, az Nvidia nemrég lemondott vezérigazgatója, miközben a Szilícium-völgy meghatározó szereplői komoly nyomást gyakorolnak a chipgyártó igazgatótanácsára a visszahelyezése érdekében. A technológiai vezető alig néhány napja távozott a posztjáról, miután napvilágot látott, hogy viszonyt folytatott egy feltételezett kínai kémmel, valamint az egyik beosztottjával - írta meg a Financial Times .",
+      "date": "2026-11-15T19:31:00.000Z",
+      "url": "https://www.portfolio.hu/uzlet/20261115/financial-times-megindult-a-lobbi-a-hatterben-a-feher-haz-segitsegevel-terne-vissza-jensen-huag-az-nvidia-elere-876568",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Üzlet"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/k/i/n/kina-usa-mesterseges-intelligencia-nvidia-tiktok-682305.jpg",
+      "imageAlt": "Financial Times: megindult a lobbi a háttérben, a Fehér Ház segítségével térne vissza Jensen Huag az Nvidia élére",
+      "addedAt": "2026-11-15T22:07:48.671Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-hvg-nyomoz-a-rendorseg-mert-fizikai-fenyitest-0869ff",
+      "title": "Nyomoz a rendőrség, mert fizikai fenyítést alkalmazhatott egy óvónő a kecskeméti piarista óvodában",
+      "summary": "Több gyerek beszámolt otthon nyakszorításról, és egyiküket szőnyegre is dobhatta az óvónő.",
+      "date": "2026-11-15T19:25:28.000Z",
+      "url": "https://hvg.hu/itthon/20261115_nyomozas-rendorseg-fizikai-fenyites-kecskemeti-piarista-ovoda",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "oktatás"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/84543736-1d19-4548-ae60-079433344a69.jpg",
+      "imageAlt": "Nyomoz a rendőrség, mert fizikai fenyítést alkalmazhatott egy óvónő a kecskeméti piarista óvodában",
+      "addedAt": "2026-11-15T22:07:47.750Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-hvg-itt-a-nincs-idom-olvasni-instant-ellenszere-e92811",
+      "title": "Itt a „nincs időm olvasni” instant ellenszere: az akár telefonra pattintható e-könyv-olvasó",
+      "summary": "Kompakt méretben kínál szembarát e-könyv-olvasást a kínai Xteink X4 Classic készüléke. Nem nehéz olyan nadrágot választani, amelyik zsebébe belefér, és a legjobb, hogy akár az egyébként is nálunk lévő telefonnal együtt is. Kipróbáltuk.",
+      "date": "2026-11-15T19:03:00.000Z",
+      "url": "https://hvg.hu/tudomany/20261115_xteink-x4-classic-v2-teszt-velemeny-telefonra-pattinthato-e-konyv-olvaso-magsafe",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Tech",
+        "tech",
+        "techteszt",
+        "e-könyv"
+      ],
+      "author": "balogh.csaba@hvg.hu (Balogh Csaba)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/25ee8dcd-0310-46eb-b5e7-2796d4966562.jpg",
+      "imageAlt": "Itt a „nincs időm olvasni” instant ellenszere: az akár telefonra pattintható e-könyv-olvasó",
+      "addedAt": "2026-11-15T22:07:47.751Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-444-sesztak-ugy-unger-anna-szerint-majd-eldol-b48973",
+      "title": "Seszták-ügy: Unger Anna szerint majd eldől, kié a 6,5 milliárd forint, ásás mellett madáretetőbe is be kellett nyúlni a pénzért",
+      "summary": "Az NVVH elnöke nem árult el túl sok részletet, mert nem szeretné veszélyeztetni a nyomozást, de az kiderült, hogy a hivatal már nem csak a korábban ismert négy ügyben nyomoz.",
+      "date": "2026-11-15T18:53:15.000Z",
+      "url": "https://444.hu/2026/11/15/sesztak-ugy-unger-anna-szerint-majd-eldol-kie-a-65-milliard-forint-asas-mellett-madaretetobe-is-be-kellett-nyulni-a-penzert?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "orbán áron",
+        "Nemzeti Vagyonvisszaszerzési és Vagyonvédelmi Hivatal",
+        "kdnp",
+        "rtl"
+      ],
+      "author": "Bódog Bálint",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PsFC8nk9CkwKeBcs.png",
+      "imageAlt": "Seszták-ügy: Unger Anna szerint majd eldől, kié a 6,5 milliárd forint, ásás mellett madáretetőbe is be kellett nyúlni a pénzért",
+      "addedAt": "2026-11-15T22:07:47.516Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-hvg-unger-anna-a-sesztak-ugy-milliardjairol-eb9025",
+      "title": "Unger Anna a Seszták-ügy milliárdjairól: Ennyi pénzt még az Államkincstár sem látott egyben",
+      "summary": "Madáretetőben is találtak bankjegyeket az NVVH nyomozói. Az elnök szerint „senkinek az óvodai jele” nincs a megtalált hat és félmilliárdon, majd eldől, hogy kié volt.",
+      "date": "2026-11-15T18:39:05.000Z",
+      "url": "https://hvg.hu/itthon/20261115_unger-anna-nemzeti-vagyonvisszaszerzesi-es-vagyonvedelmi-hivatal-sesztak-miklos-interju",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "Nemzeti Vagyonvisszaszerzési és Vagyonvédelmi Hivatal",
+        "Unger Anna",
+        "belpolitika"
+      ],
+      "author": "szerzo@hvg.hu (Serdült Viktória)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/a3da6a29-25dc-4f44-a1d4-978f2e394499.jpg",
+      "imageAlt": "Unger Anna a Seszták-ügy milliárdjairól: Ennyi pénzt még az Államkincstár sem látott egyben",
+      "addedAt": "2026-11-15T22:07:47.751Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-portfolio-megszolalt-unger-anna-nem-allunk-meg-6-5-3424ee",
+      "title": "Megszólalt Unger Anna: nem állunk meg 6,5 milliárdnál - Újabb részletek derültek ki a Seszták-ügyben megtalált készpénzről",
+      "summary": "\"Nem tudjuk, hogy ez pontosan kinek a pénze. Ezt az összeget a Seszták Miklóshoz kapcsolódó, többek között a vele szemben indított büntetőeljárásban foganatosított nyomozati cselekmények során találtuk meg és tároltuk el\" - nyilatkozta Unger Anna, a Nemzeti Vagyonvisszaszerzési és Vagyonvédelmi Hivatal elnöke az RTL Házon Kívül műsorában. A lefoglalt összeg bűnügyi letétként a hivatal számláin van, a kötegekben talált, már nem nyomtatott 500 eurósok pedig arra utalhatnak, hogy nem frissen beszerzett pénzről van szó. Az elnök szólt Orbán Áron letartóztatásáról is, a hivatal ugyanis hivatali vesztegetés és befolyással üzérkedés gyanújával vizsgálja a vízumügyintézést. Hozzátette, hogy a…",
+      "date": "2026-11-15T18:39:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261115/megszolalt-unger-anna-nem-allunk-meg-65-milliardnal-ujabb-reszletek-derultek-ki-a-sesztak-ugyben-megtalalt-keszpenzrol-876566",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/u/n/g/unger-anna-869726.jpg",
+      "imageAlt": "Megszólalt Unger Anna: nem állunk meg 6,5 milliárdnál - Újabb részletek derültek ki a Seszták-ügyben megtalált készpénzről",
+      "addedAt": "2026-11-15T22:07:48.672Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-444-13-ev-varakozas-utan-jon-a-gta-vi-de-miert-b9ad2f",
+      "title": "13 év várakozás után jön a GTA VI, de miért őrül meg érte az egész világ?",
+      "summary": "Napokon belül megjelenik minden idők talán legjobban várt videojátéka, a GTA VI. De hogyan lett egy autólopós játékból százmilliókat megmozgató popkulturális esemény? És mit tud még kifigurázni Amerikából, amikor a valóság már lassan abszurdabb, mint maga a GTA?",
+      "date": "2026-11-15T18:23:10.000Z",
+      "url": "https://444.hu/2026/11/15/13-ev-varakozas-utan-jon-a-gta-vi-de-miert-orul-meg-erte-az-egesz-vilag?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "gta vi",
+        "Egyesült Államok",
+        "rockstar games",
+        "videójáték"
+      ],
+      "author": "Benics Márk",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PqkIPkdw03fzwYqs.jpeg",
+      "imageAlt": "13 év várakozás után jön a GTA VI, de miért őrül meg érte az egész világ?",
+      "addedAt": "2026-11-15T22:07:47.516Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-15-444-volt-szoci-belugyminiszterrel-erosit-kovacs-64c223",
+      "title": "Volt szoci belügyminiszterrel erősít Kovács Gergely a XII. kerületben",
+      "summary": "Lamperth Mónika irányítási és vezetési területen segíti majd a hegyvidéki polgármester munkáját.",
+      "date": "2026-11-15T17:15:55.000Z",
+      "url": "https://444.hu/2026/11/15/volt-szoci-belugyminiszterrel-erosit-kovacs-gergely-a-xii-keruletben?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "belügyminiszter",
+        "lamperth mónika",
+        "kovács gergely",
+        "xv. kerület"
+      ],
+      "author": "Bódog Bálint",
+      "theme": "sigurnost",
+      "image": "https://assets.4cdn.hu/kraken/8Ps9QQ5Jogf1Bd9qs.jpeg",
+      "imageAlt": "Volt szoci belügyminiszterrel erősít Kovács Gergely a XII. kerületben",
+      "addedAt": "2026-11-15T22:07:47.517Z"
+    },
     {
       "slug": "budimpesta-2026-11-15-hvg-mit-jelent-ma-a-vasarnapi-ebed-b22906",
       "title": "Mit jelent ma a vasárnapi ebéd Magyarországon?",
