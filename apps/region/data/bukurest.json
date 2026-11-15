@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-15T09:17:28.364Z",
+  "updatedAt": "2026-11-15T11:31:42.500Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: HTTP 500"
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: HTTP 408"
       ],
-      "checkedAt": "2026-11-15T09:17:21.945Z"
+      "checkedAt": "2026-11-15T11:31:39.019Z"
     },
     {
       "id": "hotnews",
@@ -26,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T09:17:22.136Z"
+      "checkedAt": "2026-11-15T11:31:39.169Z"
     },
     {
       "id": "zf",
@@ -36,7 +37,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T09:17:23.797Z"
+      "checkedAt": "2026-11-15T11:31:40.146Z"
     },
     {
       "id": "profit",
@@ -46,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T09:17:23.922Z"
+      "checkedAt": "2026-11-15T11:31:40.328Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 191,
+      "fetched": 178,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T09:17:26.309Z"
+      "checkedAt": "2026-11-15T11:31:41.167Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T09:17:27.543Z"
+      "checkedAt": "2026-11-15T11:31:42.234Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,557 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T09:17:28.362Z"
+      "checkedAt": "2026-11-15T11:31:42.498Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-15-digi24-luca-niculescu-reactie-dupa-ce-alte-trei-811ce7",
+      "title": "Luca Niculescu, reacție după ce alte trei nave au fost atacate în Marea Neagră: „E inacceptabil”",
+      "summary": "Premierul Luca Niculescu a condamnat, duminică, cele mai recente atacuri cu drone asupra navelor în Marea Neagră, susținând că aceste incidente „reflectă deteriorarea situației de securitate cauzată de războiul pe care Rusia îl poartă împotriva Ucrainei”. El mai spune că alături de aliații României vor fi luate „toate măsurile necesare”.",
+      "date": "2026-11-15T11:27:31.000Z",
+      "url": "https://www.digi24.ro/stiri/luca-niculescu-reactie-dupa-ce-alte-trei-nave-au-fost-atacate-in-marea-neagra-e-inacceptabil-4037205",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA1JTJGMzA1NDg1NF8zMDU0/ODU0X2x1Y2EtbmljdWxlc2N1LWlucXVh/bS1vY3Rhdi1nYW5lYS5qcGcmaGFzaD03/Y2NkNWI4MGE1ZWNkMDc3N2M0ZmNlZGE4NmI2NGNjNQ==.jpg",
+      "imageAlt": "Luca Niculescu, reacție după ce alte trei nave au fost atacate în Marea Neagră: „E inacceptabil”",
+      "addedAt": "2026-11-15T11:31:41.167Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-hotnews-trei-nave-lovite-langa-sulina-anuntul-facut-e590f7",
+      "title": "Trei nave lovite lângă Sulina. Anunțul făcut de ministrul Apărării",
+      "summary": "Ministrul Apărării, Radu Oprea a declarat duminica această, după ce trei nave comerciale au fost lovite de drone în apropierea gurilor Dunării, că va aduce în discuţie la Bruxelles omologilor săi situaţia de securitate din proximitatea țării noastre. „Trei nave au fost lovite aseară (sâmbătă seară – n.r.) în apropierea gurilor Dunării. Din fericire nu …",
+      "date": "2026-11-15T11:17:43.000Z",
+      "url": "https://hotnews.ro/trei-nave-lovite-langa-sulina-anuntul-facut-de-ministrul-apararii-2404888",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Alexandra Coșlea",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Trei nave lovite lângă Sulina. Anunțul făcut de ministrul Apărării",
+      "addedAt": "2026-11-15T11:31:39.169Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-zf-compania-aeriana-cu-care-zbori-a-dat-9db7b0",
+      "title": "Compania aeriană cu care zbori a dat faliment? Un proiect care să protejeze banii turiştilor este pe drum. „Principiul e ca toată lumea să-şi recupereze banii” VIDEO",
+      "summary": "",
+      "date": "2026-11-15T11:15:00.000Z",
+      "url": "https://www.zf.ro/zf-live/compania-aeriana-cu-care-zbori-a-dat-faliment-un-proiect-care-sa-protejeze-banii-turistilor-este-pe-drum-principiul-e-ca-toata-lumea-sa-si-recupereze-banii-video-23282124",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF Live"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/24586/23282124/1/alin-burcea.jpg?width=700",
+      "imageAlt": "Compania aeriană cu care zbori a dat faliment? Un proiect care să protejeze banii turiştilor este pe drum. „Principiul e ca toată lumea să-şi recupereze banii” VIDEO",
+      "addedAt": "2026-11-15T11:31:40.146Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-newsro-doar-daca-nu-e-ca-sa-mi-tina-companie-jorge-f886c4",
+      "title": "„Doar dacă nu e ca să-mi ţină companie...”, Jorge Jesus comentează ironic absenţa lui Cristiano Ronaldo după înfrângerea usturătoare suferită în faţa Danemarcei",
+      "summary": "Selecţionerul Portugaliei, Jorge Jesus, s-a arătat ferm sâmbătă seara atunci când a răspuns la o întrebare despre Cristiano Ronaldo, imediat după înfrângerea suferită în faţa Danemarcei (1-4) în Liga Naţiunilor.",
+      "date": "2026-11-15T11:12:00.000Z",
+      "url": "https://www.news.ro/sport/doar-daca-nu-e-ca-sa-mi-tina-companie-jorge-jesus-comenteaza-ironic-absenta-lui-cristiano-ronaldo-dupa-infrangerea-usturatoare-suferita-in-fata-danemarcei-1922401215002026111322989250",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "„Doar dacă nu e ca să-mi ţină companie...”, Jorge Jesus comentează ironic absenţa lui Cristiano Ronaldo după înfrângerea usturătoare suferită în faţa Danemarcei",
+      "addedAt": "2026-11-15T11:31:42.498Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-newsro-alexandru-rogobete-exista-multe-molecule-d9a1b1",
+      "title": "Alexandru Rogobete: Există multe molecule, produse farmaceutice, care sunt de fapt în depozite, dar nu sunt distribuite în farmacii/ Piaţa de medicamente din România a început să…",
+      "summary": "Ministrul Sănătăţii, Alexandru Rogobete, anunţă că va avea, în cursul săptămânii viitoare, o discuţie, la Bruxelles, cu distribuitorii de produse farmaceutice şi cu producătorii de medicamente la nivel european, despre lipsa medicamentelor de pe piaţă. El afirmă că în depozite sunt disponibile ”multe molecule”, dar care nu sunt distribuite în farmacii. Rogobete susţine că piaţa de medicamente din România a devenit tot mai controlată de marile lanţuri de farmacii.",
+      "date": "2026-11-15T11:11:54.000Z",
+      "url": "https://www.news.ro/social/alexandru-rogobete-exista-multe-molecule-produse-farmaceutice-fapt-depozite-distribuite-farmacii-piata-medicamente-romania-inceput-devina-tot-controlata-marile-lanturi-farmacii-1922401115542026111322989389",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Alexandru Rogobete: Există multe molecule, produse farmaceutice, care sunt de fapt în depozite, dar nu sunt distribuite în farmacii/ Piaţa de medicamente din România a început să d",
+      "addedAt": "2026-11-15T11:31:42.498Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-newsro-cehii-ies-in-strada-pentru-a-protesta-fata-9e36d9",
+      "title": "Cehii ies în stradă pentru a protesta faţă de reforma finanţării mass-mediei publice",
+      "summary": "Sute de mii de persoane erau aşteptate duminică pe străzile din Praga pentru a protesta faţă de proiectul guvernului naţionalist al lui Andrej Babis de a reforma finanţarea instituţiilor de presă publice, o iniţiativă denunţată de oponenţii săi ca fiind o ameninţare la adresa libertăţii presei, relatează AFP.",
+      "date": "2026-11-15T11:09:25.000Z",
+      "url": "https://www.news.ro/externe/cehii-ies-in-strada-pentru-a-protesta-fata-de-reforma-finantarii-mass-mediei-publice-1922400915252026111322989383",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Cehii ies în stradă pentru a protesta faţă de reforma finanţării mass-mediei publice",
+      "addedAt": "2026-11-15T11:31:42.499Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-profit-rusii-sunt-speriati-ca-statul-le-ia-4bcce3",
+      "title": "Rușii sunt speriați că statul le ia jumătate din pensii și le dă titluri de stat în schimb. Banii ar urma să fie recuperați după război",
+      "summary": "În Rusia circulă informații potrivit cărora autoritățile ar urma să rețină jumătate din pensiile populației și să ofere în schimb obligațiuni de stat, rambursabile abia după încheierea războiului din Ucraina. Informațiile, dezmințite de surse rusești, apar într-un moment în care Moscova pregătește noi reduceri ale cheltuielilor sociale pentru a finanța armata. Bugetul apărării urmează să ajungă în 2027 la 17.100 de miliarde de ruble, cel mai ridicat nivel de la începutul invaziei, în timp ce fondurile destinate politicilor sociale sunt reduse cu 7%.",
+      "date": "2026-11-15T11:04:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/vecini/rusii-sunt-speriati-ca-statul-le-ia-jumatate-din-pensii-si-le-da-titluri-de-stat-in-schimb-banii-ar-urma-sa-fie-recuperati-dupa-razboi-22988983?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "VECINI"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/35706/22988983/1/jackmac34-matryoshka-970943.jpg?width=800",
+      "imageAlt": "Rușii sunt speriați că statul le ia jumătate din pensii și le dă titluri de stat în schimb. Banii ar urma să fie recuperați după război",
+      "addedAt": "2026-11-15T11:31:40.328Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-newsro-alexandru-rogobete-ma-gandesc-sa-fie-f1f642",
+      "title": "Alexandru Rogobete: Mă gândesc să fie ultimul an când la Rezidenţiat scoatem posturi/ Mai degrabă le-aş transforma în locuri şi am creşte mai mult numărul de locuri decât de…",
+      "summary": "Ministrul Sănătăţii, Alexandru Rogobete, afirmă că se gândeşte ca acesta să fie ultimul an când vor fi scoase posturi pentru rezidenţi, acestea urmând a fi transformate în locuri. Rogobete explică faptul că nu vrea să lege ”rezidenţiatul de glie”, deoarece un rezident este plătit pentru munca pe care o desfăşoară, nu pentru partea educaţională.",
+      "date": "2026-11-15T11:02:54.000Z",
+      "url": "https://www.news.ro/social/alexandru-rogobete-ma-gandesc-sa-fie-ultimul-an-cand-la-rezidentiat-scoatem-posturi-mai-degraba-le-as-transforma-in-locuri-si-am-creste-mai-mult-numarul-de-locuri-decat-de-posturi-1922400215542026111322989369",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Alexandru Rogobete: Mă gândesc să fie ultimul an când la Rezidenţiat scoatem posturi/ Mai degrabă le-aş transforma în locuri şi am creşte mai mult numărul de locuri decât de postur",
+      "addedAt": "2026-11-15T11:31:42.499Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-hotnews-concesiile-fata-de-rusia-in-negocierile-de-f05679",
+      "title": "Concesiile față de Rusia în negocierile de pace pot duce la „atacuri împotriva aliaților NATO” și extinderea războiului în Europa. Avertismentul a opt foști ambasadori SUA, patru…",
+      "summary": "Într-o luare de poziție comună rară, foști diplomați americani invocă lecția dură a politicii de conciliere de acum aproape un secol pentru a arăta riscurile unui compromis rapid în privința Ucrainei pentru întreaga Europă. Opt foști ambasadori ai Statelor Unite au semnat un editorial comun, publicat sâmbătă seară în cotidianul israelian Israel Hayom, pe fondul …",
+      "date": "2026-11-15T11:00:30.000Z",
+      "url": "https://hotnews.ro/opt-fosti-ambasadori-ai-sua-semnal-de-alarma-cu-privire-la-putin-2404847",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Cristina Stoian",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Concesiile față de Rusia în negocierile de pace pot duce la „atacuri împotriva aliaților NATO” și extinderea războiului în Europa. Avertismentul a opt foști ambasadori SUA, patru î",
+      "addedAt": "2026-11-15T11:31:39.170Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-newsro-pereti-transparenti-in-zonele-in-care-ff6756",
+      "title": "Pereţi transparenţi în zonele în care pacienţii au discuţii private cu medicul lor, la Spitalul SRI din Baloteşti. Explicaţia managerului",
+      "summary": "Un element de noutate la , Spitalul Clinic de Urgenţă Prof. Dr. Agrippa Ionescu din Baloteşti, inaugurat oficial la începutul acestei lunisunt spaţiile special amenajate în care pacienţii şi familiile acestora pot discuta în linişte cu medicii care îi au în grijă. Pereţii acestor spaţii sunt transparenţi, explicaţia manageruilui, Prof. Univ. Dr. Valeriu Gheorghiţă, fiind că scopul a fost acela de a nu fi considerate ”nişte spaţii închise, izolate, în care ar putea cineva să fie tentat să ofere ceva medicului”.",
+      "date": "2026-11-15T10:54:56.000Z",
+      "url": "https://www.news.ro/social/pereti-transparenti-in-zonele-in-care-pacientii-au-discutii-private-cu-medicul-lor-la-spitalul-sri-din-balotesti-explicatia-managerului-1922405415562026111222989379",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Pereţi transparenţi în zonele în care pacienţii au discuţii private cu medicul lor, la Spitalul SRI din Baloteşti. Explicaţia managerului",
+      "addedAt": "2026-11-15T11:31:42.499Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-digi24-trei-nave-comerciale-lovite-de-drone-in-23ef05",
+      "title": "Trei nave comerciale, lovite de drone în apropierea gurilor Dunării. Ministrul Apărării cere sprijinul aliaților",
+      "summary": "Alertă în apropierea gurilor Dunării, unde trei nave comerciale au fost lovite de drone în noaptea de sâmbătă spre duminică, în mai puțin de o oră. În urma impacturilor, la bordul ambarcațiunilor au izbucnit incendii, însă echipajele au reușit să stingă focul, fără să fie raportate victime. Ministrul Apărării, Ștefan Radu Oprea, a anunțat că va prezenta situația de securitate din Marea Neagră la reuniunea miniștrilor Apărării din statele aliate, care va avea loc marți și miercuri, la Bruxelles.",
+      "date": "2026-11-15T10:50:21.000Z",
+      "url": "https://www.digi24.ro/stiri/val-de-atacuri-in-marea-neagra-doua-nave-au-fost-lovite-de-drone-in-apropierea-gurilor-dunarii-4037041",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE1JTJGMzA2OTU3NV8zMDY5/NTc1X01XWmpNemc0TURrM01HRmxOMk14/WWpBM01UVmlZMk00WlRJd05tWXdaQV90/aHVtYl8uanBnJmhhc2g9OTRkZjM2MTljYzBlOGRhN2RlYjIyODNiODY1N2Q2Mzk=.jpg",
+      "imageAlt": "Trei nave comerciale, lovite de drone în apropierea gurilor Dunării. Ministrul Apărării cere sprijinul aliaților",
+      "addedAt": "2026-11-15T11:31:41.168Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-digi24-reguli-mai-stricte-la-casa-alba-angajatii-2b7e1e",
+      "title": "Reguli mai stricte la Casa Albă: angajații nu se mai pot întâlni cu lobbyiștii fără acordul conducerii",
+      "summary": "Personalul Casei Albe trebuie să obțină aprobarea prealabilă a Biroului Juridic dacă dorește să se întâlnească cu un lobbyist, se arată într-o notă transmisă de biroul șefului de cabinet Stephen Miller și obținută de Politico. Restricția vizează întâlnirile din complexul Casei Albe cu lobbyiști înregistrați, care au ca subiect politicile guvernamentale.",
+      "date": "2026-11-15T10:45:15.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/reguli-mai-stricte-la-casa-alba-angajatii-nu-se-mai-pot-intalni-cu-lobbyistii-fara-acordul-conducerii-4037185",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOCUyRjE3JTJGMjkxMDM5OF8yOTEw/Mzk4X0Nhc2EtQWxiYV8tRm90by1Qcm9m/aW1lZGlhLmpwZyZoYXNoPWJhMjVhNWVhYWYyODYzNzQ1YmQ4Y2MwMzk4M2ZiOThl.jpg",
+      "imageAlt": "Reguli mai stricte la Casa Albă: angajații nu se mai pot întâlni cu lobbyiștii fără acordul conducerii",
+      "addedAt": "2026-11-15T11:31:41.168Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-g4media-polonia-ar-putea-gazdui-o-noua-baza-bdfffa",
+      "title": "Polonia ar putea găzdui o nouă bază militară permanentă pentru 5.000 de soldați americani. Pentagonul și-a dat avizul favorabil, se așteaptă decizia lui Trump",
+      "summary": "Polonia ar putea găzdui o nouă bază militară permanentă pentru 5.000 de soldați americani. Pentagonul susține inițiativa, însă decizia finală îi aparține lui Donald Trump, transmite Mediafax. Polonia a primit un răspuns favorabil din partea Pentagonului pentru înființarea unei baze militare americane permanente pe teritoriul său. Autoritățile de la Varșovia au identificat patru posibile amplasamente […] © G4Media.ro .",
+      "date": "2026-11-15T10:45:09.000Z",
+      "url": "https://www.g4media.ro/olonia-ar-putea-gazdui-o-noua-baza-militara-permanenta-pentru-5-000-de-soldati-americani-pentagonul-si-a-dat-avizul-favorabil-se-asteapta-decizia-lui-trump.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "bază militară",
+        "donald trump",
+        "pentagon"
+      ],
+      "author": "Redacția",
+      "theme": "sport",
+      "image": "https://www.g4media.ro/wp-content/uploads/2024/06/dreamstime_xl_158843711.jpg",
+      "imageAlt": "Polonia ar putea găzdui o nouă bază militară permanentă pentru 5.000 de soldați americani. Pentagonul și-a dat avizul favorabil, se așteaptă decizia lui Trump",
+      "addedAt": "2026-11-15T11:31:42.234Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-zf-nu-inlocuieste-ci-complementeaza-domeniul-ef772f",
+      "title": "„Nu înlocuieşte, ci complementează”. Domeniul în care AI-ul spune „prezent” pentru că 50% din muncă e repetitivă VIDEO",
+      "summary": "",
+      "date": "2026-11-15T10:45:00.000Z",
+      "url": "https://www.zf.ro/zf-live/nu-inlocuieste-ci-complementeaza-domeniul-in-care-ai-ul-spune-prezent-pentru-ca-50-din-munca-e-repetitiva-video-23282122",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF Live"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/24586/23282122/1/2-alexandru-ungureanu.jpg?width=700",
+      "imageAlt": "„Nu înlocuieşte, ci complementează”. Domeniul în care AI-ul spune „prezent” pentru că 50% din muncă e repetitivă VIDEO",
+      "addedAt": "2026-11-15T11:31:40.146Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-newsro-ministrul-apararii-dupa-ce-trei-nave-au-1a789c",
+      "title": "Ministrul Apărării, după ce trei nave au fost lovite de drone în apropierea gurilor Dunării: Avem nevoie de solidaritatea aliaţilor manifestată prin patrularea cu avioane de…",
+      "summary": "Ministrul Apărării, Radu Oprea, afirmă, după ce trei nave comerciale au fost lovite de drone în apropierea gurilor Dunării, că va aduce în discuţiile de la Bruxelles cu miniştrii omologi situaţia din Marea Neagră. ”Avem nevoie de solidaritatea aliaţilor manifestată prin patrularea cu avioane de observare, de echipamente pentru lupta antidronă”, arată el, amintind că, în urma întâlnirii cu compania Thales, care furnizează radarele Gap Filler, acestea vor fi livrate mai devreme.",
+      "date": "2026-11-15T10:44:00.000Z",
+      "url": "https://www.news.ro/politic-intern/ministrul-apararii-dupa-trei-nave-au-lovite-drone-apropierea-gurilor-dunarii-avem-nevoie-solidaritatea-aliatilor-manifestata-patrularea-avioane-observare-echipamente-lupta-antidrona-1922404415002026111222989375",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Ministrul Apărării, după ce trei nave au fost lovite de drone în apropierea gurilor Dunării: Avem nevoie de solidaritatea aliaţilor manifestată prin patrularea cu avioane de observ",
+      "addedAt": "2026-11-15T11:31:42.499Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-digi24-robert-negoita-il-contrazice-pe-grindeanu-31d789",
+      "title": "Robert Negoiță îl contrazice pe Grindeanu în privința „sărăcirii” românilor de către Bolojan: „Nu e cazul”",
+      "summary": "Primarul Sectorului 3, Robert Negoiță, îl contrazice pe liderul PSD, Sorin Grindeanu, în privința efectelor măsurilor luate de Guvernul condus de Ilie Bolojan. Întrebat la emisiunea „În fața ta” dacă și el se consideră mai sărac după majorările de taxe, edilul a răspuns că „nu este cazul” și a susținut că majorarea TVA-ului nu înseamnă că românii au sărăcit. Interviul integral poate fi urmărit sâmbătă, de la 14:00, la Digi24.",
+      "date": "2026-11-15T10:42:30.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/robert-negoita-il-contrazice-pe-grindeanu-in-privinta-saracirii-romanilor-de-catre-bolojan-nu-e-cazul-4037093",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE1JTJGMzA2OTc0Ml8zMDY5/NzQyX2d2cy5qcGcmaGFzaD0yMDhmZjRl/MmIzOGFiOWZiYTgwODYwNTg1YmFkNzUxMQ==.jpg",
+      "imageAlt": "Robert Negoiță îl contrazice pe Grindeanu în privința „sărăcirii” românilor de către Bolojan: „Nu e cazul”",
+      "addedAt": "2026-11-15T11:31:41.168Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-g4media-attila-korodi-si-istoria-sa-personala-cu-4f9857",
+      "title": "Attila Korodi și istoria sa personală cu afacerea Roșia Montană: 21 de ani de presiuni, sabotaje, șantaje – dar și victorii",
+      "summary": "Fost ministru al Mediului și secretar de stat în mai multe guverne, acum primar la Miwercurea Ciuc, Attila Korodi (UDMR) rememorează, într-o lungă postare pe contul său de Facwbook, istoria sa personală în relație cu afacerea Roșia Montană, după ce România a câștigat definitiv, după 21 de ani, procesul cu dezvoltatorul proiectului minier. Attila Korodi […] © G4Media.ro .",
+      "date": "2026-11-15T10:40:53.000Z",
+      "url": "https://www.g4media.ro/attila-korodi-si-istoria-sa-personala-cu-afacerea-rosia-montana-21-de-ani-de-presiuni-sabotaje-santaje-dar-si-victorii.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Ioana Dimitrie",
+      "theme": "politika",
+      "image": "https://www.g4media.ro/wp-content/uploads/2019/03/ID64469_INQUAM_Photos_Octav_Ganea-e1794738985350.jpg",
+      "imageAlt": "Attila Korodi și istoria sa personală cu afacerea Roșia Montană: 21 de ani de presiuni, sabotaje, șantaje – dar și victorii",
+      "addedAt": "2026-11-15T11:31:42.234Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-hotnews-cum-va-fi-vremea-in-bucuresti-azi-si-maine-5451c8",
+      "title": "Cum va fi vremea în București azi și mâine. Prognoza meteorologilor",
+      "summary": "Temperaturile vor fi apropiate de cele normale pentru această perioadă și este posibil să plouă, duminică și luni, în Capitală potrivit prognozei speciale emise de Administrația Națională de Meteorologie. În intervalul 15 noiembrie, ora 10:00 – 16 noiembrie, ora 08:00, vremea va fi apropiată de normalul termic al perioadei. Cerul va fi variabil, mai mult …",
+      "date": "2026-11-15T10:26:50.000Z",
+      "url": "https://hotnews.ro/cum-va-fi-vremea-in-bucuresti-azi-si-maine-prognoza-meteorologilor-2404868",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Alexandra Coșlea",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Cum va fi vremea în București azi și mâine. Prognoza meteorologilor",
+      "addedAt": "2026-11-15T11:31:39.170Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-digi24-cati-soldati-a-pierdut-rusia-de-la-bc6362",
+      "title": "Câți soldați a pierdut Rusia de la începutul războiului în Ucraina. Cele mai noi date",
+      "summary": "Rusia a pierdut 1.622.860 de soldaţi în Ucraina de la începutul invaziei sale pe scară largă din 24 februarie 2022, a raportat Statul Major General al Forţelor Armate ale Ucrainei duminică.",
+      "date": "2026-11-15T10:25:47.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/cati-soldati-a-pierdut-rusia-de-la-inceputul-razboiului-in-ucraina-cele-mai-noi-date-4037177",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjUl/MkYwNiUyRjA0JTJGMjI3NTYwOF8yMjc1/NjA4X3Byb2ZpbWVkaWEtMTAwNjg5MDMx/OC5qcGcmaGFzaD03YzA2Y2FmMmE0NGMyMDdjOGQ5ZTgxYWM3YmU0NDczMA==.jpg",
+      "imageAlt": "Câți soldați a pierdut Rusia de la începutul războiului în Ucraina. Cele mai noi date",
+      "addedAt": "2026-11-15T11:31:41.168Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-hotnews-elijah-wood-spune-ca-revenirea-in-noul-film-41a24e",
+      "title": "Elijah Wood spune că revenirea în noul film „Stăpânul inelelor” a făcut 27 de ani să dispară: „Te transpune cu totul într-o altă lume”",
+      "summary": "Elijah Wood va reveni în rolul lui Frodo Baggins în viitorul film din „Stăpânul inelelor”, iar actorul acum în vârstă de 45 de ani spune că este la fel de încântat ca fanii să joace din nou îndrăgitul personaj, relatează revista People. Revenirea în pielea personajului creat de J.R.R. Tolkien pentru „Vânarea lui Gollum”, viitorul …",
+      "date": "2026-11-15T10:23:15.000Z",
+      "url": "https://hotnews.ro/elijah-wood-spune-ca-revenirea-in-noul-film-stapanul-inelelor-a-facut-27-de-ani-sa-dispara-te-transpune-cu-totul-intr-o-alta-lume-2403662",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Film",
+        "Magazin",
+        "actori"
+      ],
+      "author": "Sebastian Jucan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Elijah Wood spune că revenirea în noul film „Stăpânul inelelor” a făcut 27 de ani să dispară: „Te transpune cu totul într-o altă lume”",
+      "addedAt": "2026-11-15T11:31:39.170Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-hotnews-cati-bani-fiscalizati-a-facut-anul-trecut-a6a693",
+      "title": "Câți bani fiscalizați a făcut anul trecut Florin Salam. Profitul a explodat față de 2024",
+      "summary": "Firma celebrului cântăreț de manele a avut o cifră de afaceri netă de 1,4 milioane lei în 2025, mai mică decât în 2024, şi un salariat, notează publicația Economica. Artistul Florin Salam, pe numele său real Florin Stoian, deține jumătate din firma Florin Salam Music, scrie site-ul Economica. Firma a fost înființată în anul 2023 …",
+      "date": "2026-11-15T10:20:45.000Z",
+      "url": "https://hotnews.ro/cati-bani-fiscalizati-a-facut-anul-trecut-florin-salam-profitul-a-explodat-fata-de-2024-2404855",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Dan Duca",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Câți bani fiscalizați a făcut anul trecut Florin Salam. Profitul a explodat față de 2024",
+      "addedAt": "2026-11-15T11:31:39.171Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-profit-ultima-ora-americanii-gata-sa-schimbe-bf2d30",
+      "title": "ULTIMA ORĂ Americanii, gata să schimbe marele plan de retragere a trupelor din Europa. Pot chema înapoi doar 5.000 de soldați dintr-un total de 80.000",
+      "summary": "Statele Unite iau în calcul să schimbe marele plan de retragere a trupelor americane din Europa, astfel încât să cheme înapoi doar 5.000 de soldați dintr-un total de 80.000.",
+      "date": "2026-11-15T10:10:00.000Z",
+      "url": "https://www.profit.ro/bloomberg/ultima-ora-americanii-gata-sa-schimbe-marele-plan-de-retragere-a-trupelor-din-europa-pot-chema-inapoi-doar-5-000-de-soldati-dintr-un-total-de-80-000-22989345?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Bloomberg"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/37846/22989345/1/baza-kogalniceanu.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ Americanii, gata să schimbe marele plan de retragere a trupelor din Europa. Pot chema înapoi doar 5.000 de soldați dintr-un total de 80.000",
+      "addedAt": "2026-11-15T11:31:40.328Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-hotnews-cineva-ne-a-lovit-momentul-in-care-doua-be6d66",
+      "title": "„Cineva ne-a lovit”. Momentul în care două avioane Boeing s-au ciocnit pe pistă, surprins în înregistrările audio ale turnului de control",
+      "summary": "Două avioane Boeing au fost implicate într-un incident, sâmbătă seara, pe pista Aeroportului Internaţional din Miami, la doar o zi după ce suspendarea zborurilor la nivel naţional a provocat haos în transportul aerian din SUA, scrie CNN. „Vârful aripii unui Boeing 737 al companiei Copa Airlines a lovit botul unui Boeing 767 al companiei UPS …",
+      "date": "2026-11-15T10:09:47.000Z",
+      "url": "https://hotnews.ro/cineva-ne-a-lovit-momentul-in-care-doua-avioane-boeing-s-au-ciocnit-pe-pista-surprins-in-inregistrarile-audio-ale-turnului-de-control-2404856",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Alexandra Coșlea",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "„Cineva ne-a lovit”. Momentul în care două avioane Boeing s-au ciocnit pe pistă, surprins în înregistrările audio ale turnului de control",
+      "addedAt": "2026-11-15T11:31:39.171Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-g4media-avocatul-adrian-toni-neacsu-semnaleaza-un-a7bb56",
+      "title": "Avocatul Adrian Toni Neacșu semnalează un fapt suspect: de două săptămâni nu se mai publică sentințe pe portalul Rejust, administrat de CSM",
+      "summary": "Fost judecător și fost membru CSM, avocatul Adrian Toni Neacșu atrage atenția, într-o postare pe constul său de Facebook, că de la 1 noiembrie, pe portalul instanțelor de jduecată Rejust.ro nu s-a mai publicat nicio hotărâre judecătorească. Publicarea hotărârilor anonimizate era un proces automat, ceea ce îl face pe avocat să tragă concluzia că întreruperea […] © G4Media.ro .",
+      "date": "2026-11-15T10:05:08.000Z",
+      "url": "https://www.g4media.ro/avocatul-adrian-toni-neacsu-semnaleaza-un-fapt-suspect-de-doua-saptamani-nu-se-mai-publica-sentinte-pe-portalul-rejust-adminsitrat-de-csm.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Liviu Avram",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/Rejust.jpg",
+      "imageAlt": "Avocatul Adrian Toni Neacșu semnalează un fapt suspect: de două săptămâni nu se mai publică sentințe pe portalul Rejust, administrat de CSM",
+      "addedAt": "2026-11-15T11:31:42.234Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-profit-ce-inseamna-aaa-la-jocuri-si-de-ce-6b1ec8",
+      "title": "Ce înseamnă AAA la jocuri și de ce investiția mare nu garantează succesul",
+      "summary": "AAA este o etichetă folosită pentru jocuri cu resurse de producție și ambiții comerciale mari.",
+      "date": "2026-11-15T10:03:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/it-c/ce-inseamna-aaa-la-jocuri-si-de-ce-investitia-mare-nu-garanteaza-succesul-22985491?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "IT&C"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33216/22985491/1/pexels-rdne-7915282.jpg?width=800",
+      "imageAlt": "Ce înseamnă AAA la jocuri și de ce investiția mare nu garantează succesul",
+      "addedAt": "2026-11-15T11:31:40.328Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-digi24-retea-de-contrabanda-cu-tigari-cu-ajutorul-6ab166",
+      "title": "Rețea de contrabandă cu țigări, cu ajutorul unor angajați feroviari. Marfa era ascunsă în trenurile de călători",
+      "summary": "O rețea de contrabandă cu țigări care folosea trenuri internaționale de călători pentru a introduce ilegal marfa în România a fost descoperită de anchetatori. Țigările erau ascunse în spații dosite ale garniturilor și descărcate în timpul staționării, cu ajutorul a doi angajați feroviari. Șase persoane sunt cercetate în acest dosar, patru fiind plasate în arest la domiciliu, iar alte două sub control judiciar, potrivit Poliției Române.",
+      "date": "2026-11-15T10:02:21.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/evenimente/retea-de-contrabanda-cu-tigari-cu-ajutorul-unor-angajati-feroviari-marfa-era-ascunsa-in-trenurile-de-calatori-4037161",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE1JTJGMzA2OTcxNF8zMDY5/NzE0X2NvbnRyYWJhbmRhLXRpZ2FyaS1w/b2xpdGlhLXJvbWFuYS5qcGcmaGFzaD0x/OTc3NjllY2Y4NzQwNDA0ODQ5ODU2OWMzNzk4NWFiZg==.jpg",
+      "imageAlt": "Rețea de contrabandă cu țigări, cu ajutorul unor angajați feroviari. Marfa era ascunsă în trenurile de călători",
+      "addedAt": "2026-11-15T11:31:41.168Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-zf-zf-deschiderea-de-astazi-cum-va-merge-bursa-7bddec",
+      "title": "ZF DESCHIDEREA DE ASTĂZI. Cum va merge bursa. Urmăriţi luni, 16 noiembrie 2026, ora 09.30 o discuţie cu Alexandru Dobre, Deputy CEO, Tradeville",
+      "summary": "",
+      "date": "2026-11-15T10:00:00.000Z",
+      "url": "https://www.zf.ro/burse-fonduri-mutuale/zf-deschiderea-de-astazi-cum-va-merge-bursa-urmariti-luni-16-noiembrie-2026-ora-09-30-o-discutie-cu-alexandru-dobre-deputy-ceo-tradeville-23281586",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Burse - Fonduri mutuale"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22467/23281586/40/promo-burrsa-16-nov.png?width=700",
+      "imageAlt": "ZF DESCHIDEREA DE ASTĂZI. Cum va merge bursa. Urmăriţi luni, 16 noiembrie 2026, ora 09.30 o discuţie cu Alexandru Dobre, Deputy CEO, Tradeville",
+      "addedAt": "2026-11-15T11:31:40.146Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-zf-business-magazin-ionut-negoita-cel-mai-mare-fba305",
+      "title": "Business MAGAZIN. Ionuţ Negoiţă, cel mai mare dezvoltator din estul Capitalei, care a făcut până acum 12.000 de locuinţe: În fiecare zi încercăm să fim cu faţa la joc, să ne…",
+      "summary": "",
+      "date": "2026-11-15T10:00:00.000Z",
+      "url": "https://www.zf.ro/zf-comunicate/comunicate-constructii/business-magazin-ionut-negoita-cel-mare-dezvoltator-estul-capitalei-facut-pana-acum-12-000-locuinte-zi-incercam-fim-fata-joc-ne-adaptam-realitatile-urbanistice-sociale-economice-peste-10-ani-cred-23281902",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Comunicate Construcții"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21328/23281902/1/ionut-negoita-ceo-founder.jpg?width=700",
+      "imageAlt": "Business MAGAZIN. Ionuţ Negoiţă, cel mai mare dezvoltator din estul Capitalei, care a făcut până acum 12.000 de locuinţe: În fiecare zi încercăm să fim cu faţa la joc, să ne adaptă",
+      "addedAt": "2026-11-15T11:31:40.147Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-zf-de-la-instrument-la-coleg-de-echipa-cum-ed101e",
+      "title": "De la instrument la coleg de echipă: Cum ajung agenţii AI să se „angajeze” în companii VIDEO",
+      "summary": "",
+      "date": "2026-11-15T10:00:00.000Z",
+      "url": "https://www.zf.ro/zf-live/de-la-instrument-la-coleg-de-echipa-cum-ajung-agentii-ai-sa-se-angajeze-in-companii-video-23282117",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF Live"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/24586/23282117/1/whatsapp-image-2026-11-05-at-14-20-36.jpg?width=700",
+      "imageAlt": "De la instrument la coleg de echipă: Cum ajung agenţii AI să se „angajeze” în companii VIDEO",
+      "addedAt": "2026-11-15T11:31:40.147Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-g4media-volodimir-zelenski-cere-clarificari-de-la-9df15c",
+      "title": "Volodimir Zelenski cere clarificări de la SpaceX, compania lui Elon Musk, privitoare la restricțiile Starshield",
+      "summary": "Președintele ucrainean Volodimir Zelenski cere explicații de la SpaceX pentru restricțiile impuse rețelei Starshield, despre care susține că afectează capacitatea Ucrainei de a intercepta dronele rusești. Președintele ucrainean Volodimir Zelenski cere explicații companiei SpaceX, deținută de Elon Musk, după ce rețeaua de comunicații Starshield ar fi fost supusă unor restricții de viteză care afectează operațiunile […] © G4Media.ro .",
+      "date": "2026-11-15T09:40:50.000Z",
+      "url": "https://www.g4media.ro/volodimir-zelenski-cere-clarificari-de-la-spacex-compania-lui-elon-musk-privitoare-la-restrictiile-starshield.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Redacția",
+      "theme": "rat",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/03/INSTANT_COTROCENI_ZELENSKYY_00_INQUAM_Photos_Octav_Ganea-scaled.jpg",
+      "imageAlt": "Volodimir Zelenski cere clarificări de la SpaceX, compania lui Elon Musk, privitoare la restricțiile Starshield",
+      "addedAt": "2026-11-15T11:31:42.235Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-profit-casalux-ro-habitat-67-experimentul-70f609",
+      "title": "Casalux.ro - Habitat 67, experimentul rezidențial care a reinventat ideea de locuire la oraș",
+      "summary": "Habitat 67 este un proiect din Montreal, conceput inițial ca lucrare de diplomă și devenit unul dintre cele mai recognoscibile experimente rezidențiale ale secolului XX.",
+      "date": "2026-11-15T09:34:00.000Z",
+      "url": "https://www.profit.ro/de-weekend/casalux-ro-habitat-67-experimentul-rezidential-care-a-reinventat-ideea-de-locuire-la-oras-22986604?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "De Weekend"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/40806/22986604/1/screenshot-2026-11-14-081829.png?width=800",
+      "imageAlt": "Casalux.ro - Habitat 67, experimentul rezidențial care a reinventat ideea de locuire la oraș",
+      "addedAt": "2026-11-15T11:31:40.328Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-g4media-video-peste-100-de-suporteri-polonezi-dusi-25e1a2",
+      "title": "VIDEO Peste 100 de suporteri polonezi, duși la secțiile de poliție după violențele de la finalul meciului cu România",
+      "summary": "105 persoane au fost conduse la secțiile de poliție în urma incidentelor produse la finalul meciului de fotbal România – Polonia, transmite Jandarmeria într-un comunicat de presă. „Direcția Generală de Jandarmi a Municipiului București informează că, pe timpul desfășurării meciului de fotbal dintre România și Polonia, au fost înregistrate incidente între suporterii echipei oaspete și […] © G4Media.ro .",
+      "date": "2026-11-15T09:29:16.000Z",
+      "url": "https://www.g4media.ro/video-peste-100-de-suporteri-polonezi-dusi-la-sectiile-de-politie-dupa-violentele-de-la-finalul-meciului-cu-romania.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Sportz",
+        "jandarmerie",
+        "suporteri polonezi"
+      ],
+      "author": "Damian Matei",
+      "theme": "sport",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/suporteri-polonezi.jpg",
+      "imageAlt": "VIDEO Peste 100 de suporteri polonezi, duși la secțiile de poliție după violențele de la finalul meciului cu România",
+      "addedAt": "2026-11-15T11:31:42.235Z"
+    },
+    {
+      "slug": "bukurest-2026-11-15-profit-foto-cfr-primeste-vagoane-bar-moderne-inca-d96257",
+      "title": "FOTO CFR primește vagoane bar moderne. Încă un vagon a fost livrat acum. \"A ajuns la destinație, fără întârzieri!\"",
+      "summary": "Un nou vagon Bar-Bistro al CFR a fost livrat companiei feroviare de stat.",
+      "date": "2026-11-15T09:20:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/foto-cfr-primeste-vagoane-bar-moderne-inca-un-vagon-a-fost-livrat-acum-a-ajuns-la-destinatie-fara-intarzieri-22989272?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33217/22989272/10/cfr.jpg?width=800",
+      "imageAlt": "FOTO CFR primește vagoane bar moderne. Încă un vagon a fost livrat acum. \"A ajuns la destinație, fără întârzieri!\"",
+      "addedAt": "2026-11-15T11:31:40.328Z"
+    },
     {
       "slug": "bukurest-2026-11-15-agerpres-arte-martiale-mixte-francezul-ciryl-gane-si-0f60bc",
       "title": "Arte marțiale mixte: Francezul Ciryl Gane și-a păstrat centura de campion UFC la categoria grea",
