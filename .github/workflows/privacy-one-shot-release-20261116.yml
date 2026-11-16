@@ -1,0 +1,56 @@
+name: P0 Privacy one-shot exact-SHA release request
+
+on:
+  pull_request:
+    paths: ['.github/workflows/privacy-one-shot-release-20261116.yml']
+  push:
+    branches: [main]
+    paths: ['.github/workflows/privacy-one-shot-release-20261116.yml']
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/test-region-withdrawal-v1.mjs
+  request-approved-production-release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    concurrency:
+      group: gnk-asg-privacy-one-shot-release-request-20261116
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify privacy-only release base and tombstone integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = '2719619894bfe7cb96536b28d09c04045e0b03e8' || { echo '::error::Unexpected commit parent; stop without deployment.'; exit 1; }
+          node --test tests/test-region-withdrawal-v1.mjs
+          test -f apps/region/data/withdrawn-content-v1.json
+      - name: Dispatch existing exact-SHA authorized Cloudflare deploy once
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          latest=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)
+          [ "$latest" = "$GITHUB_SHA" ] || { echo '::error::Main changed; refuse stale deployment.'; exit 1; }
+          gh workflow run deploy-admin-auth-v6.yml --ref main -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 -f approved_sha="$GITHUB_SHA" -f notify_search_engines=false
+          echo "Submitted existing exact-SHA release for $GITHUB_SHA (not a LIVE confirmation)."
+          echo 'Cloudflare deployment and public route verification must be checked independently.'
