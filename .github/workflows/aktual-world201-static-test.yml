@@ -1,0 +1,22 @@
+name: AKTUAL WORLD 201 static routes validation
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/world/**'
+      - 'scripts/test-aktual-world201-static-v1.mjs'
+      - '.github/workflows/aktual-world201-static-test.yml'
+permissions:
+  contents: read
+jobs:
+  validate-world201:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate 201 static editions and search
+        run: node --test scripts/test-aktual-world201-static-v1.mjs
