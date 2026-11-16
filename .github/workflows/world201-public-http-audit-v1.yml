@@ -1,0 +1,28 @@
+name: WORLD201 public HTTP verification (read only)
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/world201-public-http-audit-v1.yml'
+      - 'scripts/world201-public-http-audit-v1.mjs'
+permissions:
+  contents: read
+jobs:
+  verify-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Audit all 201 public country URLs and directory
+        env:
+          AKTUAL_WORLD_VERIFY_ALL: 'true'
+        run: node scripts/world201-public-http-audit-v1.mjs
+      - name: Preserve machine-readable evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: world201-public-http-audit
+          path: artifacts/world201-public-http-audit.json
+          if-no-files-found: warn
