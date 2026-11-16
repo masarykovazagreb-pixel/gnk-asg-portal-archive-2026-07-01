@@ -15,6 +15,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isWithdrawnItem } from './withdrawals.mjs';
 import { execFileSync } from 'node:child_process';
 import { esc, longDate, shortDate, stampLocal, scoreFromTitle, truncate, themeFor, safeJson } from './lib.mjs';
 import { CHANNELS, HUB, CONTACT, SOCIAL_IMAGE, CITY_SHORT, CSS as CHANNEL_CSS } from './build.mjs';
@@ -46,7 +47,10 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const readJSON = (path, fallback) => {
   try { return JSON.parse(readFileSync(path, 'utf8')); } catch { return fallback; }
 };
-const channelData = (id) => readJSON(join(DATA, `${id}.json`), { items: [], updatedAt: '' });
+const channelData = (id) => {
+  const data = readJSON(join(DATA, `${id}.json`), { items: [], updatedAt: '' });
+  return { ...data, items: (data.items || []).filter((item) => !isWithdrawnItem(item)) };
+};
 
 /* Glavni gradovi: popis zemalja koje mreža pokriva i njihovih prijestolnica.
    Jedan izvor za stranicu, JSON i test — da se broj „17 zemalja, 14 izdanja"
