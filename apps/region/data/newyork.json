@@ -4,17 +4,17 @@
   "lang": "en",
   "city": "New York",
   "country": "Sjedinjene Američke Države",
-  "updatedAt": "2026-11-16T18:23:14.676Z",
+  "updatedAt": "2026-11-16T19:52:56.651Z",
   "sources": [
     {
       "id": "nyt",
       "name": "The New York Times",
       "url": "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
       "ok": true,
-      "fetched": 22,
+      "fetched": 24,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T18:23:12.696Z"
+      "checkedAt": "2026-11-16T19:52:54.225Z"
     },
     {
       "id": "npr",
@@ -24,7 +24,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T18:23:12.775Z"
+      "checkedAt": "2026-11-16T19:52:54.465Z"
     },
     {
       "id": "wsj",
@@ -34,7 +34,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T18:23:13.099Z"
+      "checkedAt": "2026-11-16T19:52:54.730Z"
     },
     {
       "id": "bloomberg",
@@ -44,7 +44,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T18:23:13.376Z"
+      "checkedAt": "2026-11-16T19:52:55.297Z"
     },
     {
       "id": "verge",
@@ -54,7 +54,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T18:23:13.462Z"
+      "checkedAt": "2026-11-16T19:52:55.364Z"
     },
     {
       "id": "politico",
@@ -66,7 +66,7 @@
       "errors": [
         "https://www.politico.com/rss/politicopicks.xml: HTTP 403"
       ],
-      "checkedAt": "2026-11-16T18:23:14.261Z"
+      "checkedAt": "2026-11-16T19:52:56.204Z"
     },
     {
       "id": "abcnews",
@@ -76,7 +76,7 @@
       "fetched": 25,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T18:23:14.424Z"
+      "checkedAt": "2026-11-16T19:52:56.376Z"
     },
     {
       "id": "propublica",
@@ -86,10 +86,291 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T18:23:14.675Z"
+      "checkedAt": "2026-11-16T19:52:56.651Z"
     }
   ],
   "items": [
+    {
+      "slug": "newyork-2026-11-16-abcnews-california-sues-openai-alleging-ai-d2842a",
+      "title": "California sues OpenAI, alleging AI development lacked adequate safeguards",
+      "summary": "OpenAI allegedly \"endangered the public,\" California's attorney general said.",
+      "date": "2026-11-16T19:50:23.000Z",
+      "url": "https://abcnews.com/Business/california-sues-openai-alleging-ai-development-lacked-adequate/story?id=138187223",
+      "source": "abcnews",
+      "sourceName": "ABC News",
+      "categories": [
+        "Business"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s.abcnews.com/images/Business/altman-ap-jef-261116_1794857612840_hpMain_4x3t_384.jpg",
+      "imageAlt": "California sues OpenAI, alleging AI development lacked adequate safeguards",
+      "addedAt": "2026-11-16T19:52:56.376Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-bloomberg-etf-launches-blow-past-ipos-slavin-141226",
+      "title": "ETF Launches Blow Past IPOs: Slavin",
+      "summary": "Ben Slavin, managing director, global head of ETFs at BNY, joins Isabelle Lee and Eric Balchunas on \"Bloomberg ETF IQ.\" They discuss how ETF launches have surpassed IPOs and his firms efforts in tokenization. (Source: Bloomberg)",
+      "date": "2026-11-16T19:48:34.000Z",
+      "url": "https://www.bloomberg.com/news/videos/2026-11-16/etf-launches-blow-past-ipos-slavin-video",
+      "source": "bloomberg",
+      "sourceName": "Bloomberg",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "ETF Launches Blow Past IPOs: Slavin",
+      "addedAt": "2026-11-16T19:52:55.297Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-abcnews-supreme-court-rebuffs-trump-administration-a0ed1c",
+      "title": "Supreme Court rebuffs Trump administration appeal over DEI funding cuts",
+      "summary": "The Supreme Court has rejected a Trump administration appeal on DEI funding cuts to academic research",
+      "date": "2026-11-16T19:43:08.000Z",
+      "url": "https://abcnews.com/US/wireStory/supreme-court-rebuffs-trump-administration-appeal-dei-funding-138187547",
+      "source": "abcnews",
+      "sourceName": "ABC News",
+      "categories": [
+        "US"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.abcnews.com/images/US/wirestory_36d846810d632fba17364355de99efa8_4x3_384.jpg",
+      "imageAlt": "Supreme Court rebuffs Trump administration appeal over DEI funding cuts",
+      "addedAt": "2026-11-16T19:52:56.376Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-bloomberg-citigroup-pulls-400-million-loan-for-it-dfd907",
+      "title": "Citigroup Pulls $400 Million Loan for IT Provider UST Global",
+      "summary": "A group of banks led by Citigroup Inc. has pulled a debt deal for UST Global Inc. from the syndicated loan market after lenders did not attract enough demand from investors.",
+      "date": "2026-11-16T19:42:22.000Z",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-16/citigroup-pulls-400-million-loan-for-it-provider-ust-global",
+      "source": "bloomberg",
+      "sourceName": "Bloomberg",
+      "categories": [],
+      "author": "Jeannine Amodeo",
+      "theme": "ekonomija",
+      "image": "",
+      "imageAlt": "Citigroup Pulls $400 Million Loan for IT Provider UST Global",
+      "addedAt": "2026-11-16T19:52:55.298Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-bloomberg-ai-and-24-hour-trading-test-rules-governing-156094",
+      "title": "AI and 24-Hour Trading Test Rules Governing Currency Markets",
+      "summary": "The rapid growth of artificial intelligence and round-the-clock trading is raising questions about whether rules governing the $9.5 trillion foreign-exchange market can keep pace with technological change.",
+      "date": "2026-11-16T19:42:14.000Z",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-16/ai-and-24-hour-trading-test-rules-governing-currency-markets",
+      "source": "bloomberg",
+      "sourceName": "Bloomberg",
+      "categories": [],
+      "author": "Cole Lipsky",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "AI and 24-Hour Trading Test Rules Governing Currency Markets",
+      "addedAt": "2026-11-16T19:52:55.298Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-bloomberg-big-test-ahead-for-equity-appetite-nadig-1d3e31",
+      "title": "Big Test Ahead For Equity Appetite: Nadig",
+      "summary": "Dave Nadig, president & director of Research at ETF.com, joins Isabelle Lee and Eric Balchunas on \"Bloomberg ETF IQ.\" They discuss private markets and the upcoming IPO for Anthropic. (Source: Bloomberg)",
+      "date": "2026-11-16T19:41:36.000Z",
+      "url": "https://www.bloomberg.com/news/videos/2026-11-16/big-test-ahead-for-equity-appetite-nadig-video",
+      "source": "bloomberg",
+      "sourceName": "Bloomberg",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Big Test Ahead For Equity Appetite: Nadig",
+      "addedAt": "2026-11-16T19:52:55.298Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-bloomberg-virgin-media-o2-downgraded-by-moody-s-on-443686",
+      "title": "Virgin Media O2 Downgraded by Moody’s on Turnaround Concerns",
+      "summary": "Virgin Media O2’s credit grade was cut one level by Moody’s Ratings amid continued uncertainty over the timing and pace of the UK telecom’s turnaround efforts.",
+      "date": "2026-11-16T19:34:46.000Z",
+      "url": "https://www.bloomberg.com/news/articles/2026-11-16/virgin-media-o2-downgraded-by-moody-s-on-turnaround-concerns",
+      "source": "bloomberg",
+      "sourceName": "Bloomberg",
+      "categories": [],
+      "author": "Giulia Morpurgo",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Virgin Media O2 Downgraded by Moody’s on Turnaround Concerns",
+      "addedAt": "2026-11-16T19:52:55.298Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-nyt-gerard-depardieu-withdraws-sexual-assault-10bde2",
+      "title": "Gérard Depardieu Withdraws Sexual Assault Appeal, Apologizing to Victims",
+      "summary": "The French actor admitted guilt on the morning his appeal trial was to begin in Paris, accepting his conviction for groping two women on a film set.",
+      "date": "2026-11-16T19:25:35.000Z",
+      "url": "https://www.nytimes.com/2026/11/16/movies/gerard-depardieu-apology-appeal-withdrawal.html",
+      "source": "nyt",
+      "sourceName": "The New York Times",
+      "categories": [
+        "Sex Crimes",
+        "#MeToo Movement",
+        "Depardieu, Gerard",
+        "France"
+      ],
+      "author": "Catherine Porter and Giulia Imbert",
+      "theme": "drustvo",
+      "image": "https://static01.nyt.com/images/2026/11/16/world/16cul-depardieu-apology-aaa/16cul-depardieu-apology-aaa-mediumSquareAt3X.jpg",
+      "imageAlt": "Gérard Depardieu Withdraws Sexual Assault Appeal, Apologizing to Victims",
+      "addedAt": "2026-11-16T19:52:54.225Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-nyt-grammy-nominations-2027-see-the-full-list-3b34ec",
+      "title": "Grammy Nominations 2027: See the Full List",
+      "summary": "The artists, albums and songs up for honors at the 69th annual ceremony were announced Monday. The show will be held on Feb. 7 in Los Angeles and air on ABC and Disney+ after decades on CBS.",
+      "date": "2026-11-16T19:25:04.000Z",
+      "url": "https://www.nytimes.com/2026/11/16/arts/music/grammy-nominee-list-2027.html",
+      "source": "nyt",
+      "sourceName": "The New York Times",
+      "categories": [
+        "Pop and Rock Music",
+        "Country Music",
+        "Rap and Hip-Hop",
+        "Latin Music"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://static01.nyt.com/images/2026/11/16/multimedia/16cul-grammy-list-1-wvfz/16cul-grammy-list-1-wvfz-mediumSquareAt3X.jpg",
+      "imageAlt": "Grammy Nominations 2027: See the Full List",
+      "addedAt": "2026-11-16T19:52:54.225Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-nyt-fed-chairman-highlights-economic-1d9830",
+      "title": "Fed Chairman Highlights Economic Uncertainty of A.I. Boom",
+      "summary": "Kevin M. Warsh, chairman of the Federal Reserve, has assigned a task force to explore how productivity gains tied to new technologies could impact the labor market.",
+      "date": "2026-11-16T19:24:44.000Z",
+      "url": "https://www.nytimes.com/2026/11/16/business/economy/warsh-ai-economy.html",
+      "source": "nyt",
+      "sourceName": "The New York Times",
+      "categories": [
+        "Artificial Intelligence",
+        "Regulation and Deregulation of Industry",
+        "Banking and Financial Institutions",
+        "Productivity"
+      ],
+      "author": "Colby Smith",
+      "theme": "rat",
+      "image": "https://static01.nyt.com/images/2026/11/16/multimedia/16dc-fed-thwl/16dc-fed-thwl-mediumSquareAt3X.jpg",
+      "imageAlt": "Fed Chairman Highlights Economic Uncertainty of A.I. Boom",
+      "addedAt": "2026-11-16T19:52:54.226Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-verge-apple-is-testing-daily-usage-limits-for-4e6b24",
+      "title": "Apple is testing daily usage limits for more complex Siri AI interactions",
+      "summary": "Apple released betas of iOS 27.3, iPadOS 27.3, and macOS 27.3 today, and the company is using the update to test new per device daily usage limits for some Siri AI and Apple Intelligence features, according to MacRumors. Basic Siri commands and requests will remain free and unlimited, but more advanced features that rely on",
+      "date": "2026-11-16T19:24:40.000Z",
+      "url": "https://www.theverge.com/tech/1034581/apple-intelligence-siri-ai-daily-usage-limits-icloud-subscription",
+      "source": "verge",
+      "sourceName": "The Verge",
+      "categories": [],
+      "author": "Andrew Liszewski",
+      "theme": "ai",
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/06/siri-ai.jpg?quality=90&strip=all&crop=0,0,100,100",
+      "imageAlt": "Apple is testing daily usage limits for more complex Siri AI interactions",
+      "addedAt": "2026-11-16T19:52:55.364Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-verge-openai-wants-to-stop-deepfakes-from-9f67c7",
+      "title": "OpenAI wants to stop deepfakes from overwhelming child abuse tiplines",
+      "summary": "OpenAI is announcing a tool that it says will help child sexual abuse investigators cut through the noise to find harmful material they can act on quickly. At a Monday press briefing in Washington, DC, OpenAI announced a classifier it says can better detect abusive imagery of kids, including whether it's AI-generated. It's also offering",
+      "date": "2026-11-16T19:23:45.000Z",
+      "url": "https://www.theverge.com/policy/1034527/openai-csam-classifier",
+      "source": "verge",
+      "sourceName": "The Verge",
+      "categories": [],
+      "author": "Lauren Feiner",
+      "theme": "ai",
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/08/STK155_OPEN_AI_CVirginia_C-1.jpg?quality=90&strip=all&crop=0,0,100,100",
+      "imageAlt": "OpenAI wants to stop deepfakes from overwhelming child abuse tiplines",
+      "addedAt": "2026-11-16T19:52:55.364Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-abcnews-person-of-interest-in-custody-after-device-9b67f2",
+      "title": "Person of interest in custody after device found at Illinois plant",
+      "summary": "A person of interest is in custody after a device was found at the Peoria, Illinois BioUrja Renewables facility.",
+      "date": "2026-11-16T19:21:41.000Z",
+      "url": "https://abcnews.com/US/person-interest-custody-after-device-found-illinois-plant/story?id=138178192",
+      "source": "abcnews",
+      "sourceName": "ABC News",
+      "categories": [
+        "US"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.abcnews.com/images/US/illinois-bomb-threat-ht-jt-261114_1794668219374_hpMain_4x3t_384.jpg",
+      "imageAlt": "Person of interest in custody after device found at Illinois plant",
+      "addedAt": "2026-11-16T19:52:56.376Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-nyt-challenging-consensus-scientist-says-fdd195",
+      "title": "Challenging Consensus, Scientist Says Epstein Autopsy Photos Show Homicide",
+      "summary": "Investigations have found most evidence in Jeffrey Epstein’s death points to suicide. Michael Freeman, a forensic scientist who studies homicides, got rare access to the autopsy file and disagrees.",
+      "date": "2026-11-16T19:01:07.000Z",
+      "url": "https://www.nytimes.com/2026/11/16/us/jeffrey-epstein-autopsy-michael-freeman.html",
+      "source": "nyt",
+      "sourceName": "The New York Times",
+      "categories": [
+        "Forensic Science",
+        "Autopsies",
+        "Suicides and Suicide Attempts",
+        "Office of the Chief Medical Examiner of the City of New York"
+      ],
+      "author": "Shaila Dewan and Leo Sands",
+      "theme": "drustvo",
+      "image": "https://static01.nyt.com/images/2026/11/16/multimedia/16nat-epstein-autopsy-jvkm/16nat-epstein-autopsy-jvkm-mediumSquareAt3X.jpg",
+      "imageAlt": "Challenging Consensus, Scientist Says Epstein Autopsy Photos Show Homicide",
+      "addedAt": "2026-11-16T19:52:54.226Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-npr-u-s-tightens-controls-on-remote-access-to-574fe1",
+      "title": "U.S. tightens controls on remote access to AI technology amid Nvidia fallout",
+      "summary": "The new rule closes a loophole that existed that allowed Chinese companies to still access advanced AI chips remotely, despite U.S. restrictions on their physical sale to China.",
+      "date": "2026-11-16T18:49:26.000Z",
+      "url": "https://www.npr.org/2026/11/16/nx-s1-6042883/nvidia-jensen-huang-commerce-department",
+      "source": "npr",
+      "sourceName": "NPR",
+      "categories": [],
+      "author": "Katie McQue",
+      "theme": "ai",
+      "image": "https://npr.brightspotcdn.com/dims3/default/strip/false/crop/5367x3578+0+0/resize/5367x3578!/quality/85/format/webp/?url=https%3A%2F%2Fnpr-production-npr.s3.us-east-1.amazonaws.com%2Fbrightspot%2F7c%2F22%2F5d8e832c4fd78402c75d44e19475%2Fgettyimages-2303986706-1.jpg",
+      "imageAlt": "U.S. tightens controls on remote access to AI technology amid Nvidia fallout",
+      "addedAt": "2026-11-16T19:52:54.466Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-verge-apple-is-adding-face-unlock-to-the-iphone-3fad41",
+      "title": "Apple is adding face unlock to the iPhone Duo — without new hardware",
+      "summary": "Apple is working on a face unlock feature for the iPhone Duo that uses the front-facing camera for authentication, and it's already testing it with the new iOS 27.3 beta released today, as reported by MacRumors. Currently, the only way to unlock the iPhone Duo is by using Touch ID or entering a passcode, which",
+      "date": "2026-11-16T18:44:16.000Z",
+      "url": "https://www.theverge.com/tech/1034590/apple-iphone-duo-face-unlock-ios-27-3-beta",
+      "source": "verge",
+      "sourceName": "The Verge",
+      "categories": [],
+      "author": "Jay Peters",
+      "theme": "rat",
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/10/268762_iPhone_Duo_AKrales_0082.jpg?quality=90&strip=all&crop=0,0,100,100",
+      "imageAlt": "Apple is adding face unlock to the iPhone Duo — without new hardware",
+      "addedAt": "2026-11-16T19:52:55.364Z"
+    },
+    {
+      "slug": "newyork-2026-11-16-verge-nvidia-s-board-is-reportedly-not-e8867c",
+      "title": "Nvidia’s board is reportedly ‘not considering’ hiring Jensen Huang back",
+      "summary": "Nvidia's board of directors \"isn't considering\" having Jensen Huang return as CEO, according to a report from CNBC. A source tells the outlet the board \"is focused on an investigation into Huang, and is not in discussions to bring him back.\" Since Huang's resignation last week, tech executives, along with current and former Nvidia employees,",
+      "date": "2026-11-16T18:43:35.000Z",
+      "url": "https://www.theverge.com/tech/1034501/nvidia-board-jensen-huang-not-bringing-back",
+      "source": "verge",
+      "sourceName": "The Verge",
+      "categories": [],
+      "author": "Emma Roth",
+      "theme": "drustvo",
+      "image": "https://platform.theverge.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/25835739/STKP210_JENSEN_HUANG_B.jpg?quality=90&strip=all&crop=0,0,100,100",
+      "imageAlt": "Nvidia’s board is reportedly ‘not considering’ hiring Jensen Huang back",
+      "addedAt": "2026-11-16T19:52:55.364Z"
+    },
     {
       "slug": "newyork-2026-11-16-npr-u-n-talks-seek-to-rein-in-killer-robots-as-6f39b0",
       "title": "U.N. talks seek to rein in 'killer robots' as fears over AI weapons grow",
