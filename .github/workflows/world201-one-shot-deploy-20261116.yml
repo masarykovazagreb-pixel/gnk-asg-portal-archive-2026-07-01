@@ -1,0 +1,64 @@
+name: WORLD201 protected exact-SHA deployment request
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/world201-one-shot-deploy-20261116.yml'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/world201-one-shot-deploy-20261116.yml'
+permissions:
+  contents: read
+  actions: write
+concurrency:
+  group: aktual-world201-one-shot-release-20261116
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: World routes and non-regression of privacy and RSS
+        run: |
+          node --test scripts/test-aktual-world201-static-v1.mjs
+          node --test tests/test-region-withdrawal-v1.mjs
+          node --test tests/test-region-rss-fallback-v1.mjs
+          node --test tests/test-world201-rss-redirect-v1.mjs
+  request-verified-existing-release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check frozen WORLD201 base, 201 routes, privacy and RSS
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = '108e24cc0426bb4ea6e0b4cc297785ecf974cd49' || { echo '::error::Unexpected commit parent; refusing deployment.'; exit 1; }
+          node --test scripts/test-aktual-world201-static-v1.mjs
+          node --test tests/test-region-withdrawal-v1.mjs
+          node --test tests/test-region-rss-fallback-v1.mjs
+          node --test tests/test-world201-rss-redirect-v1.mjs
+          node scripts/test-deploy-approval-guardrails.mjs
+          test -f apps/portal/world/index.html
+          test -f apps/region/data/withdrawn-content-v1.json
+      - name: Dispatch existing signed exact-main-SHA Cloudflare release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          latest=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)
+          [ "$latest" = "$GITHUB_SHA" ] || { echo '::error::Main changed during preflight; no deploy requested.'; exit 1; }
+          gh workflow run deploy-admin-auth-v6.yml --ref main -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 -f approved_sha="$GITHUB_SHA" -f notify_search_engines=false
+          echo "Protected release requested for $GITHUB_SHA; not proof of LIVE."
