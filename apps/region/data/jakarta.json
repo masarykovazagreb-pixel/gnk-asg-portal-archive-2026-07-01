@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-11-16T09:34:34.588Z",
+  "updatedAt": "2026-11-16T20:25:08.409Z",
   "sources": [
     {
       "id": "antara",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T09:34:17.599Z"
+      "checkedAt": "2026-11-16T20:24:51.145Z"
     },
     {
       "id": "kompas",
@@ -24,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: empty response",
-        "https://nasional.kompas.com/rss: empty response"
+        "https://www.kompas.com/rss: HTTP 404",
+        "https://nasional.kompas.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-16T09:34:19.317Z"
+      "checkedAt": "2026-11-16T20:24:53.590Z"
     },
     {
       "id": "detik",
@@ -39,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-11-16T09:34:31.607Z"
+      "checkedAt": "2026-11-16T20:25:04.847Z"
     },
     {
       "id": "tempo",
@@ -51,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-16T09:34:32.436Z"
+      "checkedAt": "2026-11-16T20:25:05.661Z"
     },
     {
       "id": "cnnindonesia",
@@ -61,7 +61,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T09:34:32.597Z"
+      "checkedAt": "2026-11-16T20:25:05.974Z"
     },
     {
       "id": "republika",
@@ -71,7 +71,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T09:34:33.111Z"
+      "checkedAt": "2026-11-16T20:25:06.801Z"
     },
     {
       "id": "cnbcindonesia",
@@ -81,7 +81,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T09:34:33.526Z"
+      "checkedAt": "2026-11-16T20:25:07.157Z"
     },
     {
       "id": "kumparan",
@@ -93,10 +93,335 @@
       "errors": [
         "https://kumparan.com/feed: nije feed"
       ],
-      "checkedAt": "2026-11-16T09:34:34.588Z"
+      "checkedAt": "2026-11-16T20:25:08.408Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-11-16-republika-prabowo-dorong-asean-perkuat-koordinasi-2f9e94",
+      "title": "Prabowo Dorong ASEAN Perkuat Koordinasi Berantas Kejahatan Lintas Negara",
+      "summary": "REPUBLIKA.CO.ID, JAKARTA, – Presiden Republik Indonesia Prabowo Subianto menyerukan penguatan koordinasi regional di antara negara-negara anggota ASEAN untuk memberantas kejahatan transnasional. Seruan ini disampaikan langsung di hadapan para pemimpin...",
+      "date": "2026-11-16T20:16:44.000Z",
+      "url": "https://news.republika.co.id/berita/tom2zw9830000/prabowo-dorong-asean-perkuat-koordinasi-berantas-kejahatan-lintas-negara",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional"
+      ],
+      "author": "ReBot",
+      "theme": "politika",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/014801000-1794860204-WhatsApp-Image-2026-11-15-at-1.jpeg",
+      "imageAlt": "Prabowo Dorong ASEAN Perkuat Koordinasi Berantas Kejahatan Lintas Negara",
+      "addedAt": "2026-11-16T20:25:06.802Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-cnnindonesia-pelatih-hillstate-tak-ada-pemain-asing-asia-f16fbb",
+      "title": "Pelatih Hillstate: Tak Ada Pemain Asing Asia Sehebat Megawati",
+      "summary": "Pelatih Hillstate, Kang Sung-hyung menyebut Megawati Hangestri Pertiwi sebagai pemain asing Asia dengan serangan terbaik di Liga Voli Korea.",
+      "date": "2026-11-16T20:15:04.000Z",
+      "url": "https://www.cnnindonesia.com/olahraga/20261116185425-178-1427844/pelatih-hillstate-tak-ada-pemain-asing-asia-sehebat-megawati",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://akcdn.detik.net.id/visual/2026/10/15/hyundai-hillstate-kalah-0-3-dari-hi-pass-di-kovo-cup-2026-1792023316648_169.jpeg?w=360&q=90",
+      "imageAlt": "Pelatih Hillstate: Tak Ada Pemain Asing Asia Sehebat Megawati",
+      "addedAt": "2026-11-16T20:25:05.975Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-cnnindonesia-polisi-tangkap-5-orang-buntut-aksi-tawuran-7ac60f",
+      "title": "Polisi Tangkap 5 Orang Buntut Aksi Tawuran di Petamburan Jakpus",
+      "summary": "Polisi tangkap lima orang terkait tawuran di Jalan Petamburan Jakarta Pusat, yang menyebabkan pembakaran dan kerusakan barang warga.",
+      "date": "2026-11-16T20:04:00.000Z",
+      "url": "https://www.cnnindonesia.com/nasional/20261116184142-12-1427845/polisi-tangkap-5-orang-buntut-aksi-tawuran-di-petamburan-jakpus",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://akcdn.detik.net.id/visual/2022/03/30/ilustrasi-tawuran-sahur_169.jpeg?w=360&q=90",
+      "imageAlt": "Polisi Tangkap 5 Orang Buntut Aksi Tawuran di Petamburan Jakpus",
+      "addedAt": "2026-11-16T20:25:05.975Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-republika-indonesia-bidik-perluasan-akses-ekspor-di-ba6fe1",
+      "title": "Indonesia Bidik Perluasan Akses Ekspor di KTT APEC 2026",
+      "summary": "REPUBLIKA.CO.ID, JAKARTA, – Indonesia menatap Konferensi Tingkat Tinggi (KTT) APEC 2026 sebagai pintu gerbang vital untuk memperluas akses pasar dan mendorong pertumbuhan ekspor di kawasan Asia-Pasifik. Menteri Perdagangan Budi...",
+      "date": "2026-11-16T20:01:37.000Z",
+      "url": "https://news.republika.co.id/berita/tom2ap4130000/indonesia-bidik-perluasan-akses-ekspor-di-ktt-apec-2026",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional"
+      ],
+      "author": "ReBot",
+      "theme": "politika",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/017286200-1794859297-IMG_4785jpeg.jpeg",
+      "imageAlt": "Indonesia Bidik Perluasan Akses Ekspor di KTT APEC 2026",
+      "addedAt": "2026-11-16T20:25:06.802Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-republika-smart-flying-school-siapkan-pilot-berdaya-92c73e",
+      "title": "Smart Flying School Siapkan Pilot Berdaya Saing Global, Tiga Siswa Dikirim ke AS",
+      "summary": "TANGERANG– Smart Flying School, sekolah penerbang yang dikembangkan PT Smart Cakrawala Aviation, memperkuat pendidikan calon pilot dengan mengintegrasikan keterampilan teknis, pembentukan karakter, kepemimpinan, dan wawasan industri penerbangan global. Salah satu...",
+      "date": "2026-11-16T20:00:00.000Z",
+      "url": "https://daerah.republika.co.id/berita/tolbt7320/smart-flying-school-siapkan-pilot-berdaya-saing-global-tiga-siswa-dikirim-ke-as",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nusantara"
+      ],
+      "author": "Nashih Nashrullah",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/the-rising-star-challenge_261116172846-272.jpg",
+      "imageAlt": "Smart Flying School Siapkan Pilot Berdaya Saing Global, Tiga Siswa Dikirim ke AS",
+      "addedAt": "2026-11-16T20:25:06.802Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-republika-prabowo-dorong-rcep-jadi-jangkar-ketahanan-ed5272",
+      "title": "Prabowo Dorong RCEP Jadi Jangkar Ketahanan Kawasan di KTT ASEAN-Korea Selatan",
+      "summary": "REPUBLIKA.CO.ID, MANILA, – Presiden Indonesia Prabowo Subianto menegaskan Kemitraan Ekonomi Komprehensif Regional (Regional Comprehensive Economic Partnership/RCEP) sebagai jangkar krusial bagi ketahanan kawasan. Ia menyerukan integrasi ekonomi yang lebih dalam...",
+      "date": "2026-11-16T19:46:09.000Z",
+      "url": "https://news.republika.co.id/berita/tom1kx5030000/prabowo-dorong-rcep-jadi-jangkar-ketahanan-kawasan-di-ktt-aseankorea-selatan",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional"
+      ],
+      "author": "ReBot",
+      "theme": "ekonomija",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/079715700-1794858369-IMG_9082jpg.jpg",
+      "imageAlt": "Prabowo Dorong RCEP Jadi Jangkar Ketahanan Kawasan di KTT ASEAN-Korea Selatan",
+      "addedAt": "2026-11-16T20:25:06.802Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-cnnindonesia-aprilia-punya-kans-besar-jegal-marquez-6113fe",
+      "title": "Aprilia Punya Kans Besar Jegal Marquez Juara di MotoGP Portugal",
+      "summary": "Aprilia memiliki modal penting dalam menjegal pembalap Ducati Marc Marquez juara MotoGP 2026 di MotoGP Portugal 2026, akhir pekan ini.",
+      "date": "2026-11-16T19:45:11.000Z",
+      "url": "https://www.cnnindonesia.com/olahraga/20261116192406-156-1427851/aprilia-punya-kans-besar-jegal-marquez-juara-di-motogp-portugal",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/09/bezzecchi-kalahkan-marc-marquez-di-motogp-qatar-1794180736045_169.jpeg?w=360&q=90",
+      "imageAlt": "Aprilia Punya Kans Besar Jegal Marquez Juara di MotoGP Portugal",
+      "addedAt": "2026-11-16T20:25:05.975Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-antara-asean-sepakati-kerja-sama-antariksa-untuk-8d8fa1",
+      "title": "ASEAN sepakati kerja sama antariksa untuk ekonomi, mitigasi bencana",
+      "summary": "Negara-negara anggota Perhimpunan Bangsa Asia Tenggara (ASEAN) berkomitmen untuk mempercepat pemanfaatan sains, ...",
+      "date": "2026-11-16T19:36:44.000Z",
+      "url": "https://www.antaranews.com/berita/5858539/asean-sepakati-kerja-sama-antariksa-untuk-ekonomi-mitigasi-bencana",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/19/1001546947.jpg",
+      "imageAlt": "ASEAN sepakati kerja sama antariksa untuk ekonomi, mitigasi bencana",
+      "addedAt": "2026-11-16T20:24:51.146Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-republika-indonesia-perkuat-ketahanan-pangan-hadapi-d6225a",
+      "title": "Indonesia Perkuat Ketahanan Pangan Hadapi Ancaman Perubahan Iklim",
+      "summary": "REPUBLIKA.CO.ID, JAKARTA, – Indonesia tengah memperkuat ketahanan pangan nasional melalui strategi peningkatan produksi, perbaikan irigasi, dan manajemen risiko yang lebih baik. Langkah ini diambil untuk menjaga pasokan beras yang...",
+      "date": "2026-11-16T19:30:16.000Z",
+      "url": "https://news.republika.co.id/berita/tom0ug1630000/indonesia-perkuat-ketahanan-pangan-hadapi-ancaman-perubahan-iklim",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional"
+      ],
+      "author": "ReBot",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/048209200-1794857416-6C07681E-6E61-450B-8AB5-DA147F.jpeg",
+      "imageAlt": "Indonesia Perkuat Ketahanan Pangan Hadapi Ancaman Perubahan Iklim",
+      "addedAt": "2026-11-16T20:25:06.802Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-cnnindonesia-foto-umat-hindu-india-berdoa-di-sungai-ad82e0",
+      "title": "FOTO: Umat Hindu India Berdoa di Sungai Yamuna yang Tertutup Busa",
+      "summary": "Ribuan umat Hindu memadati tepi Sungai Yamuna di Delhi pada hari terakhir festival Chhath Puja, Senin (16/11).",
+      "date": "2026-11-16T19:30:00.000Z",
+      "url": "https://www.cnnindonesia.com/internasional/20261116165741-115-1427775/foto-umat-hindu-india-berdoa-di-sungai-yamuna-yang-tertutup-busa",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/16/umat-hindu-india-berdoa-di-yamuna-saat-berbusa-1794822983247_169.jpeg?w=360&q=90",
+      "imageAlt": "FOTO: Umat Hindu India Berdoa di Sungai Yamuna yang Tertutup Busa",
+      "addedAt": "2026-11-16T20:25:05.975Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-antara-asean-dukung-talenta-digital-lintas-batas-cca27d",
+      "title": "ASEAN dukung talenta digital lintas batas perkuat ekonomi kawasan",
+      "summary": "Negara-negara anggota Perhimpunan Bangsa Asia Tenggara (ASEAN) mendorong mobilitas talenta digital lintas batas ...",
+      "date": "2026-11-16T19:29:00.000Z",
+      "url": "https://www.antaranews.com/berita/5858535/asean-dukung-talenta-digital-lintas-batas-perkuat-ekonomi-kawasan",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/12/Kompetisi-Teknologi-Ramah-Lingkungan-Di-Trenggalek-121126-Ds-5.jpg",
+      "imageAlt": "ASEAN dukung talenta digital lintas batas perkuat ekonomi kawasan",
+      "addedAt": "2026-11-16T20:24:51.146Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-cnnindonesia-pedro-acosta-bidik-5-besar-di-motogp-2026-8c2c68",
+      "title": "Pedro Acosta Bidik 5 Besar di MotoGP 2026, Incar Juara di 2027?",
+      "summary": "Pembalap KTM, Pedro Acosta membidik finis di lima besar klasemen akhir MotoGP 2026 sebelum mengincar juara bersama Ducati.",
+      "date": "2026-11-16T19:15:27.000Z",
+      "url": "https://www.cnnindonesia.com/olahraga/20261116230537-156-1427894/pedro-acosta-bidik-5-besar-di-motogp-2026-incar-juara-di-2027",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://akcdn.detik.net.id/visual/2026/10/31/pedro-acosta-1793433369083_169.jpeg?w=360&q=90",
+      "imageAlt": "Pedro Acosta Bidik 5 Besar di MotoGP 2026, Incar Juara di 2027?",
+      "addedAt": "2026-11-16T20:25:05.975Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-antara-dubes-ruhaini-terima-penghargaan-terkait-08a043",
+      "title": "Dubes Ruhaini terima penghargaan terkait toleransi dari Uzbekistan",
+      "summary": "Duta Besar RI untuk Republik Uzbekistan dan Republik Kirgistan Siti Ruhaini Dzuhayatin menerima penghargaan ...",
+      "date": "2026-11-16T18:57:03.000Z",
+      "url": "https://www.antaranews.com/berita/5858531/dubes-ruhaini-terima-penghargaan-terkait-toleransi-dari-uzbekistan",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/16/WhatsApp-Image-2026-11-16-at-21.20.17-2.jpeg",
+      "imageAlt": "Dubes Ruhaini terima penghargaan terkait toleransi dari Uzbekistan",
+      "addedAt": "2026-11-16T20:24:51.146Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-antara-hashim-bicara-pernyataan-ri-di-cop31-hingga-e50a71",
+      "title": "Hashim bicara pernyataan RI di COP31 hingga RUU Perubahan Iklim",
+      "summary": "ANTARA - Konferensi Perubahan Iklim PBB ke-31 atau COP31 berlangsung pada 9–20 November 2026 di Antalya, Turki. ...",
+      "date": "2026-11-16T18:53:12.000Z",
+      "url": "https://www.antaranews.com/video/5858515/hashim-bicara-pernyataan-ri-di-cop31-hingga-ruu-perubahan-iklim",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/Hashim-bicara-pernyataan-RI-di-COP31-hingga-RUU-Perubahan-Iklim_1.jpg",
+      "imageAlt": "Hashim bicara pernyataan RI di COP31 hingga RUU Perubahan Iklim",
+      "addedAt": "2026-11-16T20:24:51.146Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-antara-bnpb-sinkronisasi-mitigasi-bencana-48f053",
+      "title": "BNPB sinkronisasi mitigasi bencana hidrometeorologi Sumatera",
+      "summary": "Kepala Badan Nasional Penanggulangan Bencana (BNPB) Letjen TNI Kristomei Sianturi terus melakukan sinkronisasi mitigasi ...",
+      "date": "2026-11-16T17:39:07.000Z",
+      "url": "https://www.antaranews.com/berita/5858527/bnpb-sinkronisasi-mitigasi-bencana-hidrometeorologi-sumatera",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/17/1001185286.jpg",
+      "imageAlt": "BNPB sinkronisasi mitigasi bencana hidrometeorologi Sumatera",
+      "addedAt": "2026-11-16T20:24:51.146Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-antara-bappenas-nilai-capaian-kinerja-kemenimipas-b4a755",
+      "title": "Bappenas nilai capaian kinerja Kemenimipas lampaui transformasi biasa",
+      "summary": "Direktur Pembangunan Hukum, Hak Asasi Manusia, Imigrasi dan Pemasyarakatan Kementerian PPN/Bappenas Hendra Wahanu ...",
+      "date": "2026-11-16T17:34:06.000Z",
+      "url": "https://www.antaranews.com/berita/5858523/bappenas-nilai-capaian-kinerja-kemenimipas-lampaui-transformasi-biasa",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/16/1000047806.jpg",
+      "imageAlt": "Bappenas nilai capaian kinerja Kemenimipas lampaui transformasi biasa",
+      "addedAt": "2026-11-16T20:24:51.146Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-cnbcindonesia-arab-masih-membara-potret-houthi-makin-55c8ee",
+      "title": "Arab Masih Membara, Potret Houthi Makin Ganas Kuasai Yaman",
+      "summary": "Yaman semakin memabara. Milisi Houthi bergerak maju ke dekat Aden, wilayah yang dikuasai pemerintah saat ini.",
+      "date": "2026-11-16T15:10:00.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261116114911-7-785532/arab-masih-membara-potret-houthi-makin-ganas-kuasai-yaman",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/16/milisi-houthi-bergerak-maju-ke-dekat-aden-wilayah-yang-dikuasai-pemerintah-yaman-di-tengah-konflik-yang-terus-membara-1794802293178_169.jpeg?w=1200&q=90",
+      "imageAlt": "Arab Masih Membara, Potret Houthi Makin Ganas Kuasai Yaman",
+      "addedAt": "2026-11-16T20:25:07.157Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-cnbcindonesia-skandal-korupsi-eks-menteri-ketahuan-kubur-e26391",
+      "title": "Skandal Korupsi Eks Menteri, Ketahuan Kubur Uang Rp 360 M di Hutan",
+      "summary": "Otoritas Hungaria menemukan hampir US$ 20 juta dalam penyelidikan korupsi mantan Menteri Miklos Sesztak.",
+      "date": "2026-11-16T15:00:00.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261116183450-4-785745/skandal-korupsi-eks-menteri-ketahuan-kubur-uang-rp-360-m-di-hutan",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://awsimages.detik.net.id/visual/2021/07/02/penggemar-hungaria-mengibarkan-bendera-saat-mereka-menunggu-dimulainya-pertandingan-grup-f-kejuaraan-sepak-bola-euro-2020-anta_169.jpeg?w=1200&q=90",
+      "imageAlt": "Skandal Korupsi Eks Menteri, Ketahuan Kubur Uang Rp 360 M di Hutan",
+      "addedAt": "2026-11-16T20:25:07.157Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-cnbcindonesia-nasib-tetangga-ri-di-ujung-tanduk-icj-9143a2",
+      "title": "Nasib Tetangga RI di Ujung Tanduk, ICJ Siapkan Vonis soal Genosida",
+      "summary": "Mahkamah Internasional akan membacakan putusan genosida Myanmar terhadap Rohingya.",
+      "date": "2026-11-16T14:50:00.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261116155834-4-785659/nasib-tetangga-ri-di-ujung-tanduk-icj-siapkan-vonis-soal-genosida",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2022/09/20/anggota-personel-penjaga-perbatasan-bangladesh-bgb-berjaga-di-sepanjang-jalan-di-bandarban-pada-19-september-2022-setelah-mort_169.jpeg?w=1200&q=90",
+      "imageAlt": "Nasib Tetangga RI di Ujung Tanduk, ICJ Siapkan Vonis soal Genosida",
+      "addedAt": "2026-11-16T20:25:07.157Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-cnbcindonesia-netanyahu-cari-teman-supaya-selamat-a42808",
+      "title": "Netanyahu Cari Teman Supaya Selamat, Pemimpin Oposisi Israel: Nice Try",
+      "summary": "PM Israel Netanyahu tawarkan pemerintahan persatuan kepada oposisi Gadi Eisenkot. Namun, perbedaan politik jadi hambatan utama.",
+      "date": "2026-11-16T14:40:00.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261116155442-4-785657/netanyahu-cari-teman-supaya-selamat-pemimpin-oposisi-israel-nice-try",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/08/mantan-kepala-militer-gadi-eisenkot-pemimpin-partai-yashar-mengibarkan-bendera-israel-setelah-hasil-jajak-pendapat-exit-poll-k-1794095265770_169.jpeg?w=1200&q=90",
+      "imageAlt": "Netanyahu Cari Teman Supaya Selamat, Pemimpin Oposisi Israel: Nice Try",
+      "addedAt": "2026-11-16T20:25:07.157Z"
+    },
+    {
+      "slug": "jakarta-2026-11-16-cnbcindonesia-tok-tiga-pria-divonis-hukuman-mati-usai-6a69cc",
+      "title": "Tok! Tiga Pria Divonis Hukuman Mati Usai Serang Gereja",
+      "summary": "Yordania menjatuhkan hukuman mati kepada tiga pelaku serangan gereja yang menewaskan sembilan orang. Kasus ini memicu ketegangan",
+      "date": "2026-11-16T14:30:00.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261116151206-4-785623/tok-tiga-pria-divonis-hukuman-mati-usai-serang-gereja",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/16/jordan-churchtrial-1794816850980_169.jpeg?w=1200&q=90",
+      "imageAlt": "Tok! Tiga Pria Divonis Hukuman Mati Usai Serang Gereja",
+      "addedAt": "2026-11-16T20:25:07.157Z"
+    },
     {
       "slug": "jakarta-2026-11-16-republika-ubsi-kampus-tasikmalaya-gelar-wisuda-ke-20-2b4b34",
       "title": "UBSI Kampus Tasikmalaya Gelar Wisuda ke-20, Rektor Tekankan Adaptasi AI dan Integritas",
