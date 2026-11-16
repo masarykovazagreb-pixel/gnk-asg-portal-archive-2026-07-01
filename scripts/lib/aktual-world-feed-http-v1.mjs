@@ -5,10 +5,10 @@ export function safeUrl(value) {
   try {
     const u = new URL(value);
     if (u.protocol !== 'https:' || u.username || u.password || !u.hostname || (u.port && u.port !== '443')) return '';
-    const host = u.hostname.toLowerCase().replace(/\\.$/, '');
+    const host = u.hostname.toLowerCase().replace(/\.$/, '');
     if (host === 'localhost' ||
         ['.localhost', '.local', '.internal', '.test', '.invalid', '.onion', '.example', '.home.arpa'].some(s => host.endsWith(s))) return '';
-    if (/^\\d+\\.\\d+\\.\\d+\\.\\d+$/.test(host) || host.includes(':') || host === '0') return '';
+    if (/^\d+\.\d+\.\d+\.\d+$/.test(host) || host.includes(':') || host === '0') return '';
     return u.href;
   } catch {
     return '';
@@ -45,7 +45,7 @@ export async function fetchFeedXml(url, { fetchImpl = fetch, maxRedirects = 2, m
     if (declared > maxBytes) throw new Error('feed over 800 KB');
     const text = await response.text();
     if (text.length > maxBytes) throw new Error('feed over 800 KB');
-    if (!/<(?:rss|feed|rdf:RDF)\\b/i.test(text)) throw new Error('not RSS or Atom');
+    if (!/<(?:rss|feed|rdf:RDF)\b/i.test(text)) throw new Error('not RSS or Atom');
     return text;
   }
   throw new Error('RSS redirect limit exceeded');
