@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-11-15T21:47:26.734Z",
+  "updatedAt": "2026-11-16T03:04:21.891Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-15T21:47:20.425Z"
+      "checkedAt": "2026-11-16T03:04:13.006Z"
     },
     {
       "id": "capital",
@@ -27,17 +27,20 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T21:47:21.001Z"
+      "checkedAt": "2026-11-16T03:04:14.050Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": true,
-      "fetched": 10,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-15T21:47:21.845Z"
+      "errors": [
+        "https://www.mediapool.bg/rss: HTTP 304",
+        "https://www.mediapool.bg/rss/: HTTP 304"
+      ],
+      "checkedAt": "2026-11-16T03:04:16.650Z"
     },
     {
       "id": "dnevnikbg",
@@ -49,7 +52,7 @@
       "errors": [
         "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-15T21:47:23.021Z"
+      "checkedAt": "2026-11-16T03:04:18.505Z"
     },
     {
       "id": "actualno",
@@ -59,7 +62,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T21:47:23.360Z"
+      "checkedAt": "2026-11-16T03:04:18.838Z"
     },
     {
       "id": "sega",
@@ -69,7 +72,7 @@
       "fetched": 95,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-15T21:47:23.686Z"
+      "checkedAt": "2026-11-16T03:04:19.135Z"
     },
     {
       "id": "novinite",
@@ -81,7 +84,7 @@
       "errors": [
         "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-15T21:47:24.955Z"
+      "checkedAt": "2026-11-16T03:04:20.156Z"
     },
     {
       "id": "btaen",
@@ -93,10 +96,61 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-15T21:47:26.734Z"
+      "checkedAt": "2026-11-16T03:04:21.890Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-11-15-actualno-rusi-atakuva-ukra-na-s-nova-taktika-01e08d",
+      "title": "Русия атакува Украйна с нова тактика: Зеленски разкри подробности (ВИДЕО)",
+      "summary": "Положението в Запорожие и Днепропетровска област стана изключително трудно след руските удари, обяви украинският президе...",
+      "date": "2026-11-15T22:46:00.000Z",
+      "url": "https://www.actualno.com/europe/rusija-atakuva-ukrajna-s-nova-taktika-zelenski-razkri-podrobnosti-video-news_2663236.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/16/7c5e06b8990db09f46709d2fedc68a2f_2663236_1920x1080.jpg",
+      "imageAlt": "Русия атакува Украйна с нова тактика: Зеленски разкри подробности (ВИДЕО)",
+      "addedAt": "2026-11-16T03:04:18.838Z"
+    },
+    {
+      "slug": "sofija-2026-11-15-sega-angli-sokira-svetovni-sampion-v-madrid-6ab839",
+      "title": "Англия шокира световния шампион в Мадрид",
+      "summary": "",
+      "date": "2026-11-15T22:23:28.000Z",
+      "url": "https://www.segabg.com/hot/category-sport/angliya-shokira-svetovniya-shampion-madrid",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/ben.jpeg",
+      "imageAlt": "Англия шокира световния шампион в Мадрид",
+      "addedAt": "2026-11-16T03:04:19.135Z"
+    },
+    {
+      "slug": "sofija-2026-11-15-actualno-na-zivo-krizata-v-ukra-na-16-11-26-novi-ed9394",
+      "title": "НА ЖИВО: Кризата в Украйна, 16.11.26 - Нови ограничения на Starshield отново затрудняват Украйна",
+      "summary": "Изминаха 56 месеца от старта на войната в Украйна. За тази период нещата на фронта постепенно стигнаха до състояние на б...",
+      "date": "2026-11-15T22:21:00.000Z",
+      "url": "https://www.actualno.com/europe/na-jivo-krizata-v-ukrajna-161126-novi-ogranichenija-na-starshield-otnovo-zatrudnjavat-ukrajna-news_2663234.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "rat",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/16/d13006819d0c0599cd4860e98991e049_2663234_1920x1080.jpg",
+      "imageAlt": "НА ЖИВО: Кризата в Украйна, 16.11.26 - Нови ограничения на Starshield отново затрудняват Украйна",
+      "addedAt": "2026-11-16T03:04:18.838Z"
+    },
     {
       "slug": "sofija-2026-11-15-actualno-angli-treperi-do-kra-no-precupi-svetovni-b95e66",
       "title": "Англия трепери до края, но пречупи световния шампион в Лигата на нациите, утешителен успех за Хърватия",
