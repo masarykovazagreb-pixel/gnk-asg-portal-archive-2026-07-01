@@ -40,7 +40,7 @@ test('withdrawn articles are excluded from category, source, search, related and
   ];
   for (const file of files) {
     const data = readFileSync(file, 'utf8');
-    for (const match of data.matchAll(/clanak\/([^/\\"'<>\\s]+)\/?/g)) {
+    for (const match of data.matchAll(/clanak\/([a-z0-9-]+)\//g)) {
       const slug = match[1];
       assert.equal(blocked.has(sha(slug.toLowerCase())), false, file);
     }
