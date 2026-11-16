@@ -45,7 +45,13 @@ const menuRoutes=[...menu.matchAll(/['"](\/(?:[^'"?#]*\/)?)(?:['"])/g)].map(matc
 const uniqueMenuRoutes=[...new Set(menuRoutes)];
 const menuMissing=uniqueMenuRoutes.filter(route=>!routeExists(route));
 const htmlFiles=walk(ROOT).filter(file=>file.endsWith('.html')&&!isUtilityHtml(file)&&!IGNORE_HTML_PREFIXES.some(prefix=>rel(file).startsWith(prefix)));
-const pages=[],errors=[],warnings=[];
+const errors=[],warnings=[];
+let pageCount=0,pagesWithStaticContrastRisks=0,pagesWithLegacyLogoSources=0,legacyLogosNormalizedAtEdge=0,pagesWithForms=0;
+fs.mkdirSync(path.dirname(REPORT),{recursive:true});
+const PAGES_TMP=REPORT+'.pages.tmp';
+const pageFd=fs.openSync(PAGES_TMP,'w');
+let pageWriteBuffer='';
+function flushPages(){if(pageWriteBuffer){fs.writeSync(pageFd,pageWriteBuffer);pageWriteBuffer='';}}
 for(const file of htmlFiles){
  const html=fs.readFileSync(file,'utf8'),route=routeFor(file),protectedRoute=isProtected(route),pageErrors=[],pageWarnings=[];
  const lang=html.match(/<html\b[^>]*lang=["']([^"']+)["']/i)?.[1]||'';
@@ -71,12 +77,27 @@ for(const file of htmlFiles){
  if(nonCanonicalLogoRefs.length&&!edgeNormalization)pageWarnings.push('legacy-logo-source-runtime-canonicalized');
  if(forms.length)pageErrors.push('form-controls-missing-accessible-label');
  const page={route,file:posix(path.relative('.',file)),protected:protectedRoute,lang,title,viewport,robots,broken,logoRefs,nonCanonicalLogoRefs,contrastRisks:risks,formIssues:forms,edgeNormalizedLegacyLogos:edgeNormalization?nonCanonicalLogoRefs:[],errors:pageErrors,warnings:pageWarnings};
- pages.push(page);
+ pageCount++;
+ if(risks.length)pagesWithStaticContrastRisks++;
+ if(nonCanonicalLogoRefs.length)pagesWithLegacyLogoSources++;
+ legacyLogosNormalizedAtEdge+=edgeNormalization?nonCanonicalLogoRefs.length:0;
+ if(forms.length||/<form\b/i.test(html))pagesWithForms++;
+ pageWriteBuffer+=(pageCount===1?'':',')+JSON.stringify(page);
+ if(pageWriteBuffer.length>1048576)flushPages();
  for(const code of pageErrors)errors.push({route,file:page.file,code,detail:code==='broken-local-references'?broken:code==='form-controls-missing-accessible-label'?forms:null});
  for(const code of pageWarnings)warnings.push({route,file:page.file,code,detail:code==='static-contrast-risk-below-3'?severeRisks:nonCanonicalLogoRefs});
 }
 for(const route of menuMissing)errors.push({route,file:'apps/portal/assets/public-unified-menu-v6.js',code:'menu-route-missing-physical-page'});
-const report={version:'GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED',generatedAt:new Date().toISOString(),summary:{pages:pages.length,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:errors.length,warnings:warnings.length,pagesWithStaticContrastRisks:pages.filter(page=>page.contrastRisks.length).length,pagesWithLegacyLogoSources:pages.filter(page=>page.nonCanonicalLogoRefs.length).length,legacyLogosNormalizedAtEdge:pages.reduce((n,page)=>n+page.edgeNormalizedLegacyLogos.length,0),pagesWithForms:pages.filter(page=>page.formIssues.length||/<form\b/i.test(fs.readFileSync(path.resolve(page.file),'utf8'))).length},menuMissing,errors,warnings,pages};
-fs.mkdirSync(path.dirname(REPORT),{recursive:true});fs.writeFileSync(REPORT,JSON.stringify(report,null,2));
-console.log(JSON.stringify(report.summary,null,2));
+flushPages();
+fs.closeSync(pageFd);
+const summary={pages:pageCount,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:errors.length,warnings:warnings.length,pagesWithStaticContrastRisks,pagesWithLegacyLogoSources,legacyLogosNormalizedAtEdge,pagesWithForms};
+const report={version:'GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED',generatedAt:new Date().toISOString(),summary,menuMissing,errors,warnings};
+const outFd=fs.openSync(REPORT,'w');
+try {
+ fs.writeSync(outFd,JSON.stringify(report).slice(0,-1)+',"pages":[');
+ const inFd=fs.openSync(PAGES_TMP,'r');
+ try {const chunk=Buffer.allocUnsafe(1048576);let n;while((n=fs.readSync(inFd,chunk,0,chunk.length,null))>0)fs.writeSync(outFd,chunk,0,n);}finally{fs.closeSync(inFd);}
+ fs.writeSync(outFd,']}');
+}finally{fs.closeSync(outFd);fs.unlinkSync(PAGES_TMP);}
+console.log(JSON.stringify(summary,null,2));
 if(errors.length){for(const item of errors.slice(0,120))console.error(`- ${item.code} ${item.route} (${item.file})`);process.exit(1)}
