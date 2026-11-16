@@ -15,6 +15,7 @@ import { FAVICON_SVG } from '../../shared/brand/brand-mark-v1.mjs';
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync, copyFileSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isWithdrawnItem } from './withdrawals.mjs';
 import { esc, longDate, shortDate, stampLocal, slugify, isoWeek, themeFor, scoreFromTitle, truncate, safeJson } from './lib.mjs';
 import { t, ANALYSIS } from '../src/strings.mjs';
 import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
@@ -1345,7 +1346,7 @@ export function buildChannel(channel) {
   const strings = t(channel.lang).ui;
   const data = loadChannel(channel);
   data.items = [...data.items]
-    .filter((i) => i && i.slug && i.title && i.url)
+    .filter((i) => i && i.slug && i.title && i.url && !isWithdrawnItem(i))
     .sort((a, b) => String(b.date).localeCompare(String(a.date)));
   // Dopunski izvori (optional) dobivaju stranicu i chip tek kada stvarno daju zapise.
   channel = {
