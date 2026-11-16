@@ -1,0 +1,19 @@
+name: Verify WORLD 201 public HTTP after Cloudflare deploy
+on:
+  pull_request:
+    paths:
+      - 'scripts/audit-world201-live-http-20261116.mjs'
+      - '.github/workflows/world201-live-http-verification-20261116.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify 201 live country routes, canonical, noindex and public index
+        run: node scripts/audit-world201-live-http-20261116.mjs
