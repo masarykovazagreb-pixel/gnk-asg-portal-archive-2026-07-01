@@ -1,0 +1,44 @@
+name: P0 Privacy public HTTP 404/410 verification
+on:
+  pull_request:
+    paths: ['.github/workflows/privacy-public-http-verification-20261116.yml']
+permissions:
+  contents: read
+jobs:
+  verify-live-withdrawal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+      - name: Verify both publicly served hosts and listings without logging personal details
+        shell: bash
+        run: |
+          set -euo pipefail
+          old=24102c85fdef52cc1b0914cb75d80ab70cb98c5b
+          withdrawn=2719619894bfe7cb96536b28d09c04045e0b03e8
+          git cat-file -e "$old^{commit}" || git fetch --no-tags --depth=1 origin "$old"
+          git cat-file -e "$withdrawn^{commit}" || git fetch --no-tags --depth=1 origin "$withdrawn"
+          mapfile -t files < <(git diff --name-only --diff-filter=D "$old" "$withdrawn" -- 'apps/portal/kanal/ljubljana/clanak/*/index.html')
+          if [ "${#files[@]}" -ne 2 ]; then echo '::error::Expected exactly two withdrawn article HTML paths'; exit 1; fi
+          for f in "${files[@]}"; do
+            slug=${f#apps/portal/}
+            slug=${slug%index.html}
+            identifier=$(printf '%s' "$slug" | sha256sum | cut -c1-12)
+            for host in gnk-asg.hr operator.gnk-asg.hr; do
+              status=$(curl -sSL --retry 1 --retry-delay 1 --max-time 25 -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' -o /tmp/privacy-body -w '%{http_code}' "https://$host/$slug?privacy-check=$GITHUB_RUN_ID") || { echo "::error::HTTP unavailable $host [$identifier]"; exit 1; }
+              echo "$host [$identifier]: HTTP $status"
+              case "$status" in 404|410) ;; *) echo "::error::Unexpected public status $status on $host [$identifier]"; exit 1;; esac
+            done
+          done
+          for rel in sitemap.xml izvori/index.html tema/drustvo/index.html mravinjak/index.html; do
+            status=$(curl -sSL --max-time 25 -o /tmp/privacy-listing -w '%{http_code}' "https://gnk-asg.hr/kanal/ljubljana/$rel?privacy-check=$GITHUB_RUN_ID") || exit 1
+            [ "$status" = 200 ] || { echo "::error::Cannot confirm clean listing $rel (HTTP $status)"; exit 1; }
+            for f in "${files[@]}"; do
+              slug=${f%/index.html}
+              slug=${slug##*/}
+              if grep -Fq "$slug" /tmp/privacy-listing; then echo "::error::Withdrawn link still in $rel"; exit 1; fi
+            done
+          done
+          echo 'VERIFIED: two withdrawn public article routes return 404/410 on both hosts and reviewed public listings do not link them.'
