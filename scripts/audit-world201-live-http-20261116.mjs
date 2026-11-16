@@ -31,7 +31,12 @@ async function worker(){
       const res=await fetchOnce(url);
       if(res.status!==200)throw Error('HTTP '+res.status);
       if(!res.body.includes('<title>')||!res.body.includes('AKTUAL MEDIA WORLD'))throw Error('missing WORLD title');
-      if(!res.body.includes('rel="canonical"')||!res.body.includes('/world/'+slug+'/'))throw Error('canonical absent');
+      const canonicalHref=res.body.match(/<link\\b[^>]*rel="canonical"\\s+href="([^"]+)"/i)?.[1];
+      if(!canonicalHref)throw Error('canonical absent');
+      const canonical=new URL(canonicalHref);
+      const expectedPath='/world/'+encodeURIComponent(slug==='gvana'?'gana':slug)+'/';
+      if(canonical.origin!=='https://gnk-asg.hr'||canonical.pathname!==expectedPath)
+        throw Error('incorrect canonical');
       if(!res.body.includes('name="robots" content="noindex,follow"'))throw Error('unexpected indexing policy');
       successes.push(slug);
     }catch(e){errors.push({slug,error:String(e.message).slice(0,140)});}
