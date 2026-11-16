@@ -31,7 +31,7 @@ async function worker(){
       const res=await fetchOnce(url);
       if(res.status!==200)throw Error('HTTP '+res.status);
       if(!res.body.includes('<title>')||!res.body.includes('AKTUAL MEDIA WORLD'))throw Error('missing WORLD title');
-      const canonicalHref=res.body.match(/<link\\b[^>]*rel="canonical"\\s+href="([^"]+)"/i)?.[1];
+      const canonicalHref=res.body.match(/<link[^>]*rel="canonical"[^>]*href="([^"]+)"/i)?.[1];
       if(!canonicalHref)throw Error('canonical absent');
       const canonical=new URL(canonicalHref);
       const expectedPath='/world/'+encodeURIComponent(slug==='gvana'?'gana':slug)+'/';
