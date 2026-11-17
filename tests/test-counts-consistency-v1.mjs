@@ -32,17 +32,34 @@ if (!counts) { console.log(JSON.stringify({ ok: false, failures: fails.length })
 
 /* --- 1. zapis odgovara podacima --- */
 const regionDir = join(ROOT, 'apps/region/data');
+// Kanonski registar definira gradska izdanja; nije svaka JSON datoteka arhiva.
+const registry = readJSON(join(ROOT, 'apps/region/channels.json'), { channels: [] });
+const registeredIds = (registry.channels || []).map((c) => c.id);
+const uniqueIds = new Set(registeredIds);
+check(registeredIds.length > 0, 'registar gradskih kanala je prazan');
+check(uniqueIds.size === registeredIds.length, 'dvostruki ID u registru gradskih kanala');
+
 let realTexts = 0;
-let channels = 0;
-for (const name of readdirSync(regionDir)) {
-  if (!name.endsWith('.json') || name.startsWith('_')) continue;
-  const data = readJSON(join(regionDir, name), { items: [] });
-  realTexts += (data.items || []).length;
-  channels += 1;
+for (const id of registeredIds) {
+  const archive = join(regionDir, `${id}.json`);
+  check(existsSync(archive), `nedostaje arhiva gradskog kanala: ${id}`);
+  const data = readJSON(archive);
+  check(Array.isArray(data?.items), `nevaljana arhiva gradskog kanala: ${id}`);
+  if (Array.isArray(data?.items)) realTexts += data.items.length;
 }
+// Povučeni sadržaj i metapodaci nisu javna gradska izdanja.
+// Nepoznate dodatne arhive moraju biti prijavljene, ne tiho pribrojene.
+const metadataFiles = new Set(['withdrawn-content-v1.json']);
+for (const name of readdirSync(regionDir)) {
+  if (!name.endsWith('.json') || name.startsWith('_') || metadataFiles.has(name)) continue;
+  const id = name.slice(0, -5);
+  check(uniqueIds.has(id), `arhiva bez kanala u registru: ${name}`);
+}
+const channels = registeredIds.length;
 check(counts.texts === realTexts, `zapis kaže ${counts.texts} tekstova, podaci ${realTexts}`);
 check(counts.cities === channels, `zapis kaže ${counts.cities} gradova, podaci ${channels}`);
 check(Array.isArray(counts.channels) && counts.channels.length === channels, 'po kanalu nema svih zapisa');
+check(Array.isArray(counts.channels) && new Set(counts.channels.map((c) => c.id)).size === channels, 'ponovljeni kanali u izvještaju');
 check(/^\d{4}-\d{2}-\d{2}$/.test(counts.dataDay || ''), 'nema podatkovnog dana');
 
 /* --- 2. javne stranice ne nose stari zbroj --- */
