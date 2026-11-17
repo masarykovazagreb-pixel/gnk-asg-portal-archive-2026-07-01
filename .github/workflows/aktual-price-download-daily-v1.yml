@@ -4,6 +4,11 @@ on:
     # 08:15 CET / 09:15 CEST, never notify user in 20:00–08:00 Zagreb quiet hours.
     - cron: '15 7 * * *'
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/price-download-daily-v1.mjs'
+      - 'tests/test-price-download-daily-v1.mjs'
+      - '.github/workflows/aktual-price-download-daily-v1.yml'
 permissions:
   contents: read
 concurrency:
@@ -23,6 +28,7 @@ jobs:
           node --check scripts/price-download-daily-v1.mjs
           node --test tests/test-price-download-daily-v1.mjs
       - name: Fetch price.download only with approved contract and reuse rights
+        if: github.event_name != 'pull_request'
         env:
           PRICE_DOWNLOAD_API_KEY: ${{ secrets.PRICE_DOWNLOAD_API_KEY }}
           PRICE_DOWNLOAD_API_ENDPOINT: ${{ vars.PRICE_DOWNLOAD_API_ENDPOINT }}
