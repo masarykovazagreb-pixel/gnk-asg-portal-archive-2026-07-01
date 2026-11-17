@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-11-16T19:52:27.262Z",
+  "updatedAt": "2026-11-17T02:54:21.914Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-16T19:52:16.649Z"
+      "checkedAt": "2026-11-17T02:54:11.519Z"
     },
     {
       "id": "capital",
@@ -27,17 +27,20 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T19:52:17.448Z"
+      "checkedAt": "2026-11-17T02:54:12.726Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": true,
-      "fetched": 10,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-16T19:52:19.327Z"
+      "errors": [
+        "https://www.mediapool.bg/rss: HTTP 304",
+        "https://www.mediapool.bg/rss/: HTTP 304"
+      ],
+      "checkedAt": "2026-11-17T02:54:14.994Z"
     },
     {
       "id": "dnevnikbg",
@@ -49,7 +52,7 @@
       "errors": [
         "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-16T19:52:20.573Z"
+      "checkedAt": "2026-11-17T02:54:16.925Z"
     },
     {
       "id": "actualno",
@@ -59,7 +62,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T19:52:23.810Z"
+      "checkedAt": "2026-11-17T02:54:17.977Z"
     },
     {
       "id": "sega",
@@ -69,7 +72,7 @@
       "fetched": 91,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T19:52:24.076Z"
+      "checkedAt": "2026-11-17T02:54:18.478Z"
     },
     {
       "id": "novinite",
@@ -81,7 +84,7 @@
       "errors": [
         "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-16T19:52:25.334Z"
+      "checkedAt": "2026-11-17T02:54:20.154Z"
     },
     {
       "id": "btaen",
@@ -93,10 +96,265 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-16T19:52:27.262Z"
+      "checkedAt": "2026-11-17T02:54:21.914Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-11-17-sega-sport-t-po-televizi-ta-17-noemvri-660edb",
+      "title": "Спортът по телевизията - 17 ноември",
+      "summary": "",
+      "date": "2026-11-17T01:03:03.000Z",
+      "url": "https://www.segabg.com/category-sport/sportut-po-televiziyata-17-noemvri",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Спорт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2020/01/tv_1.jpg",
+      "imageAlt": "Спортът по телевизията - 17 ноември",
+      "addedAt": "2026-11-17T02:54:18.478Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-actualno-v-polsa-otkazvat-da-pogrebat-streleca-ot-8f3fb7",
+      "title": "В Полша отказват да погребат стрелеца от Краков, даряват тялото му за медицински цели",
+      "summary": "Полша отказва да погребе стрелеца, убил 9 души в Краков. Тялото на 24-годишния Мирослав Окшински, който извърши масовата...",
+      "date": "2026-11-16T23:51:00.000Z",
+      "url": "https://www.actualno.com/europe/v-polsha-otkazvat-da-pogrebat-streleca-ot-krakov-darjavat-tjaloto-mu-za-medicinski-celi-news_2663648.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/17/1f1ba6838f4f0b8f275a0829b6322299_2663648_1920x1080.jpg",
+      "imageAlt": "В Полша отказват да погребат стрелеца от Краков, даряват тялото му за медицински цели",
+      "addedAt": "2026-11-17T02:54:17.978Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-actualno-ukra-na-s-nova-masirana-ataka-sre-u-krimski-c7156f",
+      "title": "Украйна с нова масирана атака срещу Кримския мост, съобщава се за тежки поражения (ВИДЕО)",
+      "summary": "Втора атака е в ход срещу Кримския мост и движението е спряно. Това съобщи в Telegram „ръководителят“ на оку...",
+      "date": "2026-11-16T23:42:00.000Z",
+      "url": "https://www.actualno.com/europe/ukrajna-s-nova-masirana-ataka-sreshtu-krimskija-most-syobshtava-se-za-tejki-porajenija-video-news_2663646.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/17/78393cc3be900590bb5f9fd18f054a86_2663646_1920x1080.jpg",
+      "imageAlt": "Украйна с нова масирана атака срещу Кримския мост, съобщава се за тежки поражения (ВИДЕО)",
+      "addedAt": "2026-11-17T02:54:17.978Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-actualno-rusi-atakuva-kiev-s-balisticni-raketi-91d73f",
+      "title": "Русия атакува Киев с балистични ракети, ударени са мостове",
+      "summary": "Русия атакува Киев на няколко вълни от ракетни атаки. Силни експлозии се чуха на десния бряг на Днепър, близо до Оболон ...",
+      "date": "2026-11-16T22:45:00.000Z",
+      "url": "https://www.actualno.com/europe/rusija-atakuva-kiev-s-balistichni-raketi-udareni-sa-mostove-news_2663645.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/17/b695cc38b357e65fa773a7a018150452_2663645_1920x1080.jpg",
+      "imageAlt": "Русия атакува Киев с балистични ракети, ударени са мостове",
+      "addedAt": "2026-11-17T02:54:17.978Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-sega-sa-vnezapno-razpolozi-i-treti-samoletonosac-c63586",
+      "title": "САЩ внезапно разположи и трети самолетоносач в Близкия изток",
+      "summary": "",
+      "date": "2026-11-16T22:17:41.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/sasht-vnezapno-razpolozhi-i-treti-samoletonosach-blizkiya-iztok",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/viber_image_2026-11-17_00-22-18-454.jpg",
+      "imageAlt": "САЩ внезапно разположи и трети самолетоносач в Близкия изток",
+      "addedAt": "2026-11-17T02:54:18.479Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-actualno-na-zivo-krizata-v-ukra-na-17-11-26-es-27f1eb",
+      "title": "НА ЖИВО: Кризата в Украйна, 17.11.26 - ЕС предлага още 45 млрд. евро заем за Украйна",
+      "summary": "Изминаха 56 месеца от старта на войната в Украйна. За тази период нещата на фронта постепенно стигнаха до състояние на б...",
+      "date": "2026-11-16T22:17:00.000Z",
+      "url": "https://www.actualno.com/europe/na-jivo-krizata-v-ukrajna-171126-es-predlaga-oshte-45-mlrd-evro-zaem-za-ukrajna-news_2663643.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "rat",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/17/5ad4a8611a1ba802c2d242284883b05c_2663643_1920x1080.jpg",
+      "imageAlt": "НА ЖИВО: Кризата в Украйна, 17.11.26 - ЕС предлага още 45 млрд. евро заем за Украйна",
+      "addedAt": "2026-11-17T02:54:17.978Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-actualno-v-rum-ni-na-malko-50-000-evro-za-ranen-ili-66942b",
+      "title": "В Румъния: Най-малко 50 000 евро за ранен или убит от мечка човек",
+      "summary": "Румънският Сенат одобри днес проектозакон, който предвижда обезщетение в размер на най-малко 50 000 в случай на ранен ил...",
+      "date": "2026-11-16T21:52:00.000Z",
+      "url": "https://www.actualno.com/balkani/v-rumynija-naj-malko-50-000-evro-za-ranen-ili-ubit-ot-mechka-chovek-news_2663641.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Балкани"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/17/a3f3c0d2264c713b09d754c40c975774_2663641_1920x1080.jpg",
+      "imageAlt": "В Румъния: Най-малко 50 000 евро за ранен или убит от мечка човек",
+      "addedAt": "2026-11-17T02:54:17.978Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-sega-svet-t-na-setne-vid-v-zrodeni-bundestim-na-6a76a6",
+      "title": "Светът най-сетне видя възродения Бундестим на Юрген Клоп",
+      "summary": "",
+      "date": "2026-11-16T21:42:57.000Z",
+      "url": "https://www.segabg.com/hot/category-sport/svetut-nay-setne-vidya-vuzrodeniya-bundestim-na-yurgen-klop",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/ger.jpeg",
+      "imageAlt": "Светът най-сетне видя възродения Бундестим на Юрген Клоп",
+      "addedAt": "2026-11-17T02:54:18.479Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-actualno-germani-uni-ozi-niderlandi-s-5-0-klop-7e9bce",
+      "title": "Германия унищожи Нидерландия с 5:0! Клоп изведе Бундестима до върха след невероятна развръзка",
+      "summary": "Германия изнесе истинска футболна лекция на Нидерландия и разгроми големия си съперник с 5:0 в решителния сблъсък от гру...",
+      "date": "2026-11-16T21:42:00.000Z",
+      "url": "https://www.actualno.com/football/germanija-unishtoji-niderlandija-s-50-klop-izvede-bundestima-do-vyrha-sled-neverojatna-razvryzka-news_2663637.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол свят"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "sport",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/16/2c44e43d58f15202b2adc09376cf2071_2663637_1920x1080.jpg",
+      "imageAlt": "Германия унищожи Нидерландия с 5:0! Клоп изведе Бундестима до върха след невероятна развръзка",
+      "addedAt": "2026-11-17T02:54:17.978Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-dnevnikbg-germani-razgromi-niderlandi-i-speceli-a9949f",
+      "title": "Германия разгроми Нидерландия и спечели групата си в Лигата на нациите",
+      "summary": "Германия разгроми Нидерландия с 5:0 и спечели групата си в Лигата на нациите. Бундестимът и лалетата събраха по 11 точки и се класират за четвъртфиналите на турнира. Гърция, която спечели срещу Сърбия с 1:0, има същия актив,...",
+      "date": "2026-11-16T21:35:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/16/4980685_germaniia_razgromi_niderlandiia_i_specheli_grupata_si/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4980686.jpg",
+      "imageAlt": "Германия разгроми Нидерландия и спечели групата си в Лигата на нациите",
+      "addedAt": "2026-11-17T02:54:16.925Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-dnevnikbg-norvegi-spr-sengenskite-vizi-za-ruski-8cd2b8",
+      "title": "Норвегия спря шенгенските визи за руски спортисти",
+      "summary": "Норвегия спря да издава шенгенски визи на руски спортисти за участие в състезания. Мярката, обявена в понеделник от правителството, влиза в сила незабавно. Тя ще засегне и състезатели от Беларус, състезаващите се под неутрален флаг и техническият...",
+      "date": "2026-11-16T20:56:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/16/4980683_norvegiia_spria_shengenskite_vizi_na_ruski_sportisti/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "politika",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4980682.jpg",
+      "imageAlt": "Норвегия спря шенгенските визи за руски спортисти",
+      "addedAt": "2026-11-17T02:54:16.925Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-dnevnikbg-povece-ot-1-3-treta-ot-b-lgarite-davat-7ffaff",
+      "title": "Повече от 1/3 трета от българите дават ненужните си дрехи за рециклиране",
+      "summary": "Повече от 1/3 трета от българите дават ненужните си дрехи за рециклиране. Те ползват специалните контейнери за разделното събиране на текстил. 60 на сто от всички - независимо къде оставят стари или неизползвани облекла, смятат, че това...",
+      "date": "2026-11-16T20:41:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/16/4980524_nad_13_treta_ot_bulgarite_ne_hvurliat_nenujnite_si/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4980523.jpg",
+      "imageAlt": "Повече от 1/3 трета от българите дават ненужните си дрехи за рециклиране",
+      "addedAt": "2026-11-17T02:54:16.925Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-dnevnikbg-estoni-predade-na-b-lgari-otkradnata-mo-fd4c71",
+      "title": "Естония предаде на България открадната мощехранителница от XVII век",
+      "summary": "Естония предаде на България открадната мощехранителница от XVII век. Тя е била открадната през 1999 година от Бачковския манастир \"Успение Богородично\". Реликвата е намерена през май 2026 г., след като е засечена обява за продажбата ѝ в...",
+      "date": "2026-11-16T20:30:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/16/4980519_estoniia_predade_na_bulgariia_otkradnata/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4980518.jpg",
+      "imageAlt": "Естония предаде на България открадната мощехранителница от XVII век",
+      "addedAt": "2026-11-17T02:54:16.925Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-sega-prokuraturata-v-rnahme-izkl-citelna-cennost-af105b",
+      "title": "Прокуратурата: Върнахме изключителна ценност на Бачковския манастир",
+      "summary": "",
+      "date": "2026-11-16T20:27:37.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/prokuraturata-vurnahme-izklyuchitelna-cennost-na-bachkovskiya-manastir",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/viber_image_2026-11-16_17-09-07-566.jpg",
+      "imageAlt": "Прокуратурата: Върнахме изключителна ценност на Бачковския манастир",
+      "addedAt": "2026-11-17T02:54:18.479Z"
+    },
+    {
+      "slug": "sofija-2026-11-16-dnevnikbg-utre-n-ma-da-moze-da-se-izpolzva-p-tnata-vr-0a007d",
+      "title": "Утре няма да може да се използва пътната връзка от \"Тракия\" към Нови хан",
+      "summary": "Утре няма да може да се използва пътната връзка от \"Тракия\" към Нови хан. Причината е изкърпване на дупките. Ще се работи между 8 и 17 часа, уточняват от агенция \"Пътна инфраструктура\".",
+      "date": "2026-11-16T20:18:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/16/4980536_utre_niama_da_moje_da_se_izpolzva_putnata_vruzka_ot/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4980534.jpg",
+      "imageAlt": "Утре няма да може да се използва пътната връзка от \"Тракия\" към Нови хан",
+      "addedAt": "2026-11-17T02:54:16.925Z"
+    },
     {
       "slug": "sofija-2026-11-16-sega-vlastta-e-tr-bva-da-se-pravi-na-udarena-za-e09b15",
       "title": "Властта ще трябва да се прави на ударена за още един ударен кораб",
