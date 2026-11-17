@@ -1,5 +1,5 @@
-import { isWithdrawnItem } from './withdrawals.mjs';
 #!/usr/bin/env node
+import { isWithdrawnItem } from './withdrawals.mjs';
 /**
  * AKTUAL MEDIA REGIONAL — generator stranica.
  *
