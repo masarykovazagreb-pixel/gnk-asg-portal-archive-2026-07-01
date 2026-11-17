@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-16T20:24:35.780Z",
+  "updatedAt": "2026-11-17T03:48:34.187Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: HTTP 500"
+        "https://www.agerpres.ro/rss: HTTP 520",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
       ],
-      "checkedAt": "2026-11-16T20:24:29.159Z"
+      "checkedAt": "2026-11-17T03:48:28.776Z"
     },
     {
       "id": "hotnews",
@@ -26,17 +27,17 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T20:24:29.463Z"
+      "checkedAt": "2026-11-17T03:48:28.923Z"
     },
     {
       "id": "zf",
       "name": "Ziarul Financiar",
       "url": "https://www.zf.ro/rss",
       "ok": true,
-      "fetched": 9,
+      "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T20:24:31.518Z"
+      "checkedAt": "2026-11-17T03:48:30.503Z"
     },
     {
       "id": "profit",
@@ -46,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T20:24:31.918Z"
+      "checkedAt": "2026-11-17T03:48:30.653Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 211,
+      "fetched": 216,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T20:24:33.718Z"
+      "checkedAt": "2026-11-17T03:48:32.211Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T20:24:35.346Z"
+      "checkedAt": "2026-11-17T03:48:33.538Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,553 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-16T20:24:35.778Z"
+      "checkedAt": "2026-11-17T03:48:34.185Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-17-newsro-warren-buffett-a-donat-5-5-miliarde-de-fbbf70",
+      "title": "Warren Buffett a donat 5,5 miliarde de dolari către patru fundaţii caritabile; miliardarul păstrează o avere de 162 de miliarde de dolari",
+      "summary": "Miliardarul american Warren Buffett, în vârstă de 96 de ani, a donat acţiuni Berkshire Hathaway în valoare de aproximativ 5,5 miliarde de dolari către patru fundaţii filantropice, majorând contribuţiile sale caritabile anuale faţă de anul precedent, relatează CNBC.",
+      "date": "2026-11-17T03:47:00.000Z",
+      "url": "https://www.news.ro/economic/warren-buffett-a-donat-5-5-miliarde-de-dolari-catre-patru-fundatii-caritabile-miliardarul-pastreaza-o-avere-de-162-de-miliarde-de-dolari-1922404717002026110522992272",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Warren Buffett a donat 5,5 miliarde de dolari către patru fundaţii caritabile; miliardarul păstrează o avere de 162 de miliarde de dolari",
+      "addedAt": "2026-11-17T03:48:34.185Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-newsro-europa-cauta-alternative-la-sistemele-2765ab",
+      "title": "Europa caută alternative la sistemele militare ale Palantir, pentru a reduce dependenţa militară de tehnologia americană",
+      "summary": "Tot mai multe state europene caută alternative la sistemele militare dezvoltate de compania americană Palantir Technologies, în încercarea de a reduce dependenţa de tehnologia din SUA pentru operaţiuni critice de apărare. Companiile europene încearcă să profite de această schimbare strategică, însă soluţiile disponibile nu au încă nivelul de dezvoltare şi experienţa operaţională ale platformelor americane, transmite Reuters.",
+      "date": "2026-11-17T03:35:00.000Z",
+      "url": "https://www.news.ro/economic/europa-cauta-alternative-la-sistemele-militare-ale-palantir-pentru-a-reduce-dependenta-militara-de-tehnologia-americana-1922413517002026110522992269",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Europa caută alternative la sistemele militare ale Palantir, pentru a reduce dependenţa militară de tehnologia americană",
+      "addedAt": "2026-11-17T03:48:34.185Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-newsro-zelenski-spune-ca-coreea-de-nord-trimite-c0091a",
+      "title": "Zelenski spune că Coreea de Nord trimite Rusiei zeci de rachete balistice în fiecare lună",
+      "summary": "Rusia primeşte zeci de rachete balistice din Coreea de Nord în fiecare lună, a declarat luni, preşedintele Volodimir Zelenski, el avertizând că cooperarea militară tot mai strânsă dintre Moscova şi Phenian ameninţă securitatea mult dincolo de graniţele Ucrainei, relatează Kyiv Post.",
+      "date": "2026-11-17T03:30:12.000Z",
+      "url": "https://www.news.ro/externe/zelenski-spune-ca-coreea-de-nord-trimite-rusiei-zeci-de-rachete-balistice-in-fiecare-luna-1922403017122026110522992785",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Zelenski spune că Coreea de Nord trimite Rusiei zeci de rachete balistice în fiecare lună",
+      "addedAt": "2026-11-17T03:48:34.185Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-newsro-rachetele-rusesti-au-lovit-doua-poduri-009424",
+      "title": "Rachetele ruseşti au lovit două poduri importante din Kiev, avariind infrastructura critică, după avertismentul lui Zelenski",
+      "summary": "Rachetele ruseşti au lovit podurile Nord şi Sud din Kiev luni seară, avariind infrastructura critică şi perturbând serviciile esenţiale. Trei persoane au fost rănite în regiunea Cerkasi, în timp ce Rusia a lansat atacuri pe întreg teritoriul Ucrainei, relatează Kyiv Post. Atacurile au avut loc la câteva ore după ce preşedintele Volodimir Zelenski a avertizat asupra unor atacuri ruseşti iminente.",
+      "date": "2026-11-17T03:22:04.000Z",
+      "url": "https://www.news.ro/externe/rachetele-rusesti-au-lovit-doua-poduri-importante-din-kiev-avariind-infrastructura-critica-dupa-avertismentul-lui-zelenski-1922402217042026110522992764",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Rachetele ruseşti au lovit două poduri importante din Kiev, avariind infrastructura critică, după avertismentul lui Zelenski",
+      "addedAt": "2026-11-17T03:48:34.186Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-newsro-cele-mai-mari-patru-companii-aeriene-din-b713d5",
+      "title": "Cele mai mari patru companii aeriene din SUA ar putea pierde 345 de milioane de dolari, ca urmare a blocării traficului aerian",
+      "summary": "Cele mai mari patru companii aeriene din Statele Unite ar putea înregistra pierderi cumulate de aproximativ 345 de milioane de dolari, înainte de impozitare, în urma suspendării la nivel naţional a decolărilor dispuse vineri de Administraţia Federală a Aviaţiei (FAA), care a provocat perturbări majore ale traficului aerian pe parcursul întregului weekend, transmite Reuters, citând estimările firmei de analiză Bernstein.",
+      "date": "2026-11-17T03:06:00.000Z",
+      "url": "https://www.news.ro/economic/cele-mai-mari-patru-companii-aeriene-din-sua-ar-putea-pierde-345-de-milioane-de-dolari-ca-urmare-a-blocarii-traficului-aerian-1922400617002026110522992266",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Cele mai mari patru companii aeriene din SUA ar putea pierde 345 de milioane de dolari, ca urmare a blocării traficului aerian",
+      "addedAt": "2026-11-17T03:48:34.186Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-zf-vlad-hristea-ceo-al-ihunt-brand-romanesc-de-befff1",
+      "title": "Vlad Hristea, CEO al iHunt, brand românesc de telefoane mobile şi produse electronice: Vindem pe Trendyol din mai 2025 şi avem aproape 200 de produse listate, de la telefoane la…",
+      "summary": "",
+      "date": "2026-11-16T22:56:28.000Z",
+      "url": "https://www.zf.ro/trendyol-sustine-e-commerce-ul-din-romania/vlad-hristea-ceo-ihunt-brand-romanesc-telefoane-mobile-produse-electronice-vindem-trendyol-2025-avem-aproape-200-produse-listate-telefoane-roboti-curatat-geamuri-litiere-automate-trendyol-ne-adus-23283174",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Trendyol susține e-commerce-ul din România"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/42067/23283174/2/vlad-hristea-ihunt.jpg?width=700",
+      "imageAlt": "Vlad Hristea, CEO al iHunt, brand românesc de telefoane mobile şi produse electronice: Vindem pe Trendyol din mai 2025 şi avem aproape 200 de produse listate, de la telefoane la ro",
+      "addedAt": "2026-11-17T03:48:30.503Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-profit-anunt-datele-medicale-de-pe-cartea-de-3c17e5",
+      "title": "ANUNȚ Datele medicale de pe cartea de identitate electronică și cardul de sănătate nu pot fi accesate de către orice persoană, ci doar de medici",
+      "summary": "Datele medicale aflate pe cardul de sănătate și pe cartea de identitate electronică nu pot fi accesate de către orice persoană, ci doar de medici.",
+      "date": "2026-11-16T22:34:00.000Z",
+      "url": "https://www.profit.ro/stiri/social/anunt-datele-medicale-de-pe-cartea-de-identitate-electronica-si-cardul-de-sanatate-nu-pot-fi-accesate-de-catre-orice-persoana-ci-doar-de-medici-22992746?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Social"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33239/22992746/6/ci-54-inquam-octav-ganea.jpg?width=800",
+      "imageAlt": "ANUNȚ Datele medicale de pe cartea de identitate electronică și cardul de sănătate nu pot fi accesate de către orice persoană, ci doar de medici",
+      "addedAt": "2026-11-17T03:48:30.653Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-profit-oficial-cardul-european-de-sanatate-pentru-49cab2",
+      "title": "OFICIAL Cardul european de sănătate pentru români, când poate fi folosit: Și în unele state din afara UE, dar numai la urgențe medicale, nu la investigații programate",
+      "summary": "Cardul european de sănătate este valabil nu doar în spațiul UE, ci și în câteva state din afara acesteia, dar numai atunci când este vorba de o urgență medicală, nu de investigații medicale programate, transmiye președintele interimar al Casei Naționale de Asigurări de Sănătate (CNAS), Larisa Mezinu-Bălan.",
+      "date": "2026-11-16T22:28:00.000Z",
+      "url": "https://www.profit.ro/perspective/oficial-cardul-european-de-sanatate-pentru-romani-cand-poate-fi-folosit-si-in-unele-state-din-afara-ue-dar-numai-la-urgente-medicale-nu-la-investigatii-programate-22992727?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Perspective"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://i0.1616.ro/media/2/2621/33242/22992727/1/599949377-1197930312517211-8130000104034707322-n.jpg?width=800",
+      "imageAlt": "OFICIAL Cardul european de sănătate pentru români, când poate fi folosit: Și în unele state din afara UE, dar numai la urgențe medicale, nu la investigații programate",
+      "addedAt": "2026-11-17T03:48:30.654Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-hotnews-concluzia-lui-traian-basescu-despre-31fb7d",
+      "title": "Concluzia lui Traian Băsescu despre deplasarea lui Nicușor Dan în Cambodgia: „Pe cuvântul meu că e o chestie tare”",
+      "summary": "„O mare greșeală, o imoralitate”, este concluzia lui Traian Băsescu, care consideră că deplasarea președintelui Nicușor Dan în Cambodgia este nepotrivită chiar și din perspectiva reprezentării europene la nivel internațional. Fostul şef al statului Traian Băsescu a criticat, luni seară, decizia lui Nicuşor Dan de a se deplasa în Cambodgia, având în vedere incidentele de …",
+      "date": "2026-11-16T22:26:00.000Z",
+      "url": "https://hotnews.ro/traian-basescu-despre-deplasarea-lui-nicusor-dan-in-cambodgia-pe-cuvantul-meu-ca-e-o-chestie-tare-2406071",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "africa",
+        "cambodgia",
+        "congo"
+      ],
+      "author": "Andrei Stan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Concluzia lui Traian Băsescu despre deplasarea lui Nicușor Dan în Cambodgia: „Pe cuvântul meu că e o chestie tare”",
+      "addedAt": "2026-11-17T03:48:28.924Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-newsro-united-airlines-afirma-ca-se-confrunta-cu-o-c1a4dd",
+      "title": "United Airlines afirmă că se confruntă cu o întrerupere generalizată a sistemului, la doar câteva zile după suspendarea zborurilor la nivel naţional",
+      "summary": "Compania aeriană United Airlines a anunţat că se confruntă cu o „pană de sistem la scară largă”, care survine imediat după o suspendare a zborurilor la nivel naţional impusă de FAA (Administraţia Federală a Aviaţiei).",
+      "date": "2026-11-16T22:25:26.000Z",
+      "url": "https://www.news.ro/externe/united-airlines-afirma-ca-se-confrunta-cu-o-intrerupere-generalizata-a-sistemului-la-doar-cateva-zile-dupa-suspendarea-zborurilor-la-nivel-national-1922402517262026110022992726",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "United Airlines afirmă că se confruntă cu o întrerupere generalizată a sistemului, la doar câteva zile după suspendarea zborurilor la nivel naţional",
+      "addedAt": "2026-11-17T03:48:34.186Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-profit-video-foto-partener-omv-petrom-miliardar-in-7769cb",
+      "title": "VIDEO&FOTO Partener OMV Petrom, miliardar în afaceri cu ginerele lui Trump. Partenerii israelieni ai OMV Petrom din Marea Neagră bulgărească vor petrol și gaze în Venezuela",
+      "summary": "Compania israeliană NewMed Energy, partenera OMV Petrom din România la concesiunea offshore de explorare de gaze naturale Han Asparuh din sectorul bulgăresc al Mării Negre, analizează potențiale tranzacții pentru achiziția de active petroliere în America de Sud, relevă datele Profit.ro.",
+      "date": "2026-11-16T22:12:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/energie/video-foto-partener-omv-petrom-miliardar-in-afaceri-cu-ginerele-lui-trump-partenerii-israelieni-ai-omv-petrom-din-marea-neagra-bulgareasca-vor-petrol-si-gaze-in-venezuela-22985191?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Energie"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33214/22985191/6/pumpjack-591934-1280.jpg?width=800",
+      "imageAlt": "VIDEO&FOTO Partener OMV Petrom, miliardar în afaceri cu ginerele lui Trump. Partenerii israelieni ai OMV Petrom din Marea Neagră bulgărească vor petrol și gaze în Venezuela",
+      "addedAt": "2026-11-17T03:48:30.654Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-profit-exclusiv-foto-iesire-din-romania-cu-doi-c121bb",
+      "title": "EXCLUSIV FOTO Ieșire din România. Cu doi foști directori Lidl, RC Europe își pregătește exit-ul. A mai vândut un parc de retail din Târgu Ocna",
+      "summary": "Dezvoltatorul imobiliar ceh RC Europe, fondat și deținut de antreprenorii Miroslav Hartman și Jan Prokop, foști directori ai retailerului german Lidl, a mai făcut un pas în procesul de ieșire de pe piața imobiliară românească prin vânzarea parcului de retail Nest aflat în construcție în Târgu Ocna (Bacău) către directorul local al grupului, Andrei Rați, potrivit surselor Profit.ro.",
+      "date": "2026-11-16T22:10:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/real-estate-constructii/exclusiv-foto-iesire-din-romania-cu-doi-fosti-directori-lidl-rc-europe-isi-pregateste-exit-ul-a-mai-vandut-un-parc-de-retail-din-targu-ocna-22985525?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Real Estate&Construcții"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33219/22985525/1/rc-europe.jpg?width=800",
+      "imageAlt": "EXCLUSIV FOTO Ieșire din România. Cu doi foști directori Lidl, RC Europe își pregătește exit-ul. A mai vândut un parc de retail din Târgu Ocna",
+      "addedAt": "2026-11-17T03:48:30.654Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-zf-omer-tetik-banca-transilvania-avertizeaza-4ba0af",
+      "title": "Omer Tetik, Banca Transilvania, avertizează: Trebuie neapărat să ne păstrăm ratingul de ţară. Pentru asta avem nevoie de un buget credibil în 2027, care să arate că putem reduce…",
+      "summary": "Urmare din pagina 1",
+      "date": "2026-11-16T22:08:00.000Z",
+      "url": "https://www.zf.ro/banci-si-asigurari/omer-tetik-banca-transilvania-avertizeaza-neaparat-ne-pastram-ratingul-tara-asta-avem-nevoie-buget-credibil-2027-arate-putem-reduce-deficitul-bugetar-iar-asigurarea-unui-cadru-fiscal-predictibil-23283304",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Bănci și Asigurări"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22466/23283304/1/omer-tetik-tfz.jpg?width=700",
+      "imageAlt": "Omer Tetik, Banca Transilvania, avertizează: Trebuie neapărat să ne păstrăm ratingul de ţară. Pentru asta avem nevoie de un buget credibil în 2027, care să arate că putem reduce de",
+      "addedAt": "2026-11-17T03:48:30.503Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-profit-ultima-ora-romania-a-adus-motorina-de-la-94653b",
+      "title": "ULTIMA ORĂ România a adus motorină de la americani, pentru prima dată în ultimii 2 ani GRAFICE",
+      "summary": "Livrările de motorină către porturile românești s-au dublat în luna octombrie raportat la aceeași lună a anului trecut, ajungând la 364 de mii de tone, și ca urmare a importării pentru prima dată în ultimii 2 ani de combustibil diesel din Statele Unite ale Americii (SUA), relevă datele Profit.ro.",
+      "date": "2026-11-16T22:08:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/ultima-ora-romania-a-adus-motorina-de-la-americani-pentru-prima-data-in-ultimii-2-ani-grafice-22990745?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://i0.1616.ro/media/2/2621/33217/22990745/1/benzina-22-inquam-photos-octav-ganea.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ România a adus motorină de la americani, pentru prima dată în ultimii 2 ani GRAFICE",
+      "addedAt": "2026-11-17T03:48:30.654Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-zf-zf-tech-day-scut-compania-de-securitate-1efc10",
+      "title": "ZF Tech Day. SCUT, compania de securitate cibernetică a Orange România, a ajuns în nouă luni la peste 180 de clienţi şi 11.000 de echipamente protejate, majoritatea la IMM-uri…",
+      "summary": "Compania de securitate cibernetică SCUT, lansată de Orange România în octombrie 2025 în parteneriat cu Orange Cyberdefense, divizia de securitate a grupului francez Orange, a ajuns în nouă luni de activitate la peste 180 de clienţi şi la peste 11.000 de echipamente protejate şi adaugă 15 - 20 de clienţi noi în fiecare lună. Cei mai mulţi clienţi sunt firme mici şi mijlocii, un segment care „nu este foarte bine luat în considerare“ de furnizorii globali de securitate cibernetică, a precizat el.",
+      "date": "2026-11-16T22:07:00.000Z",
+      "url": "https://www.zf.ro/techday/zf-tech-day-scut-compania-securitate-cibernetica-orange-romania-ajuns-luni-peste-180-clienti-11-000-echipamente-protejate-majoritatea-imm-uri-madalin-dumitru-ceo-crestem-15-20-clienti-luna-23278118",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "TechDay"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21332/23278118/2/m-dumitru.jpg?width=700",
+      "imageAlt": "ZF Tech Day. SCUT, compania de securitate cibernetică a Orange România, a ajuns în nouă luni la peste 180 de clienţi şi 11.000 de echipamente protejate, majoritatea la IMM-uri. Măd",
+      "addedAt": "2026-11-17T03:48:30.504Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-zf-zf-15-minute-cu-un-antreprenor-procesatorul-c0988d",
+      "title": "ZF 15 minute cu un antreprenor. Procesatorul de nuci Transilvania Nuts deschide la primăvară o nouă fabrică la Ciugud, după o investiţie de 11 mil. euro din fonduri europene…",
+      "summary": "Transilvania Nuts, unul dintre cei mai mari procesatori de nuci de pe plan local, un business controlat de Levente Bara şi Alexandru Chiric, acce­lerează expansiunea chiar şi în această perioadă dificilă din punct de vedere eco­nomic.",
+      "date": "2026-11-16T22:07:00.000Z",
+      "url": "https://www.zf.ro/zf-15-minute-cu-un-antreprenor/zf-15-minute-antreprenor-procesatorul-nuci-transilvania-nuts-deschide-primavara-fabrica-ciugud-dupa-investitie-11-mil-euro-fonduri-europene-compania-tinteste-triplarea-afacerilor-23283130",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF 15 minute cu un antreprenor"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21335/23283130/2/levente-bara-transilvania-nuts.jpg?width=700",
+      "imageAlt": "ZF 15 minute cu un antreprenor. Procesatorul de nuci Transilvania Nuts deschide la primăvară o nouă fabrică la Ciugud, după o investiţie de 11 mil. euro din fonduri europene. Compa",
+      "addedAt": "2026-11-17T03:48:30.504Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-zf-zf-energie-2026-sectorul-energetic-a-atras-ff169b",
+      "title": "ZF Energie 2026. Sectorul energetic a atras investiţii puternice în producţie şi stocare, care vor începe să se vadă în preţuri mai bune încă din 2027, dar este nevoie de…",
+      "summary": "Companiile din sectorul energetic derulează în prezent investiţii semni­ficative pe zona de pro­ducţie şi stocare, exis­tând toate premisele ca în următorii 1-2 ani piaţa să se echilibreze pe zona de ofertă şi să fie mai puţin afectată de variaţiile de preţ, dar, în acelaşi timp, este nevoie urgentă de investiţii în reţele şi trebuie rezolvată problema scăderii consumului prin atragerea unor noi investiţii - sunt câteva dintre concluziile conferinţei ZF Energie 2026.",
+      "date": "2026-11-16T22:07:00.000Z",
+      "url": "https://www.zf.ro/special/zf-energie-2026-sectorul-energetic-atras-investitii-puternice-productie-stocare-vor-incepe-vada-preturi-bune-2027-nevoie-investitii-rapide-retele-stimularea-consumului-economie-ne-uitam-putem-pune-23283274",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Special"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21330/23283274/15/7-stef4070.jpg?width=700",
+      "imageAlt": "ZF Energie 2026. Sectorul energetic a atras investiţii puternice în producţie şi stocare, care vor începe să se vadă în preţuri mai bune încă din 2027, dar este nevoie de investiţi",
+      "addedAt": "2026-11-17T03:48:30.504Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-digi24-planuri-pentru-ca-centrala-nucleara-400ba9",
+      "title": "Planuri pentru ca centrala nucleară Cernavodă să nu se mai oprească în caz de secetă. Ministrul Energiei: Am văzut 10 posibile lucrări",
+      "summary": "Ministrul Energiei, Dumitru Chisăliţă, a declarat luni seară, la Digi24, că există mai multe planuri care ar evita oprirea centralei nucleare de la Cernavodă în condiții de secetă, cum s-a întâmplat în această vară din cauza scăderii debitului Dunării.",
+      "date": "2026-11-16T21:54:50.000Z",
+      "url": "https://www.digi24.ro/stiri/economie/energie/planuri-pentru-ca-centrala-nucleara-cernavoda-sa-nu-se-mai-opreasca-in-caz-de-seceta-ministrul-energiei-am-vazut-10-posibile-lucrari-4039369",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjA5JTJGMzA1OTA0NV8zMDU5/MDQ1X1BBQ0hFVF9DRVJOQVZPREFfSUQy/OTU3MDYtSU5RVUFNLVBIT1RPUy1HRU9S/R0UtQ0FMSU4uanBnJmhhc2g9ZGNiMzNi/NmJlM2VmYTliNGRlMTUyNjhkZmZjYzVkMTk=.jpg",
+      "imageAlt": "Planuri pentru ca centrala nucleară Cernavodă să nu se mai oprească în caz de secetă. Ministrul Energiei: Am văzut 10 posibile lucrări",
+      "addedAt": "2026-11-17T03:48:32.214Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-digi24-un-adolescent-rus-a-fost-arestat-la-faa52b",
+      "title": "Un adolescent rus a fost arestat la Varșovia pentru că a amenințat cu „un masacru” în rândul colegilor de clasă",
+      "summary": "Un cetățean rus în vârstă de 16 ani a fost arestat după ce a amenințat că va comite „un masacru” în rândul elevilor și personalului unei școli din Varșovia, a declarat poliția, citată de TVPWorld.",
+      "date": "2026-11-16T21:35:19.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/un-adolescent-rus-a-fost-arestat-la-varsovia-pentru-ca-a-amenintat-cu-un-masacru-in-randul-colegilor-de-clasa-4039333",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE2JTJGMzA3MzAzOF8zMDcz/MDM4X1BvbGl0aWEtZGluLWRpc3RyaWN0/dWwtTW9rb3Rvdy1kaW4tVmFyc292aWFf/LUZvdG8tWC5qcGcmaGFzaD1kMjE0ODNk/MDhlYmZjODE0N2QyMjA5M2MzYTk0MTc2ZA==.jpg",
+      "imageAlt": "Un adolescent rus a fost arestat la Varșovia pentru că a amenințat cu „un masacru” în rândul colegilor de clasă",
+      "addedAt": "2026-11-17T03:48:32.215Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-digi24-deputatii-usr-si-pnl-vor-depune-o-motiune-1bc5e8",
+      "title": "Deputaţii USR şi PNL vor depune o moţiune simplă împotriva lui Alexandru Rogobete. Reacția ministrului Sănătății",
+      "summary": "Deputaţii USR şi PNL vor depune o moţiune simplă împotriva ministrului Sănătăţii, Alexandru Rogobete, a anunţat luni lidera grupului parlamentar USR, Diana Stoica.",
+      "date": "2026-11-16T21:31:48.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/sanatate/un-ministru-obsedat-de-propria-imagine-deputatii-usr-si-pnl-vor-depune-o-motiune-simpla-impotriva-lui-alexandru-rogobete-4038963",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjAzJTJGMzA0MjA4MV8zMDQy/MDgxX2FsZXhhbmRydS1yb2dvYmV0ZS5q/cGcmaGFzaD02MGMzMTk1YjI0ZDdhODg4ZGMxM2ZiMTI1YWFmYmRlMg==.jpg",
+      "imageAlt": "Deputaţii USR şi PNL vor depune o moţiune simplă împotriva lui Alexandru Rogobete. Reacția ministrului Sănătății",
+      "addedAt": "2026-11-17T03:48:32.215Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-hotnews-senatorii-psd-cer-ca-restructurarea-beedad",
+      "title": "Senatorii PSD cer ca restructurarea companiilor de stat să se facă mai repede decât a anunțat vicepremierul Neacșu",
+      "summary": "Senatorii PSD susțin că reorganizarea companiilor de stat trebuie făcută înainte de adoptarea bugetului pe anul viitor, astfel încât acesta să nu fie grevat de „pietre de moară”. Comunicatul grupului senatorial survine în ziua în care vicepremierul Marian Neacșu a anunțat că procedura va fi finalizată în martie 2027. „Grupul PSD din Senat consideră că, …",
+      "date": "2026-11-16T21:30:40.000Z",
+      "url": "https://hotnews.ro/senatorii-psd-cer-ca-restructurarea-companiilor-de-stat-sa-se-faca-mai-repede-decat-a-anuntat-vicepremierul-neacsu-2406056",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Politic"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Senatorii PSD cer ca restructurarea companiilor de stat să se facă mai repede decât a anunțat vicepremierul Neacșu",
+      "addedAt": "2026-11-17T03:48:28.924Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-hotnews-politicianul-care-insista-ca-ar-trebui-sa-e81147",
+      "title": "Politicianul care insistă că ar trebui să reprezinte UE la negocierile Rusia-Ucraina: „Scoateți tratatele și citiți-le!”",
+      "summary": "Șefa diplomației europene, Kaja Kallas, a insistat luni că, în virtutea tratatelor europene, ea ar trebui să reprezinte UE în negocierile de pace privind Ucraina, după ce liderii statelor membre nu au ales-o pentru acest rol și au optat ca la aceste tratative, în care Rusia în continuare nu-i acceptă ca interlocutori pe susținătorii europeni …",
+      "date": "2026-11-16T21:27:22.000Z",
+      "url": "https://hotnews.ro/kaja-kallas-insista-ca-ea-ar-trebui-sa-reprezinte-ue-la-negocierile-cu-rusia-privind-ucraina-2406057",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "iuri usakov",
+        "kaja kallas"
+      ],
+      "author": "Andrei Stan",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Politicianul care insistă că ar trebui să reprezinte UE la negocierile Rusia-Ucraina: „Scoateți tratatele și citiți-le!”",
+      "addedAt": "2026-11-17T03:48:28.924Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-digi24-sotia-lui-george-simion-a-nascut-o-fetita-26eb78",
+      "title": "Soția lui George Simion a născut o fetiță. „Radu a primit cel mai frumos dar”",
+      "summary": "George Simion, președintele AUR, este tată din nou. Soția lui, Ilinca, a anunțat luni pe rețelele sociale că a născut o fetiță, pe care o cheamă Maria.",
+      "date": "2026-11-16T21:22:24.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/sotia-lui-george-simion-a-nascut-o-fetita-radu-a-primit-cel-mai-frumos-dar-4039345",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjQl/MkYxMSUyRjI0JTJGMjEzNTM1Nl8yMTM1/MzU2XzIwMjQtMTEtMjQtR0MtU2ltaW9u/LWluc3RhbnQtMzMwMi5qcGcmaGFzaD1h/Mjk3ZGNhYmZmYjkyMTM3OWMyNjE4M2Q1NmM0NmUwMQ==.jpg",
+      "imageAlt": "Soția lui George Simion a născut o fetiță. „Radu a primit cel mai frumos dar”",
+      "addedAt": "2026-11-17T03:48:32.215Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-digi24-traian-basescu-il-ataca-din-nou-pe-nicusor-ee185f",
+      "title": "Traian Băsescu îl atacă din nou pe Nicușor Dan: „Când în Marea Neagră e război, să te duci în Cambodgia... Ar trebui să fie acasă”",
+      "summary": "Fostul şef al statului Traian Băsescu critică decizia preşedintelui Nicuşor Dan de a se deplasa în Cambodgia, având în vedere incidentele de securitate care se produc în România, dar şi pe cea a fostului premier Dacian Cioloş de a candida pentru funcţia de secretar general al Francofoniei.",
+      "date": "2026-11-16T21:14:35.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/traian-basescu-il-critica-din-nou-pe-nicusor-dan-cand-in-marea-neagra-e-razboi-sa-te-duci-in-cambodgia-ar-trebui-sa-fie-acasa-4039337",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwNyUyRjIzJTJGMjg2NTU1OV8yODY1/NTU5X01qQXpaVE01WmpKaU5XTTJZbVF3/TldVelpUZzBOVFE0T0RVeU4yWm1fdGh1/bWJfLmpwZyZoYXNoPWY2MWMwZWY2Nzg4M2YyMzQ5Yzg1ZGVmOWZmNTUzYWYy.jpg",
+      "imageAlt": "Traian Băsescu îl atacă din nou pe Nicușor Dan: „Când în Marea Neagră e război, să te duci în Cambodgia... Ar trebui să fie acasă”",
+      "addedAt": "2026-11-17T03:48:32.215Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-digi24-ce-spune-traian-basescu-despre-faptul-ca-4c6977",
+      "title": "Ce spune Traian Băsescu despre faptul că Nicușor Dan întârzie prezentarea raportului cu privire la anularea alegerilor prezidenţiale",
+      "summary": "Fostul preşedinte Traian Băsescu afirmă că românilor nu li s-au prezentat motivele pentru care au fost anulate alegerile prezidenţiale din anul 2024 pentru că „nu se ştie adevărul”. Băsescu este de părere că tot ceea ce s-a întâmplat cu ascensiunea lui Călin Georgescu este „o afacere dâmboviţeană”.",
+      "date": "2026-11-16T21:12:23.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/ce-spune-traian-basescu-despre-faptul-ca-nicusor-dan-intarzie-prezentarea-raportului-cu-privire-la-anularea-alegerilor-prezidentiale-4039323",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE2JTJGMzA3Mjk5Nl8zMDcy/OTk2X25pY3Vzb3ItZGFuLXByZXNpZGVu/Y3ktcm8uanBnJmhhc2g9MDI1MWRmOWRhYjIyMTJlN2IzYTNiNzkxODUwMDUxMjY=.jpg",
+      "imageAlt": "Ce spune Traian Băsescu despre faptul că Nicușor Dan întârzie prezentarea raportului cu privire la anularea alegerilor prezidenţiale",
+      "addedAt": "2026-11-17T03:48:32.216Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-hotnews-primele-proteste-de-masa-in-venezuela-dupa-39545b",
+      "title": "Primele proteste de masă în Venezuela, după arestarea lui Maduro. Profesorii și personalul sanitar au ieșit în stradă",
+      "summary": "Profesori, cadre universitare şi personal sanitar au manifestat luni în Venezuela împotriva salariilor mici şi a unei prime de Crăciun considerate insuficiente, aceasta fiind prima mişcare socială cu care se confruntă guvernul interimar al preşedintei interimare Delcy Rodriguez, informează AFP, preluată de Agerpres. Salariul de 130 de bolivari al funcţionarilor publici s-a evaporat din 2022 …",
+      "date": "2026-11-16T21:09:25.000Z",
+      "url": "https://hotnews.ro/primele-proteste-de-masa-in-venezuela-dupa-arestarea-lui-maduro-profesorii-si-personalul-sanitar-au-iesit-in-strada-2406048",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Primele proteste de masă în Venezuela, după arestarea lui Maduro. Profesorii și personalul sanitar au ieșit în stradă",
+      "addedAt": "2026-11-17T03:48:28.925Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-hotnews-avertismentul-lui-traian-basescu-daca-6800c9",
+      "title": "Avertismentul lui Traian Băsescu: „Dacă Ucraina cade, noi avem tancurile rusești” la graniță",
+      "summary": "„Dacă Ucraina cade, noi avem 680 de kilometri de frontieră cu Ucraina”, a avertizat luni seară fostul președinte Traian Băsescu. În emisiunea „Dialoguri Libere” de la TVR1, fostul șef de stat a spus că nu înțelege poziția celor care susțin încheierea sprijinului pentru Ucraina, pentru că, în cazul în care Kievul va fi învins, țara …",
+      "date": "2026-11-16T20:57:42.000Z",
+      "url": "https://hotnews.ro/avertismentul-lui-traian-basescu-daca-ucraina-cade-noi-avem-tancurile-rusesti-la-granita-2406038",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Europa",
+        "razboi in ucraina",
+        "rusia"
+      ],
+      "author": "Andrei Stan",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Avertismentul lui Traian Băsescu: „Dacă Ucraina cade, noi avem tancurile rusești” la graniță",
+      "addedAt": "2026-11-17T03:48:28.925Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-hotnews-meci-decisiv-pentru-un-antrenor-din-2dbb4f",
+      "title": "Meci decisiv pentru un antrenor din SuperLiga: „Trebuie să iau o măsură”",
+      "summary": "Scaunul lui Marius Croitoru se clatină serios la FC Botoșani. Patronul Valeriu Iftime a transmis un avertisment clar: dacă echipa nu câștigă meciul de acasă cu FC Voluntari, ocupanta penultimului loc, ar putea lua măsuri radicale, inclusiv schimbarea antrenorului. Sezonul actual este unul complicat pentru FC Botoșani. Echipa ocupă locul 12 în Superligă, cu doar …",
+      "date": "2026-11-16T20:49:28.000Z",
+      "url": "https://hotnews.ro/meci-decisiv-pentru-un-antrenor-din-superliga-trebuie-sa-iau-o-masura-2406042",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "SuperLiga",
+        "FC Botosani",
+        "marius croitoru",
+        "valeriu iftime"
+      ],
+      "author": "Andrei Stan",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Meci decisiv pentru un antrenor din SuperLiga: „Trebuie să iau o măsură”",
+      "addedAt": "2026-11-17T03:48:28.926Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-g4media-ministrul-muncii-sustine-indexarea-c77f7f",
+      "title": "Ministrul Muncii susține indexarea pensiilor cu 7,3% / Costul majorării e estimat la aproape 10 miliarde de lei / „Banii ăștia nu dispar din economie. Cu TVA se întorc în…",
+      "summary": "Ministrul Muncii, Florin Manole, susține că pensiile trebuie indexate anul viitor cu 7,3%, conform formulei prevăzute de lege, și spune că va merge în Guvern cu această variantă, în ciuda constrângerilor bugetare, anunță Mediafax. Costul majorării integrale este estimat la aproximativ 9,6 miliarde de lei, iar ministrul Florin Manole caută soluții pentru reducerea altor cheltuieli, […] © G4Media.ro .",
+      "date": "2026-11-16T20:43:19.000Z",
+      "url": "https://www.g4media.ro/ministrul-muncii-sustine-indexarea-pensiilor-cu-73-costul-majorarii-e-estimat-la-aproape-10-miliarde-de-lei-banii-astia-nu-dispar-din-economie-cu-tva-se-intorc-in-ministerul-de-finante.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "cand vor fi pensiile indexate",
+        "cat costă indezarea pensiilor",
+        "ce spune ministrul muncii despre indexarea pensiilor"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "politika",
+      "image": "https://www.g4media.ro/wp-content/uploads/2021/12/bani-lei-bancnote-Sursa-foto-Economedia-Ilona-Andrei-6.jpg",
+      "imageAlt": "Ministrul Muncii susține indexarea pensiilor cu 7,3% / Costul majorării e estimat la aproape 10 miliarde de lei / „Banii ăștia nu dispar din economie. Cu TVA se întorc în Ministeru",
+      "addedAt": "2026-11-17T03:48:33.539Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-g4media-primarul-din-ghimbav-respinge-pierderea-8a36bc",
+      "title": "Primarul din Ghimbav respinge pierderea statutului de oraș / „După Monaco și Luxemburg vine Ghimbavul la bugetul pe cap de locuitor”",
+      "summary": "În contextul discuțiilor tot mai aprinse privind posibila retrogradare a Ghimbavului la statutul de comună din cauza populației oficiale scăzute, primarul Ionel Fliundra respinge categoric scenariul și susține că localitatea are forța financiară a unui municipiu. Sau și mai mult, relatează Agenția de presă Rador, care citează Radio Brașov. Edilul invocă o statistică surprinzătoare, arătând […] © G4Media.ro .",
+      "date": "2026-11-16T20:33:16.000Z",
+      "url": "https://www.g4media.ro/primarul-din-ghimbav-respinge-pierderea-statutului-de-oras-dupa-monaco-si-luxemburg-vine-ghimbavul-la-bugetul-pe-cap-de-locuitor.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "cu cine se compară primarul din Ghimbav",
+        "primarul din Ghimbav"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/ghimbav.jpg",
+      "imageAlt": "Primarul din Ghimbav respinge pierderea statutului de oraș / „După Monaco și Luxemburg vine Ghimbavul la bugetul pe cap de locuitor”",
+      "addedAt": "2026-11-17T03:48:33.540Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-g4media-ministrul-energiei-analizeaza-masuri-pentru-5d0bb9",
+      "title": "Ministrul Energiei analizează măsuri pentru iarnă: Sprijin pentru companii, eventuală suprataxare a producătorilor și ajutoare pentru populație cu venituri mici",
+      "summary": "Ministerul Energiei analizează mai multe măsuri pentru sezonul rece, printre care o schemă de sprijin pentru companiile aflate în dificultate, care ar putea include o eventuală suprataxare a producătorilor, și prelungirea ajutorului acordat gospodăriilor cu venituri mici după 1 ianuarie 2027, transmite Mediafax. Ministrul Energiei Dumitru Chisăliță spune că prioritatea în această iarnă este asigurarea […] © G4Media.ro .",
+      "date": "2026-11-16T20:29:16.000Z",
+      "url": "https://www.g4media.ro/ministrul-energiei-analizeaza-masuri-pentru-iarna-sprijin-pentru-companii-eventuala-suprataxare-a-producatorilor-si-ajutoare-pentru-populatie-cu-venituri-mici.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "dumitru chisalita",
+        "ministrul energiei"
+      ],
+      "author": "Redacția",
+      "theme": "energija",
+      "image": "https://www.g4media.ro/wp-content/uploads/2021/10/energie-electrica-curent-contor-Sursa-foto-Parlamentul-European-2-e1633957928574.jpg",
+      "imageAlt": "Ministrul Energiei analizează măsuri pentru iarnă: Sprijin pentru companii, eventuală suprataxare a producătorilor și ajutoare pentru populație cu venituri mici",
+      "addedAt": "2026-11-17T03:48:33.540Z"
+    },
+    {
+      "slug": "bukurest-2026-11-16-g4media-video-traian-basescu-despre-botezul-psd-si-be72ea",
+      "title": "VIDEO Traian Băsescu despre botezul PSD și nunta PNL: Un subiect minor / ”Pot să vă spun că partenera domnului Bolojan arăta superb și a avut o rochie superbă„",
+      "summary": "Fostul președinte al României, Traian Băsescu spune că nu are încă o opinie autorizată prin care să vorbească despre activitatea guvernului PSD, iar despre subiectul botezului copilului președintelui PSD, Alfred Simonis susține că e un subiect minor. La fel ca și cel legat de nunta fiicei fostului premier Ilie Bolojan. ”Deocamdată, PSD e singur la […] © G4Media.ro .",
+      "date": "2026-11-16T20:25:45.000Z",
+      "url": "https://www.g4media.ro/video-traian-basescu-despre-botezul-psd-si-nunta-pnl-un-subiect-minor-pot-sa-va-spun-ca-partenera-domnului-bolojan-arata-superb-si-a-avut-o-rochie-superba.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "ce spune Băsescu despre Bolojan",
+        "ce spune Băsescu despre botezul PSD"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "politika",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/traian-basescu.jpg",
+      "imageAlt": "VIDEO Traian Băsescu despre botezul PSD și nunta PNL: Un subiect minor / ”Pot să vă spun că partenera domnului Bolojan arăta superb și a avut o rochie superbă„",
+      "addedAt": "2026-11-17T03:48:33.540Z"
+    },
     {
       "slug": "bukurest-2026-11-16-agerpres-video-din-inchisoare-russell-brand-684993",
       "title": "VIDEO Din închisoare, Russell Brand transmite, prin intermediul soției, un mesaj pe YouTube; este deschisă o anchetă",
