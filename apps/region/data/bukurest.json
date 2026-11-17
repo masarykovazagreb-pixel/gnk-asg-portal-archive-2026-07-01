@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-17T14:53:55.417Z",
+  "updatedAt": "2026-11-17T15:57:25.821Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: This operation was aborted"
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
       ],
-      "checkedAt": "2026-11-17T14:53:49.126Z"
+      "checkedAt": "2026-11-17T15:57:17.499Z"
     },
     {
       "id": "hotnews",
@@ -26,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-17T14:53:49.657Z"
+      "checkedAt": "2026-11-17T15:57:18.071Z"
     },
     {
       "id": "zf",
@@ -36,7 +37,7 @@
       "fetched": 18,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-17T14:53:50.795Z"
+      "checkedAt": "2026-11-17T15:57:19.678Z"
     },
     {
       "id": "profit",
@@ -46,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-17T14:53:51.169Z"
+      "checkedAt": "2026-11-17T15:57:19.824Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 269,
+      "fetched": 274,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-17T14:53:53.309Z"
+      "checkedAt": "2026-11-17T15:57:22.450Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-17T14:53:54.620Z"
+      "checkedAt": "2026-11-17T15:57:23.743Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,578 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-17T14:53:55.416Z"
+      "checkedAt": "2026-11-17T15:57:25.819Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-17-digi24-cand-ar-putea-fi-dati-in-circulatie-cei-10-2c6326",
+      "title": "Când ar putea fi dați în circulație cei 10 km ai Secţiunii 4 Tigveni-Curtea de Argeş din autostrada Sibiu-Piteşti",
+      "summary": "Ministrul Transporturilor, Ştefan Ovidiu Popa, anunţă marţi că cei 10 km ai Secţiunii 4 (Tigveni-Curtea de Argeş) din autostrada Sibiu-Piteşti vor putea fi daţi în circulaţie din 3 decembrie, după ce s-a identificat o soluţie temporară, alături de constructor, pentru a putea constitui echipe de monitorizare, mentenanţă şi intervenţie în tunel.",
+      "date": "2026-11-17T15:56:27.000Z",
+      "url": "https://www.digi24.ro/stiri/economie/transporturi/cand-ar-putea-fi-dati-in-circulatie-cei-10-km-ai-sectiunii-4-tigveni-curtea-de-arges-din-autostrada-sibiu-pitesti-4040609",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE3JTJGMzA3NTAwM18zMDc1/MDAzX2F1dG9zdHJhZGEtc2liaXUtcGl0/ZXN0aS5wbmcmaGFzaD03NzlkMDk5MTU3OTY5MDViM2JhZWQ2MzgxNTM2YTQzMQ==.png",
+      "imageAlt": "Când ar putea fi dați în circulație cei 10 km ai Secţiunii 4 Tigveni-Curtea de Argeş din autostrada Sibiu-Piteşti",
+      "addedAt": "2026-11-17T15:57:22.453Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-newsro-un-pilot-mort-in-nordul-serbiei-in-urma-8f885b",
+      "title": "Un pilot mort în nordul Serbiei, în urma prăbuşirii unui avion de tip MiG-29 ala armatei sârbe în apropierea oraşului Stara Pazova",
+      "summary": "Un avion de vânătoare de tip MiG-29 al armatei sârbe s-a prăbuşit marţi pe un câmp, în nordul Serbiei, iar pilotul a murit, anunţă Ministerul sârb al Apărării, relatează AFP.",
+      "date": "2026-11-17T15:53:47.000Z",
+      "url": "https://www.news.ro/externe/un-pilot-mort-in-nordul-serbiei-in-urma-prabusirii-unui-avion-de-tip-mig-29-ala-armatei-sarbe-in-apropierea-orasului-stara-pazova-1922405317472026111722994099",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Un pilot mort în nordul Serbiei, în urma prăbuşirii unui avion de tip MiG-29 ala armatei sârbe în apropierea oraşului Stara Pazova",
+      "addedAt": "2026-11-17T15:57:25.819Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-g4media-germania-vrea-sa-inaspreasca-reglementarile-75a4df",
+      "title": "Germania vrea să înăsprească reglementările privind preluările de companii, în ideea de a descuraja ofertele la preţuri nejustificat de mici şi a consolida protecţia acţionarilor",
+      "summary": "Germania intenţionează să înăsprească reglementările privind preluările de companii, în ideea de a descuraja ofertele la preţuri nejustificat de mici şi a consolida protecţia acţionarilor, potrivit unui proiect de lege consultat marţi de agenția de știri Reuters, citată de Agerpres. Preluarea Commerzbank, a doua cea mai mare instituţie financiară din Germania, de către banca italiană […] © G4Media.ro .",
+      "date": "2026-11-17T15:52:54.000Z",
+      "url": "https://www.g4media.ro/germania-vrea-sa-inaspreasca-reglementarile-privind-preluarile-de-companii-in-ideea-de-a-descuraja-ofertele-la-preturi-nejustificat-de-mici-si-a-consolida-protectia-actionarilor.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Germania",
+        "preluări companii"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2021/12/maheshkumar-painam-HF-lFqdOMF8-unsplash-e1638454417721.jpg",
+      "imageAlt": "Germania vrea să înăsprească reglementările privind preluările de companii, în ideea de a descuraja ofertele la preţuri nejustificat de mici şi a consolida protecţia acţionarilor",
+      "addedAt": "2026-11-17T15:57:23.743Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-digi24-cand-vor-fi-deschise-partiile-din-poiana-bf3b54",
+      "title": "Când vor fi deschise pârtiile din Poiana Brașov. Reducerile pentru localnici în acest sezon",
+      "summary": "Tarifele pentru transportul pe cablu din Poiana Brașov vor fi menținute la același nivel ca în sezonul trecut, iar brașovenii vor beneficia în continuare de reducerea de 50% în fiecare zi de miercuri. Anunțul a fost făcut marți de viceprimarul municipiului Brașov, Dan Ghiță, care a precizat că pregătirile pentru deschiderea sezonului de schi sunt aproape de final.",
+      "date": "2026-11-17T15:50:10.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/social/cand-vor-fi-deschise-partiile-din-poiana-brasov-reducerile-pentru-localnici-in-acest-sezon-4040587",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjUl/MkYwMyUyRjIwJTJGMjIxNjU2MV8yMjE2/NTYxX0dldHR5SW1hZ2VzLTEwOTM1NTM3/NS5qcGcmaGFzaD02NDJkZWVmMWM1NDAzOGU5MGIxNWM3ZmQzNGUzZTM3Mw==.jpg",
+      "imageAlt": "Când vor fi deschise pârtiile din Poiana Brașov. Reducerile pentru localnici în acest sezon",
+      "addedAt": "2026-11-17T15:57:22.453Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-hotnews-moldova-si-a-inchis-spatiul-aerian-din-e39bf6",
+      "title": "Moldova și-a închis spațiul aerian din cauza incursiunii unor drone. Un aparat s-a apropiat de Chișinău",
+      "summary": "Două drone de tip Geran-2 şi Shahed au intrat, marţi, în spaţiul aerian al Republicii Moldova, în contextul atacurilor masive ale Rusiei asupra Ucrainei. Una dintre drone a survolat de două ori teritoriul ţării, iar cealaltă se deplasează dinspre sud spre sectorul Botanica al municipiului Chişinău, scrie Newsmaker.md, preluat de News.ro. Potrivit Ministerului Apărării, primul …",
+      "date": "2026-11-17T15:49:35.000Z",
+      "url": "https://hotnews.ro/moldova-si-a-inchis-spatiul-aerian-din-cauza-incursiunii-unor-drone-un-aparat-s-a-apropiat-de-chisinau-2406790",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Moldova și-a închis spațiul aerian din cauza incursiunii unor drone. Un aparat s-a apropiat de Chișinău",
+      "addedAt": "2026-11-17T15:57:18.072Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-newsro-fostul-premier-italian-enrico-letta-va-168bdb",
+      "title": "Fostul premier italian Enrico Letta va prezenta, la Bucureşti, un raport dedicat competitivităţii României/ Raportul arată că economia României riscă să devină necompetitivă dacă…",
+      "summary": "Fostul premier italian Enrico Letta va prezenta, marţi, la Bucureşti, un raport dedicat competitivităţii României. Creşterea economică a României, chiar dacă spectaculoasă în perioada 2000-2025, când PIB per capita s-a triplat de la 26% la 78% din media europeană în mai puţin de o generaţie, are o fundaţie slabă, cu probleme structurale pe parte de productivitate şi rezilienţă, care o împiedică să fie competitivă şi pot duce şi la scenarii de stagnare sau chiar involuţie, dacă nu sunt abordate integrat, într-o strategie multianuală pentru competitivitate, arată raportul.",
+      "date": "2026-11-17T15:49:09.000Z",
+      "url": "https://www.news.ro/economic/fostul-premier-italian-enrico-letta-prezenta-bucuresti-raport-dedicat-competitivitatii-romaniei-raportul-arata-economia-romaniei-risca-devina-necompetitiva-vor-continua-politicile-trecutului-1922404917092026111722994070",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "",
+      "imageAlt": "Fostul premier italian Enrico Letta va prezenta, la Bucureşti, un raport dedicat competitivităţii României/ Raportul arată că economia României riscă să devină necompetitivă dacă v",
+      "addedAt": "2026-11-17T15:57:25.820Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-newsro-stefan-radu-oprea-ministrul-apararii-la-5417ac",
+      "title": "Ştefan-Radu Oprea, ministrul Apărării, la Consiliul Afaceri Externe al UE (CAE): A reafirmat angajamentul României pentru continuarea sprijinului multidimensional acordat…",
+      "summary": "Reuniunea Consiliului Afaceri Externe al Uniunii Europene (CAE), în formatul miniştrilor apărării, a avut loc marţi, 17 noiembrie, la Bruxelles, cu participarea ministrului apărării naţionale, Ştefan-Radu Oprea, acesta reafirmând angajamentul României pentru continuarea sprijinului multidimensional acordat Ucrainei şi menţionând totodată necesitatea consolidării siguranţei aprovizionării care devine tot mai relevantă pentru sectorul de apărare.",
+      "date": "2026-11-17T15:47:40.000Z",
+      "url": "https://www.news.ro/politic-intern/stefan-radu-oprea-ministrul-apararii-consiliul-afaceri-externe-ue-cae-reafirmat-angajamentul-romaniei-continuarea-sprijinului-multidimensional-acordat-ucrainei-mentionand-totodata-necesitatea-1922404717402026111722994096",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Ştefan-Radu Oprea, ministrul Apărării, la Consiliul Afaceri Externe al UE (CAE): A reafirmat angajamentul României pentru continuarea sprijinului multidimensional acordat Ucrainei,",
+      "addedAt": "2026-11-17T15:57:25.820Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-g4media-video-seceta-de-15-ani-s-a-incheiat-pentru-8bf931",
+      "title": "VIDEO: Seceta de 15 ani s-a încheiat pentru Franța la Turneul Campionilor",
+      "summary": "Arthur Fils a câștigat meciul cu Rafa Jodar de la ATP Finals. Este prima victorie a unui jucător francez după o pauză de 15 ani la Turneul Campionilor. Arthur Fils, victorie cu Rafa Jodar la ATP Finals Ocupant al locului 7 ATP, Fils a avut nevoie de trei seturi, scor 4-6, 6-2, 6-2, pentru a […] © G4Media.ro .",
+      "date": "2026-11-17T15:45:38.000Z",
+      "url": "https://www.g4media.ro/video-seceta-de-15-ani-s-a-incheiat-pentru-franta-la-turneul-campionilor.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Sportz",
+        "arthur fils",
+        "ATP Finals",
+        "rafa jodar"
+      ],
+      "author": "Adrian Ilincescu",
+      "theme": "sport",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/08/profimedia-1128098748.jpg",
+      "imageAlt": "VIDEO: Seceta de 15 ani s-a încheiat pentru Franța la Turneul Campionilor",
+      "addedAt": "2026-11-17T15:57:23.743Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-zf-lovitura-simbolica-pentru-vladimir-putin-1326d0",
+      "title": "Lovitură simbolică pentru Vladimir Putin. Ucraina a atacat din nou Podul Kerci, legătura strategică dintre Rusia şi Crimeea. O porţiune a construcţiei ar fi căzut în apă. Traficul…",
+      "summary": "",
+      "date": "2026-11-17T15:45:04.000Z",
+      "url": "https://www.zf.ro/eveniment/lovitura-simbolica-pentru-vladimir-putin-ucraina-a-atacat-din-nou-podul-kerci-legatura-strategica-dintre-rusia-si-crimeea-o-portiune-a-constructiei-ar-fi-cazut-in-apa-traficul-rutier-este-suspendat-23283996",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Eveniment"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10386/23283996/1/stramtoarea-kerch.png?width=700",
+      "imageAlt": "Lovitură simbolică pentru Vladimir Putin. Ucraina a atacat din nou Podul Kerci, legătura strategică dintre Rusia şi Crimeea. O porţiune a construcţiei ar fi căzut în apă. Traficul ",
+      "addedAt": "2026-11-17T15:57:19.679Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-zf-saracesc-britanicii-salariile-reale-din-2ab93e",
+      "title": "Sărăcesc britanicii? Salariile reale din Regatul Unit scad pentru prima dată din 2023, pe fondul exploziei preţurilor la energie",
+      "summary": "",
+      "date": "2026-11-17T15:44:43.000Z",
+      "url": "https://www.zf.ro/she-s-next/saracesc-britanicii-salariile-reale-din-regatul-unit-scad-pentru-prima-data-din-2023-pe-fondul-exploziei-preturilor-la-energie-23283999",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "She’s next"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/42906/23283999/1/londra-publimedia-shutterstock.jpg?width=700",
+      "imageAlt": "Sărăcesc britanicii? Salariile reale din Regatul Unit scad pentru prima dată din 2023, pe fondul exploziei preţurilor la energie",
+      "addedAt": "2026-11-17T15:57:19.679Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-hotnews-video-se-deschide-traficul-prin-primul-33861b",
+      "title": "VIDEO Se deschide traficul prin primul tunel forat de autostradă din România. Când va fi inaugurată Secțiunea 4 din A1 Sibiu – Pitești",
+      "summary": "Circulația pe cei 9,86 kilometri ai secțiunii 4 Tigveni-Curtea de Argeș din Autostrada A1 Sibiu-Pitești va fi deschisă traficului rutier în următoarele săptămâni, anunță Compania de Drumuri. Secțiunea 4 (Tigveni – Curtea de Argeș) a Autostrăzii Sibiu – Pitești este pregătită tehnic, a anunțat, marți, Cristian Pistol, directorul Companiei de Administrare a Infrastructurii Rutiere (CNAIR). CNAIR …",
+      "date": "2026-11-17T15:43:32.000Z",
+      "url": "https://hotnews.ro/video-se-deschide-traficul-prin-primul-tunel-forat-de-autostrada-din-romania-cand-va-fi-inaugurata-sectiunea-4-din-a1-sibiu-pitesti-2406773",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Infrastructura"
+      ],
+      "author": "Victor Cozmei",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "VIDEO Se deschide traficul prin primul tunel forat de autostradă din România. Când va fi inaugurată Secțiunea 4 din A1 Sibiu – Pitești",
+      "addedAt": "2026-11-17T15:57:18.072Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-newsro-beijingul-anunta-ca-nu-are-informatii-f29445",
+      "title": "Beijingul anunţă că ”nu are informaţii” despre o posibilă în întâlnire Trump-Kim în China",
+      "summary": "Beijingul anunţă marţi că ”nu are informaţii” despre o posibilă întâlnire între preşedintele american Donald Trump şi dictatorul nord-coreean Kim Jong Un, evocată de către miliardar, înaintea venirii sale în China miercuri, relatează AFP.",
+      "date": "2026-11-17T15:43:14.000Z",
+      "url": "https://www.news.ro/externe/beijingul-anunta-ca-nu-are-informatii-despre-o-posibila-in-intalnire-trump-kim-in-china-1922404317142026111722994075",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Beijingul anunţă că ”nu are informaţii” despre o posibilă în întâlnire Trump-Kim în China",
+      "addedAt": "2026-11-17T15:57:25.820Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-newsro-ministrul-dan-neculaescu-la-bruxelles-a-f2ead5",
+      "title": "Ministrul Dan Neculăescu, la Bruxelles: A prezentat stadiul operaţionalizării Hub-ului de Securitate Maritimă la Marea Neagră şi a subliniat rolul strategic al Portului Constanţa…",
+      "summary": "Ministrul afacerilor externe, Dan Neculăescu, a participat luni, la Bruxelles, la reuniunea Consiliului Afaceri Externe (CAE) şi la Reuniunea ministerială privind securitatea şi conectivitatea trans-regională în regiunea Mării Negre, a Caucazului de Sud şi a Asiei Centrale, în cadrul reuniunilor, el prezentând atât stadiul operaţionalizării Hub-ului de Securitate Maritimă la Marea Neagră, dezvoltat împreună cu Bulgaria, şi subliniind rolul strategic al Portului Constanţa, al Dunării şi al proiectelor energetice majore. La Cartierul General al NATO, ministrul şi-a luat rămas-bun de la colegii din Consiliul Nord-Atlantic, după mai bine de patru ani ca ambasador al României la NATO, odată cu…",
+      "date": "2026-11-17T15:41:30.000Z",
+      "url": "https://www.news.ro/politic-extern/ministrul-dan-neculaescu-bruxelles-prezentat-stadiul-operationalizarii-hub-ului-securitate-maritima-marea-neagra-subliniat-rolul-strategic-portului-constanta-dunarii-proiectelor-energetice-majore-1922404117302026111722994089",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Ministrul Dan Neculăescu, la Bruxelles: A prezentat stadiul operaţionalizării Hub-ului de Securitate Maritimă la Marea Neagră şi a subliniat rolul strategic al Portului Constanţa, ",
+      "addedAt": "2026-11-17T15:57:25.820Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-digi24-dan-neculaescu-dupa-intalnirea-cu-mark-601c03",
+      "title": "Dan Neculăescu, după întâlnirea cu Mark Rutte: „Vă pot asigura că NATO a crescut atenţia pe Marea Neagră”",
+      "summary": "NATO şi-a crescut monitorizarea în Marea Neagră şi este angajată să continue să sprijine România cu capabilităţi, însă nu există deocamdată decizii concrete privind noi contribuţii ale aliaţilor, a declarat marţi ministrul de Externe, Dan Neculăescu. El se află la Bruxelles, unde s-a întâlnit cu secretarul general Mark Rutte, la sediul Alianţei Nord-Atlantice.",
+      "date": "2026-11-17T15:41:29.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/dan-neculaescu-dupa-intalnirea-cu-mark-rutte-va-pot-asigura-ca-nato-a-crescut-atentia-pe-marea-neagra-4040511",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE3JTJGMzA3NDk2MF8zMDc0/OTYwX2Rhbi1uZWN1bGFlc2N1LXNpLW1h/cmstcnV0dGUuanBnJmhhc2g9YjA3NWYx/ZDA1MTJiNGEwNzQ2MWNjMmQ1MmRiYTJmMGQ=.jpg",
+      "imageAlt": "Dan Neculăescu, după întâlnirea cu Mark Rutte: „Vă pot asigura că NATO a crescut atenţia pe Marea Neagră”",
+      "addedAt": "2026-11-17T15:57:22.453Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-profit-video-foto-anunt-dupa-ce-a-trecut-testul-d1c95e",
+      "title": "VIDEO&FOTO ANUNȚ După ce a trecut testul fumului, Tunelul Momaia poate fi deschis la început de decembrie",
+      "summary": "Testele la sistemele tunelului rutier Curtea de Argeș (Momaia) s-au încheiat, iar circulația ar putea fi deschisă pe 3 decembrie, anunță autoritățile.",
+      "date": "2026-11-17T15:41:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/video-foto-anunt-dupa-ce-a-trecut-testul-fumului-tunelul-momaia-poate-fi-deschis-la-inceput-de-decembrie-22994086?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33217/22994086/8/screenshot-2026-11-05-083716.png?width=800",
+      "imageAlt": "VIDEO&FOTO ANUNȚ După ce a trecut testul fumului, Tunelul Momaia poate fi deschis la început de decembrie",
+      "addedAt": "2026-11-17T15:57:19.825Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-g4media-tarifele-la-transportul-pe-cablu-in-poiana-163f0b",
+      "title": "Tarifele la transportul pe cablu în Poiana Brașov în noul sezon de schi rămân la nivelul de anul trecut",
+      "summary": "Viceprimarul Braşovului, Dan Ghiţă, a anunţat, marţi, că tarifele la transportul pe cablu vor fi menţinute, în acest sezon de iarnă, la acelaşi nivel ca şi cel de anul trecut, iar persoanele cu domiciliul în municipiul Braşov se vor bucura în continuare de reducerea de 50% în fiecare zi de miercuri, în cadrul programului „Miercurea […] © G4Media.ro .",
+      "date": "2026-11-17T15:40:00.000Z",
+      "url": "https://www.g4media.ro/tarifele-la-transportul-pe-cablu-in-poiana-brasov-in-noul-sezon-de-schi-raman-la-nivelul-de-anul-trecut.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Brașov",
+        "poiana brasov",
+        "tarife transport cablu"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2019/11/poiana-brasov.jpg",
+      "imageAlt": "Tarifele la transportul pe cablu în Poiana Brașov în noul sezon de schi rămân la nivelul de anul trecut",
+      "addedAt": "2026-11-17T15:57:23.743Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-newsro-tenis-de-masa-eduard-ionescu-revenire-d65024",
+      "title": "Tenis de masă: Eduard Ionescu, revenire spectaculoasă în decisiv şi calificare pe tabloul principal la WTT Star Contender Muscat 2026",
+      "summary": "Jucătorul de tenis de masă Eduard Ionescu a reuşit o revenire spectaculoasă în decisiv şi s-a calificat pe tabloul principal la WTT Star Contender Muscat 2026.",
+      "date": "2026-11-17T15:38:09.000Z",
+      "url": "https://www.news.ro/sport/tenis-de-masa-eduard-ionescu-revenire-spectaculoasa-in-decisiv-si-calificare-pe-tabloul-principal-la-wtt-star-contender-muscat-2026-1922403817092026111722993938",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Tenis de masă: Eduard Ionescu, revenire spectaculoasă în decisiv şi calificare pe tabloul principal la WTT Star Contender Muscat 2026",
+      "addedAt": "2026-11-17T15:57:25.820Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-g4media-republica-moldova-a-inchis-intreg-spatiul-5794a0",
+      "title": "Republica Moldova a închis întreg spațiul aerian după detectarea unei drone în direcția Chișinăului",
+      "summary": "Tot spațiul aerian al Republicii Moldova a fost restricționat marți, la ora 16.27, după ce o dronă de tip Shahed a fost semnalată deplasându-se dinspre sud către sectorul Botanica al municipiului Chișinău, a anunțat Ministerul Apărării al Republicii Moldova, transmite MEDIAFAX. Potrivit informațiilor recepționate de Centrul Operații Aeriene al Armatei Naționale, aparatul de zbor a […] © G4Media.ro .",
+      "date": "2026-11-17T15:37:47.000Z",
+      "url": "https://www.g4media.ro/republica-moldova-a-inchis-intreg-spatiul-aerian-dupa-detectarea-unei-drone-in-directia-chisinaului.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Redacția",
+      "theme": "rat",
+      "image": "https://www.g4media.ro/wp-content/uploads/2023/04/republica-moldova-steag-1.jpg",
+      "imageAlt": "Republica Moldova a închis întreg spațiul aerian după detectarea unei drone în direcția Chișinăului",
+      "addedAt": "2026-11-17T15:57:23.744Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-digi24-liga-natiunilor-bosnia-romania-azi-de-la-21-0608e2",
+      "title": "Liga Națiunilor: Bosnia - România, AZI, de la 21:45. „Tricolorii” speră la a doua victorie în grupă",
+      "summary": "Naţionala României înfruntă în această seară, la Zenica, de la ora 21:45, reprezentativa Bosniei, în etapa a şasea a grupei B4 a Ligii Naţiunilor. Tricolorii speră la a doua victorie în grupă, după ce în primele patru meciuri au înregistrat înfrângeri, dar sâmbătă s-au impus cu Polonia. Meciul va putea fi urmărit în format LIVE TEXT pe site-ul nostru, Digi24.ro.",
+      "date": "2026-11-17T15:36:19.000Z",
+      "url": "https://www.digi24.ro/stiri/sport/fotbal/liga-natiunilor-bosnia-romania-azi-de-la-2145-tricolorii-spera-la-a-doua-victorie-in-grupa-4040527",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE3JTJGMzA3NDkzNV8zMDc0/OTM1X3JvbWFuaWEtcHJvZmltZWRpYS0x/MTUzMTA0Mjc4LnBuZyZoYXNoPWNiMDFh/MDQzZTJmNzViOWYyM2E5ZDA4ZDA0NmZlZmNl.png",
+      "imageAlt": "Liga Națiunilor: Bosnia - România, AZI, de la 21:45. „Tricolorii” speră la a doua victorie în grupă",
+      "addedAt": "2026-11-17T15:57:22.453Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-hotnews-cristela-georgescu-mesaj-de-clarificare-94adad",
+      "title": "Cristela Georgescu, mesaj de „clarificare” despre soțul ei. Ce se va întâmpla vineri",
+      "summary": "„Decizia Tribunalului Ilfov se amână pentru încă o zi. Atenție, oricare ar fi aceasta nu este definitivă. Adică va fi contestată de una dintre părți”, scrie într-un mesaj publicat marți după-amiază pe pagina de Facebook a fostului candidat la prezidențiale Călin Georgescu. Mesajul este intitulat „Clarificare” și apare semnat de către Cristela Georgescu, soția politicianului. …",
+      "date": "2026-11-17T15:34:35.000Z",
+      "url": "https://hotnews.ro/cristela-georgescu-mesaj-de-clarificare-despre-sotul-ei-ce-se-va-intampla-vineri-2406771",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "CAB",
+        "Calin Georgescu",
+        "Cristela Georgescu"
+      ],
+      "author": "Andrei Stan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Cristela Georgescu, mesaj de „clarificare” despre soțul ei. Ce se va întâmpla vineri",
+      "addedAt": "2026-11-17T15:57:18.072Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-g4media-gazonul-de-pe-arena-nationala-pentru-d75a63",
+      "title": "Gazonul de pe Arena Națională pentru lucrări până pe 5 decembrie, după numărul mare de meciuri și antrenamente",
+      "summary": "Gazonul Arenei Naționale nu va mai fi folosit până pe 5 decembrie, după ce a fost afectat de numărul mare de meciuri și antrenamente, disputate la intervale scurte, dar și de precipitațiile abundente și temperaturile scăzute, anunță marți Primăria Capitalei, transmite MEDIAFAX. „NU are nicio «ciupercă misterioasă», NU e «distrus», NU trebuie schimbat. Are nevoie […] © G4Media.ro .",
+      "date": "2026-11-17T15:34:26.000Z",
+      "url": "https://www.g4media.ro/gazonul-de-pe-arena-nationala-pentru-lucrari-pana-pe-5-decembrie-dupa-numarul-mare-de-meciuri-si-antrenamente.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Sportz"
+      ],
+      "author": "Redacția",
+      "theme": "sport",
+      "image": "https://www.g4media.ro/wp-content/uploads/2025/10/IMG_0709.jpeg",
+      "imageAlt": "Gazonul de pe Arena Națională pentru lucrări până pe 5 decembrie, după numărul mare de meciuri și antrenamente",
+      "addedAt": "2026-11-17T15:57:23.744Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-hotnews-anaf-verifica-si-firmele-care-sponsorizeaza-b3761e",
+      "title": "ANAF verifică și firmele care sponsorizează ONG-uri. „De ce s-a dus acolo, cine este acolo?” (avocată)",
+      "summary": "Numărul inspecțiilor economico-financiare derulate de Ministerul Finanțelor la ONG-urile care beneficiază de sponsorizări ar putea crește în perioada următoare, avertizează o avocată specializată în asistență la controalele fiscale. Citește mai departe pe StartupCafe.ro. Imagine ilustrativă: Lei, calculator. Sursa FOTO: © Vlad Ispas | Dreamstime.com",
+      "date": "2026-11-17T15:34:02.000Z",
+      "url": "https://hotnews.ro/anaf-verifica-si-firmele-care-sponsorizeaza-ong-uri-de-ce-s-a-dus-acolo-cine-este-acolo-avocata-2406775",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "ANAF"
+      ],
+      "author": "Andrei Stan",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "ANAF verifică și firmele care sponsorizează ONG-uri. „De ce s-a dus acolo, cine este acolo?” (avocată)",
+      "addedAt": "2026-11-17T15:57:18.072Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-digi24-papa-leon-are-un-nou-mesaj-pentru-e048a3",
+      "title": "Papa Leon are un nou mesaj pentru credincioși, după ce a fost operat de cancer la plămân. „La început se vedea doar o umbră”",
+      "summary": "Papa Leon al XIV-lea i-a îndemnat pe oameni să-şi facă controalele pentru depistarea cancerului după ce suveranul pontif a suferit o intervenţie chirurgicală pentru cancer pulmonar.",
+      "date": "2026-11-17T15:33:23.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/mapamond/papa-leon-are-un-nou-mesaj-pentru-credinciosi-dupa-ce-a-fost-operat-de-cancer-la-plaman-la-inceput-se-vedea-doar-o-umbra-4040559",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOSUyRjI0JTJGMjk3NTY5NV8yOTc1/Njk1X3BhcGEtbGVvbi5qcGcmaGFzaD01/N2M2ZDkxY2Q3MGNlODZiZDBkYjY3YzgzOGYyZTdjMQ==.jpg",
+      "imageAlt": "Papa Leon are un nou mesaj pentru credincioși, după ce a fost operat de cancer la plămân. „La început se vedea doar o umbră”",
+      "addedAt": "2026-11-17T15:57:22.453Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-digi24-ungaria-suspenda-serviciile-feroviare-cu-05164f",
+      "title": "Ungaria suspendă serviciile feroviare cu Ucraina, în urma unor atacuri cu drone rusești în Transcarpatia",
+      "summary": "Traficul feroviar dintre Ungaria și Ucraina va fi suspendat în zilele de 17 și 18 noiembrie, după ce o dronă rusească s-a prăbușit în apropierea gării din orașul ucrainean Mukacevo. Prim-ministrul Péter Magyar a anunțat acest lucru pe Facebook marți, conform Reuters și Telex, preluate de Berliner Zeitung. Măsura va fi în vigoare de marți și miercuri.",
+      "date": "2026-11-17T15:33:01.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/ungaria-suspenda-serviciile-feroviare-cu-ucraina-in-urma-unor-atacuri-cu-drone-rusesti-in-transcarpatia-4040507",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwNSUyRjIzJTJGMjc0NDIwNV8yNzQ0/MjA1X3BldGVyLW1hZ3lhci1wcm9maW1l/ZGlhLTEuanBnJmhhc2g9Y2NkOTZiMDMyN2Q4OTljOWUwZDJmZGQ2OGU5MzljNWY=.jpg",
+      "imageAlt": "Ungaria suspendă serviciile feroviare cu Ucraina, în urma unor atacuri cu drone rusești în Transcarpatia",
+      "addedAt": "2026-11-17T15:57:22.454Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-profit-ultima-ora-cfr-marfa-a-intrat-in-faliment-2776ca",
+      "title": "ULTIMA ORĂ CFR Marfă a intrat în faliment și va fi lichidată. ANAF trebuie acum să dea jos din platforma de licitații toate bunurile pe care pusese sechestru",
+      "summary": "Instanța a decis intrarea în faliment, prin procedură simplificată, a companiei CFR Marfă și numirea unui lichidator care să înceapă procedura de lichidare a activelor societății, ptorivit datelor analizate de Profit.ro.",
+      "date": "2026-11-17T15:30:00.000Z",
+      "url": "https://www.profit.ro/taxe-si-consultanta/ultima-ora-cfr-marfa-a-intrat-in-faliment-si-va-fi-lichidata-anaf-trebuie-acum-sa-dea-jos-din-platforma-de-licitatii-toate-bunurile-pe-care-pusese-sechestru-22993902?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Taxe și Consultanță"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33243/22993902/1/6177572099-7e043ae526-b.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ CFR Marfă a intrat în faliment și va fi lichidată. ANAF trebuie acum să dea jos din platforma de licitații toate bunurile pe care pusese sechestru",
+      "addedAt": "2026-11-17T15:57:19.825Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-g4media-video-galerie-foto-cum-au-vazut-internautii-f0b637",
+      "title": "VIDEO Galerie foto | Cum au văzut internauții prăbușirea unei părți din podul Kerci, după atacurile ucrainene",
+      "summary": "O serie de atacuri ale armatei ucrainene a distrus, în această dimineață, infrastructura podului Kerci ce leagă Crimeea de Rusia. Volodimir Zelenski a descris operațiunea drept una „fără precedent”, desfășurată în mai multe etape, pe parcursul câtorva săptămâni, „Astăzi, toată lumea poate vedea consecințele asupra principalului punct de trecere militar de pe teritoriul rus către […] © G4Media.ro .",
+      "date": "2026-11-17T15:28:38.000Z",
+      "url": "https://www.g4media.ro/video-galerie-foto-cum-au-vazut-internautii-prabusirea-unei-parti-din-podul-kerci-dupa-atacurile-ucrainene.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole"
+      ],
+      "author": "Teodora Stroe",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/HXT_gGcWUAAdClG.jpg",
+      "imageAlt": "VIDEO Galerie foto | Cum au văzut internauții prăbușirea unei părți din podul Kerci, după atacurile ucrainene",
+      "addedAt": "2026-11-17T15:57:23.744Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-profit-tiberiu-danetiu-membru-de-board-executiv-adc4fe",
+      "title": "Tiberiu Dănețiu, Membru de board executiv, Director Afaceri Instituționale & Retail Media Auchan România, vine la Maratonul Agriculturii Ediția a V-a",
+      "summary": "Tiberiu Dănețiu, Membru de board executiv, Director Afaceri Instituționale & Retail Media Auchan România, vine la Maratonul Agriculturii Ediția a V-a, programat să fie organizat de Profit.ro pe 19 noiembrie.",
+      "date": "2026-11-17T15:26:00.000Z",
+      "url": "https://www.profit.ro/maratoanele-profit-ro/tiberiu-danetiu-membru-de-board-executiv-director-afaceri-institutionale-retail-media-auchan-romania-vine-la-maratonul-agriculturii-editia-a-v-a-22994043?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Maratoanele Profit.ro"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/39246/22994043/4/tiberiu-danetiu-auchan-romania-jpg.jpg?width=800",
+      "imageAlt": "Tiberiu Dănețiu, Membru de board executiv, Director Afaceri Instituționale & Retail Media Auchan România, vine la Maratonul Agriculturii Ediția a V-a",
+      "addedAt": "2026-11-17T15:57:19.825Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-hotnews-video-foto-in-lupta-cu-chinezii-dacia-0bf66f",
+      "title": "VIDEO &FOTO În lupta cu chinezii, Dacia Duster va primi un design premium de la Renault. Componente produse în India vor ajunge la Mioveni",
+      "summary": "Decizia conducerii Dacia – Renault de a menține modelul Duster competitiv în Europa și, în același timp, de a reduce costurile de dezvoltare pare să fi mers în direcția anunțată anterior de Fabrice Cambolive, Chief Growth Officer Renault Group. Primele fotografii arată clar că elementele de design folosit pe Duster în India vor veni și …",
+      "date": "2026-11-17T15:19:05.000Z",
+      "url": "https://hotnews.ro/video-foto-in-lupta-cu-chinezii-dacia-duster-va-primi-un-design-premium-de-la-renault-componente-produse-in-india-vor-ajunge-la-mioveni-2406767",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Economie"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "VIDEO &FOTO În lupta cu chinezii, Dacia Duster va primi un design premium de la Renault. Componente produse în India vor ajunge la Mioveni",
+      "addedAt": "2026-11-17T15:57:18.072Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-zf-saracesc-britanicii-salariile-reale-din-89a9fe",
+      "title": "Sărăcesc britanicii? Salariile reale din Regatul Unit scad pentru prima dată din 2023, pe fondul exploziei preţurilor la energie",
+      "summary": "",
+      "date": "2026-11-17T15:15:49.000Z",
+      "url": "https://www.zf.ro/business-international/saracesc-britanicii-salariile-reale-din-regatul-unit-scad-pentru-prima-data-din-2023-pe-fondul-exploziei-preturilor-la-energie-23283980",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Internaţional"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10368/23283980/1/londra-publimedia-shutterstock.jpg?width=700",
+      "imageAlt": "Sărăcesc britanicii? Salariile reale din Regatul Unit scad pentru prima dată din 2023, pe fondul exploziei preţurilor la energie",
+      "addedAt": "2026-11-17T15:57:19.679Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-profit-co-fondatorul-pizza-hut-a-decedat-un-2ed7d4",
+      "title": "Co-fondatorul Pizza Hut a decedat. Un împrumut primit de la mamă a pus bazele unui gigant",
+      "summary": "Dan Carney, care în urmă cu 70 de ani a pus bazele lanțului american de restaurante Pizza Hut împreună cu fratele său, a decedat la vârsta de 95 de ani.",
+      "date": "2026-11-17T15:11:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/retail/co-fondatorul-pizza-hut-a-decedat-un-imprumut-primit-de-la-mama-a-pus-bazele-unui-gigant-22993953?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Retail"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33215/22993953/1/pizza-hut-bacau-1.jpg?width=800",
+      "imageAlt": "Co-fondatorul Pizza Hut a decedat. Un împrumut primit de la mamă a pus bazele unui gigant",
+      "addedAt": "2026-11-17T15:57:19.825Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-zf-zf-deschiderea-de-astazi-cum-va-merge-bursa-ee5e2f",
+      "title": "ZF DESCHIDEREA DE ASTĂZI. Cum va merge bursa. Urmăriţi o discuţie miercuri, 18 noiembrie 2026, ora 09.30 cu Marius Alexe, investitor la Bursa de Valori Bucureşti",
+      "summary": "",
+      "date": "2026-11-17T15:04:53.000Z",
+      "url": "https://www.zf.ro/burse-fonduri-mutuale/zf-deschiderea-de-astazi-cum-va-merge-bursa-urmariti-o-discutie-miercuri-18-noiembrie-2026-ora-09-30-cu-marius-alexe-investitor-la-bursa-de-valori-bucuresti-23283975",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Burse - Fonduri mutuale"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22467/23283975/136/promo-bursa-18-nov.png?width=700",
+      "imageAlt": "ZF DESCHIDEREA DE ASTĂZI. Cum va merge bursa. Urmăriţi o discuţie miercuri, 18 noiembrie 2026, ora 09.30 cu Marius Alexe, investitor la Bursa de Valori Bucureşti",
+      "addedAt": "2026-11-17T15:57:19.679Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-profit-ikea-schimba-sistemul-magazinelor-si-se-e3865e",
+      "title": "IKEA schimbă sistemul magazinelor și se reinventează. Se reorientează către magazine mai mici și spații în centrele orașelor",
+      "summary": "Retailerul suedez IKEA schimbă strategia și pregătește magazine de dimensiuni mai mici și locații în centrele orașelor pentru a opri tendința de scădere a vânzărilor.",
+      "date": "2026-11-17T15:01:24.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/retail/ikea-schimba-sistemul-magazinelor-si-se-reinventeaza-se-reorienteaza-catre-magazine-mai-mici-si-spatii-in-centrele-oraselor-22993971?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Retail"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33215/22993971/11/ro-ikea-baneasa-84.jpg?width=800",
+      "imageAlt": "IKEA schimbă sistemul magazinelor și se reinventează. Se reorientează către magazine mai mici și spații în centrele orașelor",
+      "addedAt": "2026-11-17T15:57:19.826Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-zf-colette-kress-ceo-ul-interimar-de-la-nvidia-7fface",
+      "title": "Colette Kress, CEO-ul interimar de la Nvidia, se pregăteşte să dea piept cu giganţii de pe Wall Street la prima raportare financiară după plecarea lui Jensen Huang. Analiştii…",
+      "summary": "",
+      "date": "2026-11-17T15:00:06.000Z",
+      "url": "https://www.zf.ro/business-international/colette-kress-ceo-ul-interimar-nvidia-pregateste-dea-piept-gigantii-wall-street-prima-raportare-financiara-dupa-plecarea-jensen-huang-analistii-asteapta-insa-vesti-bune-venituri-aproape-duble-23283972",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Internaţional"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10368/23283972/1/colette-1920x1920-4d360fa4-e97d-4505-9857-284d03141162-prv.jpg?width=700",
+      "imageAlt": "Colette Kress, CEO-ul interimar de la Nvidia, se pregăteşte să dea piept cu giganţii de pe Wall Street la prima raportare financiară după plecarea lui Jensen Huang. Analiştii aştea",
+      "addedAt": "2026-11-17T15:57:19.679Z"
+    },
+    {
+      "slug": "bukurest-2026-11-17-hotnews-un-lider-proeminent-al-afd-il-invita-pe-78c7b3",
+      "title": "Un lider proeminent al AfD îl invită pe Elon Musk să investească în landul în care extrema dreaptă a câștigat alegerile",
+      "summary": "Ulrich Siegmund, membru al partidului de extremă dreapta Alternativa pentru Germania (AfD), care aspiră să devină primul premier de land din partea acestei formaţiuni politice, i-a adresat luni o invitaţie miliardarului Elon Musk, cerându-i să stabilească o prezenţă a companiei Tesla în landul Saxonia-Anhalt şi promiţându-i „condiţii favorabile pentru afaceri”, relatează marţi Reuters, informează Agerpres. …",
+      "date": "2026-11-17T14:57:54.000Z",
+      "url": "https://hotnews.ro/un-lider-proeminent-al-afd-il-invita-pe-elon-musk-sa-investeasca-in-landul-in-care-extrema-dreapta-a-castigat-alegerile-2406748",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Un lider proeminent al AfD îl invită pe Elon Musk să investească în landul în care extrema dreaptă a câștigat alegerile",
+      "addedAt": "2026-11-17T15:57:18.073Z"
+    },
     {
       "slug": "bukurest-2026-11-17-agerpres-aur-cere-audierea-in-parlament-a-920e73",
       "title": "AUR cere audierea în Parlament a vicepreședintelui ASF pe tema scumpirii polițelor RCA",
