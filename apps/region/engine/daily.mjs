@@ -16,6 +16,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isWithdrawnItem } from './withdrawals.mjs';
 import { fetchText, hash6, isCorrupt, ISO_DAY, parseDate, slugify, themeFor, truncate } from './lib.mjs';
 import { looksLikeFeed, parseFeed } from './feed.mjs';
 import { buildChannel, CHANNELS } from './build.mjs';
@@ -53,7 +54,7 @@ function channelFile(id) { return join(DATA, `${id}.json`); }
 
 function loadChannelData(channel) {
   const existing = readJSON(channelFile(channel.id), null);
-  if (existing && Array.isArray(existing.items)) return existing;
+  if (existing && Array.isArray(existing.items)) return { ...existing, items: existing.items.filter((item) => !isWithdrawnItem(item)) };
   return { version: 1, channel: channel.id, updatedAt: '', items: [], seen: {} };
 }
 
@@ -107,6 +108,7 @@ export async function runChannel(channel, { dry = false, report = {} } = {}) {
 
     const fresh = readable
       .filter((item) => item.title && item.url)
+      .filter((item) => !isWithdrawnItem(item))
       .filter((item) => isFresh(item.date))
       .sort((a, b) => String(b.date).localeCompare(String(a.date)))
       .slice(0, source.cap || 6);

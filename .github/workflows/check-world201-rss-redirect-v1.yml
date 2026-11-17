@@ -1,0 +1,21 @@
+name: Check WORLD201 RSS redirects
+on:
+  pull_request:
+    paths:
+      - 'scripts/refresh-aktual-world-headlines-v1.mjs'
+      - 'scripts/lib/aktual-world-feed-http-v1.mjs'
+      - 'tests/test-world201-rss-redirect-v1.mjs'
+      - '.github/workflows/check-world201-rss-redirect-v1.yml'
+permissions:
+  contents: read
+jobs:
+  source-fetch-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check scripts/refresh-aktual-world-headlines-v1.mjs
+      - run: node --test tests/test-world201-rss-redirect-v1.mjs

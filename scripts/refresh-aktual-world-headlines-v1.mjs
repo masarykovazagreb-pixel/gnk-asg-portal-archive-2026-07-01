@@ -6,7 +6,7 @@
  * consumes that cache; the presence of a schedule does not prove it ran.
  */
 import fs from 'node:fs';
-import { URL } from 'node:url';
+import { safeUrl, fetchFeedXml } from './lib/aktual-world-feed-http-v1.mjs';
 const input='apps/portal/data/world-countries-v1.json';
 const output=process.env.AKTUAL_WORLD_CACHE_OUT || 'apps/portal/data/aktual-world-headlines-v1.json';
 const data=JSON.parse(fs.readFileSync(input,'utf8'));
@@ -18,14 +18,6 @@ const maxItems=Number(process.env.AKTUAL_ITEMS_PER_COUNTRY || 10);
 const strict=process.argv.includes('--strict');
 const unescapeXml=(s)=>String(s).replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g,'$1').replace(/&(?:amp|lt|gt|quot|apos);|&#(?:x[\da-f]+|\d+);/gi,m=>({ '&amp;':'&','&lt;':'<','&gt;':'>','&quot;':'"','&apos;':"'"}[m.toLowerCase()]??(m[2]==='x'?String.fromCodePoint(parseInt(m.slice(3,-1),16)):String.fromCodePoint(Number(m.slice(2,-1)))))).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
 const field=(s,t)=>s.match(new RegExp(`<${t}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${t}>`,'i'))?.[1]||'';
-function safeUrl(value){
-  try { const u=new URL(value); if(u.protocol!=='https:'||u.username||u.password||!u.hostname||u.port&&u.port!=='443') return '';
-    const host=u.hostname.toLowerCase();
-    if(host==='localhost'||host.endsWith('.localhost')||host.endsWith('.local')||host.endsWith('.internal')||host.endsWith('.test')||host.endsWith('.invalid')||host.endsWith('.onion')||host.endsWith('.example')||host.endsWith('.home.arpa'))return '';
-    if(/^\d+\.\d+\.\d+\.\d+$/.test(host)||host.includes(':')||host==='0')return '';
-    return u.href;
-  }catch{return '';}
-}
 function extract(xml,now){
   const chunks=[...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>|<entry(?:\s[^>]*)?>([\s\S]*?)<\/entry>/gi)];
   return chunks.slice(0,50).map(m=>{
@@ -39,14 +31,10 @@ function extract(xml,now){
   }).filter(Boolean);
 }
 async function fetchFeed(url,now){
-  const valid=safeUrl(url);if(!valid)throw Error('unsafe feed URL');
-  const res=await fetch(valid,{signal:AbortSignal.timeout(9000),redirect:'manual',headers:{'User-Agent':'AKTUAL-MEDIA-source-index/1.0','Accept':'application/rss+xml, application/atom+xml, text/xml, application/xml'}});
-  if(!res.ok)throw Error(`HTTP ${res.status}`);
-  const size=Number(res.headers.get('content-length')||0);if(size>800000)throw Error('feed over 800 KB');
-  const text=await res.text();if(text.length>800000)throw Error('feed over 800 KB');
-  if(!/<(?:rss|feed|rdf:RDF)\b/i.test(text))throw Error('not RSS or Atom');
-  return extract(text,now);
+  const xml=await fetchFeedXml(url);
+  return extract(xml,now);
 }
+
 const now=Date.now();
 const targets=data.countries.slice(0,limitCountries).flatMap(c=>(c.sourcesList||[]).filter(s=>s.rss&&safeUrl(s.rss)).slice(0,feedLimit).map(s=>({country:c.slug,source:s.name,url:s.rss})));
 const cityTargets = data.cities.map(city=>({city:city.slug,source:'Google News',url:`https://news.google.com/rss/search?q=${encodeURIComponent(city.nameEn)}&hl=en&gl=US&ceid=US:en`}));

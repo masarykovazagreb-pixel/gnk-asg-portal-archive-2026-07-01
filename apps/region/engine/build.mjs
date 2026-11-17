@@ -1,3 +1,4 @@
+import { isWithdrawnItem } from './withdrawals.mjs';
 #!/usr/bin/env node
 /**
  * AKTUAL MEDIA REGIONAL — generator stranica.
@@ -1413,7 +1414,7 @@ export function buildChannel(channel) {
   const strings = t(channel.lang).ui;
   const data = loadChannel(channel);
   data.items = [...data.items]
-    .filter((i) => i && i.slug && i.title && i.url)
+    .filter((i) => i && i.slug && i.title && i.url && !isWithdrawnItem(i))
     .sort((a, b) => String(b.date).localeCompare(String(a.date)));
   // Dopunski izvori (optional) dobivaju stranicu i chip tek kada stvarno daju zapise.
   channel = {

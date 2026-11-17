@@ -1,0 +1,33 @@
+name: Privacy withdrawal and RSS reimport guard
+on:
+  pull_request:
+    paths:
+      - 'apps/region/data/withdrawn-content-v1.json'
+      - 'apps/region/data/ljubljana.json'
+      - 'apps/region/engine/**'
+      - 'apps/portal/kanal/ljubljana/**'
+      - 'tests/test-region-withdrawal-v1.mjs'
+      - '.github/workflows/privacy-withdrawal-guard-v1.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/region/data/withdrawn-content-v1.json'
+      - 'apps/region/data/ljubljana.json'
+      - 'apps/region/engine/**'
+      - 'apps/portal/kanal/ljubljana/**'
+      - 'tests/test-region-withdrawal-v1.mjs'
+      - '.github/workflows/privacy-withdrawal-guard-v1.yml'
+permissions:
+  contents: read
+jobs:
+  privacy-withdrawal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check apps/region/engine/withdrawals.mjs
+      - run: node --check apps/region/engine/daily.mjs
+      - run: node --test tests/test-region-withdrawal-v1.mjs
