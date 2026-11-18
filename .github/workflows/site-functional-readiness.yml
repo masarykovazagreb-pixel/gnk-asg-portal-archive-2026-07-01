@@ -142,8 +142,18 @@ jobs:
 
       - name: Static page integrity
         env:
-          NODE_OPTIONS: --max-old-space-size=8192
-        run: node scripts/audit-all-pages-detailed-v1.mjs
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: |
+          set -euo pipefail
+          # Keep V8 heap below the hosted runner's total RAM so the OS and
+          # other processes retain headroom. Record diagnostics on failure.
+          node scripts/audit-all-pages-detailed-v1.mjs || {
+            code=$?
+            echo '::error::Static page audit failed; memory diagnostics follow'
+            free -h || true
+            cat /sys/fs/cgroup/memory.events 2>/dev/null || true
+            exit "$code"
+          }
 
       - name: Public portal audit
         run: node scripts/audit-public-portal-v1.mjs
