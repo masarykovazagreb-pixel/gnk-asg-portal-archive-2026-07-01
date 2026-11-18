@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-11-18T13:31:30.340Z",
+  "updatedAt": "2026-11-18T17:12:30.848Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,19 +14,20 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-18T13:31:12.982Z"
+      "checkedAt": "2026-11-18T17:12:12.406Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss.xml",
-      "ok": true,
-      "fetched": 25,
+      "url": "https://nation.africa/kenya/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403"
+        "https://nation.africa/kenya/rss: HTTP 403",
+        "https://nation.africa/kenya/rss.xml: HTTP 404"
       ],
-      "checkedAt": "2026-11-18T13:31:13.885Z"
+      "checkedAt": "2026-11-18T17:12:13.987Z"
     },
     {
       "id": "standard",
@@ -36,7 +37,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-18T13:31:14.200Z"
+      "checkedAt": "2026-11-18T17:12:14.377Z"
     },
     {
       "id": "star",
@@ -48,7 +49,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-18T13:31:16.473Z"
+      "checkedAt": "2026-11-18T17:12:15.950Z"
     },
     {
       "id": "businessdaily",
@@ -60,7 +61,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-18T13:31:17.266Z"
+      "checkedAt": "2026-11-18T17:12:16.889Z"
     },
     {
       "id": "citizen",
@@ -72,7 +73,7 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-11-18T13:31:24.538Z"
+      "checkedAt": "2026-11-18T17:12:26.210Z"
     },
     {
       "id": "kbc",
@@ -82,7 +83,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-18T13:31:29.109Z"
+      "checkedAt": "2026-11-18T17:12:29.867Z"
     },
     {
       "id": "eastafrican",
@@ -94,10 +95,242 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-18T13:31:30.340Z"
+      "checkedAt": "2026-11-18T17:12:30.848Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-11-18-capitalfm-ruto-kenya-saves-sh1-5bn-as-national-exam-b439e5",
+      "title": "Ruto: Kenya saves Sh1.5bn as national exam papers are printed locally",
+      "summary": "President William Ruto says Kenya has printed national examination papers locally for the first time in 65 years, saving taxpayers close to Sh1.5 billion.",
+      "date": "2026-11-18T17:00:00.000Z",
+      "url": "https://capitalfm.africa/ruto-kenya-saves-sh1-5bn-as-national-exam-papers-are-printed-locally/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "KCSE 2026",
+        "KJSEA",
+        "KNEC"
+      ],
+      "author": "IRENE MWANGI",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/william-ruto-sona-1-1200x630.jpeg",
+      "imageAlt": "Ruto: Kenya saves Sh1.5bn as national exam papers are printed locally",
+      "addedAt": "2026-11-18T17:12:12.407Z"
+    },
+    {
+      "slug": "nairobi-2026-11-18-kbc-lessons-from-mauritius-how-kenya-can-42d28e",
+      "title": "Lessons from Mauritius: How Kenya can strengthen its instant payment ecosystem",
+      "summary": "“If Africa can move billions of dollars instantly within national borders, why is moving money between African countries still so complicated?” The post Lessons from Mauritius: How Kenya can strengthen its instant payment ecosystem appeared first on KBC Digital .",
+      "date": "2026-11-18T16:00:01.000Z",
+      "url": "https://www.kbc.co.ke/lessons-from-mauritius-how-kenya-can-strengthen-its-instant-payment-ecosystem/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "OPINIONS",
+        "Instant Payment Systems",
+        "Mauritius"
+      ],
+      "author": "Regina Manyara",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/Mauritius-REGINA-MANYARA.jpeg",
+      "imageAlt": "Lessons from Mauritius: How Kenya can strengthen its instant payment ecosystem",
+      "addedAt": "2026-11-18T17:12:29.867Z"
+    },
+    {
+      "slug": "nairobi-2026-11-18-kbc-usawa-ni-sawa-to-end-development-divide-0fb328",
+      "title": "‘Usawa ni Sawa’ to end development divide, says Ruto",
+      "summary": "President highlights expansion of healthcare, housing, roads, education, and economic opportunities in historically marginalized regions The post ‘Usawa ni Sawa’ to end development divide, says Ruto appeared first on KBC Digital .",
+      "date": "2026-11-18T15:40:06.000Z",
+      "url": "https://www.kbc.co.ke/usawa-ni-sawa-to-end-development-divide-says-ruto/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Local News",
+        "NEWS"
+      ],
+      "author": "Eric Biegon",
+      "theme": "politika",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/RUTO-USAWA-4.jpg",
+      "imageAlt": "‘Usawa ni Sawa’ to end development divide, says Ruto",
+      "addedAt": "2026-11-18T17:12:29.867Z"
+    },
+    {
+      "slug": "nairobi-2026-11-18-kbc-ruto-bets-on-agriculture-interventions-to-9d47df",
+      "title": "Ruto bets on agriculture interventions to address high cost of living",
+      "summary": "President William Ruto has said interventions his administration has deployed to improve agricultural productivity has helped stabilize the economy and ease the cost of living. While giving his 4th State of the Nation Address before Parliament, President Ruto said through the Bottom-up Economic Transformation Agenda (BETA), the government has been able to sustain economic growth […] The post Ruto bets on agriculture interventions to address high cost of living appeared first on KBC Digital .",
+      "date": "2026-11-18T15:30:45.000Z",
+      "url": "https://www.kbc.co.ke/ruto-bets-on-agriculture-interventions-to-address-high-cost-of-living/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Business",
+        "Local Business",
+        "Agriculture",
+        "BETA"
+      ],
+      "author": "Ronald Owili",
+      "theme": "politika",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/ruto-sotn.jpeg",
+      "imageAlt": "Ruto bets on agriculture interventions to address high cost of living",
+      "addedAt": "2026-11-18T17:12:29.867Z"
+    },
+    {
+      "slug": "nairobi-2026-11-18-capitalfm-ruto-defends-750km-northern-kenya-road-21e88a",
+      "title": "Ruto defends 750km Northern Kenya road project amid past ridicule",
+      "summary": "President William Ruto has announced plans for a 750-kilometre Northern Kenya Gateway Corridor linking Isiolo, Wajir and Mandera, in a major infrastructure push targeting historically marginalised communities.",
+      "date": "2026-11-18T15:30:00.000Z",
+      "url": "https://capitalfm.africa/ruto-defends-750km-northern-kenya-road-project-amid-past-ridicule/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "Isiolo",
+        "Mandera",
+        "northern Kenya"
+      ],
+      "author": "IRENE MWANGI",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/william-ruto-SOTN-1200x630.jpeg",
+      "imageAlt": "Ruto defends 750km Northern Kenya road project amid past ridicule",
+      "addedAt": "2026-11-18T17:12:12.407Z"
+    },
+    {
+      "slug": "nairobi-2026-11-18-standard-ruto-lists-measures-to-lower-cost-of-living-add110",
+      "title": "Ruto lists measures to lower cost of living, put more money in Kenyans' pockets",
+      "summary": "Ruto said his administration had prioritised lowering the cost of essential goods and services while increasing earnings across key sectors of the economy.",
+      "date": "2026-11-18T15:25:59.000Z",
+      "url": "https://www.standardmedia.co.ke/article/2001562553/ruto-lists-measures-to-lower-cost-of-living-put-more-money-in-kenyans-pockets",
+      "source": "standard",
+      "sourceName": "The Standard",
+      "categories": [],
+      "author": "Standard Digital",
+      "theme": "ekonomija",
+      "image": "https://cdn.standardmedia.co.ke/images/articles/thumbnails/L0VlwyMU8BPaiOKvcHyN7sxGM7WAKnacxnYq7QRf.jpg",
+      "imageAlt": "Ruto lists measures to lower cost of living, put more money in Kenyans' pockets",
+      "addedAt": "2026-11-18T17:12:14.377Z"
+    },
+    {
+      "slug": "nairobi-2026-11-18-kbc-707-000-kenyans-have-secured-jobs-abroad-e05505",
+      "title": "707,000 Kenyans have secured jobs abroad-Ruto",
+      "summary": "Nyota initiative is expected to enable 600,000 Kenyans to qualify for government procurement contracts The post 707,000 Kenyans have secured jobs abroad-Ruto appeared first on KBC Digital .",
+      "date": "2026-11-18T14:57:41.000Z",
+      "url": "https://www.kbc.co.ke/600000-kenyans-to-qualify-for-govt-procurement-contracts/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "County News",
+        "NEWS",
+        "Kenya jobs abroad",
+        "Kenya youths"
+      ],
+      "author": "Margaret Kalekye",
+      "theme": "politika",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/jobs.jpeg",
+      "imageAlt": "707,000 Kenyans have secured jobs abroad-Ruto",
+      "addedAt": "2026-11-18T17:12:29.868Z"
+    },
+    {
+      "slug": "nairobi-2026-11-18-capitalfm-ruto-takes-veiled-swipe-at-gachagua-over-mt-686eb2",
+      "title": "Ruto takes veiled swipe at Gachagua over Mt Kenya voting bloc politics",
+      "summary": "Ruto challenged political leaders against asking entire regions to surrender their political choices to individual personalities.",
+      "date": "2026-11-18T14:36:20.000Z",
+      "url": "https://capitalfm.africa/ruto-takes-veiled-swipe-at-gachagua-over-mt-kenya-voting-bloc-politics/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "Politics",
+        "2027 General Election",
+        "DCP"
+      ],
+      "author": "JEREMIAH WAKAYA",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/RUTO-2025-SONA.png",
+      "imageAlt": "Ruto takes veiled swipe at Gachagua over Mt Kenya voting bloc politics",
+      "addedAt": "2026-11-18T17:12:12.407Z"
+    },
+    {
+      "slug": "nairobi-2026-11-18-capitalfm-sifuna-dismisses-ruto-s-fourth-state-of-the-9aec8b",
+      "title": "Sifuna dismisses Ruto’s fourth State of the Nation Address as ‘State of Imagination’",
+      "summary": "Linda Mwananchi Party leader Edwin Sifuna has dismissed President William Ruto’s fourth State of the Nation Address as a “State of Imagination”, accusing him of prioritising development projects over constitutional obligations on human rights, democracy and the rule of law.",
+      "date": "2026-11-18T14:31:55.000Z",
+      "url": "https://capitalfm.africa/sifuna-dismisses-rutos-fourth-state-of-the-nation-address-as-state-of-imagination/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "2027 General Election",
+        "Albert Ojwang.",
+        "Article 132"
+      ],
+      "author": "IRENE MWANGI",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/SIFUNA-TODAY-2-860x570-1.jpg",
+      "imageAlt": "Sifuna dismisses Ruto’s fourth State of the Nation Address as ‘State of Imagination’",
+      "addedAt": "2026-11-18T17:12:12.407Z"
+    },
+    {
+      "slug": "nairobi-2026-11-18-capitalfm-ruto-promises-public-order-reforms-a171fc",
+      "title": "Ruto promises public order reforms, accountability for police abuses",
+      "summary": "Ruto said the government was strengthening systems for managing public order through improved professional standards.",
+      "date": "2026-11-18T14:10:35.000Z",
+      "url": "https://capitalfm.africa/ruto-promises-public-order-reforms-accountability-for-police-abuses/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "anti-Finance Bill protests",
+        "Article 37",
+        "Constitution of Kenya"
+      ],
+      "author": "JEREMIAH WAKAYA",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/RUTO-2025-SONA.png",
+      "imageAlt": "Ruto promises public order reforms, accountability for police abuses",
+      "addedAt": "2026-11-18T17:12:12.407Z"
+    },
+    {
+      "slug": "nairobi-2026-11-18-kbc-kenya-saves-ksh-1-5b-as-national-2df622",
+      "title": "Kenya saves Ksh.1.5B as national examination papers printed locally",
+      "summary": "Local printing saves the country close to Ksh1.5 billion. The post Kenya saves Ksh.1.5B as national examination papers printed locally appeared first on KBC Digital .",
+      "date": "2026-11-18T14:10:29.000Z",
+      "url": "https://www.kbc.co.ke/kenya-prints-national-exams-locally-for-first-time-in-65-years/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Local News",
+        "NEWS",
+        "Higher Education",
+        "National examination papers"
+      ],
+      "author": "Christine Muchira",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/Ruto-par.jpg",
+      "imageAlt": "Kenya saves Ksh.1.5B as national examination papers printed locally",
+      "addedAt": "2026-11-18T17:12:29.868Z"
+    },
+    {
+      "slug": "nairobi-2026-11-18-capitalfm-ruto-tells-parliament-nairobi-mombasa-492d76",
+      "title": "Ruto tells Parliament Nairobi-Mombasa Highway dualling plan at advanced stage",
+      "summary": "Ruto said arrangements for the dualling of the highway were at an advanced stage, without providing a detailed implementation timetable.",
+      "date": "2026-11-18T13:55:37.000Z",
+      "url": "https://capitalfm.africa/ruto-tells-parliament-nairobi-mombasa-highway-dualling-plan-at-advanced-stage/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "Multimedia",
+        "News",
+        "Video",
+        "Everstrong Capital"
+      ],
+      "author": "JEREMIAH WAKAYA",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/MOMBASA-ROAD.jpeg",
+      "imageAlt": "Ruto tells Parliament Nairobi-Mombasa Highway dualling plan at advanced stage",
+      "addedAt": "2026-11-18T17:12:12.407Z"
+    },
     {
       "slug": "nairobi-2026-11-18-capitalfm-regina-re-brother-freed-on-sh200-000-bail-801dd4",
       "title": "Regina Re, brother freed on Sh200,000 bail over mother’s murder",
