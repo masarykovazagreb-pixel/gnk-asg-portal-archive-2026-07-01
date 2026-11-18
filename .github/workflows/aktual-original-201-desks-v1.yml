@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'scripts/lib/aktual-original-desk-v1.mjs'
+      - 'scripts/lib/aktual-rss-topics-v1.mjs'
       - 'scripts/aktual-original-201-desk-plan-v1.mjs'
       - 'tests/test-aktual-original-201-desks-v1.mjs'
       - '.github/workflows/aktual-original-201-desks-v1.yml'

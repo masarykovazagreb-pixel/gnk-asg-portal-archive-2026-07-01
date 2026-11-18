@@ -1,3 +1,4 @@
+import { BEATS,topicDiscoveryStreams } from '../scripts/lib/aktual-rss-topics-v1.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -43,4 +44,25 @@ test('original-writing brief rejects one source, stale facts and bot self-approv
  assert.equal(verifyWritingEvidence({...evidence,sources:evidence.sources.slice(0,1)},hr,'Human editor',now).ok,false);
  assert.equal(verifyWritingEvidence({...evidence,approvedBy:'Bot'},hr,'Human editor',now).ok,false);
  assert.equal(verifyWritingEvidence({...evidence,verifiedAt:'2020-01-01'},hr,'Human editor',now).ok,false);
+});
+
+test('21 diverse RSS topic lead streams for each country; aggregator != independent source',()=>{
+ const croatia=topicDiscoveryStreams(hr);
+ assert.equal(BEATS.length,21);
+ assert.equal(croatia.length,21);
+ assert.equal(new Set(croatia.map(x=>x.beat)).size,21);
+ assert.equal(croatia[0].searchLanguage,'hr');
+ assert.ok(croatia.some(x=>x.beat==='fashion'));
+ assert.ok(croatia.some(x=>x.beat==='finance'));
+ assert.ok(croatia.some(x=>x.beat==='sports'));
+ assert.ok(croatia.every(x=>x.independentPublisher===false && x.sourceEvidenceVerified===false && x.fetchStatus==='UNVERIFIED'));
+ assert.ok(croatia.every(x=>x.feed.startsWith('https://news.google.com/rss/search?')));
+ const unknown=topicDiscoveryStreams({...hr,code:'FJ',language:'bi'});
+ assert.equal(unknown[0].searchLanguage,'en');
+ assert.equal(unknown[0].publicationLanguage,'bi');
+ assert.equal(unknown[0].needsNativeLanguageVerification,true);
+ const plan=planCountryDesks(countries,null,now);
+ assert.equal(plan.thematicAggregatorStreams,4221);
+ assert.equal(plan.agents.find(x=>x.countryCode==='HR').availableThematicDiscoveryStreams.length,21);
+ assert.equal(plan.countriesBelow15Sources,201);
 });

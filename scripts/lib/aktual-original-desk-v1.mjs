@@ -1,3 +1,4 @@
+import { topicDiscoveryStreams } from './aktual-rss-topics-v1.mjs';
 /**
  * AKTUAL MEDIA: 201 independent local editorial desks.
  * This ONLY plans source research. No LLM, publishing or sitemap mutation.
@@ -73,7 +74,8 @@ export function planCountryDesks(registry, cache, now = Date.now()) {
     return {
       agentId:'original-desk-'+c.slug,country:c.nameLocal,countryCode:c.code,lang:c.language,
       route:c.url,registeredRssSources:sourceCatalog.length,additionalRssSourcesNeeded:Math.max(0,15-sourceCatalog.length),
-      topicTarget:15,draftTarget:dailyDraftQuota(c),unverifiedTopicLeads:discovered,
+      topicTarget:15,availableThematicDiscoveryStreams:topicDiscoveryStreams(c),
+      draftTarget:dailyDraftQuota(c),unverifiedTopicLeads:discovered,
       missingTopicLeads:15-discovered.length,verifiedPackets:0,published:0,
       status:'RESEARCH_ONLY_NOT_PUBLISHED'
     };
@@ -83,6 +85,7 @@ export function planCountryDesks(registry, cache, now = Date.now()) {
     policy:'Verified source topics, independent original writing, human review, no automatic copying or publication',
     countries:agents.length,plannedDailyDrafts:agents.reduce((n,a)=>n+a.draftTarget,0),
     totalRegisteredFeedSlots:agents.reduce((n,a)=>n+a.registeredRssSources,0),
+    thematicAggregatorStreams:agents.reduce((n,a)=>n+a.availableThematicDiscoveryStreams.length,0),
     countriesBelow15Sources:agents.filter(a=>a.additionalRssSourcesNeeded>0).length,
     countriesWith15Topics:agents.filter(a=>a.unverifiedTopicLeads.length>=15).length,
     published:0,releaseApproved:false,agents
