@@ -46,7 +46,16 @@ const uniqueMenuRoutes=[...new Set(menuRoutes)];
 const menuMissing=uniqueMenuRoutes.filter(route=>!routeExists(route));
 const htmlFiles=walk(ROOT).filter(file=>file.endsWith('.html')&&!isUtilityHtml(file)&&!IGNORE_HTML_PREFIXES.some(prefix=>rel(file).startsWith(prefix)));
 const pages=[],errors=[],warnings=[];
-for(const file of htmlFiles){
+for(const [pageIndex,file] of htmlFiles.entries()){
+ // CI-only diagnostic: identify the exact page being audited before a possible V8 OOM.
+ // This changes no validation criteria, report contents, or publication behavior.
+ if(process.env.GITHUB_ACTIONS==='true'){
+  const bytes=fs.statSync(file).size;
+  if(pageIndex%25===0||bytes>1024*1024){
+   const heapMB=Math.round(process.memoryUsage().heapUsed/1048576);
+   console.error('[audit-progress] '+JSON.stringify({pageIndex,total:htmlFiles.length,file:rel(file),bytes,heapMB}));
+  }
+ }
  const html=fs.readFileSync(file,'utf8'),route=routeFor(file),protectedRoute=isProtected(route),pageErrors=[],pageWarnings=[];
  const lang=html.match(/<html\b[^>]*lang=["']([^"']+)["']/i)?.[1]||'';
  const title=html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim()||'';
