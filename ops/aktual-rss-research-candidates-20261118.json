@@ -1,0 +1,59 @@
+{
+  "schema": "aktual-rss-candidate-review/v1",
+  "asOf": "2026-11-18",
+  "status": "research-only-pending-live-check",
+  "scope": "Croatia first, then country-specific local sources",
+  "rules": [
+    "No source in this file is eligible for automatic publication",
+    "Pass HTTPS live probe, publisher identity, XML parsing, freshness and licensing review before adding to canonical source registry",
+    "Do not conflate Google News aggregator with independent media",
+    "Never copy image, headline, body or closely paraphrase article; independently verify facts"
+  ],
+  "candidates": [
+    {
+      "id": "hr-tportal",
+      "country": "HR",
+      "publisher": "tportal",
+      "beat": "mixed-politics-business-technology",
+      "website": "https://www.tportal.hr/",
+      "rssCandidate": "https://www.tportal.hr/rss",
+      "origin": "user-provided AKTUAL_MEDIA_complete_release (2).zip src/lib/countries.ts",
+      "verification": "PENDING",
+      "notes": "User-provided ZIP contains this exact feed candidate; verify actual active feed before use."
+    },
+    {
+      "id": "hr-24sata-sport",
+      "country": "HR",
+      "publisher": "24sata",
+      "beat": "sports",
+      "website": "https://www.24sata.hr/",
+      "rssCandidate": "https://www.24sata.hr/feeds/sport.xml",
+      "origin": "public RSS directory entry, 2026-11-18",
+      "verification": "PENDING",
+      "notes": "Candidate found through RSS directory; verify publisher endpoint directly, do not ingest unlicensed images."
+    },
+    {
+      "id": "hr-hrt-news",
+      "country": "HR",
+      "publisher": "HRT Vijesti",
+      "beat": "politics-public-affairs",
+      "website": "https://vijesti.hrt.hr/",
+      "rssCandidate": "https://www.hrt.hr/rss/vijesti/",
+      "origin": "HRT official RSS overview + public RSS directory 2026-11-18",
+      "verification": "PENDING",
+      "notes": "Confirm updated endpoint and HRT rights: https://o-nama.hrt.hr/zastita-privatnosti-i-pravo-na-pristup-informacijama/uvjeti-koristenja-sadrzaja-objavljenog-na-hrt-ovim-digitalnim-platformama-4423"
+    },
+    {
+      "id": "hr-24sata-news",
+      "country": "HR",
+      "publisher": "24sata",
+      "beat": "general",
+      "website": "https://www.24sata.hr/",
+      "rssCandidate": "https://www.24sata.hr/feeds/news.xml",
+      "origin": "user ZIP and canonical country registry",
+      "verification": "REGISTERED_NOT_LIVE_VERIFIED",
+      "notes": "Separate from sports feed; publisher identity is not a second independent source."
+    }
+  ],
+  "releaseSafe": false
+}
