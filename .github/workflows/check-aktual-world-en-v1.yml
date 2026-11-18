@@ -6,6 +6,11 @@ on:
       - 'tests/test-aktual-world-en-v1.mjs'
       - 'apps/portal/en/gnk-aktual/media/**'
       - 'apps/portal/assets/aktual-world-premium-en-v1.css'
+      - 'apps/portal/assets/aktual-world-directory-v1.*'
+      - 'apps/portal/assets/aktual-world-page-a11y-v1.css'
+      - 'apps/portal/gnk-aktual/index.html'
+      - 'apps/portal/gnk-aktual/media/index.html'
+      - 'tests/test-aktual-network-performance-v1.mjs'
       - '.github/workflows/check-aktual-world-en-v1.yml'
   workflow_dispatch:
 permissions:
@@ -30,6 +35,7 @@ jobs:
           node --check scripts/build-aktual-world-en-v1.mjs
           node scripts/build-aktual-world-en-v1.mjs
           node --test tests/test-aktual-world-en-v1.mjs
+          node --test tests/test-aktual-network-performance-v1.mjs
       - name: Commit deterministic build output ONLY to preapproved feature branch
         if: >
           github.event_name == 'pull_request' &&
