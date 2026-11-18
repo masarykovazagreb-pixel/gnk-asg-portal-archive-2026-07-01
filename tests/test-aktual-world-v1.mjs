@@ -30,6 +30,16 @@ test('build includes only real generated URLs and no fake headlines',()=>{
       const page=fs.readFileSync(path.join(tmp,'media',slug,'index.html'),'utf8');
       const feed=fs.readFileSync(path.join(tmp,'media',slug,'feed.xml'),'utf8');
       if (!(fresh && cache.countries?.[slug]?.length)) assert.ok(page.includes('Trenutačno nema provjerenog svježeg skupa naslova'));
+      const english=fs.readFileSync(path.join(tmp,'media',slug,'en','index.html'),'utf8');
+      assert.match(page, /<html lang="hr">/);
+      assert.match(page, /hreflang="en"/);
+      assert.match(page, /data-english-switch="aktual-v1"/);
+      assert.match(english, /<html lang="en">/);
+      assert.match(english, /hreflang="hr"/);
+      assert.match(english, /hreflang="en"/);
+      assert.match(english, /rel="canonical"/);
+      assert.match(english, /Our editorial method/);
+      assert.doesNotMatch(english, /<article\b/i);
       const station = externalStationSection(slug);
       assert.ok(page.includes(station), `generated cross-link for ${slug}`);
       assert.ok(page.includes('data-world-navigation="v1"'), `generated navigation for ${slug}`);
@@ -48,7 +58,9 @@ test('build includes only real generated URLs and no fake headlines',()=>{
       assert.deepEqual(nodes[0].inLanguage,['hr','en']); assert.equal(nodes[0].publisher['@id'],'https://gnk-asg.hr/#gnk-asg');
     }
     const sitemap=fs.readFileSync(path.join(tmp,'media','sitemap.xml'),'utf8');
-    assert.equal((sitemap.match(/<url>/g)||[]).length,211);
+    assert.equal((sitemap.match(/<url>/g)||[]).length,412);
+    assert.match(sitemap,/xmlns:xhtml/);
+    for (const c of src.countries) assert.ok(sitemap.includes('/media/'+c.slug+'/en/'));
     for (const city of src.cities) assert.ok(sitemap.includes(`/grad/${city.slug}/`));
   } finally {fs.rmSync(tmp,{recursive:true,force:true});}
 });
