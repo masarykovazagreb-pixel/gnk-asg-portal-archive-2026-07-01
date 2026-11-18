@@ -1,0 +1,50 @@
+name: AKTUAL 201 editorial agents (planning only)
+on:
+  pull_request:
+    paths:
+      - 'scripts/lib/aktual-original-desk-v1.mjs'
+      - 'scripts/aktual-original-201-desk-plan-v1.mjs'
+      - 'tests/test-aktual-original-201-desks-v1.mjs'
+      - '.github/workflows/aktual-original-201-desks-v1.yml'
+  schedule:
+    - cron: '15 8 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: aktual-original-201-desks
+  cancel-in-progress: false
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run evidence gate tests
+        run: node --test tests/test-aktual-original-201-desks-v1.mjs
+      - name: Refresh topic links only (no copyrighted body or images)
+        if: github.event_name != 'pull_request'
+        env:
+          AKTUAL_COUNTRY_LIMIT: '201'
+          AKTUAL_FEEDS_PER_COUNTRY: '2'
+          AKTUAL_FETCH_CONCURRENCY: '8'
+          AKTUAL_ITEMS_PER_COUNTRY: '20'
+          AKTUAL_WORLD_CACHE_OUT: 'artifacts/aktual-world-topic-leads.json'
+        run: |
+          mkdir -p artifacts
+          node scripts/refresh-aktual-world-headlines-v1.mjs || echo 'No fresh source leads: report will show shortfall.'
+      - name: Plan 201 country desks
+        env:
+          AKTUAL_ORIGINAL_TOPIC_CACHE: 'artifacts/aktual-world-topic-leads.json'
+        run: node scripts/aktual-original-201-desk-plan-v1.mjs
+      - name: Upload private planning report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aktual-original-201-desks
+          path: artifacts/aktual-original-201-desks.json
+          if-no-files-found: error
+          retention-days: 7
