@@ -73,6 +73,9 @@ export function planCountryDesks(registry, cache, now = Date.now()) {
     }
     return {
       agentId:'original-desk-'+c.slug,country:c.nameLocal,countryCode:c.code,lang:c.language,
+      publicationLanguages:[...new Set([c.language,'en'])],
+      englishEditionRequired:true,englishCopyMustBeOriginalOrReviewedTranslation:true,
+      englishPublicationStatus:'PENDING_VERIFIED_ENGLISH_TEXT',
       route:c.url,registeredRssSources:sourceCatalog.length,additionalRssSourcesNeeded:Math.max(0,15-sourceCatalog.length),
       topicTarget:15,availableThematicDiscoveryStreams:topicDiscoveryStreams(c),
       draftTarget:dailyDraftQuota(c),unverifiedTopicLeads:discovered,
