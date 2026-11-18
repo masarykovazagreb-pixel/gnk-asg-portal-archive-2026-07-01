@@ -24,6 +24,10 @@ test('201 unique desks, Croatia tenfold, 15 source requirement is measured',()=>
  assert.equal(new Set(plan.agents.map(x=>x.agentId)).size,201);
  assert.equal(plan.agents.find(x=>x.countryCode==='HR').draftTarget,50);
  assert.equal(plan.agents.find(x=>x.countryCode==='HR').lang,'hr');
+ assert.deepEqual(plan.agents.find(x=>x.countryCode==='HR').publicationLanguages,['hr','en']);
+ assert.equal(plan.agents.every(x=>x.publicationLanguages.includes('en')),true);
+ assert.equal(plan.agents.every(x=>x.englishEditionRequired===true),true);
+ assert.equal(plan.agents.every(x=>x.englishPublicationStatus==='PENDING_VERIFIED_ENGLISH_TEXT'),true);
  assert.equal(plan.countriesBelow15Sources,201);
  assert.equal(plan.agents.find(x=>x.countryCode==='HR').registeredRssSources,11);
 });
