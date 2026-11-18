@@ -12,6 +12,9 @@ test('201 English country editions are reproduced deterministically',()=>{
   assert.equal(run.status,0,run.stderr);
   assert.equal(readdirSync(temp,{withFileTypes:true}).filter(x=>x.isDirectory()).length,201);
   const html=readFileSync(join(temp,'hrvatska','index.html'),'utf8');
+  const directory=readFileSync(join(temp,'index.html'),'utf8');
+  assert.match(directory, /<meta property="og:image" /);
+  assert.match(directory, /<meta name="twitter:card" content="summary_large_image">/);
   const japan=readFileSync(join(temp,'japan','index.html'),'utf8');
   assert.match(html,/<html lang="en">/);
   assert.match(html,/<link rel="canonical" href="https:\/\/gnk-asg.hr\/en\/gnk-aktual\/media\/hrvatska\/">/);
