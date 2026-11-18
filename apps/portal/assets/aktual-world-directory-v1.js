@@ -5,6 +5,8 @@
   const region=document.querySelector('#worldRegion'),language=document.querySelector('#worldLanguage'),filters=document.querySelector('#worldFilters'),reset=document.querySelector('#worldReset');
   if(!input||!rows.length)return;
   const normalize=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/đ/g,'d').trim();
+  // Cache searchable text and section once; avoid repeated Unicode normalization on every keystroke.
+  const indexedRows=rows.map(row=>({row,search:normalize(row.dataset.search),section:row.closest('[data-world-region]')}));
   if(region&&language&&filters&&reset){
     for(const section of sections){
       const option=document.createElement('option');option.value=section.id;
@@ -19,7 +21,7 @@
   }
   function search(){
     const q=normalize(input.value);let n=0;
-    for(const row of rows){const section=row.closest('[data-world-region]');const show=(!q||normalize(row.dataset.search).includes(q))&&(!region?.value||section.id===region.value)&&(!language?.value||row.dataset.language===language.value);row.hidden=!show;if(show)n++;}
+    for(const {row,search:cached,section} of indexedRows){const show=(!q||cached.includes(q))&&(!region?.value||section?.id===region.value)&&(!language?.value||row.dataset.language===language.value);row.hidden=!show;if(show)n++;}
     for(const section of sections)section.hidden=![...section.querySelectorAll('[data-world-country]')].some(row=>!row.hidden);
     if(count)count.textContent=n+' / '+rows.length+' rezultata';if(empty)empty.hidden=n!==0;
   }
