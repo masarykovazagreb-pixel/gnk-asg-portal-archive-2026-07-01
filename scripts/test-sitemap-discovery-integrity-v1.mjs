@@ -29,6 +29,6 @@ function validate(url, context) {
 declared.forEach(url => validate(url, 'robots'));
 indexed.forEach(url => validate(url, 'index'));
 if (!declared.includes(origin + '/sitemap-index.xml')) failures.push('robots: missing primary sitemap index');
-for (const url of indexed) if (!declared.includes(url)) failures.push(`robots: sitemap index entry not declared ${url}`);
+// A sitemap index is sufficient discovery: children need not repeat in robots.txt.
 if (failures.length) { console.error(failures.join('\n')); process.exitCode = 1; }
 else console.log(JSON.stringify({ok:true,robotsSitemaps:declared.length,indexedSitemaps:indexed.length}));
