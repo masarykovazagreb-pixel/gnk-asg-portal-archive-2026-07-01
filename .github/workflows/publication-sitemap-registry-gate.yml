@@ -115,8 +115,58 @@ jobs:
           fi
       - name: Validate published routes, lastmod and canonical registry
         run: python scripts/validate_publication_sitemap_registry_v1.py
-      - name: Verify weekly curation digest is materialized
-        run: node scripts/build-aktual-media-weekly-v1.mjs --check
+      # Unrelated country-directory/SEO PRs must not be held hostage by
+      # missing THIS WEEK's independently curated lifestyle issue.
+      # A weekly-content PR or manual main run still blocks on verification.
+      - name: Verify weekly curation (strict for weekly changes; advisory otherwise)
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" != 'pull_request' ]; then
+            node scripts/build-aktual-media-weekly-v1.mjs --check
+            exit 0
+          fi
+          if [ -z "$BASE_SHA" ]; then
+            echo '::error::Cannot identify PR base; weekly check remains mandatory.'
+            exit 1
+          fi
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          changed=$(git diff --name-only "$BASE_SHA" HEAD)
+          # Source changes to the weekly issue remain strict; no fake seed.
+          if printf '%s\n' "$changed" | grep -Eq '^(scripts/build-aktual-media-weekly(-archive)?-v1\.mjs|scripts/generate-aktual-weekly-cover-assets-v1\.mjs|apps/portal/data/(aktual-weekly[^/]*|aktual-weekly-archives/.*)|apps/portal/gnk-aktual/tjedni/.*|apps/portal/en/gnk-aktual/weekly/.*|tests/test-aktual-media-weekly[^/]*|\.github/workflows/aktual-media-weekly[^/]*)
+      - name: Test route-scoped completeness and protected-route safety
+        run: node scripts/test-editorial-publication-completeness-v1.mjs
+      - name: Enforce editorial publication completeness
+        run: node scripts/audit-editorial-publication-completeness-v1.mjs
+      - name: Validate AKTUAL column archives and editorial feed links
+        run: python scripts/validate_aktual_columns.py
+      - name: Verify column archive lifecycle, approved schedule and index freshness
+        run: |
+          node scripts/test-aktual-columns-lifecycle-v1.mjs
+          node scripts/build-aktual-columns-index-v1.mjs --check
+          node scripts/audit-aktual-columns-lifecycle-v1.mjs
+      - name: Enforce production workflow schedule allowlist
+        run: python scripts/validate-workflow-schedule-allowlist-v2.py
+      - name: Enforce exact-SHA release-race hygiene
+        run: python scripts/validate-release-race-hygiene-v1.py
+      - name: Upload validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: publication-sitemap-registry-${{ github.sha }}
+          path: artifacts/publication-sitemap-registry/
+          if-no-files-found: error
+          retention-days: 1
+; then
+            node scripts/build-aktual-media-weekly-v1.mjs --check
+          elif ! node scripts/build-aktual-media-weekly-v1.mjs --check; then
+            echo '::warning::Missing current verified weekly lifestyle issue; unrelated PR can proceed, but weekly publication remains blocked.'
+            echo '### Advisory: Weekly lifestyle curation is incomplete' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Unrelated changes are eligible for review; no unverified weekly issue is published.' >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Test route-scoped completeness and protected-route safety
         run: node scripts/test-editorial-publication-completeness-v1.mjs
       - name: Enforce editorial publication completeness
