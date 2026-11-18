@@ -52,3 +52,32 @@ test('build includes only real generated URLs and no fake headlines',()=>{
     for (const city of src.cities) assert.ok(sitemap.includes(`/grad/${city.slug}/`));
   } finally {fs.rmSync(tmp,{recursive:true,force:true});}
 });
+
+
+test('AKTUAL network performance: only above-fold lead imagery is eager',()=>{
+ const html=fs.readFileSync('apps/portal/gnk-aktual/index.html','utf8');
+ const images=[...html.matchAll(/<img\b[^>]*>/g)].map(m=>m[0]);
+ assert.ok(images.length>=60);
+ const eager=images.filter(tag=>tag.includes('loading="eager"'));
+ assert.equal(eager.length,2,'only atlas hero and Croatia-priority Zagreb card may be eager');
+ assert.match(eager[0],/\/assets\/atlas\/aktual-media-atlas-1600\.webp/);
+ assert.match(eager[1],/\/assets\/izdanja\/zagreb-440\.webp/);
+ for(const city of ['beograd','sarajevo','tokio','peking']){
+  const tag=images.find(s=>s.includes('/assets/izdanja/'+city+'-440.webp'));
+  assert.ok(tag && tag.includes('loading="lazy"'),city+' must load near viewport');
+ }
+});
+test('AKTUAL 201-country index retains crawlable links and progressive rendering',()=>{
+ const html=fs.readFileSync('apps/portal/gnk-aktual/media/index.html','utf8');
+ const styles=fs.readFileSync('apps/portal/assets/aktual-world-directory-v1.css','utf8');
+ const shared=fs.readFileSync('apps/portal/assets/aktual-world-page-a11y-v1.css','utf8');
+ const script=fs.readFileSync('apps/portal/assets/aktual-world-directory-v1.js','utf8');
+ assert.equal((html.match(/data-world-country/g)||[]).length,201);
+ assert.match(html,/aktual-world-directory-v1\.css\?v=20261118-perf1/);
+ assert.match(html,/aktual-world-directory-v1\.js\?v=20261118-perf1/);
+ assert.match(styles,/\.aw-region\{content-visibility:auto;/);
+ assert.match(shared,/main#worldContent>\.section\{content-visibility:auto;/);
+ assert.match(script,/indexedRows=rows\.map/);
+ assert.doesNotMatch(script,/normalize\(row\.dataset\.search\)\.includes\(q\)/);
+ assert.match(html,/\/radio\//);
+});

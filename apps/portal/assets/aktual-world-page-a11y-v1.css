@@ -9,3 +9,6 @@ main#worldContent :where(a, button, summary, input, select, textarea):focus-visi
 @media (max-width: 480px) {
   main#worldContent :where(h1, h2) { overflow-wrap: anywhere; }
 }
+
+/* Shared across all country pages: defer offscreen source-section paint, preserving HTML and links. */
+@supports (content-visibility:auto){main#worldContent>.section{content-visibility:auto;contain-intrinsic-size:auto 260px}}
