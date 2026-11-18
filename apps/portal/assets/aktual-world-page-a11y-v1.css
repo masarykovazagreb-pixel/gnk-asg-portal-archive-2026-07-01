@@ -12,3 +12,18 @@ main#worldContent :where(a, button, summary, input, select, textarea):focus-visi
 
 /* Shared country edition optimisation: offscreen source sections skip paint, while content stays indexable and accessible. */
 @supports (content-visibility:auto){main#worldContent>.section{content-visibility:auto;contain-intrinsic-size:auto 260px}}
+
+
+/* AKTUAL DESIGN VARIANTS V2 — featured / magazine / briefing / reference / radio */
+/* Upgrade legacy country source links while retaining their verified URLs. */
+#worldContent .sources{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px;margin:20px 0}
+#worldContent .sources>a{grid-column:span 4;min-width:0;overflow-wrap:anywhere;display:flex;align-items:center;justify-content:flex-start;min-height:72px;padding:13px 16px;background:linear-gradient(135deg,#142a40,#0a1829);border:1px solid #38516c;border-radius:13px;font-weight:700;text-decoration:none;transition:border-color .16s ease,transform .16s ease}
+#worldContent .sources>a:first-child{grid-column:span 8;min-height:106px;border-color:#c6a65e;background:radial-gradient(circle at 94% 8%,rgba(229,193,117,.15),transparent 50%),linear-gradient(135deg,#213c54,#0b1a2e);font:700 clamp(18px,2.4vw,26px)/1.24 Georgia,serif;color:#ffe2a0}
+#worldContent .sources>a:nth-child(5n+3),#worldContent .sources>a:nth-child(5n+4){grid-column:span 6}
+#worldContent .sources>a:only-child{grid-column:1/-1;min-height:72px}
+#worldContent .sources>a:hover,#worldContent .sources>a:focus-visible{border-color:#f0cf8d;transform:translateY(-2px)}
+#worldContent .tags a{display:inline-flex;align-items:center;min-height:34px}
+@media(max-width:850px){#worldContent .sources>a{grid-column:span 6}#worldContent .sources>a:first-child{grid-column:span 12}}
+@media(max-width:540px){#worldContent .sources{grid-template-columns:1fr}#worldContent .sources>a,#worldContent .sources>a:first-child,#worldContent .sources>a:nth-child(5n+3),#worldContent .sources>a:nth-child(5n+4){grid-column:1/-1;min-height:62px}#worldContent .sources>a:first-child{font-size:22px}}
+@media(prefers-reduced-motion:reduce){#worldContent .sources>a{transition:none}#worldContent .sources>a:hover{transform:none}}
+@media(forced-colors:active){#worldContent .sources>a{border:1px solid CanvasText}}

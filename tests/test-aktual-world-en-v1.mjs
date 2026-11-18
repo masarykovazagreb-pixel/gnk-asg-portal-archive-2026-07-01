@@ -47,3 +47,25 @@ test('201 Croatian directories reciprocate English and expose a visible language
   assert.ok(page.includes('href="'+english+'" lang="en" hreflang="en">English</a>'),c.slug+' switch');
  }
 });
+
+
+test('Premium editorial design maintains five distinct visual modules in HR + EN without claiming live stories',()=>{
+  const en=readFileSync('apps/portal/assets/aktual-world-premium-en-v1.css','utf8');
+  const hr=readFileSync('apps/portal/assets/aktual-world-page-a11y-v1.css','utf8');
+  for(const css of [en,hr]){
+    assert.ok(css.includes('AKTUAL DESIGN VARIANTS V2'),'visual contract marker');
+    assert.ok(css.includes('prefers-reduced-motion:reduce'),'reduced-motion contract');
+    assert.ok(css.includes('forced-colors:active'),'high-contrast contract');
+  }
+  assert.ok(en.includes('.am-source-grid>.am-source-card:first-child'),'featured source type');
+  assert.ok(en.includes('.am-source-grid>.am-source-card:nth-child(5n+3)'),'magazine card type');
+  assert.ok(en.includes('.am-source-grid>.am-source-card:only-child'),'single reference type');
+  assert.ok(en.includes('.am-directory-grid>li:first-child'),'featured Croatian directory type');
+  assert.ok(en.includes('.am-radio .am-button'),'radio CTA type');
+  assert.ok(hr.includes('#worldContent .sources>a:first-child'),'HR featured source type');
+  assert.ok(hr.includes('#worldContent .sources>a:nth-child(5n+3)'),'HR magazine source type');
+  assert.match(en, /@media\(max-width:620px\)/);
+  assert.match(hr, /@media\(max-width:540px\)/);
+  const croatia=readFileSync('apps/portal/en/gnk-aktual/media/hrvatska/index.html','utf8');
+  assert.ok(croatia.includes('Source catalogue — not a live article feed'),'no fake live status');
+});
