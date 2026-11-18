@@ -35,3 +35,15 @@ test('committed EN pages match generator (no missing public directory)',()=>{
  const run=spawnSync(process.execPath,['scripts/build-aktual-world-en-v1.mjs','--check'],{encoding:'utf8'});
  assert.equal(run.status,0,run.stderr);
 });
+
+test('201 Croatian directories reciprocate English and expose a visible language switch',()=>{
+ for(const c of registry.countries){
+  const page=readFileSync('apps/portal/gnk-aktual/media/'+c.slug+'/index.html','utf8');
+  const local='https://gnk-asg.hr/gnk-aktual/media/'+c.slug+'/';
+  const english='https://gnk-asg.hr/en/gnk-aktual/media/'+c.slug+'/';
+  assert.equal(page.split('<link rel="alternate" hreflang="hr" href="'+local+'">').length-1,1,c.slug+' HR');
+  assert.equal(page.split('<link rel="alternate" hreflang="en" href="'+english+'">').length-1,1,c.slug+' EN');
+  assert.equal(page.split('<link rel="alternate" hreflang="x-default" href="'+english+'">').length-1,1,c.slug+' default');
+  assert.ok(page.includes('href="'+english+'" lang="en" hreflang="en">English</a>'),c.slug+' switch');
+ }
+});
