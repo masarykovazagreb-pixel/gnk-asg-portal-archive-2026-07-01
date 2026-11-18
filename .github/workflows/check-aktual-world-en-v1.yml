@@ -1,0 +1,25 @@
+name: AKTUAL World — 201 English edition parity
+on:
+  pull_request:
+    paths:
+      - 'scripts/build-aktual-world-en-v1.mjs'
+      - 'tests/test-aktual-world-en-v1.mjs'
+      - 'apps/portal/en/gnk-aktual/media/**'
+      - 'apps/portal/assets/aktual-world-premium-en-v1.css'
+      - '.github/workflows/check-aktual-world-en-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  country-parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check code and all 201 emitted pages
+        run: |
+          node --check scripts/build-aktual-world-en-v1.mjs
+          node --test tests/test-aktual-world-en-v1.mjs
