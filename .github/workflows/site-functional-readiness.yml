@@ -138,7 +138,7 @@ jobs:
           bash -n scripts/deploy-direct-operator-with-retry-v1.sh
 
       - name: SEO integrity
-        run: node scripts/audit-seo-entity-integrity-v1.mjs
+        run: |\n          node scripts/audit-seo-entity-integrity-v1.mjs\n          node scripts/test-sitemap-discovery-integrity-v1.mjs
 
       - name: Static page integrity
         env:
