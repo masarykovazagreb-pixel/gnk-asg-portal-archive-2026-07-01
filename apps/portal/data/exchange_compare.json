@@ -64,14 +64,15 @@
     }
   ],
   "disclaimer": "Comparative informational display of public ticker data; not an exchange recommendation or order-execution service.",
-  "checked_at": "2026-11-18T16:21:59+00:00",
+  "checked_at": "2026-11-19T16:30:15+00:00",
   "updated_at": "2026-11-18T16:21:59+00:00",
-  "last_attempt_at": "2026-11-18T16:21:59+00:00",
+  "last_attempt_at": "2026-11-19T16:30:15+00:00",
   "last_successful_refresh_at": "2026-11-18T16:21:59+00:00",
   "heartbeat_policy": "checked_at advances on every canonical writer attempt; updated_at advances only on successful upstream refresh",
   "stale_safe": true,
-  "data_status": "fresh",
-  "status": "ok",
+  "data_status": "stale_previous_values_preserved",
+  "status": "partial",
   "writer_contract": "refresh-index-live-data",
-  "cadence": "twice daily via canonical Refresh index live data workflow"
+  "cadence": "twice daily via canonical Refresh index live data workflow",
+  "refresh_error": "HTTP Error 429: Too Many Requests"
 }
