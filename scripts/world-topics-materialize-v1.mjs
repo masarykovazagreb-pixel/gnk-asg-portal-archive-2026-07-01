@@ -4,10 +4,6 @@ import { execFileSync } from 'node:child_process';
 
 import { SITE, WEBSITE_ID, ORGANIZATION_ID } from './lib/editorial-attribution-v1.mjs';
 
-const website = {
-  '@context': 'https://schema.org', '@type': 'WebSite', '@id': WEBSITE_ID,
-  url: `${SITE}/`, name: 'GNK ASG', inLanguage: ['hr', 'en'], publisher: { '@id': ORGANIZATION_ID },
-};
 const ORGANIZATION_AUTHOR='GNK ASG Intelligence Desk';
 const CHART_DIMS={"chart01_ai_governance.webp": {"w": 1120, "h": 700}, "chart01b_ai_penalties.webp": {"w": 1120, "h": 700}, "chart02_minerals.webp": {"w": 1120, "h": 700}, "chart02b_cobalt_children.webp": {"w": 1120, "h": 700}, "chart03_debt.webp": {"w": 1120, "h": 700}, "chart03b_china_lending.webp": {"w": 1120, "h": 700}, "chart04_demographics.webp": {"w": 1120, "h": 700}, "chart04b_korea_fertility.webp": {"w": 1120, "h": 700}, "chart05_supplychain.webp": {"w": 1120, "h": 700}, "chart05b_vietnam_paradox.webp": {"w": 1120, "h": 700}, "chart06_water.webp": {"w": 1120, "h": 700}, "chart06b_israel_water.webp": {"w": 1120, "h": 700}, "chart07_antibiotics.webp": {"w": 1120, "h": 700}, "chart07b_amr_age.webp": {"w": 1120, "h": 700}, "chart08_space.webp": {"w": 1120, "h": 700}, "chart08b_starlink_share.webp": {"w": 980, "h": 840}, "chart09_food.webp": {"w": 1120, "h": 700}, "chart09b_deere_results.webp": {"w": 1260, "h": 700}, "chart10_cyber.webp": {"w": 1120, "h": 700}, "chart10b_solarwinds.webp": {"w": 1120, "h": 700}};
 const SRC_DIR=resolve('/tmp/worldtopics-release');
@@ -77,6 +73,10 @@ function splitTitle(text){const lines=text.replace(/\r/g,'').split('\n');const t
 function descFrom(body){for(const b of body.split(/\n\s*\n/)){let s=b.replace(/[#*_>`\[\]()]/g,' ').replace(/https?:\/\/\S+/g,'').replace(/\s+/g,' ').trim();if(s.length>80)return s.length>205?s.slice(0,202).replace(/\s+\S*$/,'')+'…':s;}return ''}
 
 function pageFor(t,lang){
+  const website = {
+    '@context': 'https://schema.org', '@type': 'WebSite', '@id': WEBSITE_ID,
+    url: `${SITE}/`, name: 'GNK ASG', inLanguage: ['hr', 'en'], publisher: { '@id': ORGANIZATION_ID },
+  };
   const isHr=lang==='hr';
   const file=resolve(SRC_DIR,isHr?t.hr:t.en);
   const [title,body]=splitTitle(readFileSync(file,'utf8'));

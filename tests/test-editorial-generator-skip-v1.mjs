@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { SITE, WEBSITE_ID, ORGANIZATION_ID } from '../scripts/lib/editorial-attribution-v1.mjs';
 
 test('scheduled editorial generator renders a keyboard skip link and target',()=>{
  const source=fs.readFileSync('scripts/editorial-publish-scheduled-v1.mjs','utf8');
@@ -18,7 +19,7 @@ test('world topics generator renders localized skip links',()=>{
  const src=fs.readFileSync('scripts/world-topics-materialize-v1.mjs','utf8');
  const start=src.indexOf('function pageFor('),end=src.indexOf('\nunpack();',start);assert.ok(start>=0&&end>start);
  const fn=vm.runInNewContext(`(${src.slice(start,end)})`,{
-  resolve:(...x)=>x.join('/'),SRC_DIR:'/tmp',readFileSync:()=> '# Title\nBody',splitTitle:()=>['Title','Body'],descFrom:()=> 'Description',coverFor:()=>({url:'https://example.com/image.webp',image:'/image.webp',alt:'Illustration'}),SITE:'https://gnk-asg.hr',ORGANIZATION_AUTHOR:'Desk',mdToHtml:()=>'<p>Body</p>',attr:String,esc:String
+  resolve:(...x)=>x.join('/'),SRC_DIR:'/tmp',readFileSync:()=> '# Title\nBody',splitTitle:()=>['Title','Body'],descFrom:()=> 'Description',coverFor:()=>({url:'https://example.com/image.webp',image:'/image.webp',alt:'Illustration'}),SITE,WEBSITE_ID,ORGANIZATION_ID,ORGANIZATION_AUTHOR:'Desk',mdToHtml:()=>'<p>Body</p>',attr:String,esc:String
  });
  const topic={hr:'hr.md',en:'en.md',hrSlug:'primjer',enSlug:'example',hrSection:'Svijet',enSection:'World',charts:['x.webp','y.webp'],tags:['Test'],kw:['test']};
  for(const [lang,label] of [['hr','Preskoči na sadržaj'],['en','Skip to content']]){
@@ -26,5 +27,7 @@ test('world topics generator renders localized skip links',()=>{
   assert.ok(html.includes('<link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">'));
   assert.ok(html.includes(`<body><a class="skip" href="#editorialContent">${label}</a>`));
   assert.ok(html.includes('<main id="editorialContent" tabindex="-1" class="editorial-wrap article">'));
+  const schemas = [...html.matchAll(/<script type="application\/ld\+json">([^<]+)<\/script>/g)].map(([, json]) => JSON.parse(json));
+  assert.deepEqual(schemas.filter((schema) => schema['@type'] === 'WebSite').map((schema) => schema['@id']), [WEBSITE_ID]);
  }
 });
