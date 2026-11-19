@@ -1,0 +1,25 @@
+name: AKTUAL World — 201 English country pages QA
+on:
+  pull_request:
+    paths:
+      - 'scripts/build-aktual-world-v1.mjs'
+      - 'scripts/lib/aktual-world-english-v1.mjs'
+      - 'tests/test-aktual-world-v1.mjs'
+      - '.github/workflows/aktual-world-english-qa-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and 201 bilingual country build tests
+        run: |
+          node --check scripts/build-aktual-world-v1.mjs
+          node --check scripts/lib/aktual-world-english-v1.mjs
+          node --test tests/test-aktual-world-v1.mjs

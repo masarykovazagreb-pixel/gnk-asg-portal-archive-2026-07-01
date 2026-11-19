@@ -23,6 +23,7 @@ import { refreshTag } from '../apps/shared/refresh-tag-v1.mjs';
 import { impressumBlock } from '../apps/shared/impressum-v1.mjs';
 import { externalStationSection } from '../apps/shared/aktual-external-stations-v1.mjs';
 import { countryNavigation, cityNavigation } from '../apps/shared/aktual-world-navigation-v1.mjs';
+import { buildCountryEnglishPage,addEnglishCountrySwitch,countrySitemapEntries } from './lib/aktual-world-english-v1.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
@@ -309,7 +310,7 @@ function buildSitemap() {
   // Include only routes whose HTML is generated below.
   // Country pages
   for (const c of data.countries) {
-    urls.push(`  <url><loc>${escXml(`${BASE}media/${c.slug}/`)}</loc></url>`);
+    urls.push(...countrySitemapEntries(c,BASE));
   }
 
 
@@ -317,7 +318,7 @@ function buildSitemap() {
     urls.push(`  <url><loc>${escXml(`${BASE}grad/${city.slug}/`)}</loc></url>`);
   }
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls.join('\n')}
 </urlset>`;
 }
@@ -344,7 +345,8 @@ function updateHeadlineBlock(path, generated, pattern) {
 const writes = [];
 for (const country of data.countries) {
   const dir = join(OUT, 'media', country.slug), page = join(dir, 'index.html');
-  writes.push([page, updateHeadlineBlock(page, buildCountryPage(country), countryBlock)]);
+  writes.push([page, addEnglishCountrySwitch(updateHeadlineBlock(page, buildCountryPage(country), countryBlock),country,BASE)]);
+  writes.push([join(dir,'en','index.html'),buildCountryEnglishPage(country,BASE)]);
   writes.push([join(dir, 'feed.xml'), buildCountryRss(country)]);
 }
 for (const city of data.cities) {
