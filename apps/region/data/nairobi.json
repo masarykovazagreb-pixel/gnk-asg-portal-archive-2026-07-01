@@ -4,7 +4,7 @@
   "lang": "en",
   "city": "Nairobi",
   "country": "Kenija",
-  "updatedAt": "2026-11-19T14:45:15.317Z",
+  "updatedAt": "2026-11-19T21:00:04.352Z",
   "sources": [
     {
       "id": "capitalfm",
@@ -14,19 +14,20 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-19T14:44:56.497Z"
+      "checkedAt": "2026-11-19T20:59:43.244Z"
     },
     {
       "id": "nation",
       "name": "Daily Nation",
-      "url": "https://nation.africa/kenya/rss.xml",
-      "ok": true,
-      "fetched": 25,
+      "url": "https://nation.africa/kenya/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://nation.africa/kenya/rss: HTTP 403"
+        "https://nation.africa/kenya/rss: HTTP 403",
+        "https://nation.africa/kenya/rss.xml: HTTP 404"
       ],
-      "checkedAt": "2026-11-19T14:44:57.369Z"
+      "checkedAt": "2026-11-19T20:59:44.827Z"
     },
     {
       "id": "standard",
@@ -36,7 +37,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-19T14:44:57.924Z"
+      "checkedAt": "2026-11-19T20:59:45.400Z"
     },
     {
       "id": "star",
@@ -48,7 +49,7 @@
       "errors": [
         "https://www.the-star.co.ke/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-19T14:44:59.713Z"
+      "checkedAt": "2026-11-19T20:59:47.511Z"
     },
     {
       "id": "businessdaily",
@@ -60,7 +61,7 @@
       "errors": [
         "https://www.businessdailyafrica.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-19T14:45:00.570Z"
+      "checkedAt": "2026-11-19T20:59:48.297Z"
     },
     {
       "id": "citizen",
@@ -72,7 +73,7 @@
       "errors": [
         "https://www.citizen.digital/rss: HTTP 400"
       ],
-      "checkedAt": "2026-11-19T14:45:08.930Z"
+      "checkedAt": "2026-11-19T20:59:57.808Z"
     },
     {
       "id": "kbc",
@@ -82,7 +83,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-19T14:45:14.149Z"
+      "checkedAt": "2026-11-19T21:00:03.157Z"
     },
     {
       "id": "eastafrican",
@@ -94,10 +95,216 @@
       "errors": [
         "https://www.theeastafrican.co.ke/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-19T14:45:15.317Z"
+      "checkedAt": "2026-11-19T21:00:04.352Z"
     }
   ],
   "items": [
+    {
+      "slug": "nairobi-2026-11-19-standard-ruto-sustains-attacks-on-gachagua-dares-c1ed4f",
+      "title": "Ruto sustains attacks on Gachagua, dares Opposition to name 2027 flagbearer",
+      "summary": "President William Ruto has challenged Opposition leaders to name their presidential candidate and unveil a clear political agenda.",
+      "date": "2026-11-19T17:38:59.000Z",
+      "url": "https://www.standardmedia.co.ke/article/2001562646/ruto-sustains-attacks-on-gachagua-dares-opposition-to-name-2027-flagbearer",
+      "source": "standard",
+      "sourceName": "The Standard",
+      "categories": [],
+      "author": "Standard Digital",
+      "theme": "politika",
+      "image": "https://cdn.standardmedia.co.ke/images/articles/thumbnails/GM53E9YA0B5xuTgKlYbtSrnTx3mjMuZuJWOj7xxY.jpg",
+      "imageAlt": "Ruto sustains attacks on Gachagua, dares Opposition to name 2027 flagbearer",
+      "addedAt": "2026-11-19T20:59:45.401Z"
+    },
+    {
+      "slug": "nairobi-2026-11-19-kbc-ruto-opposition-preparing-to-blame-iebc-for-13bb2a",
+      "title": "Ruto: Opposition preparing to blame IEBC for 2027 election loss",
+      "summary": "The opposition is preparing to blame the Independent Electoral and Boundaries Commission (IEBC) for losing the 2027 General Election, President William Ruto has said. The President pointed out that they were not ready for next year’s election, saying they had yet to pick a candidate or come up with any agenda. He told the opposition […] The post Ruto: Opposition preparing to blame IEBC for 2027 election loss appeared first on KBC Digital .",
+      "date": "2026-11-19T17:16:55.000Z",
+      "url": "https://www.kbc.co.ke/ruto-opposition-preparing-to-blame-iebc-for-2027-election-loss/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Local News",
+        "IEBC",
+        "OPPOSITION",
+        "President William Ruto"
+      ],
+      "author": "PCS",
+      "theme": "politika",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/Ruto-1.jpeg",
+      "imageAlt": "Ruto: Opposition preparing to blame IEBC for 2027 election loss",
+      "addedAt": "2026-11-19T21:00:03.158Z"
+    },
+    {
+      "slug": "nairobi-2026-11-19-capitalfm-kenya-red-cross-boosts-flood-response-d35cd4",
+      "title": "Kenya Red Cross boosts flood response capacity with 31 boat engines",
+      "summary": "NAIROBI, Kenya Nov 19 – The Kenya Red Cross has strengthened its flood response capacity following the donation of 31 outboard boat engines by the International Committee of the Red…",
+      "date": "2026-11-19T17:15:00.000Z",
+      "url": "https://capitalfm.africa/kenya-red-cross-boosts-flood-response-capacity-with-31-boat-engines/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "Counties",
+        "News",
+        "International Committee of Red Cross",
+        "kenya"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "potres",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/Kenya-Red-Cross-donating-31-outboard-boat-engines-to-the-Kenya-Red-Cross.jpg",
+      "imageAlt": "Kenya Red Cross boosts flood response capacity with 31 boat engines",
+      "addedAt": "2026-11-19T20:59:43.244Z"
+    },
+    {
+      "slug": "nairobi-2026-11-19-kbc-four-arrested-over-attack-on-natembeya-s-785f72",
+      "title": "Four arrested over attack on Natembeya’s aide",
+      "summary": "Detectives have arrested four suspects in connection with an attack on Trans Nzoia Governor George Natembeya’s Communications Officer, Amos Masika Boaz, popularly known as Hammer Hammer. Masika was hacked several times with machetes after two masked assailants ambushed him at his home in Orombe Farm, Trans Nzoia East Sub-County, on the night of November 16, […] The post Four arrested over attack on Natembeya’s aide appeared first on KBC Digital .",
+      "date": "2026-11-19T17:00:01.000Z",
+      "url": "https://www.kbc.co.ke/four-arrested-over-attack-on-natembeyas-aide/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "County News",
+        "Amos Masika Boaz",
+        "DCI",
+        "Machete attack"
+      ],
+      "author": "KBC Digital",
+      "theme": "ai",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/dci.jpeg",
+      "imageAlt": "Four arrested over attack on Natembeya’s aide",
+      "addedAt": "2026-11-19T21:00:03.158Z"
+    },
+    {
+      "slug": "nairobi-2026-11-19-capitalfm-president-ruto-opens-naitiri-market-257337",
+      "title": "President Ruto Opens Naitiri Market, Launches Bokoli Project to Boost Trade and Jobs in Bungoma",
+      "summary": "The newly commissioned Naitiri ESP Market, developed under a KSh117.21 million contract, is fully complete and provides 200 modern trading stalls with additional space for 150 traders outside the main market building.",
+      "date": "2026-11-19T16:40:33.000Z",
+      "url": "https://capitalfm.africa/president-ruto-opens-naitiri-market-launches-bokoli-project-to-boost-trade-and-jobs-in-bungoma/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News"
+      ],
+      "author": "Spencer Walela",
+      "theme": "ekonomija",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/5D5D2263-B6FE-46FE-9CFC-33019746866E-1200x630.png",
+      "imageAlt": "President Ruto Opens Naitiri Market, Launches Bokoli Project to Boost Trade and Jobs in Bungoma",
+      "addedAt": "2026-11-19T20:59:43.244Z"
+    },
+    {
+      "slug": "nairobi-2026-11-19-capitalfm-kindiki-cites-ksh3-5bn-pledge-to-address-321a46",
+      "title": "Kindiki cites KSh3.5bn pledge to address tea farmers’ bonus concerns",
+      "summary": "Kindiki also highlighted ongoing infrastructure investments in Kericho, including KSh55 billion allocated for road construction and KSh14 billion earmarked for affordable housing and modern markets.",
+      "date": "2026-11-19T16:40:00.000Z",
+      "url": "https://capitalfm.africa/kindiki-cites-ksh3-5bn-pledge-to-address-tea-farmers-bonus-concerns/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "Business",
+        "News",
+        "business",
+        "Kithure Kindiki"
+      ],
+      "author": "PRESIDENTIAL COMMUNICATION SERVICE",
+      "theme": "ekonomija",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/10/kindiki-21-1200x630.jpeg",
+      "imageAlt": "Kindiki cites KSh3.5bn pledge to address tea farmers’ bonus concerns",
+      "addedAt": "2026-11-19T20:59:43.244Z"
+    },
+    {
+      "slug": "nairobi-2026-11-19-kbc-koome-launches-new-plan-to-strengthen-court-25de0e",
+      "title": "Koome launches new plan to strengthen court-annexed mediation",
+      "summary": "Chief Justice Martha Koome has launched three new instruments to strengthen court-annexed mediation in Kenya as the Judiciary marks ten years since the introduction of the alternative dispute resolution mechanism. The Judiciary Mediation Action Plan, Mediation Service Charter and Mediation Case Digest are expected to strengthen service delivery, transparency and accountability while guiding the next […] The post Koome launches new plan to strengthen court-annexed mediation appeared first on KBC Digital .",
+      "date": "2026-11-19T16:38:34.000Z",
+      "url": "https://www.kbc.co.ke/koome-launches-new-plan-to-strengthen-court-annexed-mediation/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "County News",
+        "CJ Martha Koome",
+        "Court Annexed Mediation",
+        "Judiciary"
+      ],
+      "author": "Prudence Wanza",
+      "theme": "drustvo",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/CJ.jpeg",
+      "imageAlt": "Koome launches new plan to strengthen court-annexed mediation",
+      "addedAt": "2026-11-19T21:00:03.158Z"
+    },
+    {
+      "slug": "nairobi-2026-11-19-kbc-president-ruto-opens-naitiri-market-5703bb",
+      "title": "President Ruto opens Naitiri Market, launches Bokoli Project to boost trade, jobs in Bungoma",
+      "summary": "President William Ruto has officially commissioned the completed Naitiri Economic Stimulus Programme (ESP) Market in Tongaren Constituency and laid the foundation stone for the Bokoli ESP Market in Webuye West Constituency, Bungoma County, providing traders with modern facilities to conduct business, increase their earnings and support the growth of the local economy. The market modernisation […] The post President Ruto opens Naitiri Market, launches Bokoli Project to boost trade, jobs in Bungoma appeared first on KBC Digital .",
+      "date": "2026-11-19T16:27:28.000Z",
+      "url": "https://www.kbc.co.ke/president-ruto-opens-naitiri-market-launches-bokoli-project-to-boost-trade-jobs-in-bungoma/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "Business",
+        "Economy",
+        "Local Business"
+      ],
+      "author": "KBC Digital",
+      "theme": "ekonomija",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/IMG-20261119-WA0024.jpg",
+      "imageAlt": "President Ruto opens Naitiri Market, launches Bokoli Project to boost trade, jobs in Bungoma",
+      "addedAt": "2026-11-19T21:00:03.158Z"
+    },
+    {
+      "slug": "nairobi-2026-11-19-capitalfm-iebc-admits-protocol-lapses-after-uda-a55755",
+      "title": "IEBC admits protocol lapses after UDA threatens boycott of meetings",
+      "summary": "IEBC Commissioner Alutalala Mukhwana has apologised to political party leaders over disruptions during a consultative meeting, promising tighter security and restricted access after UDA chairperson Cecily Mbarire threatened to boycott future engagements.",
+      "date": "2026-11-19T16:20:00.000Z",
+      "url": "https://capitalfm.africa/iebc-admits-protocol-lapses-after-uda-threatens-boycott-of-meetings/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "Alutalala Mukhwana",
+        "Cecily Mbarire",
+        "Edwin Sifuna"
+      ],
+      "author": "IRENE MWANGI",
+      "theme": "sigurnost",
+      "image": "https://capitalfm.africa/wp-content/uploads/2026/11/iebc-party-meeting-1200x630.jpeg",
+      "imageAlt": "IEBC admits protocol lapses after UDA threatens boycott of meetings",
+      "addedAt": "2026-11-19T20:59:43.245Z"
+    },
+    {
+      "slug": "nairobi-2026-11-19-capitalfm-koome-calls-for-stricter-accreditation-01c923",
+      "title": "Koome calls for stricter accreditation standards for mediators",
+      "summary": "Koome emphasised that professionalising mediation should not restrict participation to lawyers, noting that the practice draws expertise from diverse fields, including psychology, business, banking and engineering.",
+      "date": "2026-11-19T15:25:09.000Z",
+      "url": "https://capitalfm.africa/koome-calls-for-stricter-accreditation-standards-for-mediators/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "News",
+        "Martha Koome"
+      ],
+      "author": "CORRESPONDENT",
+      "theme": "drustvo",
+      "image": "https://capitalfm.africa/wp-content/uploads/news/2026/02/CJ-KOOME-COA-INDUCTION-scaled.jpg",
+      "imageAlt": "Koome calls for stricter accreditation standards for mediators",
+      "addedAt": "2026-11-19T20:59:43.245Z"
+    },
+    {
+      "slug": "nairobi-2026-11-19-kbc-africa-could-win-climate-transition-and-43a643",
+      "title": "Africa could win climate transition and still lose the economy",
+      "summary": "As world leaders and policymakers convene for COP31 in Antalya, Türkiye, from 9–20 November 2026, one question that should shape Africa’s engagement with the global climate agenda is how much of the economic value generated by the green transition will Africa actually own, produce and retain? The success of Africa’s green transition should be measured […] The post Africa could win climate transition and still lose the economy appeared first on KBC Digital .",
+      "date": "2026-11-19T14:54:06.000Z",
+      "url": "https://www.kbc.co.ke/africa-could-win-climate-transition-and-still-lose-the-economy/",
+      "source": "kbc",
+      "sourceName": "KBC",
+      "categories": [
+        "OPINIONS"
+      ],
+      "author": "Sellah Bogonko and Dr. Kindie Fantaye",
+      "theme": "ekonomija",
+      "image": "https://www.kbc.co.ke/wp-content/uploads/2026/07/SELLAH-BOGONKO.jpeg",
+      "imageAlt": "Africa could win climate transition and still lose the economy",
+      "addedAt": "2026-11-19T21:00:03.158Z"
+    },
     {
       "slug": "nairobi-2026-11-19-kbc-government-speeding-up-needed-interventions-91305e",
       "title": "Government speeding up needed interventions to improve tea bonuses",
@@ -117,6 +324,26 @@
       "image": "https://www.kbc.co.ke/wp-content/uploads/2026/11/HXfqyJ6WMAECfhy.jpg",
       "imageAlt": "Government speeding up needed interventions to improve tea bonuses",
       "addedAt": "2026-11-19T14:45:14.150Z"
+    },
+    {
+      "slug": "nairobi-2026-11-19-capitalfm-ruto-mocks-opposition-over-iebc-partiality-144249",
+      "title": "Ruto mocks opposition over IEBC partiality claims",
+      "summary": "\"The IEBC does not have the votes. The votes belong to the people,\" Ruto said.",
+      "date": "2026-11-19T14:34:00.000Z",
+      "url": "https://capitalfm.africa/ruto-mocks-opposition-over-iebc-partiality-claims/?utm_source=rss&utm_medium=feed&utm_campaign=feed-news",
+      "source": "capitalfm",
+      "sourceName": "Capital FM Kenya",
+      "categories": [
+        "Elections",
+        "News",
+        "Politics",
+        "2027 General Elections"
+      ],
+      "author": "CAPITAL REPORTER",
+      "theme": "politika",
+      "image": "https://capitalfm.africa/wp-content/uploads/news/2022/01/ruto-.jpeg",
+      "imageAlt": "Ruto mocks opposition over IEBC partiality claims",
+      "addedAt": "2026-11-19T20:59:43.245Z"
     },
     {
       "slug": "nairobi-2026-11-19-capitalfm-uda-threatens-to-boycott-iebc-meetings-as-107620",
