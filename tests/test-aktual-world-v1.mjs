@@ -49,6 +49,9 @@ test('build includes only real generated URLs and no fake headlines',()=>{
     }
     const sitemap=fs.readFileSync(path.join(tmp,'media','sitemap.xml'),'utf8');
     assert.equal((sitemap.match(/<url>/g)||[]).length,211);
+    for (const country of src.countries) {
+      assert.ok(sitemap.includes(`/media/${country.slug}/`), `country missing from sitemap: ${country.slug}`);
+    }
     for (const city of src.cities) assert.ok(sitemap.includes(`/grad/${city.slug}/`));
   } finally {fs.rmSync(tmp,{recursive:true,force:true});}
 });
