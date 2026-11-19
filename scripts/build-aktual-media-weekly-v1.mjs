@@ -32,9 +32,31 @@ if(fs.existsSync(CURATION)){
     if(c&&c.issue_week===issueWeek&&Array.isArray(c.items)){curationDocument=c;curated=c.items;}
   }catch(_){}
 }
+// Reject malformed or duplicate curated references before any weekly output is written.
+function validCuratedItem(item) {
+  if (!item || !['hrana','zene-stil','moda','ljubimci','auto','putovanja','sport','kultura','dobre-price'].includes(item.section)) return false;
+  if (![item.title,item.source,item.summary,item.url].every(v=>typeof v==='string'&&v.trim())) return false;
+  try {
+    const u=new URL(item.url);
+    if (u.protocol!=='https:' || !u.hostname || u.username || u.password) return false;
+  } catch { return false; }
+  // External images require an explicit license; local editorial illustrations are allowed.
+  if (typeof item.image!=='string' || !item.image.trim()) return false;
+  if (item.image.startsWith('/assets/editorial/generated/')) return item.imagePolicy==='original-generated-illustration';
+  return Boolean(item.imageRights && item.imageCredit && item.imagePolicy && item.imagePolicy!=='unverified');
+}
+const curatedUrls=new Set();
+const invalidCurated=curated.filter(item=>{
+  if (!validCuratedItem(item)) return true;
+  const url=new URL(item.url).href;
+  if (curatedUrls.has(url)) return true;
+  curatedUrls.add(url);
+  return false;
+});
+if (invalidCurated.length) throw new Error('AKTUAL MEDIA weekly curation contains '+invalidCurated.length+' invalid or duplicate source/image-rights entries; refusing publication');
 if(READINESS){
   console.log(JSON.stringify({
-    ready:curated.length>=8,
+    ready:curated.length>=8 && invalidCurated.length===0,
     issue_week:issueWeek,
     curated_count:curated.length,
     required:8,
