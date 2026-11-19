@@ -19,10 +19,10 @@ export const AUTHOR_BAND_VERSION = 'AKTUAL_MEDIA_AUTHOR_BAND_V1';
 export const AUTHOR_PORTRAIT = join(dirname(fileURLToPath(import.meta.url)), '..', 'portal', 'assets', 'people', 'nermin-sefic', 'nermin-sefic-01-official-desk-portrait.webp');
 
 const COPY = {
-  hr: { role: 'direktor GNK ASG d.o.o. i glavni urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Autorske objave', profile: 'Profil', kicker: 'Urednik ovog weba' },
-  en: { role: 'director of GNK ASG d.o.o. and editor-in-chief of AKTUAL MEDIA', columns: 'Columns', author: 'Authored texts', profile: 'Profile', kicker: 'Editor of this site' },
-  sr: { role: 'direktor GNK ASG d.o.o. i glavni urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Autorski tekstovi', profile: 'Profil', kicker: 'Urednik ovog weba' },
-  bs: { role: 'direktor GNK ASG d.o.o. i glavni urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Autorski tekstovi', profile: 'Profil', kicker: 'Urednik ovog weba' },
+  hr: { role: 'glavni urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Autorske objave', profile: 'Profil', kicker: 'Urednik ovog weba' },
+  en: { role: 'editor-in-chief of AKTUAL MEDIA', columns: 'Columns', author: 'Authored texts', profile: 'Profile', kicker: 'Editor of this site' },
+  sr: { role: 'glavni urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Autorski tekstovi', profile: 'Profil', kicker: 'Urednik ovog weba' },
+  bs: { role: 'glavni urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Autorski tekstovi', profile: 'Profil', kicker: 'Urednik ovog weba' },
   sl: { role: 'direktor GNK ASG d.o.o. in glavni urednik AKTUAL MEDIA', columns: 'Kolumne', author: 'Avtorski prispevki', profile: 'Profil', kicker: 'Urednik tega spletnega mesta' },
   hu: { role: 'a GNK ASG d.o.o. igazgatója és az AKTUAL MEDIA főszerkesztője', columns: 'Rovatok', author: 'Saját írások', profile: 'Profil', kicker: 'Az oldal szerkesztője' },
   it: { role: 'direttore di GNK ASG d.o.o. e caporedattore di AKTUAL MEDIA', columns: 'Rubriche', author: 'Scritti', profile: 'Profilo', kicker: 'Curatore di questo sito' },

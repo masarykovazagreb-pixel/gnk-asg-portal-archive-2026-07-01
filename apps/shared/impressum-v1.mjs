@@ -9,7 +9,7 @@
  *   nositelj   GNK ASG d.o.o.
  *   osnivač    GNK DINAMO Ltd, SAD
  *   izdavač    AKTUAL MEDIA d.o.o.
- *   urednik    Nermin Sefić — direktor i glavni urednik
+ *   urednik    Nermin Sefić — glavni urednik
  *   kontakt    info@gnk-asg.hr
  *
  * Blok je tekstualan (bez slika i bez skripte): radi pod strogim CSP-om, čita se
@@ -30,8 +30,8 @@ export const HOUSE = {
   publisher: 'AKTUAL MEDIA d.o.o.',
   editor: {
     name: 'Nermin Sefić',
-    hr: 'direktor i glavni urednik', en: 'director and editor-in-chief',
-    sr: 'direktor i glavni urednik', bs: 'direktor i glavni urednik',
+    hr: 'glavni urednik', en: 'editor-in-chief',
+    sr: 'glavni urednik', bs: 'glavni urednik',
     sl: 'direktor in glavni urednik', hu: 'igazgató és főszerkesztő',
     it: 'direttore e caporedattore', bg: 'директор и главен редактор',
     ro: 'director și redactor-șef', ar: 'المدير ورئيس التحرير',
@@ -57,10 +57,10 @@ export const t = (table, lang) => table[L(lang)] ?? table.hr;
 export const hubOf = (lang) => HOUSE.hub[L(lang)] || HOUSE.hub.hr;
 
 const WORDS = {
-  hr: { title: 'Izdavač i kontakt', holder: 'Nositelj', founder: 'Osnivač', publisher: 'Izdavač', editor: 'Direktor i glavni urednik', contact: 'Kontakt', hubs: 'Mreža', note: 'Sadržaj se objavljuje po istoj uredničkoj politici na svakom webu mreže; svaki preuzeti tekst nosi izvor i poveznicu na matičnu objavu.' },
-  en: { title: 'Publisher and contact', holder: 'Holder', founder: 'Founder', publisher: 'Publisher', editor: 'Director and editor-in-chief', contact: 'Contact', hubs: 'Network', note: 'Content follows the same editorial policy on every site of the network; every syndicated text carries its source and a link to the original.' },
-  sr: { title: 'Izdavač i kontakt', holder: 'Nositelj', founder: 'Osnivač', publisher: 'Izdavač', editor: 'Direktor i glavni urednik', contact: 'Kontakt', hubs: 'Mreža', note: 'Sadržaj se objavljuje po istoj uredničkoj politici na svakom webu mreže; svaki preuzeti tekst nosi izvor i poveznicu na matičnu objavu.' },
-  bs: { title: 'Izdavač i kontakt', holder: 'Nositelj', founder: 'Osnivač', publisher: 'Izdavač', editor: 'Direktor i glavni urednik', contact: 'Kontakt', hubs: 'Mreža', note: 'Sadržaj se objavljuje po istoj uredničkoj politici na svakom webu mreže; svaki preuzeti tekst nosi izvor i poveznicu na matičnu objavu.' },
+  hr: { title: 'Izdavač i kontakt', holder: 'Nositelj', founder: 'Osnivač', publisher: 'Izdavač', editor: 'Glavni urednik', contact: 'Kontakt', hubs: 'Mreža', note: 'Sadržaj se objavljuje po istoj uredničkoj politici na svakom webu mreže; svaki preuzeti tekst nosi izvor i poveznicu na matičnu objavu.' },
+  en: { title: 'Publisher and contact', holder: 'Holder', founder: 'Founder', publisher: 'Publisher', editor: 'Editor-in-chief', contact: 'Contact', hubs: 'Network', note: 'Content follows the same editorial policy on every site of the network; every syndicated text carries its source and a link to the original.' },
+  sr: { title: 'Izdavač i kontakt', holder: 'Nositelj', founder: 'Osnivač', publisher: 'Izdavač', editor: 'Glavni urednik', contact: 'Kontakt', hubs: 'Mreža', note: 'Sadržaj se objavljuje po istoj uredničkoj politici na svakom webu mreže; svaki preuzeti tekst nosi izvor i poveznicu na matičnu objavu.' },
+  bs: { title: 'Izdavač i kontakt', holder: 'Nositelj', founder: 'Osnivač', publisher: 'Izdavač', editor: 'Glavni urednik', contact: 'Kontakt', hubs: 'Mreža', note: 'Sadržaj se objavljuje po istoj uredničkoj politici na svakom webu mreže; svaki preuzeti tekst nosi izvor i poveznicu na matičnu objavu.' },
   sl: { title: 'Založnik in stik', holder: 'Nosilec', founder: 'Ustanovitelj', publisher: 'Založnik', editor: 'Direktor in glavni urednik', contact: 'Kontakt', hubs: 'Mreža', note: 'Vsebina se objavlja po isti uredniški politiki na vsakem spletnem mestu mreže; vsako prevzeto besedilo nosi vir in povezavo na izvirno objavo.' },
   hu: { title: 'Kiadó és kapcsolat', holder: 'Fenntartó', founder: 'Alapító', publisher: 'Kiadó', editor: 'Igazgató és főszerkesztő', contact: 'Kapcsolat', hubs: 'Hálózat', note: 'A tartalom minden hálózati oldalon ugyanazon szerkesztői elvek szerint jelenik meg; minden átvett szöveg feltünteti a forrást és az eredeti bejegyzés linkjét.' },
   it: { title: 'Editore e contatti', holder: 'Titolare', founder: 'Fondatore', publisher: 'Editore', editor: 'Direttore e caporedattore', contact: 'Contatti', hubs: 'Rete', note: 'I contenuti seguono la stessa politica editoriale su ogni sito della rete; ogni testo ripreso indica la fonte e il collegamento all’originale.' },
