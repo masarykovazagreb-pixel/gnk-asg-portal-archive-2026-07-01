@@ -9,6 +9,26 @@
  *    naveden kao urednik izdanja, ne kao autor strojnih osvrta.
  */
 
+import { REGION_IMAGE_HOST_LIST } from '../../../workers/gnk-asg-direct-operator/src/image-hosts-v1.js';
+
+const regionImageHosts = new Set(REGION_IMAGE_HOST_LIST);
+
+export function regionalImage(value) {
+  if (typeof value !== 'string' || !value) return '';
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.port && !url.username && !url.password &&
+      !/\.svg$/i.test(url.pathname) && regionImageHosts.has(url.hostname) ? value : '';
+  } catch {
+    return '';
+  }
+}
+
+export function withRegionalImage(item) {
+  if (!item?.image || regionalImage(item.image)) return item;
+  return { ...item, image: '' };
+}
+
 export const UA = 'AKTUAL-MEDIA-Regional/1.0 (+https://gnk-asg.hr/izdanja/)';
 
 /* ---------- mreža ---------- */

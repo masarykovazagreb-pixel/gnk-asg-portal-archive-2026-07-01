@@ -4,17 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-19T03:24:26.840Z",
+  "updatedAt": "2026-11-19T15:42:30.057Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
       "url": "https://www.agerpres.ro/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-19T03:24:19.925Z"
+      "errors": [
+        "https://www.agerpres.ro/rss: HTTP 520",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
+      ],
+      "checkedAt": "2026-11-19T15:42:25.239Z"
     },
     {
       "id": "hotnews",
@@ -24,17 +27,17 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-19T03:24:20.229Z"
+      "checkedAt": "2026-11-19T15:42:25.301Z"
     },
     {
       "id": "zf",
       "name": "Ziarul Financiar",
       "url": "https://www.zf.ro/rss",
       "ok": true,
-      "fetched": 19,
+      "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-19T03:24:22.057Z"
+      "checkedAt": "2026-11-19T15:42:26.682Z"
     },
     {
       "id": "profit",
@@ -44,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-19T03:24:22.344Z"
+      "checkedAt": "2026-11-19T15:42:26.779Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 288,
+      "fetched": 279,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-19T03:24:25.009Z"
+      "checkedAt": "2026-11-19T15:42:28.295Z"
     },
     {
       "id": "g4media",
@@ -64,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-19T03:24:26.311Z"
+      "checkedAt": "2026-11-19T15:42:29.762Z"
     },
     {
       "id": "newsro",
@@ -74,10 +77,586 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-19T03:24:26.839Z"
+      "checkedAt": "2026-11-19T15:42:30.056Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-19-digi24-rapperul-wiz-khalifa-a-scapat-definitiv-de-e192ea",
+      "title": "Rapperul Wiz Khalifa a scăpat definitiv de condamnarea la închisoare primită în România pentru consum de droguri",
+      "summary": "Rapperul american Wiz Khalifa, pe numele real Thomaz Cameron Jibril, a scăpat definitiv de condamnarea la închisoare primită în România pentru consum de droguri, urmând ca el să achite o amendă penală de 9.600 de lei.",
+      "date": "2026-11-19T15:39:00.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/justitie/rapperul-wiz-khalifa-a-scapat-de-condamnarea-la-inchisoare-primita-in-romania-4044453",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjAzJTJGMzA0MzYxN18zMDQz/NjE3X1dpei1LaGFsaWZhLmpwZyZoYXNo/PTQ3YTE0MTMyMjYyODMzNWVmYzRhMWE3YzJlZDczNGRm.jpg",
+      "imageAlt": "Rapperul Wiz Khalifa a scăpat definitiv de condamnarea la închisoare primită în România pentru consum de droguri",
+      "addedAt": "2026-11-19T15:42:28.297Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-g4media-un-oficial-al-administratiei-trump-a-propus-b78da7",
+      "title": "Un oficial al administraţiei Trump a propus Guyanei să cedeze o parte din teritoriul său Venezuelei / Regiunea este bogată în aur, diamante şi bauxită",
+      "summary": "Un oficial al administraţiei preşedintelui american Donald Trump a sugerat în ultimele luni guvernului Guyanei să ia în considerare cedarea unei părţi din teritoriul său către statul vecin Venezuela, o remarcă care i-a şocat pe oficialii micii naţiuni producătoare de petrol şi care a determinat Washingtonul să îi asigure că politica SUA privind graniţele dintre […] © G4Media.ro .",
+      "date": "2026-11-19T15:37:42.000Z",
+      "url": "https://www.g4media.ro/un-oficial-al-administratiei-trump-a-propus-guyanei-sa-cedeze-o-parte-din-teritoriul-sau-venezuelei-regiunea-este-bogata-in-aur-diamante-si-bauxita.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "guyana",
+        "venezuela"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "politika",
+      "image": "https://www.g4media.ro/wp-content/uploads/2023/05/Guyana.jpg",
+      "imageAlt": "Un oficial al administraţiei Trump a propus Guyanei să cedeze o parte din teritoriul său Venezuelei / Regiunea este bogată în aur, diamante şi bauxită",
+      "addedAt": "2026-11-19T15:42:29.763Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-zf-atac-in-inima-financiara-a-arabiei-saudite-e4daae",
+      "title": "Atac în inima financiară a Arabiei Saudite: sediul fondului suveran care administrează aproape 1.000 de miliarde de dolari a fost avariat",
+      "summary": "",
+      "date": "2026-11-19T15:36:00.000Z",
+      "url": "https://www.zf.ro/business-international/atac-in-inima-financiara-a-arabiei-saudite-sediul-fondului-suveran-care-administreaza-aproape-1-000-de-miliarde-de-dolari-a-fost-avariat-23285595",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Internaţional"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10368/23285595/2/pif-tower-riyadh-2024.jpg?width=700",
+      "imageAlt": "Atac în inima financiară a Arabiei Saudite: sediul fondului suveran care administrează aproape 1.000 de miliarde de dolari a fost avariat",
+      "addedAt": "2026-11-19T15:42:26.683Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-hotnews-ai-intra-in-portofoliu-actiunile-anthropic-839acb",
+      "title": "AI intră în portofoliu: acțiunile Anthropic, disponibile prin BT Trade din prima zi pe Nasdaq",
+      "summary": "Clienții BT Capital Partners pot cumpăra prin aplicația BT Trade acțiuni Anthropic, odată cu începerea tranzacționării acestora pe Nasdaq, a anunțat joi banca. Compania americană care dezvoltă modelele de inteligență artificială Claude debutează astăzi, 19 noiembrie, pe bursă, după ce oferta publică inițială a companiei a stabilit un nou record. În contextul interesului crescut al …",
+      "date": "2026-11-19T15:35:45.000Z",
+      "url": "https://hotnews.ro/ai-intra-in-portofoliu-actiunile-anthropic-disponibile-prin-bt-trade-din-prima-zi-pe-nasdaq-2408877",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Economie"
+      ],
+      "author": "Dan Popa",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "AI intră în portofoliu: acțiunile Anthropic, disponibile prin BT Trade din prima zi pe Nasdaq",
+      "addedAt": "2026-11-19T15:42:25.302Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-newsro-dominic-fritz-la-buzau-romania-poate-avea-a2f6f0",
+      "title": "Dominic Fritz, la Buzău: România poate avea un viitor bun atunci când rupem monopolul puterii PSD şi al grupurilor de interese care îl susţin",
+      "summary": "Preşedintele USR, Dominic Fritz, s-a aflat joi la Buzău unde a avut întâlniri cu filiala locală, dar şi cu simpatizanţi şi cetăţeni din oraş, el afirmând că România poate avea un viitor bun atunci când vor rupe monopolul puterii PSD şi al grupurilor de interese care îl susţin.",
+      "date": "2026-11-19T15:34:26.000Z",
+      "url": "https://www.news.ro/politic-intern/dominic-fritz-la-buzau-romania-poate-avea-un-viitor-bun-atunci-cand-rupem-monopolul-puterii-psd-si-al-grupurilor-de-interese-care-il-sustin-1922403419262026111722998629",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Dominic Fritz, la Buzău: România poate avea un viitor bun atunci când rupem monopolul puterii PSD şi al grupurilor de interese care îl susţin",
+      "addedAt": "2026-11-19T15:42:30.056Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-newsro-giurgiu-sechestru-pe-zeci-de-imobile-00a28f",
+      "title": "Giurgiu: Sechestru pe zeci de imobile, autovehicule şi pe conturi bancare, într-un dosar în care o firmă de construcţii este suspectată de evaziune fiscală cu un prejudiciu de 9…",
+      "summary": "Poliţiştii şi procurorii din Giurgiu au pus sub sechestru asigurător zeci de imobile, autovehicule şi conturi bancare, într-un dosar în care o firmă de construcţii este suspectată de evaziune fiscală cu un prejudiciu de 9 milioane de lei.",
+      "date": "2026-11-19T15:32:56.000Z",
+      "url": "https://www.news.ro/eveniment/giurgiu-sechestru-pe-zeci-de-imobile-autovehicule-si-pe-conturi-bancare-intr-un-dosar-in-care-o-firma-de-constructii-este-suspectata-de-evaziune-fiscala-cu-un-prejudiciu-de-9-milioane-de-lei-1922403219562026111722998626",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Giurgiu: Sechestru pe zeci de imobile, autovehicule şi pe conturi bancare, într-un dosar în care o firmă de construcţii este suspectată de evaziune fiscală cu un prejudiciu de 9 mi",
+      "addedAt": "2026-11-19T15:42:30.056Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-zf-afacerile-kronsoft-firma-brasoveana-care-4e894a",
+      "title": "Afacerile Kronsoft, firma braşoveană care dezvoltă software pentru clienţi germani din sănătate, au crescut pentru al 15-lea an la rând, la 58,2 mil. lei în 2025",
+      "summary": "Kronsoft Development, companie braşoveană care dezvoltă software pentru firme germane din farma şi sănătate, a avut în 2025 afaceri de 58,2 mil. lei (11,6 mil. euro), cu 11,7% mai mari decât în 2024.",
+      "date": "2026-11-19T15:30:00.000Z",
+      "url": "https://www.zf.ro/business-hi-tech/afacerile-kronsoft-firma-brasoveana-care-dezvolta-software-pentru-clienti-germani-din-sanatate-au-crescut-pentru-al-15-lea-an-la-rand-la-58-2-mil-lei-in-2025-23284912",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Hi-Tech"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21332/23284912/1/programare-ss.jpg?width=700",
+      "imageAlt": "Afacerile Kronsoft, firma braşoveană care dezvoltă software pentru clienţi germani din sănătate, au crescut pentru al 15-lea an la rând, la 58,2 mil. lei în 2025",
+      "addedAt": "2026-11-19T15:42:26.683Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-zf-investitorii-romani-pot-cumpara-actiuni-4645f1",
+      "title": "Investitorii români pot cumpăra acţiuni Anthropic prin BT Capital Partners din prima zi de tranzacţionare pe Nasdaq. Compania care dezvoltă modelele de inteligenţă artificială…",
+      "summary": "",
+      "date": "2026-11-19T15:30:00.000Z",
+      "url": "https://www.zf.ro/burse-fonduri-mutuale/investitorii-romani-pot-cumpara-actiuni-anthropic-bt-capital-partners-prima-zi-tranzactionare-nasdaq-compania-dezvolta-modelele-inteligenta-artificiala-claude-avut-oferta-publica-initiala-81-3-mld-23285592",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Burse - Fonduri mutuale"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22467/23285592/2/3-banca-transilvania-nou.jpg?width=700",
+      "imageAlt": "Investitorii români pot cumpăra acţiuni Anthropic prin BT Capital Partners din prima zi de tranzacţionare pe Nasdaq. Compania care dezvoltă modelele de inteligenţă artificială Clau",
+      "addedAt": "2026-11-19T15:42:26.683Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-newsro-ciprian-ciucu-proiectul-de-modernizare-a-b02280",
+      "title": "Ciprian Ciucu: Proiectul de modernizare a Bucureştiului face parte dintr-un plan pe termen lung. Tot ce lucrăm acum reprezintă o investitie pentru următoarele generaţii",
+      "summary": "Primarul Capitalei, Ciprian Ciucu, afirmă că proiectul de modernizare a Bucureştiului face parte dintr-un plan pe termen lung şi tot ce lucrează acum reprezintă o investitie pentru următoarele generaţii.",
+      "date": "2026-11-19T15:29:53.000Z",
+      "url": "https://www.news.ro/social/ciprian-ciucu-proiectul-de-modernizare-a-bucurestiului-face-parte-dintr-un-plan-pe-termen-lung-tot-ce-lucram-acum-reprezinta-o-investitie-pentru-urmatoarele-generatii-1922402919532026111722998618",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Ciprian Ciucu: Proiectul de modernizare a Bucureştiului face parte dintr-un plan pe termen lung. Tot ce lucrăm acum reprezintă o investitie pentru următoarele generaţii",
+      "addedAt": "2026-11-19T15:42:30.056Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-newsro-cnas-anunta-ca-portalul-e-sanatateamea-va-d7e8cf",
+      "title": "CNAS anunţă că portalul e-SănătateaMea va fi oprit, de vineri până marţi, pentru actualizări tehnice",
+      "summary": "Casa Naţională de Asigurări de Sănătate (CNAS) anunţă că portalul e-SănătateaMea va fi oprit, de vineri până marţi, pentru actualizări tehnice. Lucrările vizează îmbunătăţirea funcţiei de programare la medic.",
+      "date": "2026-11-19T15:29:30.000Z",
+      "url": "https://www.news.ro/social/cnas-anunta-ca-portalul-e-sanatateamea-va-fi-oprit-de-vineri-pana-marti-pentru-actualizari-tehnice-1922402919302026111722998608",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "CNAS anunţă că portalul e-SănătateaMea va fi oprit, de vineri până marţi, pentru actualizări tehnice",
+      "addedAt": "2026-11-19T15:42:30.056Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-digi24-aliatii-ucrainei-inclusiv-romania-s-au-37aa6e",
+      "title": "Aliații Ucrainei, inclusiv România, s-au reunit la Berlin în prezența lui Volodimir Zelenski, după discuțiile dintre Trump, Putin și Xi",
+      "summary": "Președintele Ucrainei, Volodimir Zelenski, a sosit joi la Berlin pentru un summit al Coaliției de Voință, în cadrul căruia aliații Kievului urmează să-și exprime sprijinul ferm și să pledeze pentru un rol al Europei în orice viitoare negocieri de pace, relatează RFI, care preia informații furnizate de AFP. Întâlnirea - găzduită în comun de liderii Germaniei, Franței și Marii Britanii - are loc la scurt timp după discuțiile trilaterale fără precedent din China dintre președintele SUA, Donald Trump, președintele Rusiei, Vladimir Putin, și președintele Chinei, Xi Jinping.",
+      "date": "2026-11-19T15:29:15.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/aliatii-ucrainei-inclusiv-romania-s-au-reunit-la-berlin-in-prezenta-lui-volodimir-zelenski-dupa-discutiile-dintre-trump-putin-si-xi-4044357",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE5JTJGMzA3ODkwMF8zMDc4/OTAwX0xpZGVyaWktQ29hbGl0aWVpLWRl/LVZvaW50YS1yZXVuaXRpLWxhLUJlcmxp/bl8tRm90by1Qcm9maW1lZGlhLmpwZyZo/YXNoPWI0ZmMzODk3M2JhYjc4ZmUxMjUwODE0NGU1MDEyYjg5.jpg",
+      "imageAlt": "Aliații Ucrainei, inclusiv România, s-au reunit la Berlin în prezența lui Volodimir Zelenski, după discuțiile dintre Trump, Putin și Xi",
+      "addedAt": "2026-11-19T15:42:28.297Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-newsro-dolj-un-medic-este-anchetat-intr-un-dosar-ecad37",
+      "title": "Dolj: Un medic este anchetat într-un dosar de luare de mită, fiind acuzat că ar fi primit bani de la 32 de persoane pentru emiterea sau revizuirea deciziilor medicale asupra…",
+      "summary": "Un medic din judeţul Dolj este anchetat de procurori într-un dosar de luare de mită, acesta fiind acuzat că ar fi primit diferite sume de bani de la 32 de persoane pentru emiterea sau reviziuirea deciziilor medicale asupra capacităţii de muncă. De asemenea, o asistentă medicală este cercetată în acelaşi dosar pentru complicitate la luare de mită. Cele două persone sunt anchetate sub control judiciar.",
+      "date": "2026-11-19T15:29:00.000Z",
+      "url": "https://www.news.ro/justitie/dolj-medic-anchetat-intr-dosar-luare-mita-fiind-acuzat-ar-primit-bani-32-persoane-emiterea-revizuirea-deciziilor-medicale-asupra-capacitatii-munca-asistenta-medicala-ancheta-complicitate-1922402919002026111722998615",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Dolj: Un medic este anchetat într-un dosar de luare de mită, fiind acuzat că ar fi primit bani de la 32 de persoane pentru emiterea sau revizuirea deciziilor medicale asupra capaci",
+      "addedAt": "2026-11-19T15:42:30.056Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-g4media-barbat-de-66-de-ani-din-vrancea-arestat-8c7989",
+      "title": "Bărbat de 66 de ani din Vrancea, arestat pentru agresiune sexuală asupra unei minore de 13 ani, în microbuzul şcolar",
+      "summary": "Un bărbat de 66 de ani a fost arestat preventiv pentru 30 de zile, fiind cercetat pentru agresiune sexuală asupra unei minore de 13 ani, faptele fiind reclamate în timpul deplasărilor cu microbuzul şcolar de la o unitate de învăţământ din comuna Tâmboeşti, a informat, joi, Inspectoratul de Poliţie Judeţean (IPJ) Vrancea, scrie Agerpres. „La […] © G4Media.ro .",
+      "date": "2026-11-19T15:28:22.000Z",
+      "url": "https://www.g4media.ro/barbat-de-66-de-ani-din-vrancea-arestat-pentru-agresiune-sexuala-asupra-unei-minore-de-13-ani-in-microbuzul-scolar.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "agresiune sexuală",
+        "bărbat Vrancea",
+        "microbuz scolar"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2023/02/microbuz-scolar-transport-elevi-caras-severin-ipj-e1676402087959.jpg",
+      "imageAlt": "Bărbat de 66 de ani din Vrancea, arestat pentru agresiune sexuală asupra unei minore de 13 ani, în microbuzul şcolar",
+      "addedAt": "2026-11-19T15:42:29.763Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-newsro-contractul-lui-felix-alexa-cu-teatrul-e7bade",
+      "title": "Contractul lui Felix Alexa cu Teatrul Naţional Bucureşti a încetat",
+      "summary": "Contractul regizorului Felix Alexa, acuzat de agresiuni şi şantaj, la Teatrul Naţional Bucureşti a încetat, a precizat instituţia teatrală.",
+      "date": "2026-11-19T15:27:44.000Z",
+      "url": "https://www.news.ro/cultura-media/contractul-lui-felix-alexa-cu-teatrul-national-bucuresti-a-incetat-1922402719442026111722998612",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Contractul lui Felix Alexa cu Teatrul Naţional Bucureşti a încetat",
+      "addedAt": "2026-11-19T15:42:30.057Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-hotnews-regizorul-felix-alexa-concediat-de-teatrul-874f8e",
+      "title": "Regizorul Felix Alexa, concediat de Teatrul Național București, după acuzațiile de hărțuire sexuală care a dus la demisii din partea unor actori",
+      "summary": "Teatrul Național „I.L.Caragiale” București a anunțat joi că a încetat colaborarea cu regizorul Felix Alexa, acuzat în trecut de mai multe femei de hărțuire și agresiune sexuală, potrivit unui anunț făcut pe Facebook. Instituția de cultură precizează că decizia de încetare a contractului a intrat în vigoare de marți, 17 noiembrie. Felix Alexa a fost …",
+      "date": "2026-11-19T15:27:03.000Z",
+      "url": "https://hotnews.ro/regizorul-felix-alexa-concediat-de-teatrul-national-bucuresti-dupa-acuzatiile-de-hartuire-sexuala-care-a-dus-la-demisii-din-partea-unor-actori-2408851",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Sebastian Pricop",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Regizorul Felix Alexa, concediat de Teatrul Național București, după acuzațiile de hărțuire sexuală care a dus la demisii din partea unor actori",
+      "addedAt": "2026-11-19T15:42:25.302Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-hotnews-startupcafe-ro-business-checkin-daca-iti-0da7c0",
+      "title": "StartupCafe.ro: Business CheckIn. „Dacă îți dorești cu adevărat, nu ai cum să nu reușești”. Afacere românească pornită dintr-un garaj",
+      "summary": "După mai multe încercări de business în comerțul online care nu au avut succes, Raul Peia (foto) nu a renunțat la planurile sale antreprenoriale și a pus, în 2021, bazele Gadgetry, un magazin online de gadgeturi pentru casă și auto. A pornit afacerea în garajul casei sale, în paralel cu jobul pe care îl avea …",
+      "date": "2026-11-19T15:23:29.000Z",
+      "url": "https://hotnews.ro/startupcafe-ro-business-checkin-daca-iti-doresti-cu-adevarat-nu-ai-cum-sa-nu-reusesti-afacere-romaneasca-pornita-dintr-un-garaj-2408846",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Economie"
+      ],
+      "author": "codruta.predatu@zyxgroup.ro",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "StartupCafe.ro: Business CheckIn. „Dacă îți dorești cu adevărat, nu ai cum să nu reușești”. Afacere românească pornită dintr-un garaj",
+      "addedAt": "2026-11-19T15:42:25.302Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-digi24-comisia-europeana-tinta-unui-atac-75c9be",
+      "title": "Comisia Europeană, ținta unui atac cibernetic asistat de inteligenţa artificială",
+      "summary": "Comisia Europeană (CE) dezvăluie joi că a fost - la sfârşitul lui octombrie - ţinta unui atac cibernetic asistat de inteligenţa artificială (AI), dar că nicio încălcare de date nu a fost dovedită în acest stadiu, potrivit unui purtător de cuvânt, relatează AFP.",
+      "date": "2026-11-19T15:23:17.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/ue/comisia-europeana-tinta-unui-atac-cibernetic-asistat-de-inteligenta-artificiala-4044441",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE5JTJGMzA3ODkxMF8zMDc4/OTEwX2NvbWlzaWEtZXVyb3BlYW5hLWdl/dHR5aW1hZ2VzLmpwZyZoYXNoPTRkODFj/NDIzNjkzZDc2YzIxN2QwYWJkNmEzODk1NzJk.jpg",
+      "imageAlt": "Comisia Europeană, ținta unui atac cibernetic asistat de inteligenţa artificială",
+      "addedAt": "2026-11-19T15:42:28.297Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-zf-investitie-de-1-48-mld-lei-pentru-b694ff",
+      "title": "Investiţie de 1,48 mld. lei pentru realizarea unui tren metropolitan ce va lega municipiul Braşov de localităţile din zona metropolitană",
+      "summary": "",
+      "date": "2026-11-19T15:22:21.000Z",
+      "url": "https://www.zf.ro/zf-transilvania/investitie-de-1-48-mld-lei-pentru-realizarea-unui-tren-metropolitan-ce-va-lega-municipiul-brasov-de-localitatile-din-zona-metropolitana-23285587",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF Transilvania"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10377/23285587/1/caleferata-ss.jpg?width=700",
+      "imageAlt": "Investiţie de 1,48 mld. lei pentru realizarea unui tren metropolitan ce va lega municipiul Braşov de localităţile din zona metropolitană",
+      "addedAt": "2026-11-19T15:42:26.683Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-profit-decizie-salvarea-fostului-sidex-vanzarea-b6263a",
+      "title": "DECIZIE Salvarea fostului SIDEX. Vânzarea poate începe, planul de restructurare a fost aprobat. Liberty Galați, vizat de mai mulți giganți",
+      "summary": "Tribunalul Galați a confirmat planul de restructurare al Liberty Galați, fostul SIDEX, combinat controlat de Liberty Steel, companie a omului de afaceri Sanjeev Gupta.",
+      "date": "2026-11-19T15:22:00.000Z",
+      "url": "https://www.profit.ro/insider/actualitate/decizie-salvarea-fostului-sidex-vanzarea-poate-incepe-planul-de-restructurare-a-fost-aprobat-liberty-galati-vizat-de-mai-multi-giganti-22998591?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/34127/22998591/2/steel-mill-616526-1280.jpg?width=800",
+      "imageAlt": "DECIZIE Salvarea fostului SIDEX. Vânzarea poate începe, planul de restructurare a fost aprobat. Liberty Galați, vizat de mai mulți giganți",
+      "addedAt": "2026-11-19T15:42:26.779Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-digi24-doi-muncitori-au-fost-raniti-in-timpul-unei-013ebf",
+      "title": "Doi muncitori au fost răniţi în timpul unei lucrări, la Termocentrala Rovinari. Unul dintre bărbaţi este în stare gravă",
+      "summary": "Doi muncitori au fost răniţi joi, după ce au fost loviţi de conductă în timp ce executau lucrări la o vană, la o staţie de pretratare a apei, în incinta Termocentralei Rovinari. Ambii au fost duşi la spital, unul dintre ei fiind în stare gravă, în timp ce starea de sănătate a celuilalt este stabilă.",
+      "date": "2026-11-19T15:21:41.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/doi-muncitori-au-fost-raniti-in-timpul-unei-lucrari-la-termocentrala-rovinari-unul-dintre-barbati-este-in-stare-grava-4044431",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwNSUyRjAxJTJGMjcwNTEyNV8yNzA1/MTI1X2FtYnVsYW50YS1zbXVyZC1mb3Rv/LWlzdS5qcGcmaGFzaD05ZjMyZjc0NGFhZjdkODU0ZGU3OGRkM2FmNzI4YjgwZQ==.jpg",
+      "imageAlt": "Doi muncitori au fost răniţi în timpul unei lucrări, la Termocentrala Rovinari. Unul dintre bărbaţi este în stare gravă",
+      "addedAt": "2026-11-19T15:42:28.297Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-zf-proiect-de-aproximativ-4-6-mil-lei-pentru-129ab7",
+      "title": "Proiect de aproximativ 4,6 mil. lei pentru modernizarea iluminatului public din zona de sud a municipiului Satu Mare",
+      "summary": "",
+      "date": "2026-11-19T15:21:15.000Z",
+      "url": "https://www.zf.ro/zf-transilvania/proiect-de-aproximativ-4-6-mil-lei-pentru-modernizarea-iluminatului-public-din-zona-de-sud-a-municipiului-satu-mare-23285585",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF Transilvania"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10377/23285585/1/iluminat-public-octav-ganea.jpg?width=700",
+      "imageAlt": "Proiect de aproximativ 4,6 mil. lei pentru modernizarea iluminatului public din zona de sud a municipiului Satu Mare",
+      "addedAt": "2026-11-19T15:42:26.683Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-profit-foto-castel-din-romania-reabilitat-cu-ec5cda",
+      "title": "FOTO Castel din România reabilitat cu aproape 54 de milioane de lei. Castelul Géza Teleki din Maramureș va fi transformat într-un centru socio-cultural multifuncțional",
+      "summary": "Castelul Géza Teleki de la Pribilești, aflat la 17 kilometri de Baia Mare, va fi transformat într-un centru socio-cultural multifuncțional.",
+      "date": "2026-11-19T15:21:00.000Z",
+      "url": "https://www.profit.ro/stiri/foto-castel-din-romania-reabilitat-cu-aproape-54-de-milioane-de-lei-castelul-g-za-teleki-din-maramures-va-fi-transformat-intr-un-centru-socio-cultural-multifunctional-22997644?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Știri"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33206/22997644/1/castel-pribilesti-teleki.jpg?width=800",
+      "imageAlt": "FOTO Castel din România reabilitat cu aproape 54 de milioane de lei. Castelul Géza Teleki din Maramureș va fi transformat într-un centru socio-cultural multifuncțional",
+      "addedAt": "2026-11-19T15:42:26.779Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-hotnews-noul-james-bond-felicitat-de-predecesorul-f6785b",
+      "title": "Noul James Bond, felicitat de predecesorul care a fost concediat pe neașteptate după 4 filme: „Am fost complet șocat”",
+      "summary": "Pierce Brosnan i-a urat bun-venit lui Robert Pattinson în „lumea lui Bond”, spunându-i să se „bucure de experiență”, relatează joi agențiile DPA și AFP, citate de Agerpres. Anunțul de luni potrivit căruia actorul britanic Robert Pattinson, în vârstă de 40 de ani, va prelua rolul enigmaticului spion, a pus capăt unor ani de speculații cu …",
+      "date": "2026-11-19T15:20:55.000Z",
+      "url": "https://hotnews.ro/noul-james-bond-felicitat-de-predecesorul-care-a-fost-concediat-pe-neasteptate-dupa-4-filme-am-fost-complet-socat-2408797",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Film",
+        "Magazin",
+        "actori"
+      ],
+      "author": "Sebastian Jucan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Noul James Bond, felicitat de predecesorul care a fost concediat pe neașteptate după 4 filme: „Am fost complet șocat”",
+      "addedAt": "2026-11-19T15:42:25.302Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-g4media-perchezitii-la-locuinta-si-cabinetul-unui-fd1d7b",
+      "title": "Percheziţii la locuinţa şi cabinetul unui avocat din Brașov într-un dosar de evaziune fiscală, înşelăciune şi fals în înscrisuri",
+      "summary": "Poliţiştii din cadrul Serviciului de Investigare a Criminalităţii Economice Braşov, împreună cu procurorii din cadrul Parchetului de pe lângă Curtea de Apel Braşov, au pus în executare două mandate de percheziţie domiciliară la domiciliul, respectiv la sediul profesional al unui avocat din municipiul Braşov, într-un dosar penal în care sunt investigate posibile infracţiuni de evaziune […] © G4Media.ro .",
+      "date": "2026-11-19T15:19:36.000Z",
+      "url": "https://www.g4media.ro/perchezitii-la-locuinta-si-cabinetul-unui-avocat-din-brasov-intr-un-dosar-de-evaziune-fiscala-inselaciune-si-fals-in-inscrisuri.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Brașov",
+        "avocat evaziune",
+        "perchezitii Brasov"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-16-at-09.06.02-e1713247643155.jpeg",
+      "imageAlt": "Percheziţii la locuinţa şi cabinetul unui avocat din Brașov într-un dosar de evaziune fiscală, înşelăciune şi fals în înscrisuri",
+      "addedAt": "2026-11-19T15:42:29.763Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-g4media-primaria-cluj-napoca-si-a-eliberat-3117ec",
+      "title": "Primăria Cluj Napoca și-a eliberat autorizația de construire pentru un pasaj rutier pentru care a demarat proceduri tehnice din 2023 / Construcția pasajului de pe Bulevardul…",
+      "summary": "Primăria Cluj-Napoca a emis autorizația de construire pentru proiectul pasajului rutier de la intersecția Bulevardului Muncii cu strada Oașului (o zonă fostă industrială a municipiului, extrem de circulată). Documentul a fost eliberat în 18 noiembrie 2026, la aproape cinci luni de la depunerea cererii de autorizare, relatează ActualdeCluj. Demersul Primăriei pentru acest proiect mult mai […] © G4Media.ro .",
+      "date": "2026-11-19T15:18:16.000Z",
+      "url": "https://www.g4media.ro/primaria-cluj-napoca-si-a-eliberat-autorizatia-de-construire-pentru-un-pasaj-rutier-pentru-care-a-demarat-proceduri-tehnice-din-2023-pasajul-de-pe-bulevardul-muncii-este-evaluat-la-peste-838-miloan.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Cluj",
+        "pasaj B-dul Muncii Cluj",
+        "pasaj rutier",
+        "Primaria Cluj Napoca"
+      ],
+      "author": "Laura Nițulescu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/Zona-in-care-trebuie-realizat-pasajul-rutier-de-pe-Bdul-Muncii-din-Cluj-Napoca.jpeg",
+      "imageAlt": "Primăria Cluj Napoca și-a eliberat autorizația de construire pentru un pasaj rutier pentru care a demarat proceduri tehnice din 2023 / Construcția pasajului de pe Bulevardul Muncii",
+      "addedAt": "2026-11-19T15:42:29.763Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-g4media-trump-sustine-ca-sua-vor-vedea-ce-se-45c4cc",
+      "title": "Trump susţine că SUA „vor vedea ce se întâmplă” în conflictul cu Iranul după 1 ianuarie",
+      "summary": "Preşedintele american Donald Trump a declarat că SUA „vor vedea ce se întâmplă” în conflictul lor cu Iranul după 1 ianuarie, fără a explica care este semnificaţia datei respective, relatează Reuters, citând comentarii ale liderului de la Casa Albă difuzate joi, scrie Agerpres. În săptămânile recente, Trump a alternat între ameninţări de escaladare împotriva Iranului […] © G4Media.ro .",
+      "date": "2026-11-19T15:14:53.000Z",
+      "url": "https://www.g4media.ro/trump-sustine-ca-sua-vor-vedea-ce-se-intampla-in-conflictul-cu-iranul-dupa-1-ianuarie.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "iran",
+        "SUA",
+        "trump"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "rat",
+      "image": "https://www.g4media.ro/wp-content/uploads/2023/08/dreamstime_xl_70146496.jpg",
+      "imageAlt": "Trump susţine că SUA „vor vedea ce se întâmplă” în conflictul cu Iranul după 1 ianuarie",
+      "addedAt": "2026-11-19T15:42:29.764Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-profit-foto-nou-centru-de-agrement-in-romania-a5a230",
+      "title": "FOTO Nou centru de agrement în România. Buziașul își diversifică oferta turistică printr-o investiție de peste 11 milioane de euro",
+      "summary": "Buziașul își diversifică oferta turistică printr-o investiție de peste 11 milioane de euro, din fonduri europene. Se va ridica un nou centru de agrement va reuni facilități sportive, de relaxare și culturale.",
+      "date": "2026-11-19T15:14:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/foto-nou-centru-de-agrement-in-romania-buziasul-isi-diversifica-oferta-turistica-printr-o-investitie-de-peste-11-milioane-de-euro-22998510?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Povești cu Profit"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://i0.1616.ro/media/2/2621/33209/22998510/13/buzias-1.jpg?width=800",
+      "imageAlt": "FOTO Nou centru de agrement în România. Buziașul își diversifică oferta turistică printr-o investiție de peste 11 milioane de euro",
+      "addedAt": "2026-11-19T15:42:26.779Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-hotnews-regizorul-care-ne-invita-sa-privim-delta-d47c71",
+      "title": "Regizorul care ne invită să privim Delta Dunării cu alți ochi: „E o schimbare permanentă”",
+      "summary": "„Senzația pe care ți-o dă Delta e de schimbare permanentă. Este un loc în care poți să mergi de sute de ori și de fiecare dată găsești ceva care te surprinde”, spune Dan Dinu, regizorul documentarului „Delta Sălbatică”, care a documentat povestea rezervației naturale vreme de patru ani. Ce a descoperit acolo, aflați din ediția …",
+      "date": "2026-11-19T15:12:15.000Z",
+      "url": "https://hotnews.ro/regizorul-care-ne-invita-sa-privind-delta-dunarii-cu-alti-ochi-e-o-schimbare-permanenta-2408821",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "partea bună"
+      ],
+      "author": "Raluca Ion",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Regizorul care ne invită să privim Delta Dunării cu alți ochi: „E o schimbare permanentă”",
+      "addedAt": "2026-11-19T15:42:25.302Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-g4media-tezaure-de-monede-vechi-de-peste-2-000-de-7950c8",
+      "title": "Tezaure de monede vechi de peste 2.000 de ani, descoperite de detectorişti, expuse la Muzeul din Zalău",
+      "summary": "Tezaure de monede dacice, romane, greceşti şi medievale, descoperite în ultimii ani în mai multe localităţi din Sălaj cu ajutorul detectoarelor de metale, pot fi văzute de public în cadrul unei expoziţii temporare vernisate, joi, la Muzeul Judeţean de Istorie şi Artă Zalău, scrie Agerpres. Expoziţia „De la lume adunate” aduce în prim-plan nu doar […] © G4Media.ro .",
+      "date": "2026-11-19T15:07:53.000Z",
+      "url": "https://www.g4media.ro/tezaure-de-monede-vechi-de-peste-2-000-de-ani-descoperite-de-detectoristi-expuse-la-muzeul-din-zalau.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "muzeu Zalau",
+        "tezaure monede"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2022/11/tezaur-monede.jpeg",
+      "imageAlt": "Tezaure de monede vechi de peste 2.000 de ani, descoperite de detectorişti, expuse la Muzeul din Zalău",
+      "addedAt": "2026-11-19T15:42:29.764Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-hotnews-pacea-nu-pare-aproape-prioritatile-indicate-4e11cf",
+      "title": "„Pacea nu pare aproape”. Prioritățile indicate de Nicușor Dan la Berlin, în marja Coaliției de Voință pentru Ucraina",
+      "summary": "Președintele Nicușor Dan a declarat, joi, înainte de a participa la reuniunea Coaliției de Voință, că România va transmite un mesaj de solidaritate cu Ucraina, potrivit Agerpres. Șeful statului român s-a deplasat joi la Berlin, la invitația cancelarului german Friedrich Merz, pentru o întâlnire în formatul statelor care s-au angajat să ofere un sprijin consolidat …",
+      "date": "2026-11-19T15:01:07.000Z",
+      "url": "https://hotnews.ro/pacea-nu-pare-aproape-prioritatile-indicate-de-nicusor-dan-la-berlin-in-marja-coalitiei-de-vointa-pentru-ucraina-2408818",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Nicusor Dan",
+        "ucraina"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "„Pacea nu pare aproape”. Prioritățile indicate de Nicușor Dan la Berlin, în marja Coaliției de Voință pentru Ucraina",
+      "addedAt": "2026-11-19T15:42:25.303Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-digi24-garda-de-mediu-a-gasit-trei-tone-de-17f936",
+      "title": "Garda de Mediu a găsit trei tone de anvelope uzate la Sintești, lângă Capitală. Deșeurile ar fi urmat să fie incendiate",
+      "summary": "Aproximativ trei tone de anvelope uzate, despre care autoritățile suspectează că urmau să fie incendiate, au fost descoperite pe terenuri virane din Sintești, lângă București. Garda de Mediu a dispus ridicarea imediată a deșeurilor și a aplicat amenzi de 45.000 de lei în urma controalelor desfășurate împreună cu polițiștii și jandarmii.",
+      "date": "2026-11-19T15:00:18.000Z",
+      "url": "https://www.digi24.ro/stiri/sci-tech/natura-si-mediu/garda-de-mediu-a-gasit-trei-tone-de-anvelope-uzate-la-sintesti-langa-capitala-deseurile-ar-fi-urmat-sa-fie-incendiate-4044403",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE5JTJGMzA3ODg3N18zMDc4/ODc3X2NhdWNpdWN1cmktc2ludGVzdGku/anBnJmhhc2g9YTY1OGNkMmIxOGM5ZTQ0M2E1NTgxZDA0NWQ3NmIwODU=.jpg",
+      "imageAlt": "Garda de Mediu a găsit trei tone de anvelope uzate la Sintești, lângă Capitală. Deșeurile ar fi urmat să fie incendiate",
+      "addedAt": "2026-11-19T15:42:28.298Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-profit-rambursarea-falsa-care-te-convinge-sa-89ce50",
+      "title": "Rambursarea falsă care te convinge să aprobi o plată din cont",
+      "summary": "Un mesaj despre restituirea banilor poate părea credibil când aștepți un retur sau ai o comandă anulată.",
+      "date": "2026-11-19T14:58:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/it-c/rambursarea-falsa-care-te-convinge-sa-aprobi-o-plata-din-cont-22997348?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "IT&C"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33216/22997348/1/pexels-ivan-samkov-7621136.jpg?width=800",
+      "imageAlt": "Rambursarea falsă care te convinge să aprobi o plată din cont",
+      "addedAt": "2026-11-19T15:42:26.779Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-digi24-fraude-online-daca-oportunitatea-e-atat-de-221788",
+      "title": "Fraude online. Dacă oportunitatea e atât de bună, de ce vine acea persoană la dumneavoastră și nu investește ea însăși?",
+      "summary": "România are nevoie de mai multă educație financiară în condițiile în care interesul populației pentru a cumpăra criptomonede, de exemplu, este mare. Autoritățile atrag atenția că digitalizarea facilitează însă și eventualele fraude, iar investitorii trebuie să știe cum să se ferească.",
+      "date": "2026-11-19T14:54:24.000Z",
+      "url": "https://www.digi24.ro/finante/fraude-online-daca-oportunitatea-e-atat-de-buna-de-ce-vine-acea-persoana-la-dumneavoastra-si-nu-investeste-ea-insasi-4043877",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwMiUyRjE2JTJGMjU5MzEzN18yNTkz/MTM3X0N1bS1pZGVudGlmaWNpLWZyYXVk/ZWxlLWRpZ2l0YWxlXy1Gb3RvLUdldHR5/LUltYWdlcy5qcGcmaGFzaD01MWUyMTVl/MWViYTQ1MDY5MjhlYWIxMDBlNGEzNTkyZg==.jpg",
+      "imageAlt": "Fraude online. Dacă oportunitatea e atât de bună, de ce vine acea persoană la dumneavoastră și nu investește ea însăși?",
+      "addedAt": "2026-11-19T15:42:28.298Z"
+    },
+    {
+      "slug": "bukurest-2026-11-19-profit-foto-click-pick-revine-la-lidl-cu-jumatate-7a4f22",
+      "title": "FOTO Click&Pick revine la Lidl, cu jumătate de porc de origine România",
+      "summary": "Click&Pick revine la Lidl cu o selecție de articole pentru casă și familie, disponibile cu 20% reducere prin Punctele Lidl.",
+      "date": "2026-11-19T14:52:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/retail/foto-click-pick-revine-la-lidl-cu-jumatate-de-porc-de-origine-romania-22998472?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Retail"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33215/22998472/2/foto-lidl-romania.jpg?width=800",
+      "imageAlt": "FOTO Click&Pick revine la Lidl, cu jumătate de porc de origine România",
+      "addedAt": "2026-11-19T15:42:26.779Z"
+    },
     {
       "slug": "bukurest-2026-11-19-agerpres-trump-si-putin-vor-avea-o-intalnire-91764a",
       "title": "Trump și Putin vor avea o întâlnire bilaterală la Shenzhen (oficial american)",

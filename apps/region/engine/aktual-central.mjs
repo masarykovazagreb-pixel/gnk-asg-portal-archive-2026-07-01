@@ -1269,11 +1269,8 @@ ${END}`;
   }
 
   const desc = `AKTUAL MEDIA na jednoj ploči: ${CHANNELS.length} gradskih izdanja na ${hrCount(LANG_COUNT)} jezika, ${items.length} tekstova iz ${sources.size} medija, devet deskova, poslovni tjednik, moda, galerija i radio. Urednik: Nermin Sefić.`;
-  /* Opis se mijenja na svakom ciklusu, pa se mora zamijeniti na svim trima
-     mjestima — dosad je twitter:description ostajao na starom broju tekstova
-     i medija i nije se slagao s og:description. */
-
-  const metaDesc = `AKTUAL MEDIA: ${CHANNELS.length} gradskih izdanja, ${items.length} tekstova iz ${sources.size} medija, poslovni tjednik, moda i radio. Urednik: Nermin Sefić.`;
+  // The home-page description identifies the editorial scope without volatile feed totals.
+  const metaDesc = `AKTUAL MEDIA donosi vijesti iz Hrvatske i svijeta, gradska izdanja, poslovni tjednik, modu i radio. Urednik je Nermin Sefić.`;
   const safeDesc = esc(metaDesc);
   html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${safeDesc}">`);
   html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${safeDesc}">`);
