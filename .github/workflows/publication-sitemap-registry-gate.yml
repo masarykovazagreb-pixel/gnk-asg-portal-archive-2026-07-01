@@ -20,6 +20,8 @@ on:
       - 'scripts/build-aktual-columns-index-v1.mjs'
       - 'scripts/build-aktual-media-weekly-archive-v1.mjs'
       - 'scripts/build-aktual-media-weekly-v1.mjs'
+      - 'scripts/check-aktual-weekly-materialization-v1.mjs'
+      - 'tests/check-aktual-weekly-materialization-v1.test.mjs'
       - 'scripts/generate-editorial-cover-assets-v1.mjs'
       - 'scripts/generate-aktual-weekly-cover-assets-v1.mjs'
       - 'scripts/generate_aktual_columns.py'
@@ -116,7 +118,9 @@ jobs:
       - name: Validate published routes, lastmod and canonical registry
         run: python scripts/validate_publication_sitemap_registry_v1.py
       - name: Verify weekly curation digest is materialized
-        run: node scripts/build-aktual-media-weekly-v1.mjs --check
+        run: |
+          node --test tests/check-aktual-weekly-materialization-v1.test.mjs
+          node scripts/check-aktual-weekly-materialization-v1.mjs
       - name: Test route-scoped completeness and protected-route safety
         run: node scripts/test-editorial-publication-completeness-v1.mjs
       - name: Enforce editorial publication completeness
