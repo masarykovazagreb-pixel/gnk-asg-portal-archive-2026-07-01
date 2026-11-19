@@ -35,6 +35,13 @@ jobs:
           git diff --quiet
           git diff --cached --quiet
           test "$(git ls-remote origin refs/heads/feature/world201-cloudflare-bilingual-20261119 | cut -f1)" = "$REVIEWED_SHA"
+      - name: Install ImageMagick WebP renderer for original covers
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick
+          command -v convert
+          convert -version
       - name: Materialize current weekly archive and two canonical editorials
         run: |
           set -euo pipefail
