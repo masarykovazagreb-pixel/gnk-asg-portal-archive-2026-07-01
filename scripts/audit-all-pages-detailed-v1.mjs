@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import { pipeline } from 'node:stream/promises';
 
 const ROOT=path.resolve('apps/portal');
 const REPORT=path.resolve('artifacts/all-pages-detailed-audit.json');
@@ -30,7 +31,22 @@ const parseHex=value=>{const raw=String(value||'').trim();const match=raw.match(
 const luminance=color=>{const values=[color.r,color.g,color.b].map(value=>{const v=value/255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4)});return 0.2126*values[0]+0.7152*values[1]+0.0722*values[2]};
 const ratio=(a,b)=>{const x=luminance(a),y=luminance(b);return(Math.max(x,y)+0.05)/(Math.min(x,y)+0.05)};
 function contrastRisks(css){const risks=[];for(const block of css.matchAll(/([^{}]+)\{([^{}]+)\}/g)){const selector=block[1].trim().slice(0,220),body=block[2];const colorMatch=body.match(/(?:^|;)\s*color\s*:\s*(#[0-9a-f]{3,6})\b/i);const backgroundMatch=body.match(/(?:^|;)\s*background(?:-color)?\s*:\s*(#[0-9a-f]{3,6})\b/i);if(!colorMatch||!backgroundMatch)continue;const fg=parseHex(colorMatch[1]),bg=parseHex(backgroundMatch[1]);if(!fg||!bg)continue;const value=ratio(fg,bg);if(value<4.5)risks.push({selector,foreground:colorMatch[1],background:backgroundMatch[1],ratio:Number(value.toFixed(2))})}return risks}
-function linkedCss(html,file){const out=[];for(const href of extract(html,'href')){const clean=normalize(href);if(!clean.endsWith('.css'))continue;const target=clean.startsWith('/')?path.join(ROOT,clean.slice(1)):path.resolve(path.dirname(file),clean);if(fs.existsSync(target))out.push({file:posix(path.relative('.',target)),css:fs.readFileSync(target,'utf8')})}return out}
+const cssRiskCache = new Map();
+function linkedCssRisks(html, file) {
+  const risks = [];
+  for (const href of extract(html, 'href')) {
+    const clean = normalize(href);
+    if (!clean.endsWith('.css')) continue;
+    const target = clean.startsWith('/') ? path.join(ROOT, clean.slice(1)) : path.resolve(path.dirname(file), clean);
+    if (!cssRiskCache.has(target)) {
+      const stylesheet = posix(path.relative('.', target));
+      const matches = fs.existsSync(target) ? contrastRisks(fs.readFileSync(target, 'utf8')) : [];
+      cssRiskCache.set(target, matches.map(item => ({...item, file: stylesheet})));
+    }
+    risks.push(...cssRiskCache.get(target));
+  }
+  return risks;
+}
 function formIssues(html){const issues=[];for(const form of html.matchAll(/<form\b[\s\S]*?<\/form>/gi)){const fragment=form[0];for(const control of fragment.matchAll(/<(input|select|textarea)\b([^>]*)>/gi)){const tag=control[1].toLowerCase(),attrs=control[2],type=(attrs.match(/\btype=["']?([^\s"'>]+)/i)?.[1]||'').toLowerCase();if(['hidden','submit','button','reset','checkbox','radio','file'].includes(type))continue;const id=attrs.match(/\bid=["']([^"']+)["']/i)?.[1];const aria=attrs.match(/\baria-label=["'][^"']+["']/i)||attrs.match(/\baria-labelledby=["'][^"']+["']/i);const explicit=id&&new RegExp(`<label\\b[^>]*for=["']${id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}["']`,'i').test(fragment);const before=fragment.slice(0,control.index),nested=before.lastIndexOf('<label')>before.lastIndexOf('</label>');if(!aria&&!explicit&&!nested)issues.push({tag,id:id||null,issue:'missing-accessible-label'})}}return issues}
 
 assert.ok(fs.existsSync(MENU_FILE),'missing V6 menu');
@@ -45,38 +61,81 @@ const menuRoutes=[...menu.matchAll(/['"](\/(?:[^'"?#]*\/)?)(?:['"])/g)].map(matc
 const uniqueMenuRoutes=[...new Set(menuRoutes)];
 const menuMissing=uniqueMenuRoutes.filter(route=>!routeExists(route));
 const htmlFiles=walk(ROOT).filter(file=>file.endsWith('.html')&&!isUtilityHtml(file)&&!IGNORE_HTML_PREFIXES.some(prefix=>rel(file).startsWith(prefix)));
-const pages=[],errors=[],warnings=[];
-for(const file of htmlFiles){
- const html=fs.readFileSync(file,'utf8'),route=routeFor(file),protectedRoute=isProtected(route),pageErrors=[],pageWarnings=[];
- const lang=html.match(/<html\b[^>]*lang=["']([^"']+)["']/i)?.[1]||'';
- const title=html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim()||'';
- const viewport=/<meta\b[^>]*name=["']viewport["']/i.test(html);
- const robots=html.match(/<meta\b[^>]*name=["']robots["'][^>]*content=["']([^"']+)["']/i)?.[1]||'';
- const htmlForRefScan=html.replace(/<script(?![^>]*\bsrc=)[^>]*>[\s\S]*?<\/script>/gi,'');
- const refs=[...extract(htmlForRefScan,'href'),...extract(htmlForRefScan,'src')];
- const broken=[...new Set(refs.filter(ref=>!targetExists(ref,file)&&!edgeNormalizedRef(ref,file)))];
- const logoRefs=extract(html,'src').filter(src=>/(?:^|\/)(?:logo[-_][^/]+|gnk[-_]gold[-_]logo|GNK_ASG_logo_gold_transparent)\.(?:svg|png|jpe?g)(?:[?#]|$)/i.test(src));
- const nonCanonicalLogoRefs=logoRefs.filter(src=>legacyLogoRef(src));
- const inlineCss=[...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map(match=>match[1]).join('\n');
- const cssSources=[{file:posix(path.relative('.',file)),css:inlineCss},...linkedCss(html,file)];
- const risks=cssSources.flatMap(source=>contrastRisks(source.css).map(item=>({...item,file:source.file})));
- const severeRisks=risks.filter(item=>item.ratio<3);
- const forms=formIssues(html).filter(issue=>!(edgeNormalization&&['chatInput','documentCategory'].includes(issue.id)));
- if(!lang)pageErrors.push('missing-html-lang');
- if(!title)pageErrors.push('missing-title');
- if(!viewport)pageErrors.push('missing-viewport');
- if(protectedRoute&&!/noindex/i.test(robots))pageErrors.push('protected-page-missing-noindex');
- if(broken.length)pageErrors.push('broken-local-references');
- if(severeRisks.length)pageWarnings.push('static-contrast-risk-below-3');
- if(nonCanonicalLogoRefs.length&&!edgeNormalization)pageWarnings.push('legacy-logo-source-runtime-canonicalized');
- if(forms.length)pageErrors.push('form-controls-missing-accessible-label');
- const page={route,file:posix(path.relative('.',file)),protected:protectedRoute,lang,title,viewport,robots,broken,logoRefs,nonCanonicalLogoRefs,contrastRisks:risks,formIssues:forms,edgeNormalizedLegacyLogos:edgeNormalization?nonCanonicalLogoRefs:[],errors:pageErrors,warnings:pageWarnings};
- pages.push(page);
- for(const code of pageErrors)errors.push({route,file:page.file,code,detail:code==='broken-local-references'?broken:code==='form-controls-missing-accessible-label'?forms:null});
- for(const code of pageWarnings)warnings.push({route,file:page.file,code,detail:code==='static-contrast-risk-below-3'?severeRisks:nonCanonicalLogoRefs});
+const errors=[],warnings=[];
+const summary = {
+  pages: 0, menuRoutes: uniqueMenuRoutes.length, missingMenuRoutes: menuMissing.length,
+  errors: 0, warnings: 0, pagesWithStaticContrastRisks: 0, pagesWithLegacyLogoSources: 0,
+  legacyLogosNormalizedAtEdge: 0, pagesWithForms: 0,
+};
+fs.mkdirSync(path.dirname(REPORT), { recursive: true });
+const tempDir = fs.mkdtempSync(path.join(path.dirname(REPORT), '.all-pages-audit-'));
+const pagesPath = path.join(tempDir, 'pages.jsonl');
+const tempReport = path.join(tempDir, 'report.json');
+try {
+  const pagesFile = fs.openSync(pagesPath, 'w');
+  try {
+    for(const file of htmlFiles){
+     const html=fs.readFileSync(file,'utf8'),route=routeFor(file),protectedRoute=isProtected(route),pageErrors=[],pageWarnings=[];
+     const lang=html.match(/<html\b[^>]*lang=["']([^"']+)["']/i)?.[1]||'';
+     const title=html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim()||'';
+     const viewport=/<meta\b[^>]*name=["']viewport["']/i.test(html);
+     const robots=html.match(/<meta\b[^>]*name=["']robots["'][^>]*content=["']([^"']+)["']/i)?.[1]||'';
+     const htmlForRefScan=html.replace(/<script(?![^>]*\bsrc=)[^>]*>[\s\S]*?<\/script>/gi,'');
+     const refs=[...extract(htmlForRefScan,'href'),...extract(htmlForRefScan,'src')];
+     const broken=[...new Set(refs.filter(ref=>!targetExists(ref,file)&&!edgeNormalizedRef(ref,file)))];
+     const logoRefs=extract(html,'src').filter(src=>/(?:^|\/)(?:logo[-_][^/]+|gnk[-_]gold[-_]logo|GNK_ASG_logo_gold_transparent)\.(?:svg|png|jpe?g)(?:[?#]|$)/i.test(src));
+     const nonCanonicalLogoRefs=logoRefs.filter(src=>legacyLogoRef(src));
+     const inlineCss=[...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map(match=>match[1]).join('\n');
+     const risks=[
+       ...contrastRisks(inlineCss).map(item=>({...item,file:posix(path.relative('.',file))})),
+       ...linkedCssRisks(html,file),
+     ];
+     const severeRisks=risks.filter(item=>item.ratio<3);
+     const forms=formIssues(html).filter(issue=>!(edgeNormalization&&['chatInput','documentCategory'].includes(issue.id)));
+     if(!lang)pageErrors.push('missing-html-lang');
+     if(!title)pageErrors.push('missing-title');
+     if(!viewport)pageErrors.push('missing-viewport');
+     if(protectedRoute&&!/noindex/i.test(robots))pageErrors.push('protected-page-missing-noindex');
+     if(broken.length)pageErrors.push('broken-local-references');
+     if(severeRisks.length)pageWarnings.push('static-contrast-risk-below-3');
+     if(nonCanonicalLogoRefs.length&&!edgeNormalization)pageWarnings.push('legacy-logo-source-runtime-canonicalized');
+     if(forms.length)pageErrors.push('form-controls-missing-accessible-label');
+     const page={route,file:posix(path.relative('.',file)),protected:protectedRoute,lang,title,viewport,robots,broken,logoRefs,nonCanonicalLogoRefs,contrastRisks:risks,formIssues:forms,edgeNormalizedLegacyLogos:edgeNormalization?nonCanonicalLogoRefs:[],errors:pageErrors,warnings:pageWarnings};
+     fs.writeFileSync(pagesFile, `${summary.pages ? ',\n' : ''}    ${JSON.stringify(page)}`);
+     summary.pages++;
+     if (risks.length) summary.pagesWithStaticContrastRisks++;
+     if (nonCanonicalLogoRefs.length) summary.pagesWithLegacyLogoSources++;
+     summary.legacyLogosNormalizedAtEdge += page.edgeNormalizedLegacyLogos.length;
+     if (forms.length || /<form\b/i.test(html)) summary.pagesWithForms++;
+     for(const code of pageErrors)errors.push({route,file:page.file,code,detail:code==='broken-local-references'?broken:code==='form-controls-missing-accessible-label'?forms:null});
+     for(const code of pageWarnings)warnings.push({route,file:page.file,code,detail:code==='static-contrast-risk-below-3'?severeRisks:nonCanonicalLogoRefs});
+    }
+  } finally {
+    fs.closeSync(pagesFile);
+  }
+  for (const route of menuMissing) {
+    errors.push({route,file:'apps/portal/assets/public-unified-menu-v6.js',code:'menu-route-missing-physical-page'});
+  }
+  summary.errors = errors.length;
+  summary.warnings = warnings.length;
+  const report = {
+    version: 'GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED',
+    generatedAt: new Date().toISOString(), summary, menuMissing, errors, warnings,
+  };
+  async function* reportChunks() {
+    yield JSON.stringify(report, null, 2).slice(0, -2);
+    yield ',\n  "pages": [';
+    if (summary.pages) {
+      yield '\n';
+      yield* fs.createReadStream(pagesPath);
+      yield '\n  ';
+    }
+    yield ']\n}';
+  }
+  await pipeline(reportChunks(), fs.createWriteStream(tempReport));
+  fs.renameSync(tempReport, REPORT);
+} finally {
+  fs.rmSync(tempDir, { recursive: true, force: true });
 }
-for(const route of menuMissing)errors.push({route,file:'apps/portal/assets/public-unified-menu-v6.js',code:'menu-route-missing-physical-page'});
-const report={version:'GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED',generatedAt:new Date().toISOString(),summary:{pages:pages.length,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:errors.length,warnings:warnings.length,pagesWithStaticContrastRisks:pages.filter(page=>page.contrastRisks.length).length,pagesWithLegacyLogoSources:pages.filter(page=>page.nonCanonicalLogoRefs.length).length,legacyLogosNormalizedAtEdge:pages.reduce((n,page)=>n+page.edgeNormalizedLegacyLogos.length,0),pagesWithForms:pages.filter(page=>page.formIssues.length||/<form\b/i.test(fs.readFileSync(path.resolve(page.file),'utf8'))).length},menuMissing,errors,warnings,pages};
-fs.mkdirSync(path.dirname(REPORT),{recursive:true});fs.writeFileSync(REPORT,JSON.stringify(report,null,2));
-console.log(JSON.stringify(report.summary,null,2));
-if(errors.length){for(const item of errors.slice(0,120))console.error(`- ${item.code} ${item.route} (${item.file})`);process.exit(1)}
+console.log(JSON.stringify(summary,null,2));
+if(errors.length){for(const item of errors.slice(0,120))console.error(`- ${item.code} ${item.route} (${item.file})`);process.exitCode=1}
