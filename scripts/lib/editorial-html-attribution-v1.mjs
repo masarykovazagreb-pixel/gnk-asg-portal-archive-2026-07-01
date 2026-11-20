@@ -5,7 +5,6 @@ import {
   GNK_ASG_PUBLISHER,
   WEBSITE_ID,
   articleAuthorFor,
-  isNerminPersonReference,
   isVerifiedNerminAuthor,
 } from './editorial-attribution-v1.mjs';
 import { socialHashtagsFor } from './social-hashtags-v1.mjs';
@@ -142,7 +141,7 @@ function patchSchemas(html, item, author) {
         value.publisher = { ...GNK_ASG_PUBLISHER };
         value.isPartOf ||= { '@id': WEBSITE_ID };
         if (author) value.author = author;
-        else if (isNerminPersonReference(value.author)) delete value.author;
+        else delete value.author; // Registry has no verified byline: never infer any author from legacy markup or editor/publisher.
         if ('about' in value) {
           const about = cleanSocialAbout(value.about, item);
           if (about === undefined) delete value.about;
