@@ -1,0 +1,57 @@
+name: AKTUAL World — 201 English edition parity
+on:
+  pull_request:
+    paths:
+      - 'scripts/build-aktual-world-en-v1.mjs'
+      - 'tests/test-aktual-world-en-v1.mjs'
+      - 'apps/portal/en/gnk-aktual/media/**'
+      - 'apps/portal/assets/aktual-world-premium-en-v1.css'
+      - 'apps/portal/assets/aktual-world-directory-v1.*'
+      - 'apps/portal/assets/aktual-world-page-a11y-v1.css'
+      - 'apps/portal/gnk-aktual/index.html'
+      - 'apps/portal/gnk-aktual/media/index.html'
+      - 'tests/test-aktual-network-performance-v1.mjs'
+      - '.github/workflows/check-aktual-world-en-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: aktual-world-en-build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  country-parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerate all 201 pages from canonical registry (not from copied news)
+        run: |
+          node --check scripts/build-aktual-world-en-v1.mjs
+          node scripts/build-aktual-world-en-v1.mjs
+          node --test tests/test-aktual-world-en-v1.mjs
+          node --test tests/test-aktual-network-performance-v1.mjs
+      - name: Commit deterministic build output ONLY to preapproved feature branch
+        if: >
+          github.event_name == 'pull_request' &&
+          github.event.pull_request.head.repo.full_name == github.repository &&
+          github.event.pull_request.head.ref == 'feature/aktual-world-premium-radio-20261118'
+        env:
+          FEATURE_REF: feature/aktual-world-premium-radio-20261118
+        run: |
+          set -euo pipefail
+          git add -- apps/portal/en/gnk-aktual/media
+          if git diff --cached --quiet; then
+            echo 'English pages already match generator.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(aktual): sync 201 English country pages with verified registry'
+          git push origin "HEAD:refs/heads/$FEATURE_REF"
+          echo 'Changes made on feature branch only. NO merge or deploy.'
