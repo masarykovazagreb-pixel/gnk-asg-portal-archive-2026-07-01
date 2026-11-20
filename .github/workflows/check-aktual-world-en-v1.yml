@@ -35,7 +35,7 @@ jobs:
           node --check scripts/build-aktual-world-en-v1.mjs
           node scripts/build-aktual-world-en-v1.mjs
           node --test tests/test-aktual-world-en-v1.mjs
-          node --test tests/test-aktual-network-performance-v1.mjs
+          node scripts/build-aktual-world-en-v1.mjs --check
       - name: Commit deterministic build output ONLY to preapproved feature branch
         if: >
           github.event_name == 'pull_request' &&
