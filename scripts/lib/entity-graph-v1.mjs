@@ -84,7 +84,7 @@ const person = () => ({
   '@id': PERSON,
   name: 'Nermin Sefić',
   alternateName: ['Nermin Sefic', 'Sefic Nermin', 'Sefić Nermin'],
-  jobTitle: 'Glavni urednik AKTUAL MEDIA, direktor GNK ASG d.o.o.',
+  jobTitle: 'Glavni urednik AKTUAL MEDIA',
   url: `${SITE}/nermin-sefic/`,
   image: `${SITE}/assets/people/nermin-sefic/nermin-sefic-01-official-desk-portrait.webp`,
   worksFor: [{ '@id': ORG_ASG }, { '@id': ORG_AKTUAL }],

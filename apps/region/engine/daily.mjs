@@ -17,7 +17,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isWithdrawnItem } from './withdrawals.mjs';
-import { fetchText, hash6, isCorrupt, ISO_DAY, parseDate, slugify, themeFor, truncate } from './lib.mjs';
+import { fetchText, hash6, isCorrupt, ISO_DAY, parseDate, slugify, themeFor, truncate, regionalImage, withRegionalImage } from './lib.mjs';
 import { looksLikeFeed, parseFeed } from './feed.mjs';
 import { buildChannel, CHANNELS } from './build.mjs';
 
@@ -54,7 +54,7 @@ function channelFile(id) { return join(DATA, `${id}.json`); }
 
 function loadChannelData(channel) {
   const existing = readJSON(channelFile(channel.id), null);
-  if (existing && Array.isArray(existing.items)) return { ...existing, items: existing.items.filter((item) => !isWithdrawnItem(item)) };
+  if (existing && Array.isArray(existing.items)) return { ...existing, items: existing.items.filter((item) => !isWithdrawnItem(item)).map(withRegionalImage) };
   return { version: 1, channel: channel.id, updatedAt: '', items: [], seen: {} };
 }
 
@@ -133,7 +133,7 @@ export async function runChannel(channel, { dry = false, report = {} } = {}) {
         /* SVG se ne poslužuje kroz posrednik slika (CSP i provjera sadržaja ga
            odbijaju), pa takav URL ne ulazi u zapis — bolje bez slike nego sa
            slomljenom minijaturom. */
-        image: /^https:\/\//.test(item.image || '') && !/\.svg(?:[?#]|$)/i.test(item.image) ? item.image : '',
+        image: regionalImage(item.image),
         imageAlt: (item.imageAlt || item.title || '').slice(0, 180),
         addedAt: new Date().toISOString()
       };

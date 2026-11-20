@@ -32,17 +32,24 @@ if (!counts) { console.log(JSON.stringify({ ok: false, failures: fails.length })
 
 /* --- 1. zapis odgovara podacima --- */
 const regionDir = join(ROOT, 'apps/region/data');
+const registered = readJSON(join(ROOT, 'apps/region/channels.json'))?.channels || [];
+const channelIds = registered.map(({ id }) => id).sort();
+const countIds = (counts.channels || []).map(({ id }) => id).sort();
+check(channelIds.length > 0 && new Set(channelIds).size === channelIds.length, 'nevaljan registar gradskih izdanja');
 let realTexts = 0;
-let channels = 0;
+for (const id of channelIds) {
+  const data = readJSON(join(regionDir, `${id}.json`));
+  check(Array.isArray(data?.items), `nedostaje arhiva izdanja ${id}`);
+  realTexts += data?.items?.length || 0;
+}
 for (const name of readdirSync(regionDir)) {
   if (!name.endsWith('.json') || name.startsWith('_')) continue;
-  const data = readJSON(join(regionDir, name), { items: [] });
-  realTexts += (data.items || []).length;
-  channels += 1;
+  const data = readJSON(join(regionDir, name));
+  if (Array.isArray(data?.items)) check(channelIds.includes(name.slice(0, -5)), `arhiva bez registriranog izdanja: ${name}`);
 }
 check(counts.texts === realTexts, `zapis kaže ${counts.texts} tekstova, podaci ${realTexts}`);
-check(counts.cities === channels, `zapis kaže ${counts.cities} gradova, podaci ${channels}`);
-check(Array.isArray(counts.channels) && counts.channels.length === channels, 'po kanalu nema svih zapisa');
+check(counts.cities === channelIds.length, `zapis kaže ${counts.cities} gradova, podaci ${channelIds.length}`);
+check(JSON.stringify(countIds) === JSON.stringify(channelIds), 'po kanalu nema svih zapisa');
 check(/^\d{4}-\d{2}-\d{2}$/.test(counts.dataDay || ''), 'nema podatkovnog dana');
 
 /* --- 2. javne stranice ne nose stari zbroj --- */

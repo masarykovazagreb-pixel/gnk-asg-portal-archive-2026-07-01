@@ -68,7 +68,7 @@ Konfigurirani feed nije dokaz dozvole za preuzimanje, komercijalnu uporabu ili p
 - Jutarnji list (rss): [https://www.jutarnji.hr/feed](https://www.jutarnji.hr/feed)
 - Poslovni dnevnik (rss): [https://www.poslovni.hr/feed/](https://www.poslovni.hr/feed/)
 - tportal (rss): [https://www.tportal.hr/rss](https://www.tportal.hr/rss)
-- HRT Vijesti (rss): [https://vijesti.hrt.hr/rss](https://vijesti.hrt.hr/rss)
+- HRT Vijesti (rss): [https://www.hrt.hr/rss/vijesti/](https://www.hrt.hr/rss/vijesti/) · [https://vijesti.hrt.hr/rss](https://vijesti.hrt.hr/rss)
 - N1 Hrvatska (rss): [https://n1info.hr/feed/](https://n1info.hr/feed/)
 - Telegram.hr (rss): [https://telegram.hr/feed/](https://telegram.hr/feed/)
 
@@ -111,7 +111,7 @@ Konfigurirani feed nije dokaz dozvole za preuzimanje, komercijalnu uporabu ili p
 - N1 Slovenija (rss): [https://n1info.si/feed/](https://n1info.si/feed/)
 - 24ur.com (rss): [https://www.24ur.com/rss](https://www.24ur.com/rss)
 - Mladina (rss): [https://www.mladina.si/feed/](https://www.mladina.si/feed/)
-- RTV Slovenija (rss): [https://www.rtvslo.si/rss](https://www.rtvslo.si/rss)
+- RTV Slovenija (rss): [https://www.rtvslo.si/feeds/novice.xml](https://www.rtvslo.si/feeds/novice.xml) · [https://www.rtvslo.si/rss](https://www.rtvslo.si/rss)
 - Slovenske novice (rss): [https://www.slovenskenovice.si/rss](https://www.slovenskenovice.si/rss)
 - Žurnal24 (rss): [https://www.zurnal24.si/rss](https://www.zurnal24.si/rss)
 - Primorske novice (rss): [https://www.primorske.si/rss](https://www.primorske.si/rss)
@@ -154,7 +154,7 @@ Konfigurirani feed nije dokaz dozvole za preuzimanje, komercijalnu uporabu ili p
 
 - Capital FM Kenya (rss): [https://capitalfm.africa/news/feed/](https://capitalfm.africa/news/feed/)
 - Daily Nation (rss): [https://nation.africa/kenya/rss](https://nation.africa/kenya/rss) · [https://nation.africa/kenya/rss.xml](https://nation.africa/kenya/rss.xml)
-- The Standard (rss): [https://www.standardmedia.co.ke/rss](https://www.standardmedia.co.ke/rss)
+- The Standard (rss): [https://www.standardmedia.co.ke/rss/headlines.php](https://www.standardmedia.co.ke/rss/headlines.php) · [https://www.standardmedia.co.ke/rss](https://www.standardmedia.co.ke/rss)
 - The Star Kenya (rss): [https://www.the-star.co.ke/rss](https://www.the-star.co.ke/rss)
 - Business Daily (rss): [https://www.businessdailyafrica.com/rss](https://www.businessdailyafrica.com/rss)
 - Citizen Digital (rss): [https://www.citizen.digital/rss](https://www.citizen.digital/rss)
@@ -209,7 +209,7 @@ Konfigurirani feed nije dokaz dozvole za preuzimanje, komercijalnu uporabu ili p
 
 - CNA (rss): [https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml](https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml)
 - The Straits Times (rss): [https://www.straitstimes.com/news/singapore/rss.xml](https://www.straitstimes.com/news/singapore/rss.xml)
-- The Business Times (rss): [https://www.businesstimes.com.sg/rss](https://www.businesstimes.com.sg/rss)
+- The Business Times (rss): [https://www.businesstimes.com.sg/rss/top-stories](https://www.businesstimes.com.sg/rss/top-stories) · [https://www.businesstimes.com.sg/rss](https://www.businesstimes.com.sg/rss)
 - Mothership (rss): [https://mothership.sg/rss](https://mothership.sg/rss)
 - TODAY (rss): [https://www.todayonline.com/rss](https://www.todayonline.com/rss)
 - The Online Citizen (rss): [https://www.theonlinecitizen.com/feed/](https://www.theonlinecitizen.com/feed/)

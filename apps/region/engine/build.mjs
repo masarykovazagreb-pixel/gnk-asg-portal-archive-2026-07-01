@@ -16,7 +16,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isWithdrawnItem } from './withdrawals.mjs';
-import { esc, longDate, shortDate, stampLocal, slugify, isoWeek, themeFor, scoreFromTitle, truncate, safeJson } from './lib.mjs';
+import { esc, longDate, shortDate, stampLocal, slugify, isoWeek, themeFor, scoreFromTitle, truncate, safeJson, withRegionalImage } from './lib.mjs';
 import { t, ANALYSIS } from '../src/strings.mjs';
 import { logoFor, logoAlternate, channelLogoSlug, LOGO_W, LOGO_H } from './brand.mjs';
 import { chromeOf, desksOf, extraOf, editionsUi } from '../src/chrome.mjs';
@@ -348,7 +348,8 @@ ${footer(channel, strings)}`;
 export function loadChannel(channel) {
   const file = join(DATA, `${channel.id}.json`);
   if (!existsSync(file)) return { version: 1, channel: channel.id, updatedAt: '', items: [] };
-  return JSON.parse(readFileSync(file, 'utf8'));
+  const data = JSON.parse(readFileSync(file, 'utf8'));
+  return { ...data, items: (data.items || []).map(withRegionalImage) };
 }
 
 const relRoot = '';
