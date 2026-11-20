@@ -30,7 +30,8 @@ const parseHex=value=>{const raw=String(value||'').trim();const match=raw.match(
 const luminance=color=>{const values=[color.r,color.g,color.b].map(value=>{const v=value/255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4)});return 0.2126*values[0]+0.7152*values[1]+0.0722*values[2]};
 const ratio=(a,b)=>{const x=luminance(a),y=luminance(b);return(Math.max(x,y)+0.05)/(Math.min(x,y)+0.05)};
 function contrastRisks(css){const risks=[];for(const block of css.matchAll(/([^{}]+)\{([^{}]+)\}/g)){const selector=block[1].trim().slice(0,220),body=block[2];const colorMatch=body.match(/(?:^|;)\s*color\s*:\s*(#[0-9a-f]{3,6})\b/i);const backgroundMatch=body.match(/(?:^|;)\s*background(?:-color)?\s*:\s*(#[0-9a-f]{3,6})\b/i);if(!colorMatch||!backgroundMatch)continue;const fg=parseHex(colorMatch[1]),bg=parseHex(backgroundMatch[1]);if(!fg||!bg)continue;const value=ratio(fg,bg);if(value<4.5)risks.push({selector,foreground:colorMatch[1],background:backgroundMatch[1],ratio:Number(value.toFixed(2))})}return risks}
-function linkedCss(html,file){const out=[];for(const href of extract(html,'href')){const clean=normalize(href);if(!clean.endsWith('.css'))continue;const target=clean.startsWith('/')?path.join(ROOT,clean.slice(1)):path.resolve(path.dirname(file),clean);if(fs.existsSync(target))out.push({file:posix(path.relative('.',target)),css:fs.readFileSync(target,'utf8')})}return out}
+const linkedCssCache=new Map();
+function linkedCss(html,file){const out=[];for(const href of extract(html,'href')){const clean=normalize(href);if(!clean.endsWith('.css'))continue;const target=clean.startsWith('/')?path.join(ROOT,clean.slice(1)):path.resolve(path.dirname(file),clean);if(fs.existsSync(target)){if(!linkedCssCache.has(target))linkedCssCache.set(target,fs.readFileSync(target,'utf8'));out.push({file:posix(path.relative('.',target)),css:linkedCssCache.get(target)})}}return out}
 function formIssues(html){const issues=[];for(const form of html.matchAll(/<form\b[\s\S]*?<\/form>/gi)){const fragment=form[0];for(const control of fragment.matchAll(/<(input|select|textarea)\b([^>]*)>/gi)){const tag=control[1].toLowerCase(),attrs=control[2],type=(attrs.match(/\btype=["']?([^\s"'>]+)/i)?.[1]||'').toLowerCase();if(['hidden','submit','button','reset','checkbox','radio','file'].includes(type))continue;const id=attrs.match(/\bid=["']([^"']+)["']/i)?.[1];const aria=attrs.match(/\baria-label=["'][^"']+["']/i)||attrs.match(/\baria-labelledby=["'][^"']+["']/i);const explicit=id&&new RegExp(`<label\\b[^>]*for=["']${id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}["']`,'i').test(fragment);const before=fragment.slice(0,control.index),nested=before.lastIndexOf('<label')>before.lastIndexOf('</label>');if(!aria&&!explicit&&!nested)issues.push({tag,id:id||null,issue:'missing-accessible-label'})}}return issues}
 
 assert.ok(fs.existsSync(MENU_FILE),'missing V6 menu');
@@ -45,7 +46,15 @@ const menuRoutes=[...menu.matchAll(/['"](\/(?:[^'"?#]*\/)?)(?:['"])/g)].map(matc
 const uniqueMenuRoutes=[...new Set(menuRoutes)];
 const menuMissing=uniqueMenuRoutes.filter(route=>!routeExists(route));
 const htmlFiles=walk(ROOT).filter(file=>file.endsWith('.html')&&!isUtilityHtml(file)&&!IGNORE_HTML_PREFIXES.some(prefix=>rel(file).startsWith(prefix)));
-const pages=[],errors=[],warnings=[];
+// Audit every page, but spool detailed records to disk rather than retaining
+// thousands of complete pages, reference arrays and contrast lists in V8 heap.
+const tempFiles={pages:REPORT+'.pages.tmp',errors:REPORT+'.errors.tmp',warnings:REPORT+'.warnings.tmp'};
+fs.mkdirSync(path.dirname(REPORT),{recursive:true});
+const spool={pages:fs.openSync(tempFiles.pages,'w'),errors:fs.openSync(tempFiles.errors,'w'),warnings:fs.openSync(tempFiles.warnings,'w')};
+const totals={pages:0,errors:0,warnings:0,pagesWithStaticContrastRisks:0,pagesWithLegacyLogoSources:0,legacyLogosNormalizedAtEdge:0,pagesWithForms:0};
+const firstErrors=[];
+function append(kind,value){const n=totals[kind]++;fs.writeSync(spool[kind],(n===0?'':',')+'\n'+JSON.stringify(value));if(kind==='errors'&&firstErrors.length<120)firstErrors.push(value)}
+const riskCache=new Map();
 for(const file of htmlFiles){
  const html=fs.readFileSync(file,'utf8'),route=routeFor(file),protectedRoute=isProtected(route),pageErrors=[],pageWarnings=[];
  const lang=html.match(/<html\b[^>]*lang=["']([^"']+)["']/i)?.[1]||'';
@@ -59,7 +68,12 @@ for(const file of htmlFiles){
  const nonCanonicalLogoRefs=logoRefs.filter(src=>legacyLogoRef(src));
  const inlineCss=[...html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map(match=>match[1]).join('\n');
  const cssSources=[{file:posix(path.relative('.',file)),css:inlineCss},...linkedCss(html,file)];
- const risks=cssSources.flatMap(source=>contrastRisks(source.css).map(item=>({...item,file:source.file})));
+ const risks=cssSources.flatMap(source=>{
+  const reusable=source.file!==posix(path.relative('.',file));
+  let base=reusable?riskCache.get(source.file):undefined;
+  if(base===undefined){base=contrastRisks(source.css);if(reusable)riskCache.set(source.file,base)}
+  return base.map(item=>({...item,file:source.file}));
+ });
  const severeRisks=risks.filter(item=>item.ratio<3);
  const forms=formIssues(html).filter(issue=>!(edgeNormalization&&['chatInput','documentCategory'].includes(issue.id)));
  if(!lang)pageErrors.push('missing-html-lang');
@@ -71,12 +85,33 @@ for(const file of htmlFiles){
  if(nonCanonicalLogoRefs.length&&!edgeNormalization)pageWarnings.push('legacy-logo-source-runtime-canonicalized');
  if(forms.length)pageErrors.push('form-controls-missing-accessible-label');
  const page={route,file:posix(path.relative('.',file)),protected:protectedRoute,lang,title,viewport,robots,broken,logoRefs,nonCanonicalLogoRefs,contrastRisks:risks,formIssues:forms,edgeNormalizedLegacyLogos:edgeNormalization?nonCanonicalLogoRefs:[],errors:pageErrors,warnings:pageWarnings};
- pages.push(page);
- for(const code of pageErrors)errors.push({route,file:page.file,code,detail:code==='broken-local-references'?broken:code==='form-controls-missing-accessible-label'?forms:null});
- for(const code of pageWarnings)warnings.push({route,file:page.file,code,detail:code==='static-contrast-risk-below-3'?severeRisks:nonCanonicalLogoRefs});
+ append('pages',page);
+ if(page.contrastRisks.length)totals.pagesWithStaticContrastRisks++;
+ if(page.nonCanonicalLogoRefs.length)totals.pagesWithLegacyLogoSources++;
+ totals.legacyLogosNormalizedAtEdge+=page.edgeNormalizedLegacyLogos.length;
+ if(page.formIssues.length||/<form\b/i.test(html))totals.pagesWithForms++;
+ for(const code of pageErrors)append('errors',{route,file:page.file,code,detail:code==='broken-local-references'?broken:code==='form-controls-missing-accessible-label'?forms:null});
+ for(const code of pageWarnings)append('warnings',{route,file:page.file,code,detail:code==='static-contrast-risk-below-3'?severeRisks:nonCanonicalLogoRefs});
 }
-for(const route of menuMissing)errors.push({route,file:'apps/portal/assets/public-unified-menu-v6.js',code:'menu-route-missing-physical-page'});
-const report={version:'GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED',generatedAt:new Date().toISOString(),summary:{pages:pages.length,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:errors.length,warnings:warnings.length,pagesWithStaticContrastRisks:pages.filter(page=>page.contrastRisks.length).length,pagesWithLegacyLogoSources:pages.filter(page=>page.nonCanonicalLogoRefs.length).length,legacyLogosNormalizedAtEdge:pages.reduce((n,page)=>n+page.edgeNormalizedLegacyLogos.length,0),pagesWithForms:pages.filter(page=>page.formIssues.length||/<form\b/i.test(fs.readFileSync(path.resolve(page.file),'utf8'))).length},menuMissing,errors,warnings,pages};
-fs.mkdirSync(path.dirname(REPORT),{recursive:true});fs.writeFileSync(REPORT,JSON.stringify(report,null,2));
-console.log(JSON.stringify(report.summary,null,2));
-if(errors.length){for(const item of errors.slice(0,120))console.error(`- ${item.code} ${item.route} (${item.file})`);process.exit(1)}
+for(const route of menuMissing)append('errors',{route,file:'apps/portal/assets/public-unified-menu-v6.js',code:'menu-route-missing-physical-page'});
+for(const fd of Object.values(spool))fs.closeSync(fd);
+const summary={pages:totals.pages,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:totals.errors,warnings:totals.warnings,pagesWithStaticContrastRisks:totals.pagesWithStaticContrastRisks,pagesWithLegacyLogoSources:totals.pagesWithLegacyLogoSources,legacyLogosNormalizedAtEdge:totals.legacyLogosNormalizedAtEdge,pagesWithForms:totals.pagesWithForms};
+// Keep the exact JSON report contract while copying temporary arrays in bounded chunks.
+const output=fs.openSync(REPORT,'w');
+function write(v){fs.writeSync(output,v)}
+function copyFile(file){
+  const input=fs.openSync(file,'r'),buffer=Buffer.allocUnsafe(64*1024);
+  try{let size;while((size=fs.readSync(input,buffer,0,buffer.length,null))>0)fs.writeSync(output,buffer.subarray(0,size))}
+  finally{fs.closeSync(input)}
+}
+try{
+  write('{"version":"GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED","generatedAt":'+JSON.stringify(new Date().toISOString())+',"summary":'+JSON.stringify(summary)+',"menuMissing":'+JSON.stringify(menuMissing)+',"errors":[');
+  copyFile(tempFiles.errors);
+  write('],"warnings":[');copyFile(tempFiles.warnings);
+  write('],"pages":[');copyFile(tempFiles.pages);write(']}');
+}finally{
+  fs.closeSync(output);
+  for(const file of Object.values(tempFiles))try{fs.unlinkSync(file)}catch{}
+}
+console.log(JSON.stringify(summary,null,2));
+if(totals.errors){for(const item of firstErrors)console.error(`- ${item.code} ${item.route} (${item.file})`);process.exit(1)}

@@ -1,0 +1,36 @@
+name: AKTUAL World — 201 English edition parity
+on:
+  pull_request:
+    paths:
+      - 'scripts/build-aktual-world-en-v1.mjs'
+      - 'tests/test-aktual-world-en-v1.mjs'
+      - 'apps/portal/en/gnk-aktual/media/**'
+      - 'apps/portal/assets/aktual-world-premium-en-v1.css'
+      - 'apps/portal/assets/aktual-world-directory-v1.*'
+      - 'apps/portal/assets/aktual-world-page-a11y-v1.css'
+      - 'apps/portal/gnk-aktual/index.html'
+      - 'apps/portal/gnk-aktual/media/index.html'
+      - '.github/workflows/check-aktual-world-en-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: aktual-world-en-build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  country-parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerate all 201 pages from canonical registry (not from copied news)
+        run: |
+          node --check scripts/build-aktual-world-en-v1.mjs
+          node scripts/build-aktual-world-en-v1.mjs
+          node --test tests/test-aktual-world-en-v1.mjs
