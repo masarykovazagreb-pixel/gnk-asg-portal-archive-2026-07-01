@@ -1,3 +1,4 @@
+# 2026-11-20: independently generated unique weekly illustrations; no photo reuse.
 # 2026-11-20: verified 5-section curated weekly issue, no relaxation of source gates.
 name: Materialize WORLD201 PR476 editorial release artifacts
 on:
@@ -46,6 +47,8 @@ jobs:
       - name: Materialize current weekly archive and two canonical editorials
         run: |
           set -euo pipefail
+          node scripts/generate-aktual-weekly-cover-assets-v1.mjs
+          node scripts/build-aktual-media-weekly-v1.mjs
           node scripts/build-aktual-media-weekly-v1.mjs --check
           node scripts/build-aktual-media-weekly-archive-v1.mjs --refresh
           node scripts/editorial-registry-v1.mjs
@@ -75,6 +78,9 @@ jobs:
           test "$(git rev-parse HEAD)" = "$REVIEWED_SHA"
           test "$(git ls-remote origin refs/heads/feature/world201-cloudflare-bilingual-20261119 | cut -f1)" = "$REVIEWED_SHA"
           git add -- \
+            apps/portal/data/aktual-weekly-curation.json \
+            apps/portal/data/aktual-weekly.json \
+            apps/portal/data/aktual-weekly-image-manifest.json \
             apps/portal/data/aktual-weekly-archives/2026-11-16.json \
             apps/portal/gnk-aktual/tjedni/2026-11-16/index.html \
             apps/portal/en/gnk-aktual/weekly/2026-11-16/index.html \
@@ -95,6 +101,9 @@ jobs:
           fi
           git diff --cached --name-only | while IFS= read -r p; do
             case "$p" in
+              apps/portal/data/aktual-weekly-curation.json|\
+              apps/portal/data/aktual-weekly.json|\
+              apps/portal/data/aktual-weekly-image-manifest.json|\
               apps/portal/data/aktual-weekly-archives/2026-11-16.json|\
               apps/portal/gnk-aktual/tjedni/2026-11-16/index.html|\
               apps/portal/en/gnk-aktual/weekly/2026-11-16/index.html|\
