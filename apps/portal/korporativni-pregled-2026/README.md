@@ -1,11 +1,11 @@
-# AKTUAL MEDIA · 21 corporate editorial texts · 20 Nov 2026
+# AKTUAL MEDIA multilingual release candidate
 
-Status: AI-assisted content pending documented substantive human editorial approval.
+Date 2026-11-20; 21 HR + 21 SL + 21 SR + 21 EN articles, 4 language hubs, 1 portrait page, 89 sitemap URLs.
 
-- 21 standalone Croatian articles; Croatian, Slovenian, Serbian and English landing indexes (latter three are NOT complete translations); separate Nermin Sefić portrait page, 26 sitemap URLs.
-- Management expectation for 2026 group revenues: > EUR 10 billion, a forecast not an achieved or audited result. Consolidation scope, related-party elimination and cash-flow evidence must be checked.
-- 201 configured country/territory source directories do not establish 201 independent newsrooms.
-- ~600 servers is an unverified management infrastructure claim. Geotehnika Eco affiliate status unverified.
-- DZIV decisions dated 26 Oct 2026 are linked to existing PDF sources; finality and effects on EUIPO remain unconfirmed.
-- Images link to existing portal assets; independent photo copyright verification required.
-- Keep internal secrets confidential. Editorial and legal review, canonical sitemap registration, CI, release gate and authorized Cloudflare exact-SHA deploy plus independent HTTP verification are required for LIVE status.
+* AI-assisted editorial content, substantive human review not yet documented; do not claim published LIVE.
+* Group 2026 > EUR 10 billion is a MANAGEMENT REVENUE FORECAST, not achieved or audited. Validate consolidation and eliminate inter-company transactions.
+* 201 means configured country/territory directories, not 201 independent newsrooms. ~600 servers is an unverified figure.
+* Geotehnika Eco legal and corporate status unverified.
+* DZIV mark decisions dated 26 October 2026 are not represented as finally settled or automatically resolving EUIPO.
+* Images reference existing site assets; photo rights require check. No credentials, private infrastructure or sensitive information.
+* Release only with editorial approval, CI, canonical sitemap registration, exact-SHA Cloudflare deployment and real HTTP verification.
