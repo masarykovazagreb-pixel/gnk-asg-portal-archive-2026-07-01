@@ -11,7 +11,6 @@ import {
   GNK_ASG_PUBLISHER,
   WEBSITE_ID,
   articleAuthorFor,
-  isNerminPersonReference,
   isVerifiedNerminAuthor,
 } from './lib/editorial-attribution-v1.mjs';
 import { cleanSocialAbout, cleanSocialKeywords } from './lib/editorial-html-attribution-v1.mjs';
@@ -113,7 +112,7 @@ function patchArticleSchemas(html, item) {
         value.publisher ||= { ...GNK_ASG_PUBLISHER };
         value.isPartOf ||= { '@id': WEBSITE_ID };
         if (author) value.author = author;
-        else if (isNerminPersonReference(value.author)) delete value.author;
+        else delete value.author; // Keep editor/publisher roles, never infer an unverified byline.
         if ('about' in value) {
           const about = cleanSocialAbout(value.about, item);
           if (about === undefined) delete value.about;
