@@ -151,7 +151,8 @@ function updateArticleNode(node, item, imageUrl) {
   if (item.modifiedAt) node.dateModified = item.modifiedAt;
   if (author) {
     node.author = author;
-  } else if (isNerminPersonReference(node.author)) {
+  } else {
+    // No registry-approved byline: an existing Organization author is not evidence of authorship.
     delete node.author;
   }
   if ('about' in node) {
