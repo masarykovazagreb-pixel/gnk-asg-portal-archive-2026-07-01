@@ -46,6 +46,9 @@ const uniqueMenuRoutes=[...new Set(menuRoutes)];
 const menuMissing=uniqueMenuRoutes.filter(route=>!routeExists(route));
 const htmlFiles=walk(ROOT).filter(file=>file.endsWith('.html')&&!isUtilityHtml(file)&&!IGNORE_HTML_PREFIXES.some(prefix=>rel(file).startsWith(prefix)));
 const pages=[],errors=[],warnings=[];
+// Keep the audit exhaustive while bounding retained per-page diagnostics.
+const MAX_RETAINED_PAGES=1000;
+let auditedPages=0,pagesWithStaticContrastRisks=0,pagesWithLegacyLogoSources=0,legacyLogosNormalizedAtEdge=0,pagesWithForms=0;
 for(const file of htmlFiles){
  const html=fs.readFileSync(file,'utf8'),route=routeFor(file),protectedRoute=isProtected(route),pageErrors=[],pageWarnings=[];
  const lang=html.match(/<html\b[^>]*lang=["']([^"']+)["']/i)?.[1]||'';
@@ -71,12 +74,17 @@ for(const file of htmlFiles){
  if(nonCanonicalLogoRefs.length&&!edgeNormalization)pageWarnings.push('legacy-logo-source-runtime-canonicalized');
  if(forms.length)pageErrors.push('form-controls-missing-accessible-label');
  const page={route,file:posix(path.relative('.',file)),protected:protectedRoute,lang,title,viewport,robots,broken,logoRefs,nonCanonicalLogoRefs,contrastRisks:risks,formIssues:forms,edgeNormalizedLegacyLogos:edgeNormalization?nonCanonicalLogoRefs:[],errors:pageErrors,warnings:pageWarnings};
- pages.push(page);
+ auditedPages++;
+ if(page.contrastRisks.length)pagesWithStaticContrastRisks++;
+ if(page.nonCanonicalLogoRefs.length)pagesWithLegacyLogoSources++;
+ legacyLogosNormalizedAtEdge+=page.edgeNormalizedLegacyLogos.length;
+ if(page.formIssues.length||/<form\b/i.test(html))pagesWithForms++;
+ if(pages.length<MAX_RETAINED_PAGES||pageErrors.length)pages.push(page);
  for(const code of pageErrors)errors.push({route,file:page.file,code,detail:code==='broken-local-references'?broken:code==='form-controls-missing-accessible-label'?forms:null});
  for(const code of pageWarnings)warnings.push({route,file:page.file,code,detail:code==='static-contrast-risk-below-3'?severeRisks:nonCanonicalLogoRefs});
 }
 for(const route of menuMissing)errors.push({route,file:'apps/portal/assets/public-unified-menu-v6.js',code:'menu-route-missing-physical-page'});
-const report={version:'GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED',generatedAt:new Date().toISOString(),summary:{pages:pages.length,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:errors.length,warnings:warnings.length,pagesWithStaticContrastRisks:pages.filter(page=>page.contrastRisks.length).length,pagesWithLegacyLogoSources:pages.filter(page=>page.nonCanonicalLogoRefs.length).length,legacyLogosNormalizedAtEdge:pages.reduce((n,page)=>n+page.edgeNormalizedLegacyLogos.length,0),pagesWithForms:pages.filter(page=>page.formIssues.length||/<form\b/i.test(fs.readFileSync(path.resolve(page.file),'utf8'))).length},menuMissing,errors,warnings,pages};
+const report={version:'GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED',generatedAt:new Date().toISOString(),summary:{pages:auditedPages,retainedPageDetails:pages.length,detailsTruncated:auditedPages>pages.length,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:errors.length,warnings:warnings.length,pagesWithStaticContrastRisks,pagesWithLegacyLogoSources,legacyLogosNormalizedAtEdge,pagesWithForms},menuMissing,errors,warnings,pages};
 fs.mkdirSync(path.dirname(REPORT),{recursive:true});fs.writeFileSync(REPORT,JSON.stringify(report,null,2));
 console.log(JSON.stringify(report.summary,null,2));
 if(errors.length){for(const item of errors.slice(0,120))console.error(`- ${item.code} ${item.route} (${item.file})`);process.exit(1)}
