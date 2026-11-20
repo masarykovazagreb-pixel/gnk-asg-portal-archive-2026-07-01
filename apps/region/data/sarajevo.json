@@ -4,7 +4,7 @@
   "lang": "bs",
   "city": "Sarajevo",
   "country": "Bosna i Hercegovina",
-  "updatedAt": "2026-11-20T09:11:13.594Z",
+  "updatedAt": "2026-11-20T16:56:12.700Z",
   "sources": [
     {
       "id": "n1ba",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T09:11:07.926Z"
+      "checkedAt": "2026-11-20T16:56:03.734Z"
     },
     {
       "id": "klix",
@@ -24,7 +24,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T09:11:08.053Z"
+      "checkedAt": "2026-11-20T16:56:04.129Z"
     },
     {
       "id": "oslobodjenje",
@@ -34,10 +34,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.oslobodjenje.ba/feed: HTTP 403",
-        "https://www.oslobodjenje.ba/rss: HTTP 403"
+        "https://www.oslobodjenje.ba/feed: HTTP 404",
+        "https://www.oslobodjenje.ba/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-20T09:11:09.528Z"
+      "checkedAt": "2026-11-20T16:56:07.268Z"
     },
     {
       "id": "avaz",
@@ -49,7 +49,7 @@
       "errors": [
         "https://avaz.ba/feed: HTTP 404"
       ],
-      "checkedAt": "2026-11-20T09:11:10.942Z"
+      "checkedAt": "2026-11-20T16:56:08.909Z"
     },
     {
       "id": "radiosarajevo",
@@ -59,7 +59,7 @@
       "fetched": 25,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T09:11:11.118Z"
+      "checkedAt": "2026-11-20T16:56:09.296Z"
     },
     {
       "id": "hayat",
@@ -71,7 +71,7 @@
       "errors": [
         "https://hayat.ba/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-20T09:11:12.167Z"
+      "checkedAt": "2026-11-20T16:56:10.889Z"
     },
     {
       "id": "buka",
@@ -81,7 +81,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T09:11:13.081Z"
+      "checkedAt": "2026-11-20T16:56:11.963Z"
     },
     {
       "id": "detektor",
@@ -91,10 +91,620 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T09:11:13.593Z"
+      "checkedAt": "2026-11-20T16:56:12.698Z"
     }
   ],
   "items": [
+    {
+      "slug": "sarajevo-2026-11-20-n1ba-stojanovic-vjerujem-da-ce-niksic-dokazati-476c71",
+      "title": "Stojanović: Vjerujem da će Nikšić dokazati svoju nevinost",
+      "summary": "Potpredsjednik Federacije BiH i član Glavnog odbora SDP-a Igor Stojanović poručio je za N1 da vjeruje kako će predsjednik SDP-a i premijer Federacije",
+      "date": "2026-11-20T16:54:40.000Z",
+      "url": "https://n1info.ba/vijesti/stojanovic-vjerujem-da-ce-niksic-dokazati-svoju-nevinost/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Vijesti",
+        "Dan uživo",
+        "formiranje vlasti",
+        "sda"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://n1info.ba/media/images/2026/11/20/1795193224_Igor_Stojanovic_slika.width-1200.jpg",
+      "imageAlt": "Stojanović: Vjerujem da će Nikšić dokazati svoju nevinost",
+      "addedAt": "2026-11-20T16:56:03.734Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-radiosarajevo-naucni-skup-pitanje-varesa-u-kontekstu-e20ebf",
+      "title": "Naučni skup: Pitanje Vareša u kontekstu rudarstva, zaštite okoliša, zdravlja i vladavine prava",
+      "summary": "",
+      "date": "2026-11-20T16:54:00.000Z",
+      "url": "https://radiosarajevo.ba/metromahala/teme/naucni-skup-pitanje-varesa-u-kontekstu-rudarstva/661635",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "politika",
+      "image": "https://storage.radiosarajevo.ba/article/661635/871x540/naucna-konferencija-vares-novembar2026-act.jpg?v1795193681",
+      "imageAlt": "Naučni skup: Pitanje Vareša u kontekstu rudarstva, zaštite okoliša, zdravlja i vladavine prava",
+      "addedAt": "2026-11-20T16:56:09.297Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-klix-siroki-brijeg-ipak-mora-na-kosevo-savez-i-5c83c5",
+      "title": "Široki Brijeg ipak mora na Koševo, Savez i Sarajevo odbili odgodu zbog viroze",
+      "summary": "Utakmica 14. kola Wwin lige BiH između Sarajeva i Širokog Brijega neće biti odgođena. Komitet za takmičenje NS BiH odbio je zahtjev kluba s Pecare, a Sarajevo nije pristalo na pomjeranje termina.",
+      "date": "2026-11-20T16:53:00.000Z",
+      "url": "https://www.klix.ba/sport/nogomet/siroki-brijeg-ipak-mora-na-kosevo-savez-i-sarajevo-odbili-odgodu-zbog-viroze/261120291",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Nogomet"
+      ],
+      "author": "Piše: N. K.",
+      "theme": "sport",
+      "image": "https://static.klix.ba/media/images/vijesti/img32_261120291.jpg",
+      "imageAlt": "Široki Brijeg ipak mora na Koševo, Savez i Sarajevo odbili odgodu zbog viroze",
+      "addedAt": "2026-11-20T16:56:04.129Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-klix-nova-analiza-otkrila-zabrinjavajuce-podatke-8d57a7",
+      "title": "Nova analiza otkrila zabrinjavajuće podatke o energetskim pićima i zdravlju srca: Posebno ugroženi mladi",
+      "summary": "Energetska pića i dodaci prehrani koji sadrže stimulanse mogli bi predstavljati veći rizik za zdravlje srca nego što se ranije pretpostavljalo, pokazala je nova analiza američkih zdravstvenih podataka.",
+      "date": "2026-11-20T16:52:00.000Z",
+      "url": "https://www.klix.ba/lifestyle/zdravlje/nova-analiza-otkrila-zabrinjavajuce-podatke-o-energetskim-picima-i-zdravlju-srca-posebno-ugrozeni-mladi/261120286",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Zdravlje"
+      ],
+      "author": "Piše: A. Ć.",
+      "theme": "energija",
+      "image": "https://static.klix.ba/media/images/vijesti/img32_261120286.jpg",
+      "imageAlt": "Nova analiza otkrila zabrinjavajuće podatke o energetskim pićima i zdravlju srca: Posebno ugroženi mladi",
+      "addedAt": "2026-11-20T16:56:04.129Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-radiosarajevo-porodica-objavila-detalje-komemoracije-za-dc01c1",
+      "title": "Porodica objavila detalje komemoracije za Kristiana Periša: Građane pozvali da ponesu jastuke",
+      "summary": "",
+      "date": "2026-11-20T16:52:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/regija/komemoracija-za-kristiana-perisa-poziv-za-jastuke/661634",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/661634/871x540/josip-peris.jpg?v1795193527",
+      "imageAlt": "Porodica objavila detalje komemoracije za Kristiana Periša: Građane pozvali da ponesu jastuke",
+      "addedAt": "2026-11-20T16:56:09.297Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-avaz-ibrahimovic-necemo-dati-ni-pedalj-crne-gore-37bffe",
+      "title": "Ibrahimović: Nećemo dati ni pedalj Crne Gore",
+      "summary": "Ibrahimović: Nećemo dati ni pedalj Crne Gore - Nema tog cilja, pa ni članstva u Evropskoj uniji, zbog kojeg bismo to učinili, poručio je",
+      "date": "2026-11-20T16:50:17.000Z",
+      "url": "https://avaz.ba/vijesti/region/1089611/ibrahimovic-necemo-dati-ni-pedalj-crne-gore",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "Crnogorski ministar"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "drustvo",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/1088fcf5-907a-4f36-86de-6ae587db338f.jpeg",
+      "imageAlt": "Ibrahimović: Nećemo dati ni pedalj Crne Gore",
+      "addedAt": "2026-11-20T16:56:08.909Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-klix-uhapsen-bivsi-mma-borac-koji-je-cuvao-21a282",
+      "title": "Uhapšen bivši MMA borac koji je čuvao Ibrahimovića i Schumachera",
+      "summary": "Cristian Anheliuc, bivši rumunski MMA borac koji je radio kao tjelohranitelj Zlatana Ibrahimovića i Michaela Schumachera, pritvoren je zbog sumnje da je uzimao novac za zapošljavanje u zdravstvu i rumunsko državljanstvo.",
+      "date": "2026-11-20T16:49:00.000Z",
+      "url": "https://www.klix.ba/sport/ostali-sportovi/uhapsen-bivsi-mma-borac-koji-je-cuvao-ibrahimovica-i-schumachera/261120115",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Ostali sportovi"
+      ],
+      "author": "Piše: E. K.",
+      "theme": "drustvo",
+      "image": "https://static.klix.ba/media/images/vijesti/img32_261120115.jpg",
+      "imageAlt": "Uhapšen bivši MMA borac koji je čuvao Ibrahimovića i Schumachera",
+      "addedAt": "2026-11-20T16:56:04.129Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-avaz-vijece-ministara-bih-stavilo-van-snage-7064d2",
+      "title": "Vijeće ministara BiH stavilo van snage odluku o kupovini objekta za smještaj državnih institucija u Istočnom Sarajevu",
+      "summary": "Vijeće ministara BiH stavilo van snage odluku o kupovini objekta za smještaj državnih institucija u Istočnom Sarajevu - Odluka je objavljena u današnjem broju Službenog glasnika BiH, a usvojena je na 120. sjednici Vijeća ministara, održanoj 28. oktobra",
+      "date": "2026-11-20T16:47:00.000Z",
+      "url": "https://avaz.ba/vijesti/bih/1089610/vijece-ministara-bih-stavilo-van-snage-odluku-o-kupovini-objekta-za-smjestaj-drzavnih-institucija-u-istocnom-sarajevu",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "Ide kroz javnu nabavku"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "politika",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/be14600e-bcb4-4d87-bb36-470c79812b2a.jpeg",
+      "imageAlt": "Vijeće ministara BiH stavilo van snage odluku o kupovini objekta za smještaj državnih institucija u Istočnom Sarajevu",
+      "addedAt": "2026-11-20T16:56:08.909Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-n1ba-gattuso-nasmijao-novinare-pitanjem-o-gta-6-1e9a0c",
+      "title": "Gattuso nasmijao novinare pitanjem o GTA 6: „Je li to neki automobil? Sutra ujutro u devet...“",
+      "summary": "Trener Lazija Gennaro Gattuso izazvao je smijeh među novinarima na konferenciji za medije uoči subotnjeg susreta protiv Leccea u 12. kolu italijanske",
+      "date": "2026-11-20T16:45:45.000Z",
+      "url": "https://n1info.ba/sport/nogomet/gattuso-nasmijao-novinare-pitanjem-o-gta-6-je-li-to-neki-automobil-sutra-ujutro-u-devet/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Nogomet",
+        "gennaro gattuso",
+        "gta 6"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.ba/media/images/1774978575_2026-03-30T180540Z_1176122083_UP1EM3U1E9DXD_RTRMADP_3.width-1200.JPG",
+      "imageAlt": "Gattuso nasmijao novinare pitanjem o GTA 6: „Je li to neki automobil? Sutra ujutro u devet...“",
+      "addedAt": "2026-11-20T16:56:03.734Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-n1ba-novi-dan-kako-razmislja-generacija-cf9973",
+      "title": "Novi dan: Kako razmišlja generacija budućnosti?",
+      "summary": "Rođeni su 1995. godine, u vrijeme kada je Bosna i Hercegovina dobila mir, ali i sistem u kojem će odrastati, školovati se, tražiti posao i graditi svo",
+      "date": "2026-11-20T16:45:44.000Z",
+      "url": "https://n1info.ba/vijesti/novi-dan-kako-razmislja-generacija-buducnosti/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Vijesti",
+        "novi dan"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.ba/media/images/2026/11/20/1795192992_WEB-N1-novi-dan---NOVO_11.width-1200.jpg",
+      "imageAlt": "Novi dan: Kako razmišlja generacija budućnosti?",
+      "addedAt": "2026-11-20T16:56:03.734Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-avaz-video-sok-priznanje-asmire-osmancevic-a11140",
+      "title": "Video / Šok priznanje Asmire Osmančević: Pobjegla je od estrade, a sada otkrila detalje",
+      "summary": "Video / Šok priznanje Asmire Osmančević: Pobjegla je od estrade, a sada otkrila detalje - Govorila je i o porodici, muzičkim uzorima, današnjoj estradi, neugodnim iskustvima s nastupa te planovima za naredni period",
+      "date": "2026-11-20T16:45:21.000Z",
+      "url": "https://avaz.ba/showbiz/muzika/1089609/video-sok-priznanje-asmire-osmancevic-pobjegla-je-od-estrade-a-sada-otkrila-detalje",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "otvorila dušu"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "drustvo",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/a804d15f-b816-4ed5-91f4-669234b1f9d2.jpeg",
+      "imageAlt": "Video / Šok priznanje Asmire Osmančević: Pobjegla je od estrade, a sada otkrila detalje",
+      "addedAt": "2026-11-20T16:56:08.909Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-klix-koliko-je-vucic-pricao-tokom-trodnevne-4b4903",
+      "title": "Koliko je Vučić pričao tokom trodnevne Skupštine Srbije? Za to vrijeme ste mogli pregledati sezonu serije na Netflixu",
+      "summary": "Aleksandar Vučić tokom trodnevne konstitutivne sjednice Skupštine Srbije je govorio najmanje sedam sati i 42 minute, pokazuju obračuni.",
+      "date": "2026-11-20T16:44:00.000Z",
+      "url": "https://www.klix.ba/vijesti/regija/koliko-je-vucic-pricao-tokom-trodnevne-skupstine-srbije-za-to-vrijeme-ste-mogli-pregledati-sezonu-serije-na-netflixu/261120192",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Regija"
+      ],
+      "author": "Piše: A. L.",
+      "theme": "politika",
+      "image": "https://static.klix.ba/media/images/vijesti/img32_261120192.jpg",
+      "imageAlt": "Koliko je Vučić pričao tokom trodnevne Skupštine Srbije? Za to vrijeme ste mogli pregledati sezonu serije na Netflixu",
+      "addedAt": "2026-11-20T16:56:04.130Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-klix-film-sa-zizekom-otvara-prvi-witness-e83f3e",
+      "title": "Film sa Žižekom otvara prvi WITNESS Festival, u programu i filmovi o Elizabeth Holmes i ratnom Mostaru",
+      "summary": "Film \"Perverznjakov vodič kroz utopije\", u kojem filozof Slavoj Žižek vodi gledaoce kroz svjetove klasičnog filma, muzike i društvenih mreža, otvorit će prvo izdanje WITNESS Festivala, koji se od 24. do 28. novembra održava u Sarajevu.",
+      "date": "2026-11-20T16:41:00.000Z",
+      "url": "https://www.klix.ba/magazin/film-tv/film-sa-zizekom-otvara-prvi-witness-festival-u-programu-i-filmovi-o-elizabeth-holmes-i-ratnom-mostaru/261120288",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Film/TV"
+      ],
+      "author": "Piše: N. O.",
+      "theme": "drustvo",
+      "image": "https://static.klix.ba/media/images/vijesti/img32_261120288.jpg",
+      "imageAlt": "Film sa Žižekom otvara prvi WITNESS Festival, u programu i filmovi o Elizabeth Holmes i ratnom Mostaru",
+      "addedAt": "2026-11-20T16:56:04.130Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-avaz-tramp-nazvao-putina-prijateljem-pogledajte-44a588",
+      "title": "Tramp nazvao Putina \"prijateljem\": Pogledajte reakciju Zelenskog",
+      "summary": "Tramp nazvao Putina \"prijateljem\": Pogledajte reakciju Zelenskog - Snimak iz Berlina postao je viralan, a posebno se komentariše ironičan osmijeh ukrajinskog predsjednika",
+      "date": "2026-11-20T16:38:46.000Z",
+      "url": "https://avaz.ba/vijesti/globus/1089607/tramp-nazvao-putina-prijateljem-pogledajte-reakciju-zelenskog",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "Politički šamar"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "rat",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/f533c3a0-28ed-48c3-889d-40c7e92c49cf.jpeg",
+      "imageAlt": "Tramp nazvao Putina \"prijateljem\": Pogledajte reakciju Zelenskog",
+      "addedAt": "2026-11-20T16:56:08.909Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-avaz-dzenifer-lopez-u-prozirnoj-cipkastoj-9278cc",
+      "title": "Dženifer Lopez u prozirnoj čipkastoj haljini ukrala svu pažnju na premijeri, raskošni nakit dodatno privukao poglede",
+      "summary": "Dženifer Lopez u prozirnoj čipkastoj haljini ukrala svu pažnju na premijeri, raskošni nakit dodatno privukao poglede - Pjevačica je predstavila koncertni film o svom putu do svjetske slave, a na crvenom tepihu zablistala u kreaciji izrađenoj po mjeri",
+      "date": "2026-11-20T16:38:44.000Z",
+      "url": "https://avaz.ba/showbiz/jet-set/1089606/dzenifer-lopez-u-prozirnoj-cipkastoj-haljini-ukrala-svu-paznju-na-premijeri-raskosni-nakit-dodatno-privukao-poglede",
+      "source": "avaz",
+      "sourceName": "Avaz",
+      "categories": [
+        "AZRA"
+      ],
+      "author": "Dnevni avaz",
+      "theme": "politika",
+      "image": "https://gale-s3-bucket.s3.eu-central-1.amazonaws.com/3ee7f984-7734-4dad-93d8-71e14570d219.jpeg",
+      "imageAlt": "Dženifer Lopez u prozirnoj čipkastoj haljini ukrala svu pažnju na premijeri, raskošni nakit dodatno privukao poglede",
+      "addedAt": "2026-11-20T16:56:08.910Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-radiosarajevo-zeljo-se-obratio-clanovima-kluba-zbog-spora-6df193",
+      "title": "Željo se obratio članovima kluba zbog spora sa Mirvićem: Traži i iznose koji nisu uplaćeni na račune",
+      "summary": "",
+      "date": "2026-11-20T16:38:00.000Z",
+      "url": "https://radiosarajevo.ba/sport/nogomet/zeljeznicar-oglasio-o-saninu-mirvicu/661632",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "sport",
+      "image": "https://storage.radiosarajevo.ba/article/661632/871x540/sanin-mirvic-maj-2026-fkz.jpg?v1795192135",
+      "imageAlt": "Željo se obratio članovima kluba zbog spora sa Mirvićem: Traži i iznose koji nisu uplaćeni na račune",
+      "addedAt": "2026-11-20T16:56:09.297Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-radiosarajevo-bbc-objavio-reportazu-o-lukomiru-zivot-2e157b",
+      "title": "BBC objavio reportažu o Lukomiru: \"Život kakav se rijetko gdje još može vidjeti\"",
+      "summary": "",
+      "date": "2026-11-20T16:35:00.000Z",
+      "url": "https://radiosarajevo.ba/magazin/zanimljivosti/bbc-travel-reportaza-lukomir-bjelasnica/661633",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/661633/871x540/dzenad_dzino_lukomir_facebook_prtscr.jpg?v1795192488",
+      "imageAlt": "BBC objavio reportažu o Lukomiru: \"Život kakav se rijetko gdje još može vidjeti\"",
+      "addedAt": "2026-11-20T16:56:09.297Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-klix-mirvic-aktivirao-mjenice-od-500-000-km-0d54e7",
+      "title": "Mirvić aktivirao mjenice od 500.000 KM, Željezničar: \"Traži i novac koji nije uplaćen klubu\"",
+      "summary": "Bivši investitor Sanin Mirvić aktivirao je dvije mjenice FK Željezničar na ukupno 500.000 KM. Klub tvrdi da je to uradio neosnovano i da račun trenutno nije blokiran.",
+      "date": "2026-11-20T16:32:00.000Z",
+      "url": "https://www.klix.ba/sport/nogomet/mirvic-aktivirao-mjenice-od-500000-km-zeljeznicar-trazi-i-novac-koji-nije-uplacen-klubu/261120284",
+      "source": "klix",
+      "sourceName": "Klix",
+      "categories": [
+        "Nogomet"
+      ],
+      "author": "Piše: N. K.",
+      "theme": "sport",
+      "image": "https://static.klix.ba/media/images/vijesti/img32_261120284.jpg",
+      "imageAlt": "Mirvić aktivirao mjenice od 500.000 KM, Željezničar: \"Traži i novac koji nije uplaćen klubu\"",
+      "addedAt": "2026-11-20T16:56:04.130Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-buka-mijatovic-nakon-optuznice-protiv-niksica-8a49d7",
+      "title": "MIJATOVIĆ NAKON OPTUŽNICE PROTIV NIKŠIĆA: „Ovo je tek početak, neće stati samo na meni i Nerminu!“",
+      "summary": "Potpredsjednik SDP-a BiH Vojin Mijatović oglasio se nakon što je POSKOK podigao optužnicu protiv federalnog premijera Nermina Nikšića i još šest osoba, poručivši da je ovakav razvoj događaja ranije najavljivao i da očekuje nove slučajeve. Mijatović je povukao paralelu između optužnice protiv Nikšića i postupka koji se vodi protiv njega, tvrdeći da iza oba slučaja",
+      "date": "2026-11-20T16:31:29.000Z",
+      "url": "https://6yka.com/bih/mijatovic-nakon-optuznice-protiv-niksica-ovo-je-tek-pocetak-nece-stati-samo-na-meni-i-nerminu/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "BiH",
+        "vojin mijatović"
+      ],
+      "author": "Nikola Dukic",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "MIJATOVIĆ NAKON OPTUŽNICE PROTIV NIKŠIĆA: „Ovo je tek početak, neće stati samo na meni i Nerminu!“",
+      "addedAt": "2026-11-20T16:56:11.963Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-n1ba-divkovic-o-niksicu-neka-nam-ne-prijeti-9d2db8",
+      "title": "Divković o Nikšiću: Neka nam ne prijeti, penzioneri su preživjeli i gore od njega",
+      "summary": "Formiranje vlasti u Bosni i Hercegovini, odnosi SDA i SDP-a, optužnica protiv federalnog premijera Nermina Nikšića, poskupljenje električne energije i",
+      "date": "2026-11-20T16:30:08.000Z",
+      "url": "https://n1info.ba/vijesti/divkovic-o-niksicu-nek-nam-ne-prijeti-penzioneri-su-prezivjeli-i-gore-od-njega/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Vijesti",
+        "marko divković",
+        "dan uživo"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://n1info.ba/media/images/websa-divkovic-300919-du-20190930-173407480-00-04-26-22-still001-267944.width-1200.jpeg",
+      "imageAlt": "Divković o Nikšiću: Neka nam ne prijeti, penzioneri su preživjeli i gore od njega",
+      "addedAt": "2026-11-20T16:56:03.734Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-buka-zaharova-srbija-ne-uvodi-sankcije-rusiji-7b1b46",
+      "title": "ZAHAROVA: Srbija ne uvodi sankcije Rusiji, jer ne želi izdati zemlju koja je uvijek podržavala njene interese",
+      "summary": "Nespremnost Srbije da slijedi put Evropske unije izaziva nezadovoljstvo u Briselu, a ponekad čak i agresivne reakcije, navela je Srbija se ne pridružuje antiruskim sankcijama, jer ne želi izdati zemlju koja se uvijek zalagala za srpske interese, poručila je glasnogovornica Ministarstva vanjskih poslova Rusije Maria Zakharova. “Nespremnost Srbije da slijedi put Evropske unije izaziva nezadovoljstvo",
+      "date": "2026-11-20T16:29:08.000Z",
+      "url": "https://6yka.com/svijet/zaharova-srbija-ne-uvodi-sankcije-rusiji-jer-ne-zeli-izdati-zemlju-koja-je-uvijek-podrzavala-njene-interese/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "Svijet",
+        "EU",
+        "rusija",
+        "sankcije"
+      ],
+      "author": "Nikola Dukic",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "ZAHAROVA: Srbija ne uvodi sankcije Rusiji, jer ne želi izdati zemlju koja je uvijek podržavala njene interese",
+      "addedAt": "2026-11-20T16:56:11.963Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-buka-niksic-se-oglasio-nakon-optuznice-poskok-a-5c0c35",
+      "title": "NIKŠIĆ SE OGLASIO NAKON OPTUŽNICE POSKOK-a: „Sve teze Tužilaštva smo opovrgli, ne tražim poseban tretman!“",
+      "summary": "Premijer Federacije BiH Nermin Nikšić oglasio se nakon što je Posebni odjel Federalnog tužilaštva (POSKOK) podigao optužnicu protiv njega i još šest osoba u predmetu poznatom kao „Spengavanje“. Poručio je da je za prijedlog za podizanje optužnice ponovo saznao iz medija, te da ostaje pri stavu da je spreman sarađivati sa pravosudnim institucijama. Nikšić je",
+      "date": "2026-11-20T16:25:55.000Z",
+      "url": "https://6yka.com/bih/niksic-se-oglasio-nakon-optuznice-poskok-a-sve-teze-tuzilastva-smo-opovrgli-ne-trazim-poseban-tretman/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "BiH",
+        "Nermin Nikšić",
+        "optužnica"
+      ],
+      "author": "Nikola Dukic",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "NIKŠIĆ SE OGLASIO NAKON OPTUŽNICE POSKOK-a: „Sve teze Tužilaštva smo opovrgli, ne tražim poseban tretman!“",
+      "addedAt": "2026-11-20T16:56:11.963Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-radiosarajevo-ramo-isak-za-radiosarajevo-ba-ovo-je-600668",
+      "title": "Ramo Isak za Radiosarajevo.ba: \"Ovo je klasična montaža, ne znam koji je cilj optužnice protiv mene\"",
+      "summary": "",
+      "date": "2026-11-20T16:21:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/bosna-i-hercegovina/ramo-isak-o-optuznici-klasicna-montaza/661631",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/661631/871x540/ramo-isak.jpg?v1795191720",
+      "imageAlt": "Ramo Isak za Radiosarajevo.ba: \"Ovo je klasična montaža, ne znam koji je cilj optužnice protiv mene\"",
+      "addedAt": "2026-11-20T16:56:09.297Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-radiosarajevo-sdp-bih-pruzio-punu-podrsku-niksicu-u-aferi-1c33f4",
+      "title": "SDP BiH pružio punu podršku Nikšiću u aferi Spengavanje: Uvjereni su da će dokazati sovju nevinost",
+      "summary": "",
+      "date": "2026-11-20T16:19:00.000Z",
+      "url": "https://radiosarajevo.ba/vijesti/bosna-i-hercegovina/sdp-bih-podrska-niksicu-u-aferi-spengavanje/661630",
+      "source": "radiosarajevo",
+      "sourceName": "Radio Sarajevo",
+      "categories": [],
+      "author": "RSA",
+      "theme": "drustvo",
+      "image": "https://storage.radiosarajevo.ba/article/661630/871x540/nermin-niksic-sdp-dz-k-okt26-1jpg.jpg?v1795191567",
+      "imageAlt": "SDP BiH pružio punu podršku Nikšiću u aferi Spengavanje: Uvjereni su da će dokazati sovju nevinost",
+      "addedAt": "2026-11-20T16:56:09.297Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-buka-novi-detalji-sa-sudenja-za-ubistvo-danke-b7ca99",
+      "title": "NOVI DETALJI SA SUĐENJA ZA UBISTVO DANKE ILIĆ: Sudija uhvatio djeda u grešci, on potpuno promijenio iskaz!",
+      "summary": "Na suđenju Dejanu Dragijeviću i Srđanu Jankoviću, optuženima za ubistvo dvogodišnje Danke Ilić, pred sudom su svjedočili članovi porodica djevojčicinih roditelja. Posebnu pažnju privukao je iskaz Časlava Dragomirovića, oca Dankeine majke Ivane Ilić, koji je govorio o trenutku kada mu je kćerka rekla da se sjetila bijelog automobila „fijat panda“ u Banjskom Polju. Osim njega,",
+      "date": "2026-11-20T16:10:16.000Z",
+      "url": "https://6yka.com/region/novi-detalji-sa-sudjenja-za-ubistvo-danke-ilic-sudija-uhvatio-djeda-u-gresci-on-potpuno-promijenio-iskaz/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "Region",
+        "danka ilić",
+        "suđenje"
+      ],
+      "author": "Nikola Dukic",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "NOVI DETALJI SA SUĐENJA ZA UBISTVO DANKE ILIĆ: Sudija uhvatio djeda u grešci, on potpuno promijenio iskaz!",
+      "addedAt": "2026-11-20T16:56:11.963Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-buka-hrvatska-na-nogama-srednjoskolci-i-studenti-745c7a",
+      "title": "HRVATSKA NA NOGAMA: Srednjoškolci i studenti bojkotovali nastavu u 11 gradova, traže niže troškove života i dostupne stanove!",
+      "summary": "Srednjoškolci i studenti širom Hrvatske bojkotovali su danas, 20. novembra, nastavu u okviru inicijative „Štrajk mladih“, upozoravajući na sve veće troškove života, nepriuštivo stanovanje i probleme u obrazovanju i zdravstvu. Protestne aktivnosti održane su pod sloganom „Za našu budućnost, a ne njihove ratove“, a organizatori su potvrdili da su se inicijativi priključili učenici i studenti",
+      "date": "2026-11-20T16:05:18.000Z",
+      "url": "https://6yka.com/region/hrvatska-na-nogama-srednjoskolci-i-studenti-bojkotovali-nastavu-u-11-gradova-traze-nize-troskove-zivota-i-dostupne-stanove/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "Region",
+        "mrotest",
+        "srednjoškolci",
+        "studenti"
+      ],
+      "author": "Nikola Dukic",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "HRVATSKA NA NOGAMA: Srednjoškolci i studenti bojkotovali nastavu u 11 gradova, traže niže troškove života i dostupne stanove!",
+      "addedAt": "2026-11-20T16:56:11.964Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-n1ba-kuce-grade-desetinama-metara-iznad-zemlje-819e7a",
+      "title": "Kuće grade desetinama metara iznad zemlje: Ko su Korowai, narod čiji način života fascinira svijet?",
+      "summary": "Duboko u tropskim šumama indonezijske Papue žive Korowai, autohtoni narod poznat po neobičnoj tradiciji gradnje kuća na drveću. Njihova prebivališta,",
+      "date": "2026-11-20T15:55:34.000Z",
+      "url": "https://n1info.ba/magazin/korowai-narod-kuce-na-drvecu-papua-indonezija/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Magazin",
+        "korowai",
+        "papua",
+        "rupert stasch"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.ba/media/images/2026/11/20/1795190122_Korowai.width-1200.jpg",
+      "imageAlt": "Kuće grade desetinama metara iznad zemlje: Ko su Korowai, narod čiji način života fascinira svijet?",
+      "addedAt": "2026-11-20T16:56:03.735Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-buka-bozovic-trazi-odgovornost-zbog-odluke-c4d75f",
+      "title": "BOŽOVIĆ TRAŽI ODGOVORNOST ZBOG ODLUKE USTAVNOG SUDA: „Ko je pregovarao sa strancima i šta je obećano na štetu Srpske?“",
+      "summary": "Odluka Ustavnog suda BiH kojom su stavljeni van snage veto srpskog člana Predsjedništva BiH Željke Cvijanović i odluka Narodne skupštine Republike Srpske o njegovoj potvrdi izazvala je oštru reakciju Marinka Božovića, člana Predsjedništva SDS-a. Božović je upozorio da ovaj slučaj otvara ozbiljna pitanja o odgovornosti predstavnika vlasti u Republici Srpskoj, posebno zbog toga što, kako",
+      "date": "2026-11-20T15:54:28.000Z",
+      "url": "https://6yka.com/bih/bozovic-trazi-odgovornost-zbog-odluke-ustavnog-suda-ko-je-pregovarao-sa-strancima-i-sta-je-obecano-na-stetu-srpske/",
+      "source": "buka",
+      "sourceName": "Buka",
+      "categories": [
+        "BiH",
+        "Marinko Božović",
+        "ustavni sud bih"
+      ],
+      "author": "Nikola Dukic",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "BOŽOVIĆ TRAŽI ODGOVORNOST ZBOG ODLUKE USTAVNOG SUDA: „Ko je pregovarao sa strancima i šta je obećano na štetu Srpske?“",
+      "addedAt": "2026-11-20T16:56:11.964Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-n1ba-bbc-o-lukomiru-pita-sa-saimom-katuni-i-selo-7e3f73",
+      "title": "BBC o Lukomiru: Pita sa Saimom, katuni i selo koje svake jeseni ostaje prazno",
+      "summary": "BBC Travel objavio je reportažu o Lukomiru na Bjelašnici, koji opisuje kao posljednje polunomadsko planinsko selo u Bosni i Hercegovini. Novinarka Kri",
+      "date": "2026-11-20T15:52:08.000Z",
+      "url": "https://n1info.ba/magazin/lifestyle/bbc-o-lukomiru-pita-sa-saimom-katuni-i-selo-koje-svake-jeseni-ostaje-prazno/",
+      "source": "n1ba",
+      "sourceName": "N1 BiH",
+      "categories": [
+        "Lifestyle",
+        "lukomir",
+        "bosna i hercegovina",
+        "bjelašnica"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.ba/media/images/1759054199_AA-20250928-39248492-39248471-BOSANSKO_SELO_LUKOMIR_DRAG.width-1200.jpg",
+      "imageAlt": "BBC o Lukomiru: Pita sa Saimom, katuni i selo koje svake jeseni ostaje prazno",
+      "addedAt": "2026-11-20T16:56:03.735Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-detektor-kosoric-u-januaru-presuda-za-pomaganje-u-a8c9b7",
+      "title": "Kosorić: U januaru presuda za pomaganje u genocidu",
+      "summary": "Sud Bosne i Hercegovine zakazao je za 11. januar 2027. izricanje presude Miletu Kosoriću, bivšem komandantu Vlaseničke brigade Vojske Republike Srpske (VRS) koji je optužen za pomaganje u genocidu u Srebrenici. The post Kosorić: U januaru presuda za pomaganje u genocidu appeared first on Detektor .",
+      "date": "2026-11-20T14:56:08.000Z",
+      "url": "https://detektor.ba/2026/11/20/kosoric-u-januaru-presuda-za-pomaganje-u-genocidu/",
+      "source": "detektor",
+      "sourceName": "Detektor",
+      "categories": [
+        "Dnevni izvještaji"
+      ],
+      "author": "Marija Taušan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Kosorić: U januaru presuda za pomaganje u genocidu",
+      "addedAt": "2026-11-20T16:56:12.698Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-detektor-fizicka-udaljenost-ne-znaci-sigurnost-f0ef72",
+      "title": "Fizička udaljenost ne znači sigurnost: Digitalno nasilje nad ženama sve veći izazov",
+      "summary": "Usklađivanje zakonskih rješenja u oba entiteta, hitno očuvanje i uklanjanje digitalnih dokaza, sigurno prijavljivanje nasilja, obuka institucija i jedinstvena evidencija podataka o žrtvama ključni su prioriteti u borbi protiv digitalnog nasilja nad ženama, poručeno je sa konferencije Fondacije “Udružene žene” Banja Luka u Sarajevu. The post Fizička udaljenost ne znači sigurnost: Digitalno nasilje nad ženama sve veći izazov appeared first on Detektor .",
+      "date": "2026-11-20T14:46:23.000Z",
+      "url": "https://detektor.ba/2026/11/20/fizicka-udaljenost-ne-znaci-sigurnost-digitalno-nasilje-nad-zenama-sve-veci-izazov/",
+      "source": "detektor",
+      "sourceName": "Detektor",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "Selma Melez-Pezo",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Fizička udaljenost ne znači sigurnost: Digitalno nasilje nad ženama sve veći izazov",
+      "addedAt": "2026-11-20T16:56:12.698Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-detektor-neustavna-zabrana-isticanja-simbola-armije-d5046f",
+      "title": "Neustavna zabrana isticanja simbola Armije BiH u Republici Srpskoj",
+      "summary": "Ustavni sud Bosne i Hercegovine proglasio je neustavnom odredbu Krivičnog zakonika Republike Srpske kojom je kriminalizovano javno isticanje, prikazivanje, nošenje, proizvodnja, umnožavanje ili na drugi način stavljanje u promet zastava, simbola, oznaka, pozdrava i parola kojima se promovira ili veliča Armija BiH. The post Neustavna zabrana isticanja simbola Armije BiH u Republici Srpskoj appeared first on Detektor .",
+      "date": "2026-11-20T14:36:54.000Z",
+      "url": "https://detektor.ba/2026/11/20/neustavna-zabrana-isticanja-simbola-armije-bih-u-republici-srpskoj/",
+      "source": "detektor",
+      "sourceName": "Detektor",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "Emina Dizdarević Tahmiščija",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Neustavna zabrana isticanja simbola Armije BiH u Republici Srpskoj",
+      "addedAt": "2026-11-20T16:56:12.698Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-detektor-dva-spomenika-jedno-sjecanje-a6ff98",
+      "title": "Dva spomenika, jedno sjećanje",
+      "summary": "Zajedničkim obilaskom spomen-obilježja u Sarajevu i Istočnom Sarajevu, grupa od 50-ak mirovnih aktivista iz regiona odala je počast djeci ubijenoj tokom proteklog rata, šaljući ljudsku poruku zajedničkog sjećanja na sve žrtve, a posebno na djecu. The post Dva spomenika, jedno sjećanje appeared first on Detektor .",
+      "date": "2026-11-20T14:05:50.000Z",
+      "url": "https://detektor.ba/2026/11/20/dva-spomenika-jedno-sjecanje/",
+      "source": "detektor",
+      "sourceName": "Detektor",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "Lamija Grebo",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Dva spomenika, jedno sjećanje",
+      "addedAt": "2026-11-20T16:56:12.699Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-detektor-podignuta-optuznica-protiv-nermina-niksica-0a93cc",
+      "title": "Podignuta optužnica protiv Nermina Nikšića i još šest osoba",
+      "summary": "Posebni odjel Federalnog tužilaštva podigao je optužnicu protiv Nermina Nikšića, Rame Isaka, Vahidina Munjića, Muhameda Ohranovića, Arijane Huseinović Ajanović, Ervina Mušinovića i Mirele Bubalo zbog udruživanja radi činjenja krivičnih djela, zloupotrebe položaja ili ovlaštenja i primanja nagrade ili drugog oblika koristi za trgovinu uticajem. The post Podignuta optužnica protiv Nermina Nikšića i još šest osoba appeared first on Detektor .",
+      "date": "2026-11-20T13:34:42.000Z",
+      "url": "https://detektor.ba/2026/11/20/podignuta-optuznica-protiv-nermina-niksica-i-jos-sest-osoba/",
+      "source": "detektor",
+      "sourceName": "Detektor",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "Emina Dizdarević Tahmiščija",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Podignuta optužnica protiv Nermina Nikšića i još šest osoba",
+      "addedAt": "2026-11-20T16:56:12.699Z"
+    },
+    {
+      "slug": "sarajevo-2026-11-20-detektor-nepromijenjen-neoporezivi-dio-minimalca-8333bc",
+      "title": "Nepromijenjen neoporezivi dio minimalca radnike košta cijelu platu",
+      "summary": "Iz nevladine organizacije “Mreža za izgradnju mira” su u otvorenom pismu Vladi Federacije BiH upozorili da je neoporezivi dio plate ostao isti uprkos povećanju minimalca, čime radnici kroz porez na dohodak državi vrate gotovo cijelu platu godišnje. The post Nepromijenjen neoporezivi dio minimalca radnike košta cijelu platu appeared first on Detektor .",
+      "date": "2026-11-20T13:06:01.000Z",
+      "url": "https://detektor.ba/2026/11/20/nepromijenjen-neoporezivi-dio-minimalca-radnike-kosta-cijelu-platu/",
+      "source": "detektor",
+      "sourceName": "Detektor",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "Elmedina Šabanović",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Nepromijenjen neoporezivi dio minimalca radnike košta cijelu platu",
+      "addedAt": "2026-11-20T16:56:12.699Z"
+    },
     {
       "slug": "sarajevo-2026-11-20-buka-sta-se-dogada-unutar-rts-a-nakon-pada-92417a",
       "title": "Šta se događa unutar RTS-a nakon pada Vučićeve vlasti: Oslobađanje javnog servisa ili dodvoravanje novoj vlasti?",
