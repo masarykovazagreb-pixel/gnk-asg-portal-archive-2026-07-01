@@ -47,6 +47,10 @@ export function authorBandCopy(lang) {
  */
 export function authorBand(lang, city, options = {}) {
   const t = authorBandCopy(lang);
+  const english = String(lang || 'hr').toLowerCase().split('-')[0] === 'en';
+  const links = english
+    ? { columns: '/en/gnk-aktual/columns/', author: '/en/autorske-objave/', profile: '/en/nermin-sefic/' }
+    : { columns: '/gnk-aktual/kolumne/', author: '/autorske-objave/', profile: '/nermin-sefic/' };
   const portrait = options.portrait
     || (city ? `/kanal/${city}/assets/people/nermin-sefic.webp` : '/assets/people/nermin-sefic.webp');
   return `<section class="am-author" aria-label="Nermin Sefić" data-am-author="v1" data-am-lang="${String(lang || 'hr').toLowerCase().split('-')[0]}">
@@ -56,9 +60,9 @@ export function authorBand(lang, city, options = {}) {
     <b>Nermin Sefić</b>
     <p>${t.role} · <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a></p>
     <nav>
-      <a href="https://gnk-asg.hr/gnk-aktual/kolumne/">${t.columns} →</a>
-      <a href="https://gnk-asg.hr/autorske-objave/">${t.author} →</a>
-      <a href="https://gnk-asg.hr/nermin-sefic/">${t.profile} →</a>
+      <a href="https://gnk-asg.hr${links.columns}">${t.columns} →</a>
+      <a href="https://gnk-asg.hr${links.author}">${t.author} →</a>
+      <a href="https://gnk-asg.hr${links.profile}">${t.profile} →</a>
     </nav>
   </div>
 </section>`;
