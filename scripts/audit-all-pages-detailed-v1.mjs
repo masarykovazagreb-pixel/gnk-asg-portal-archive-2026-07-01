@@ -87,7 +87,7 @@ for(const file of walk(ROOT)){
  if(risks.length)stats.pagesWithStaticContrastRisks++;
  if(nonCanonicalLogoRefs.length)stats.pagesWithLegacyLogoSources++;
  stats.legacyLogosNormalizedAtEdge+=edgeNormalization?nonCanonicalLogoRefs.length:0;
- if(forms.length||/<form\\b/i.test(html))stats.pagesWithForms++;
+ if(forms.length||/<form\b/i.test(html))stats.pagesWithForms++;
  for(const code of pageErrors)addError({route,file:page.file,code,detail:code==='broken-local-references'?broken:code==='form-controls-missing-accessible-label'?forms:null});
  for(const code of pageWarnings)addWarning({route,file:page.file,code,detail:code==='static-contrast-risk-below-3'?severeRisks:nonCanonicalLogoRefs});
 }
