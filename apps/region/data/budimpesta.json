@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-20T18:02:04.985Z",
+  "updatedAt": "2026-11-20T18:36:30.069Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-20T18:01:58.838Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-20T18:36:25.737Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T18:01:59.010Z"
+      "checkedAt": "2026-11-20T18:36:25.994Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T18:01:59.578Z"
+      "checkedAt": "2026-11-20T18:36:26.205Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T18:02:00.216Z"
+      "checkedAt": "2026-11-20T18:36:27.201Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-20T18:02:02.264Z"
+      "checkedAt": "2026-11-20T18:36:29.295Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T18:02:02.530Z"
+      "checkedAt": "2026-11-20T18:36:29.488Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,164 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T18:02:04.984Z"
+      "checkedAt": "2026-11-20T18:36:30.068Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-20-portfolio-meresz-europai-akciora-keszult-oroszorszag-d09c13",
+      "title": "Merész európai akcióra készült Oroszország: merényletet akartak elkövetni egy bűnbanda segítségével",
+      "summary": "Oroszország Dánia területén, egy dán bűnbanda közreműködésével tervezett merényletet elkövetni egy ukrán rapper ellen - közölte pénteken a dán hírszerzés (PET).",
+      "date": "2026-11-20T18:32:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261120/meresz-europai-akciora-keszult-oroszorszag-merenyletet-akartak-elkovetni-egy-bunbanda-segitsegevel-878126",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-lg/e/g/y/egy-europai-allam-teljesen-visszafizette-devizaadossagat-267313.jpg",
+      "imageAlt": "Merész európai akcióra készült Oroszország: merényletet akartak elkövetni egy bűnbanda segítségével",
+      "addedAt": "2026-11-20T18:36:27.201Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-20-24hu-rakbetegseggel-kuzd-a-tenisztortenelem-1c7e8f",
+      "title": "Rákbetegséggel küzd a tenisztörténelem egyik legnagyobb alakja",
+      "summary": "Az amerikai legenda, Jimmy Connors a mai napig csúcstartó a 109 tornagyőzelmével. The post Rákbetegséggel küzd a tenisztörténelem egyik legnagyobb alakja first appeared on 24.hu .",
+      "date": "2026-11-20T18:29:55.000Z",
+      "url": "https://24.hu/sport/2026/11/20/tenisz-rakbetegseg-jimmy-connors/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Sport",
+        "tenisz",
+        "rákbetegség",
+        "bőrrák"
+      ],
+      "author": "24.hu",
+      "theme": "sport",
+      "image": "https://s.24.hu/app/uploads/2026/11/jimmy-connors-1024x576.jpg",
+      "imageAlt": "Rákbetegséggel küzd a tenisztörténelem egyik legnagyobb alakja",
+      "addedAt": "2026-11-20T18:36:29.488Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-20-portfolio-bejelentette-trump-putyin-le-akarja-zarni-10a092",
+      "title": "Bejelentette Trump: Putyin le akarja zárni az ukrajnai háborút",
+      "summary": "Donald Trump amerikai elnök pénteken, a Fehér Házban tartott sajtótájékoztatóján kijelentette, hogy Vlagyimir Putyin diplomáciai úton véget szeretne vetni az ukrajnai háborúnak - írja a CNN .",
+      "date": "2026-11-20T18:24:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261120/bejelentette-trump-putyin-le-akarja-zarni-az-ukrajnai-haborut-878124",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://pcdn.hu/articles/images-lg/t/r/u/trump-putyin-public-domain-861140.jpg",
+      "imageAlt": "Bejelentette Trump: Putyin le akarja zárni az ukrajnai háborút",
+      "addedAt": "2026-11-20T18:36:27.201Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-20-24hu-tevestab-rogzitette-ahogy-a-leleplezestol-c61fd6",
+      "title": "Tévéstáb rögzítette, ahogy a leleplezéstől félő pedofil férfi öngyilkos lesz",
+      "summary": "A pedofilos reality és más, hasonlóan kártékony tévéműsorok olyan szellemet engedtek ki a palackból, amely ma is permetezi a médiát. Erről szól a Primetime. The post Tévéstáb rögzítette, ahogy a leleplezéstől félő pedofil férfi öngyilkos lesz first appeared on 24.hu .",
+      "date": "2026-11-20T18:22:10.000Z",
+      "url": "https://24.hu/kultura/2026/11/20/primetime-vadaszido-kritika-chris-hansen-robert-pattinson/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kultúra",
+        "chris hansen",
+        "filmkritika",
+        "filmtv"
+      ],
+      "author": "Kránicz Bence",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/076_chlint_103232-1024x576.jpg",
+      "imageAlt": "Tévéstáb rögzítette, ahogy a leleplezéstől félő pedofil férfi öngyilkos lesz",
+      "addedAt": "2026-11-20T18:36:29.488Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-20-hvg-pocs-janossal-schmidt-mariaval-es-bayer-e2d167",
+      "title": "Pócs Jánossal, Schmidt Máriával és Bayer Zsolttal jön a második DPK-tábor",
+      "summary": "Aki 100 ezer forintos gyémánt fokozatú támogatói jegyet vesz, azt zártkörű fogadásra is meghívják, de feleennyi pénzért már „exkluzív backstage túrát” is kínálnak.",
+      "date": "2026-11-20T18:19:21.000Z",
+      "url": "https://hvg.hu/itthon/20261120_masodik-dpk-teli-tabor-pocs-janos-schmidt-maria-bayer-zsolt",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "belpolitika",
+        "Digitális Polgári Körök",
+        "Pócs János"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/5c325b22-4322-4236-9fe4-7de426607111.jpg",
+      "imageAlt": "Pócs Jánossal, Schmidt Máriával és Bayer Zsolttal jön a második DPK-tábor",
+      "addedAt": "2026-11-20T18:36:26.205Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-20-24hu-daniai-koncertje-kozben-oletett-volna-meg-34cdfc",
+      "title": "Dániai koncertje közben öletett volna meg egy ukrán rappert Oroszország",
+      "summary": "A két dán gyanúsított a 2021 óta betiltott, Loyal to Familia nevű bűnbandához köthető. The post Dániai koncertje közben öletett volna meg egy ukrán rappert Oroszország first appeared on 24.hu .",
+      "date": "2026-11-20T18:13:04.000Z",
+      "url": "https://24.hu/kulfold/2026/11/20/dania-ukrajna-merenylet-oroszorszag/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "orosz-ukrán háború",
+        "dánia",
+        "rapper"
+      ],
+      "author": "Dienes Gábriel",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/000_d86v9rp-1024x575.jpg",
+      "imageAlt": "Dániai koncertje közben öletett volna meg egy ukrán rappert Oroszország",
+      "addedAt": "2026-11-20T18:36:29.488Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-20-444-lehet-eso-lehet-ho-f2dc13",
+      "title": "Lehet eső, lehet hó",
+      "summary": "Ez utóbbi akár már most hétvégén is, igaz, fel kell hozzá mászni jó magasra, és még akkor sincs rá garancia.",
+      "date": "2026-11-20T18:05:37.000Z",
+      "url": "https://444.hu/2026/11/20/lehet-eso-lehet-ho?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "meteorológia",
+        "időjárás",
+        "időjárás-előrejelzés",
+        "belföld"
+      ],
+      "author": "Tóth-Szenesi Attila",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8Pzzl89GTzHM1Ym12Ws.jpeg",
+      "imageAlt": "Lehet eső, lehet hó",
+      "addedAt": "2026-11-20T18:36:25.995Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-20-444-europa-a-nagyhatalmi-jatszmak-szoritasaban-4f7242",
+      "title": "Európa a nagyhatalmi játszmák szorításában a saját egységét építi",
+      "summary": "Donald Trump Sencsenből hazafelé odacsörgött a Berlinben ülésező európai vezetőknek, de a transzatlanti kapcsolat változását jól érzékelteti, hogy az európai vezetők bátrabban szállnak szembe Amerikával. A belső egység problémája viszont Orbán Viktor bukásával sem tűnt el.",
+      "date": "2026-11-20T18:03:07.000Z",
+      "url": "https://444.hu/2026/11/20/europa-a-nagyhatalmi-jatszmak-szoritasaban-a-sajat-egyseget-epiti?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "berlin",
+        "Alexander Stubb",
+        "Emmanuel Macron",
+        "európa"
+      ],
+      "author": "Inkei Bence",
+      "theme": "sigurnost",
+      "image": "https://assets.4cdn.hu/kraken/8PzxqKe9U7goanOXs.jpeg",
+      "imageAlt": "Európa a nagyhatalmi játszmák szorításában a saját egységét építi",
+      "addedAt": "2026-11-20T18:36:25.995Z"
+    },
     {
       "slug": "budimpesta-2026-11-20-telex-trump-putyin-veget-akar-vetni-a-haborunak-dd393e",
       "title": "Trump: Putyin véget akar vetni a háborúnak Ukrajnában",
