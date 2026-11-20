@@ -14,7 +14,7 @@ const IGNORE_DIRS=new Set(['node_modules','test-results','playwright-report','.g
 const IGNORE_HTML_PREFIXES=['assets/','.github/','node_modules/','test-results/','playwright-report/'];
 const DYNAMIC_PREFIXES=['/api/','/cdn-cgi/','/.well-known/'];
 const posix=value=>value.split(path.sep).join('/');
-const walk=dir=>fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry=>{if(entry.isDirectory()&&IGNORE_DIRS.has(entry.name))return[];const target=path.join(dir,entry.name);return entry.isDirectory()?walk(target):[target]});
+function* walk(dir){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){if(entry.isDirectory()&&IGNORE_DIRS.has(entry.name))continue;const target=path.join(dir,entry.name);if(entry.isDirectory())yield* walk(target);else yield target;}}
 const rel=file=>posix(path.relative(ROOT,file));
 const isUtilityHtml=file=>/^google[a-f0-9]+\.html$/i.test(path.basename(file));
 const routeFor=file=>{const r=rel(file);if(r==='index.html')return'/';if(r.endsWith('/index.html'))return`/${r.slice(0,-10)}`;return`/${r}`};
@@ -44,9 +44,21 @@ const edgeNormalizedRef=(ref,file)=>edgeNormalization&&(legacyLogoRef(ref)||(rel
 const menuRoutes=[...menu.matchAll(/['"](\/(?:[^'"?#]*\/)?)(?:['"])/g)].map(match=>match[1]).filter(route=>route.startsWith('/')&&!route.startsWith('/assets/')&&!route.startsWith('/api/'));
 const uniqueMenuRoutes=[...new Set(menuRoutes)];
 const menuMissing=uniqueMenuRoutes.filter(route=>!routeExists(route));
-const htmlFiles=walk(ROOT).filter(file=>file.endsWith('.html')&&!isUtilityHtml(file)&&!IGNORE_HTML_PREFIXES.some(prefix=>rel(file).startsWith(prefix)));
-const pages=[],errors=[],warnings=[];
-for(const file of htmlFiles){
+// Detailed per-page audit can exceed 200k files. Stream exact original evidence
+// into disk-backed JSON arrays instead of retaining every HTML report in V8 heap.
+fs.mkdirSync(path.dirname(REPORT),{recursive:true});
+function evidenceWriter(name){
+ const filename=REPORT+'.'+name+'.tmp',fd=fs.openSync(filename,'w');fs.writeSync(fd,'[');
+ let total=0;
+ return {filename,fd,get count(){return total;},push(item){fs.writeSync(fd,(total?',':'')+JSON.stringify(item));total++;},close(){fs.writeSync(fd,']');fs.closeSync(fd);}};
+}
+const pageOut=evidenceWriter('pages'),errorOut=evidenceWriter('errors'),warningOut=evidenceWriter('warnings');
+const firstErrors=[];
+const stats={pagesWithStaticContrastRisks:0,pagesWithLegacyLogoSources:0,legacyLogosNormalizedAtEdge:0,pagesWithForms:0};
+function addError(item){errorOut.push(item);if(firstErrors.length<120)firstErrors.push(item);}
+function addWarning(item){warningOut.push(item);}
+for(const file of walk(ROOT)){
+ if(!file.endsWith('.html')||isUtilityHtml(file)||IGNORE_HTML_PREFIXES.some(prefix=>rel(file).startsWith(prefix)))continue;
  const html=fs.readFileSync(file,'utf8'),route=routeFor(file),protectedRoute=isProtected(route),pageErrors=[],pageWarnings=[];
  const lang=html.match(/<html\b[^>]*lang=["']([^"']+)["']/i)?.[1]||'';
  const title=html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim()||'';
@@ -71,12 +83,29 @@ for(const file of htmlFiles){
  if(nonCanonicalLogoRefs.length&&!edgeNormalization)pageWarnings.push('legacy-logo-source-runtime-canonicalized');
  if(forms.length)pageErrors.push('form-controls-missing-accessible-label');
  const page={route,file:posix(path.relative('.',file)),protected:protectedRoute,lang,title,viewport,robots,broken,logoRefs,nonCanonicalLogoRefs,contrastRisks:risks,formIssues:forms,edgeNormalizedLegacyLogos:edgeNormalization?nonCanonicalLogoRefs:[],errors:pageErrors,warnings:pageWarnings};
- pages.push(page);
- for(const code of pageErrors)errors.push({route,file:page.file,code,detail:code==='broken-local-references'?broken:code==='form-controls-missing-accessible-label'?forms:null});
- for(const code of pageWarnings)warnings.push({route,file:page.file,code,detail:code==='static-contrast-risk-below-3'?severeRisks:nonCanonicalLogoRefs});
+ pageOut.push(page);
+ if(risks.length)stats.pagesWithStaticContrastRisks++;
+ if(nonCanonicalLogoRefs.length)stats.pagesWithLegacyLogoSources++;
+ stats.legacyLogosNormalizedAtEdge+=edgeNormalization?nonCanonicalLogoRefs.length:0;
+ if(forms.length||/<form\\b/i.test(html))stats.pagesWithForms++;
+ for(const code of pageErrors)addError({route,file:page.file,code,detail:code==='broken-local-references'?broken:code==='form-controls-missing-accessible-label'?forms:null});
+ for(const code of pageWarnings)addWarning({route,file:page.file,code,detail:code==='static-contrast-risk-below-3'?severeRisks:nonCanonicalLogoRefs});
 }
-for(const route of menuMissing)errors.push({route,file:'apps/portal/assets/public-unified-menu-v6.js',code:'menu-route-missing-physical-page'});
-const report={version:'GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED',generatedAt:new Date().toISOString(),summary:{pages:pages.length,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:errors.length,warnings:warnings.length,pagesWithStaticContrastRisks:pages.filter(page=>page.contrastRisks.length).length,pagesWithLegacyLogoSources:pages.filter(page=>page.nonCanonicalLogoRefs.length).length,legacyLogosNormalizedAtEdge:pages.reduce((n,page)=>n+page.edgeNormalizedLegacyLogos.length,0),pagesWithForms:pages.filter(page=>page.formIssues.length||/<form\b/i.test(fs.readFileSync(path.resolve(page.file),'utf8'))).length},menuMissing,errors,warnings,pages};
-fs.mkdirSync(path.dirname(REPORT),{recursive:true});fs.writeFileSync(REPORT,JSON.stringify(report,null,2));
-console.log(JSON.stringify(report.summary,null,2));
-if(errors.length){for(const item of errors.slice(0,120))console.error(`- ${item.code} ${item.route} (${item.file})`);process.exit(1)}
+for(const route of menuMissing)addError({route,file:'apps/portal/assets/public-unified-menu-v6.js',code:'menu-route-missing-physical-page'});
+for(const writer of [pageOut,errorOut,warningOut])writer.close();
+const summary={pages:pageOut.count,menuRoutes:uniqueMenuRoutes.length,missingMenuRoutes:menuMissing.length,errors:errorOut.count,warnings:warningOut.count,...stats};
+const descriptor=fs.openSync(REPORT,'w');
+function appendFile(file){
+ const fd=fs.openSync(file,'r'),buffer=Buffer.allocUnsafe(1024*1024);let n;
+ try{while((n=fs.readSync(fd,buffer,0,buffer.length,null))>0)fs.writeSync(descriptor,buffer,0,n);}
+ finally{fs.closeSync(fd);}
+}
+try{
+ const header=JSON.stringify({version:'GNK_ALL_PAGES_DETAILED_AUDIT_V4_RUNTIME_DIRS_EXCLUDED',generatedAt:new Date().toISOString(),summary,menuMissing});
+ fs.writeSync(descriptor,header.slice(0,-1)+',"errors":');appendFile(errorOut.filename);
+ fs.writeSync(descriptor,',"warnings":');appendFile(warningOut.filename);
+ fs.writeSync(descriptor,',"pages":');appendFile(pageOut.filename);
+ fs.writeSync(descriptor,'}\n');
+}finally{fs.closeSync(descriptor);for(const writer of [pageOut,errorOut,warningOut])fs.unlinkSync(writer.filename);}
+console.log(JSON.stringify(summary,null,2));
+if(summary.errors){for(const item of firstErrors)console.error('- '+item.code+' '+item.route+' ('+item.file+')');process.exit(1)}
