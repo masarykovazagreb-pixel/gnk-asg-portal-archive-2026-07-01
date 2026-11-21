@@ -4,23 +4,17 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-21T14:35:15.061Z",
+  "updatedAt": "2026-11-21T16:59:46.901Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 50,
       "corrupt": 0,
-      "errors": [
-        "https://telex.hu/rss: HTTP 403",
-        "https://telex.hu/rss/belfold: HTTP 403",
-        "https://telex.hu/rss/kulfold: HTTP 403",
-        "https://telex.hu/rss/gazdasag: HTTP 403",
-        "https://telex.hu/rss/sport: HTTP 403"
-      ],
-      "checkedAt": "2026-11-21T14:35:12.193Z"
+      "errors": [],
+      "checkedAt": "2026-11-21T16:59:41.304Z"
     },
     {
       "id": "444",
@@ -30,7 +24,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T14:35:12.235Z"
+      "checkedAt": "2026-11-21T16:59:41.749Z"
     },
     {
       "id": "hvg",
@@ -40,7 +34,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T14:35:12.350Z"
+      "checkedAt": "2026-11-21T16:59:42.417Z"
     },
     {
       "id": "portfolio",
@@ -50,7 +44,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T14:35:13.027Z"
+      "checkedAt": "2026-11-21T16:59:43.193Z"
     },
     {
       "id": "index",
@@ -62,7 +56,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-21T14:35:14.638Z"
+      "checkedAt": "2026-11-21T16:59:45.381Z"
     },
     {
       "id": "24hu",
@@ -72,7 +66,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T14:35:14.762Z"
+      "checkedAt": "2026-11-21T16:59:45.594Z"
     },
     {
       "id": "mandiner",
@@ -82,10 +76,517 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T14:35:15.060Z"
+      "checkedAt": "2026-11-21T16:59:46.900Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-21-24hu-bezar-a-felcsuti-hotel-pancho-a-dolgozokat-e255a0",
+      "title": "Bezár a felcsúti Hotel Pancho, a dolgozókat már értesítették",
+      "summary": "A Puskás Akadémia mellett épült négycsillagos szállodát eredetileg ifjúsági sportszállásnak szánták. The post Bezár a felcsúti Hotel Pancho, a dolgozókat már értesítették first appeared on 24.hu .",
+      "date": "2026-11-21T16:51:58.000Z",
+      "url": "https://24.hu/belfold/2026/11/21/hotel-pancho-felcsut-bezar/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "felcsút",
+        "hotel pancho"
+      ],
+      "author": "Csontos Kata",
+      "theme": "sport",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1079827636-1-e1795279702598-1024x577.jpg",
+      "imageAlt": "Bezár a felcsúti Hotel Pancho, a dolgozókat már értesítették",
+      "addedAt": "2026-11-21T16:59:45.594Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-hvg-bezar-a-felcsuti-hotel-pancho-97eed9",
+      "title": "Bezár a felcsúti Hotel Pancho",
+      "summary": "A hotelről korábban azt mondták, ifjúsági sportszállásnak épül, amiért jelentős tao-támogatást is kapott a Felcsúti Utánpótlás Nevelésért Alapítvány.",
+      "date": "2026-11-21T16:43:51.000Z",
+      "url": "https://hvg.hu/itthon/20261121_bezar-a-felcsuti-hotel-pancho",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "gazdaság",
+        "Felcsút",
+        "Hotel Pancho"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "sport",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/56c0fa79-c2eb-4278-b627-141b19c5450a.jpg",
+      "imageAlt": "Bezár a felcsúti Hotel Pancho",
+      "addedAt": "2026-11-21T16:59:42.417Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-hvg-lassan-veget-er-minden-idok-legrosszabb-871b24",
+      "title": "Lassan véget ér „minden idők legrosszabb” klímacsúcsa – csak az olajtermelő országok lehetnek elégedettek",
+      "summary": "Már túlóráznak a részt vevő delegációk, de jelentős eredmények két hét alatt sem születtek az idei ENSZ-klímacsúcson. Panama vétóval fenyeget, a konferencia záródokumentumának tervezetét pedig annyire felpuhították, hogy egy szóval sem említi azt, ami a legfontosabb célja lenne a tanácskozásnak: a fosszilis energiahordozók kivezetését.",
+      "date": "2026-11-21T16:43:18.000Z",
+      "url": "https://hvg.hu/gazdasag/20261121_lassan-veget-er-minden-idok-legrosszabb-klimacsucsa-csak-az-olajtermelo-orszagok-lehetnek-elegedettek",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "élhető környezet",
+        "COP31",
+        "klímacsúcs"
+      ],
+      "author": "szerzo@hvg.hu (Csordás Aliz)",
+      "theme": "energija",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/d848ebca-4942-4311-b47d-2be03f3b93f7.jpg",
+      "imageAlt": "Lassan véget ér „minden idők legrosszabb” klímacsúcsa – csak az olajtermelő országok lehetnek elégedettek",
+      "addedAt": "2026-11-21T16:59:42.418Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-hvg-judas-kiakadt-megjelent-rambo-es-az-orosz-0c09cb",
+      "title": "Júdás kiakadt, megjelent Rambo és az orosz gnóm, Nemecsek Ernő pedig lehet, összedolgozott Petőfi Sándorral",
+      "summary": "Motiváltabb az ügynök, ha megválaszthatja a „munkanevét” – jöttek rá az NDK-ban egy eset kapcsán, ám e lélektani fogással nem élt minden kommunista titkosrendőrség. A fedőnevek megjósolható mintázatát mintha csak Magyarországon törte volna meg a szokásosnál több kreativitás vagy cinizmus.",
+      "date": "2026-11-21T16:30:00.000Z",
+      "url": "https://hvg.hu/360/20261121_hvg-fedonevadasi-szokasok-szerepfelfogasok-judas",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "hvg360",
+        "ügynökakták",
+        "Stasi",
+        "kommunizmus"
+      ],
+      "author": "szerzo@hvg.hu (Illényi Balázs)",
+      "theme": "sigurnost",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/8367fbf4-11ba-4931-a159-2a9bc96c9003.jpg",
+      "imageAlt": "Júdás kiakadt, megjelent Rambo és az orosz gnóm, Nemecsek Ernő pedig lehet, összedolgozott Petőfi Sándorral",
+      "addedAt": "2026-11-21T16:59:42.418Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-telex-reuters-jensen-huang-beleegyezett-egy-8dc605",
+      "title": "Reuters: Jensen Huang beleegyezett egy nyilvános szenátusi meghallgatásba",
+      "summary": "A lap az Nvidia volt vezérét beidéző republikánus szenátor, Tim Scott egyik tanácsadójára hivatkozva írt erről. Huang szóvivője nem kommentálta a dolgot.",
+      "date": "2026-11-21T16:23:17.000Z",
+      "url": "https://telex.hu/kulfold/2026/11/21/nvidia-jensen-huang-szenatus-meghallgatas",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Külföld"
+      ],
+      "author": "Flachner Balázs",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261121/1795278152-temp-tn0m7j5ml4uh8ccfpmg_cimlap-normal.jpg",
+      "imageAlt": "Reuters: Jensen Huang beleegyezett egy nyilvános szenátusi meghallgatásba",
+      "addedAt": "2026-11-21T16:59:41.304Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-hvg-elfogtak-egy-mexikoi-drogbarot-akit-az-fbi-ac57bf",
+      "title": "Elfogtak egy mexikói drogbárót, akit az FBI egyik legkeresettebb bűnözőjeként tartottak számon",
+      "summary": "A rajtütés heves összecsapást váltott ki, a bűnszervezet tagjai tüzet nyitottak a hatóságokra.",
+      "date": "2026-11-21T16:22:31.000Z",
+      "url": "https://hvg.hu/vilag/20261121_elfogtak-egy-mexikoi-drogbarot-aki-az-fbi-egyik-legkeresettebb-bunozojekent-tartottak-szamon",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "világ",
+        "Mexikó",
+        "FBI"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/1a9f1955-c06e-48b1-9129-de2d3320b822.jpg",
+      "imageAlt": "Elfogtak egy mexikói drogbárót, akit az FBI egyik legkeresettebb bűnözőjeként tartottak számon",
+      "addedAt": "2026-11-21T16:59:42.418Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-24hu-modosul-a-tanev-rendje-csokken-a-tanitasi-380abc",
+      "title": "Módosul a tanév rendje, csökken a tanítási napok száma",
+      "summary": "A módosítás a 2026/2027-es tanévet érinti, Lannert Judit szerint a változás nem veszélyezteti a tananyag elsajátítását. The post Módosul a tanév rendje, csökken a tanítási napok száma first appeared on 24.hu .",
+      "date": "2026-11-21T16:18:21.000Z",
+      "url": "https://24.hu/belfold/2026/11/21/tanev-rendje-modosul-kevesebb-tanitasi-nap/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "lannert judit",
+        "tanév rendje",
+        "tanév"
+      ],
+      "author": "Csontos Kata",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-0203932194-e1795277868326-1024x577.jpg",
+      "imageAlt": "Módosul a tanév rendje, csökken a tanítási napok száma",
+      "addedAt": "2026-11-21T16:59:45.594Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-telex-bejartuk-a-zsido-kolozsvart-ahol-egykor-6c5ac0",
+      "title": "Bejártuk a zsidó Kolozsvárt, ahol egykor virágzó polgári világ épült, de a 20. század mindent elsöpört",
+      "summary": "Az egykori zsinagógák, mozik, paloták és kórházak történetéből rajzolódik ki, hogyan formálta modern várossá Kolozsvárt egy mára szinte teljesen eltűnt közösség.",
+      "date": "2026-11-21T16:17:40.000Z",
+      "url": "https://telex.hu/transtelex/2026/11/21/zsido-kolozsvart-polgari-vilag-holokauszt-emlekhelyek",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Transtelex"
+      ],
+      "author": "Gál László (Transtelex)",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261121/1795247537-temp-u81g3fs9vmri5emfjeg_cimlap-normal.jpg",
+      "imageAlt": "Bejártuk a zsidó Kolozsvárt, ahol egykor virágzó polgári világ épült, de a 20. század mindent elsöpört",
+      "addedAt": "2026-11-21T16:59:41.304Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-portfolio-bejelentettek-hogy-modosul-a-tanev-rendje-d687ed",
+      "title": "Bejelentették, hogy módosul a tanév rendje",
+      "summary": "Egy nappal rövidebb lesz a 2026/2027-es tanév, miután az Országgyűlés munkaszüneti nappá nyilvánította december 24-ét. A változás következtében december 12-e, szombat sem lesz áthelyezett munkanap, így ezen a napon tanítás sem lesz – jelentette be Facebook-oldalán Lannert Judit oktatási és gyermekügyi miniszter.",
+      "date": "2026-11-21T16:15:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261121/bejelentettek-hogy-modosul-a-tanev-rendje-878218",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/p/a/r/parlament-szabadsag-oktatas-munkaszuneti-nap-munkaszuneti-napok-szenteste-december-24-tanev-re-871740.jpg",
+      "imageAlt": "Bejelentették, hogy módosul a tanév rendje",
+      "addedAt": "2026-11-21T16:59:43.193Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-telex-mit-hoz-a-befekteteseknel-a-trumpizmus-082684",
+      "title": "Mit hoz a befektetéseknél a trumpizmus alkonya?",
+      "summary": "Gazdasági szempontból az iráni háborúra gyakorolt hatás lesz a legfontosabb. Ha sikerülne lezárni, az megszüntetné a legfőbb bizonytalansági forrást a piacok és a gazdasági kilátások szempontjából.",
+      "date": "2026-11-21T16:14:25.000Z",
+      "url": "https://telex.hu/g7/penz/2026/11/21/usa-valasztas-demokratak-trump-kulpolitika-tozsde-befektetesek",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Pénz"
+      ],
+      "author": "Kiss Péter",
+      "theme": "ekonomija",
+      "image": "https://assets.telex.hu/images/20261120/1795182583-temp-agdeqe63a86rfpbboak_cimlap-normal.jpg",
+      "imageAlt": "Mit hoz a befektetéseknél a trumpizmus alkonya?",
+      "addedAt": "2026-11-21T16:59:41.305Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-telex-8-evnyi-utazas-utan-megerkezett-a-merkurhoz-debabd",
+      "title": "8 évnyi utazás után megérkezett a Merkúrhoz az EU és Japán közös űrszondája",
+      "summary": "A BepiColombo hamarosan megkezdi az előkészületeket, hogy a pályára álljon a bolygó körül.",
+      "date": "2026-11-21T16:13:01.000Z",
+      "url": "https://telex.hu/techtud/2026/11/21/merkur-urkutatas-urszonda-bepicolombo",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Techtud"
+      ],
+      "author": "Sarkadi Zsolt",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261121/1795277573-temp-htufceelrvth7djidel_cimlap-normal.jpg",
+      "imageAlt": "8 évnyi utazás után megérkezett a Merkúrhoz az EU és Japán közös űrszondája",
+      "addedAt": "2026-11-21T16:59:41.305Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-444-egy-nappal-rovidebb-lesz-az-idei-tanev-f830b7",
+      "title": "Egy nappal rövidebb lesz az idei tanév",
+      "summary": "December 12-én nem kell iskolába menni.",
+      "date": "2026-11-21T16:05:35.000Z",
+      "url": "https://444.hu/2026/11/21/egy-nappal-rovidebb-lesz-a-tanev?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "oktatás",
+        "tanév",
+        "lannert judit",
+        "december 24"
+      ],
+      "author": "Molnár Kristóf",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8P0yoYdVQVYlWGLWs.jpeg",
+      "imageAlt": "Egy nappal rövidebb lesz az idei tanév",
+      "addedAt": "2026-11-21T16:59:41.749Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-portfolio-durvan-belenyultak-a-rendszerhasznalati-0dc8d3",
+      "title": "Durván belenyúltak a rendszerhasználati díjakba – Mutatjuk, kinek hogyan változik az áramszámlája",
+      "summary": "Majdnem tízszeresére nő a háztartások és egyes kisvállalkozások által fizetendő villamosenergia-alapdíj januárban, a többletet azonban az állam fizeti meg a háztartások helyett. A vállalatoknak ígért, átlagosan 55 százalékos rendszerhasználati díj csökkentésből elsősorban a nagyfogyasztók profitálhatnak, a kisebb cégek terhei viszont emelkedhetnek. Bár az általunk megkérdezett elosztói szakemberek szakmailag előrelépésnek tartják az átalakítást, a lakossági terhek állami átvállalása újabb kérdéseket vet fel a rendszer érettsége kapcsán.",
+      "date": "2026-11-21T16:00:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261121/durvan-belenyultak-a-rendszerhasznalati-dijakba-mutatjuk-kinek-hogyan-valtozik-az-aramszamlaja-877982",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2299319560-871696.jpg",
+      "imageAlt": "Durván belenyúltak a rendszerhasználati díjakba – Mutatjuk, kinek hogyan változik az áramszámlája",
+      "addedAt": "2026-11-21T16:59:43.193Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-24hu-ket-korre-volt-a-vilagbajnoki-cimtol-a-1597ec",
+      "title": "Két körre volt a világbajnoki címtől a MotoGP klasszisa, amikor elesett",
+      "summary": "Marc Márquez már úgy érezhette, megvan a nyolcadik világbajnoki cím, amikor jött a hiba. The post Két körre volt a világbajnoki címtől a MotoGP klasszisa, amikor elesett first appeared on 24.hu .",
+      "date": "2026-11-21T15:58:48.000Z",
+      "url": "https://24.hu/sport/2026/11/21/motogp-portugal-nagydij-sprint-marc-marquez-bukas/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Sport",
+        "sport",
+        "motorsport",
+        "marc márquez"
+      ],
+      "author": "24.hu",
+      "theme": "sport",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-2305624175-e1795276582311-1024x576.jpg",
+      "imageAlt": "Két körre volt a világbajnoki címtől a MotoGP klasszisa, amikor elesett",
+      "addedAt": "2026-11-21T16:59:45.594Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-24hu-ido-elott-szabadult-a-bortonbol-a-costa-ae5c72",
+      "title": "Idő előtt szabadult a börtönből a Costa Concordia egykori kapitánya",
+      "summary": "Kilenc és fél év után szabadult a börtönből a 32 ember haláláért felelős kapitány. The post Idő előtt szabadult a börtönből a Costa Concordia egykori kapitánya first appeared on 24.hu .",
+      "date": "2026-11-21T15:58:14.000Z",
+      "url": "https://24.hu/kulfold/2026/11/21/costa-concordia-kapitany-francesco-schettino-borton-szabadult/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "costa concordia",
+        "francesco schettino"
+      ],
+      "author": "Csontos Kata",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/000_par6774248-e1795276560467-1024x577.jpg",
+      "imageAlt": "Idő előtt szabadult a börtönből a Costa Concordia egykori kapitánya",
+      "addedAt": "2026-11-21T16:59:45.594Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-24hu-tompa-andrea-nem-csak-a-milliardokat-hanem-dccb31",
+      "title": "Tompa Andrea: Nem csak a milliárdokat, hanem a közös igazságunkat is jó lenne, ha előásná valaki",
+      "summary": "De miért kéne egyáltalán megnyugodni? Mert egyébként csak csodálkozunk, hitetlenkedünk, humorizálunk, mémeket rajzolgatunk ásóval meg fekete zacskóval. The post Tompa Andrea: Nem csak a milliárdokat, hanem a közös igazságunkat is jó lenne, ha előásná valaki first appeared on 24.hu .",
+      "date": "2026-11-21T15:54:02.000Z",
+      "url": "https://24.hu/belfold/2026/11/21/tompa-andrea-nem-csak-a-milliardokat-hanem-a-kozos-igazsagunkat-is-jo-lenne-ha-eloasna-valaki/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "seszták miklós",
+        "unger anna",
+        "vélemény"
+      ],
+      "author": "Tompa Andrea",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-1301288328-masolat-1024x576.jpg",
+      "imageAlt": "Tompa Andrea: Nem csak a milliárdokat, hanem a közös igazságunkat is jó lenne, ha előásná valaki",
+      "addedAt": "2026-11-21T16:59:45.594Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-portfolio-tortenelmi-pillanat-ujabb-egymillio-1acb79",
+      "title": "Történelmi pillanat: újabb egymillió dolláros rejtélyt oldhatott meg a mesterséges intelligencia",
+      "summary": "Az Anthropic egyik kutatója azt állítja, hogy a vállalat Claude nevű mesterségesintelligencia-modelljének segítségével megoldotta a Riemann-sejtést, a számelmélet egyik leghíresebb, több mint százötven éve nyitott problémáját. Az eredményt, amelyet a matematikus egy speciális programozási nyelven írt kóddal támasztott alá, már több független szakértő is ellenőrizte a saját számítógépén - írta a Bloomberg .",
+      "date": "2026-11-21T15:52:00.000Z",
+      "url": "https://www.portfolio.hu/uzlet/20261121/tortenelmi-pillanat-ujabb-egymillio-dollaros-rejtelyt-oldhatott-meg-a-mesterseges-intelligencia-878216",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Üzlet"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://pcdn.hu/articles/images-xl/c/h/a/chatgpt-deepseek-generativ-mesterseges-intelligencia-mesterseges-intelligencia-ai-mobilalkalmaza-870812.jpg",
+      "imageAlt": "Történelmi pillanat: újabb egymillió dolláros rejtélyt oldhatott meg a mesterséges intelligencia",
+      "addedAt": "2026-11-21T16:59:43.193Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-24hu-rutte-a-nato-kesz-megvedeni-lengyelorszag-6612b2",
+      "title": "Rutte: a NATO kész megvédeni Lengyelország területének minden négyzetcentiméterét",
+      "summary": "A NATO európai erőinek főparancsnoka minden szükséges intézkedést megtesz a szövetség elrettentő és védelmi képességeit fenyegető veszélyek azonosítására. The post Rutte: a NATO kész megvédeni Lengyelország területének minden négyzetcentiméterét first appeared on 24.hu .",
+      "date": "2026-11-21T15:50:14.000Z",
+      "url": "https://24.hu/kulfold/2026/11/21/nato-lengyelorszag-vedelem-mark-rutte/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "nato",
+        "lengyelország",
+        "mark rutte"
+      ],
+      "author": "Vaskor Máté",
+      "theme": "sigurnost",
+      "image": "https://s.24.hu/app/uploads/2026/11/075_contini-coalitio261119_npadg-e1795276173256.jpg",
+      "imageAlt": "Rutte: a NATO kész megvédeni Lengyelország területének minden négyzetcentiméterét",
+      "addedAt": "2026-11-21T16:59:45.594Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-444-tegyuk-fel-hogy-valaki-este-hat-orakor-8ab662",
+      "title": "„Tegyük fel, hogy valaki este hat órakor bejönne a szállóra, de ahhoz, hogy reggel nyolcig kibírja, meg kell innia egy trafiknyi szeszt”",
+      "summary": "A hajléktalanellátásban dolgozók éveken át építik a bizalmat az ügyfeleikkel, hogy a magukra hagyottak akkor is lássanak reménysugarat, amikor már minden elveszni látszik. De hogy épít bizalmat az ember egy több mint százötven fős tömegszálláson, és hogyan rombolhatja le pillanatok alatt évek munkáját a rendőri jelenlét? A Könyves éjjeli menedékhelyen, nappali melegedőn jártunk.",
+      "date": "2026-11-21T15:39:24.000Z",
+      "url": "https://444.hu/2026/11/21/tegyuk-fel-hogy-valaki-este-hat-orakor-bejonne-a-szallora-de-ahhoz-hogy-reggel-nyolcig-kibirja-meg-kell-innia-egy-trafiknyi-szeszt?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "gombos miklós",
+        "hajléktalanság",
+        "hajléktalanok",
+        "Budapesti Módszertani Szociális Központ és Intézményei"
+      ],
+      "author": "Bódog Bálint",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PzoBm707q1RWGLWs.jpeg",
+      "imageAlt": "„Tegyük fel, hogy valaki este hat órakor bejönne a szállóra, de ahhoz, hogy reggel nyolcig kibírja, meg kell innia egy trafiknyi szeszt”",
+      "addedAt": "2026-11-21T16:59:41.750Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-telex-pszichologus-az-unicef-konferenciajan-a-bc7375",
+      "title": "Pszichológus az UNICEF konferenciáján: A gyereknevelési elvek olyanok, mint a hasmenés, tartjuk, ameddig tartjuk, aztán egyszer csak elengedjük",
+      "summary": "Mi kell ahhoz, hogy valaki elég jó szülő legyen és mi segíthet abban, hogy szülőként ne vesszünk el a ránk zúduló gyereknevelési útmutatások között? A többi között ezekről is szó esett az UNICEF mentálisegészség-konferenciáján.",
+      "date": "2026-11-21T15:35:08.000Z",
+      "url": "https://telex.hu/eletmod/2026/11/21/jo-szuloseg-unicef-mentalis-egeszseg-konferencia",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Életmód"
+      ],
+      "author": "Pupli Anna Sára",
+      "theme": "drustvo",
+      "image": "https://assets.telex.hu/images/20261119/1795092072-temp-u5akke01khe32pnkkeb_cimlap-normal.jpg",
+      "imageAlt": "Pszichológus az UNICEF konferenciáján: A gyereknevelési elvek olyanok, mint a hasmenés, tartjuk, ameddig tartjuk, aztán egyszer csak elengedjük",
+      "addedAt": "2026-11-21T16:59:41.305Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-hvg-nadal-bekerult-a-real-madridba-b0519f",
+      "title": "Nadal bekerült a Real Madridba",
+      "summary": "Mármint az igazgatótanácsba.",
+      "date": "2026-11-21T15:26:28.000Z",
+      "url": "https://hvg.hu/gazdasag/20261121_nadal-bekerult-a-real-madridba",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "foci",
+        "Rafael Nadal"
+      ],
+      "author": "szerzo@hvg.hu (MTI)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/42c0f667-f604-4e3c-8792-70b58705cd23.jpg",
+      "imageAlt": "Nadal bekerült a Real Madridba",
+      "addedAt": "2026-11-21T16:59:42.418Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-telex-egy-mexikoi-politikus-elnezest-kert-miutan-703fd9",
+      "title": "Egy mexikói politikus elnézést kért, miután irtószerrel permeteztek le ártatlan királylepkéket",
+      "summary": "A permetezett vegyi anyagok célpontjai a dengue-lázat terjesztő szúnyogok voltak.",
+      "date": "2026-11-21T15:24:04.000Z",
+      "url": "https://telex.hu/techtud/2026/11/21/permetezes-ertekes-pillangok-kiralylepkek-mexiko",
+      "source": "telex",
+      "sourceName": "Telex",
+      "categories": [
+        "Techtud"
+      ],
+      "author": "Szántó-Nagy Bálint",
+      "theme": "politika",
+      "image": "https://assets.telex.hu/images/20261121/1795274378-temp-lhundf4se4rg9ofhmdf_cimlap-normal.jpg",
+      "imageAlt": "Egy mexikói politikus elnézést kért, miután irtószerrel permeteztek le ártatlan királylepkéket",
+      "addedAt": "2026-11-21T16:59:41.305Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-hvg-iran-szerint-eltalaltak-egy-amerikai-06f9e8",
+      "title": "Irán szerint eltaláltak egy amerikai vadászgépet a Perzsa-öböl felett",
+      "summary": "Az amerikaiak egyelőre ezt nem erősítették meg.",
+      "date": "2026-11-21T15:21:59.000Z",
+      "url": "https://hvg.hu/vilag/20261121_iran-szerint-eltalaltak-egy-amerikai-vadaszgepet-a-perzsa-obol-felett",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "világ",
+        "Perzsa-öböl",
+        "Irán"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/1eef339c-405d-43a2-a5f0-b30b7518532c.jpg",
+      "imageAlt": "Irán szerint eltaláltak egy amerikai vadászgépet a Perzsa-öböl felett",
+      "addedAt": "2026-11-21T16:59:42.418Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-portfolio-ido-kerdese-lehet-csak-a-krimi-hid-6b8b34",
+      "title": "Idő kérdése lehet csak a Krími híd megsemmisülése, orosz teherhajót ért támadás a Balti-tengeren - Háborús híreink szombaton",
+      "summary": "Az utolsó szalmaszálba kapaszkodva próbál Európa csatlakozni az orosz-ukrán béketárgyalásokhoz, miután Moszkva három kulcsfontosságú európai országot is meghívott az ukrajnai békéről szóló egyeztetésekre. Berlin a meghívás elfogadását sürgeti, Párizs csak teljes körű részvétel mellett mondana igent, az orosz külügy viszont Kaja Kallas jelenlétét kifogásolja. A harcok közben nem csitulnak, szombatra virradó éjjel újabb rakétatámadás érte Ukrajnát, melynek halálos áldozata is volt. Nap közben egy orosz teherhajót is támadás ért a Finn-öbölben, ami megerősíti az orosz exportútvonalak növekvő biztonsági kockázatát.",
+      "date": "2026-11-21T15:21:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261121/ido-kerdese-lehet-csak-a-krimi-hid-megsemmisulese-orosz-teherhajot-ert-tamadas-a-balti-tengeren-haborus-hireink-szombaton-878168",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/o/r/o/orosz-ukran-haboru-konfliktus-katona-zaszlo-diplomacia-targyalas-stock-523013.jpg",
+      "imageAlt": "Idő kérdése lehet csak a Krími híd megsemmisülése, orosz teherhajót ért támadás a Balti-tengeren - Háborús híreink szombaton",
+      "addedAt": "2026-11-21T16:59:43.194Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-444-a-fidesz-kicsit-eltevedt-a-tortenelemben-62cd61",
+      "title": "A Fidesz kicsit eltévedt a történelemben, antikommunista ellenálló gócként reagált Bús Balázs kiengedésére",
+      "summary": "Kényszervallatás, politikai fogoly, önkény, politikai rendőrség, elhurcolás, egypártrendszer, újkommunizmus. Harcolnunk kell!",
+      "date": "2026-11-21T15:03:24.000Z",
+      "url": "https://444.hu/2026/11/21/a-fidesz-kicsit-eltevedt-a-tortenelemben-antikommunista-ellenallo-gockent-reagalt-bus-balazs-kiengedesere?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "fidesz",
+        "bús balázs",
+        "politikai fogoly",
+        "védvonal"
+      ],
+      "author": "Rovó Attila",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8LGih2m2JB5P1Ghp5s.jpeg",
+      "imageAlt": "A Fidesz kicsit eltévedt a történelemben, antikommunista ellenálló gócként reagált Bús Balázs kiengedésére",
+      "addedAt": "2026-11-21T16:59:41.750Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-444-a-rendorseg-szerint-nem-tortent-e6c70a",
+      "title": "A rendőrség szerint nem történt bűncselekmény, amikor az esztergomi prefektus gyomorszájon vágta az egyik diákját",
+      "summary": "Ezért a büntetőeljárást megszüntették.",
+      "date": "2026-11-21T14:58:27.000Z",
+      "url": "https://444.hu/2026/11/21/a-rendorseg-szerint-nem-tortent-buncselekmeny-amikor-az-esztergomi-prefektus-gyomorszajon-vagta-az-egyik-diakjat?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "rendőrség",
+        "esztergom",
+        "gyermekbántalmazás",
+        "Szent Antal Ferences Gimnázium"
+      ],
+      "author": "Molnár Kristóf",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8M2vFQTM1c9WX2M0s.jpeg",
+      "imageAlt": "A rendőrség szerint nem történt bűncselekmény, amikor az esztergomi prefektus gyomorszájon vágta az egyik diákját",
+      "addedAt": "2026-11-21T16:59:41.750Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-444-elfogtak-egy-mexikoi-drogbarot-aki-szerepel-c94d33",
+      "title": "Elfogtak egy mexikói drogbárót, aki szerepel az FBI legkeresettebb bűnözőinek 10-es listáján",
+      "summary": "Az akció heves tűzharccal járt, egy baseballmeccs szurkolóinak menekülnie is kellett.",
+      "date": "2026-11-21T14:37:06.000Z",
+      "url": "https://444.hu/2026/11/21/elfogtak-egy-mexikoi-drogbarot-aki-szerepel-az-fbi-legkeresettebb-bunozoinek-10-es-listajan?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Egyesült Államok",
+        "drogkartell",
+        "mexikó",
+        "külföld"
+      ],
+      "author": "Molnár Kristóf",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8Q1K0SbdUKZhi3SMs.jpeg",
+      "imageAlt": "Elfogtak egy mexikói drogbárót, aki szerepel az FBI legkeresettebb bűnözőinek 10-es listáján",
+      "addedAt": "2026-11-21T16:59:41.750Z"
+    },
     {
       "slug": "budimpesta-2026-11-21-hvg-erre-nemcsak-david-attenborough-hanem-a8e88a",
       "title": "Erre nemcsak David Attenborough, hanem Darwin is megemelné a kalapját",

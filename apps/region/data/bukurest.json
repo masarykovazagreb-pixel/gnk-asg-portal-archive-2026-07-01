@@ -4,17 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-21T14:36:00.491Z",
+  "updatedAt": "2026-11-21T17:01:22.750Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
       "url": "https://www.agerpres.ro/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-21T14:35:57.336Z"
+      "errors": [
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: HTTP 500"
+      ],
+      "checkedAt": "2026-11-21T17:01:15.632Z"
     },
     {
       "id": "hotnews",
@@ -24,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T14:35:57.352Z"
+      "checkedAt": "2026-11-21T17:01:16.190Z"
     },
     {
       "id": "zf",
@@ -34,7 +37,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T14:35:58.324Z"
+      "checkedAt": "2026-11-21T17:01:18.180Z"
     },
     {
       "id": "profit",
@@ -44,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T14:35:58.481Z"
+      "checkedAt": "2026-11-21T17:01:18.278Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 245,
+      "fetched": 233,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T14:35:59.419Z"
+      "checkedAt": "2026-11-21T17:01:20.326Z"
     },
     {
       "id": "g4media",
@@ -64,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T14:36:00.294Z"
+      "checkedAt": "2026-11-21T17:01:21.917Z"
     },
     {
       "id": "newsro",
@@ -74,10 +77,563 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T14:36:00.489Z"
+      "checkedAt": "2026-11-21T17:01:22.748Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-21-hotnews-interviu-carla-s-dreams-se-intoarce-pe-b7ec23",
+      "title": "INTERVIU Carla’s Dreams se întoarce pe scenă, după un an de pauză, cu un concert simfonic și din nou cu mască: „Fără chip, rămâne doar muzica”",
+      "summary": "„Masca n-a avut niciodată legătură cu teama de a fi vedetă sau cu faptul că mi-ar fi greu să fiu în centrul atenției. Nu fug de oameni și nici de scenă. Pentru mine, anonimatul ține de procesul de creație. Acolo trebuie să rămână ceva nedescoperit”, explică artistul Carla’s Dreams de ce continuă să-și ascundă fața, …",
+      "date": "2026-11-21T17:00:59.000Z",
+      "url": "https://hotnews.ro/interviu-carlas-dreams-se-intoarce-pe-scena-dupa-un-an-de-pauza-cu-un-concert-simfonic-si-din-nou-cu-masca-fara-chip-ramane-doar-muzica-2408798",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Life",
+        "Carla's Dreams",
+        "hnpremium",
+        "paywall-sus-jos"
+      ],
+      "author": "Gabriel Bejan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "INTERVIU Carla’s Dreams se întoarce pe scenă, după un an de pauză, cu un concert simfonic și din nou cu mască: „Fără chip, rămâne doar muzica”",
+      "addedAt": "2026-11-21T17:01:16.190Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-g4media-mii-de-francezi-protesteaza-pentru-cel-de-2d13cf",
+      "title": "Mii de francezi protestează pentru cel de-al șaselea weekend consecutiv pentru servicii publice mai bune și față de creșterea costului vieții și inegalitățile sociale",
+      "summary": "Mii de persoane au ieșit sâmbătă în stradă în mai multe orașe din Franța, pentru al șaselea weekend consecutiv, cerând servicii publice mai bune și exprimându-și nemulțumirea față de creșterea costului vieții și inegalitățile sociale, scrie Mediafax. La Paris, câteva mii de persoane s-au adunat în Piața Republicii, într-o atmosferă descrisă drept festivă, cu muzicieni, […] © G4Media.ro .",
+      "date": "2026-11-21T16:57:07.000Z",
+      "url": "https://www.g4media.ro/mii-de-francezi-protesteaza-pentru-cel-de-al-saselea-weekend-consecutiv-pentru-servicii-publice-mai-bune-si-fata-de-cresterea-costului-vietii-si-inegalitatile-sociale.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "francezi",
+        "proteste"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2023/07/33LY9A2-highres-e1688239178236.jpg",
+      "imageAlt": "Mii de francezi protestează pentru cel de-al șaselea weekend consecutiv pentru servicii publice mai bune și față de creșterea costului vieții și inegalitățile sociale",
+      "addedAt": "2026-11-21T17:01:21.917Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-profit-cezar-ouatu-a-fost-jefuit-vad-un-geam-larg-b81531",
+      "title": "Cezar Ouatu a fost jefuit. „Văd un geam larg deschis în living…\". Hoții i-au intrat în casă și i-au luat mai multe ceasuri de colecție și bijuterii",
+      "summary": "Interpretul de operă Cezar Ouatu a fost victima unui jaf. Hoții au intrat în locuința sa din Ilfov și i-au luat mai multe ceasuri de colecție și bijuterii din aur.",
+      "date": "2026-11-21T16:54:00.000Z",
+      "url": "https://www.profit.ro/stiri/social/cezar-ouatu-a-fost-jefuit-vad-un-geam-larg-deschis-in-living-hotii-i-au-intrat-in-casa-si-i-au-luat-mai-multe-ceasuri-de-colectie-si-bijuterii-23002513?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Social"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33239/23002513/3/politia-locala.jpg?width=800",
+      "imageAlt": "Cezar Ouatu a fost jefuit. „Văd un geam larg deschis în living…\". Hoții i-au intrat în casă și i-au luat mai multe ceasuri de colecție și bijuterii",
+      "addedAt": "2026-11-21T17:01:18.279Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-digi24-zelenski-trump-le-a-spus-liderilor-europeni-3db999",
+      "title": "Zelenski: Trump le-a spus liderilor europeni că cheltuiesc prea mult pentru Ucraina. Ce le-a sugerat să facă cu banii",
+      "summary": "Preşedintele american Donald Trump le-a spus liderilor europeni, în cadrul reuniunii Coaliţiei de Voinţă desfăşurate joi la Berlin, că Europa cheltuieşte prea mulţi bani pentru războiul din Ucraina şi că ar putea folosi aceste fonduri pentru propriile ţări după încheierea conflictului, a declarat sâmbătă preşedintele ucrainean Volodimir Zelenski, relatează Reuters.",
+      "date": "2026-11-21T16:50:25.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/zelenski-trump-le-a-spus-liderilor-europeni-ca-cheltuiesc-prea-mult-pentru-ucraina-ce-le-a-sugerat-sa-faca-cu-banii-4047273",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjIxJTJGMzA4MTI0MF8zMDgx/MjQwX05EQW1hR0Z6YUQweE1HWXlPR1kz/WVRaalpUQTFaVFJrTlRSaE9UZGxaVGcx/TnpJd1lqRTNOQV90aHVtYl8uanBnJmhh/c2g9NTViMzFjNTczNWMzYTYzNTIwYzY1OWI3MTc5NWUxNTY=.jpg",
+      "imageAlt": "Zelenski: Trump le-a spus liderilor europeni că cheltuiesc prea mult pentru Ucraina. Ce le-a sugerat să facă cu banii",
+      "addedAt": "2026-11-21T17:01:20.329Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-digi24-ancheta-a-politiei-dupa-ce-tenorul-cezar-f324bb",
+      "title": "Anchetă a Poliţiei după ce tenorul Cezar Ouatu a reclamat că din casă i-au fost furate ceasuri de colecţie şi mai multe bijuterii",
+      "summary": "Poliţiştii din Chitila, judeţul Ilfov, au deschis o anchetă după ce tenorul Cezar Ouatu a reclamat că din locuinţa sa au fost furate cinci ceasuri de colecţie şi mai multe bijuterii din aur. Poliţiştii au stabilit că hoţii au intrat în casă forţând un geam de la bucătărie şi urmează să analizeze imaginile surprinse de camerele de supraveghere din zonă.",
+      "date": "2026-11-21T16:48:18.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/ancheta-a-politiei-dupa-ce-un-barbat-din-chitila-a-reclamat-ca-din-casa-i-au-fost-furate-ceasuri-de-colectie-si-mai-multe-bijuterii-4047259",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjIxJTJGMzA4MTIzN18zMDgx/MjM3X2NlemFyLW91YXR1LXByb2ZpbWVk/aWEtMDM4ODE0NjA3OC5wbmcmaGFzaD0z/NzE5YjAzYzY5MjY0YzQxM2I3NjlkNTFkNzkyZmViZQ==.png",
+      "imageAlt": "Anchetă a Poliţiei după ce tenorul Cezar Ouatu a reclamat că din casă i-au fost furate ceasuri de colecţie şi mai multe bijuterii",
+      "addedAt": "2026-11-21T17:01:20.329Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-profit-foto-cel-mai-aglomerat-bulevard-din-7a6e23",
+      "title": "FOTO Cel mai aglomerat bulevard din București va fi transformat radical",
+      "summary": "Chestionarul prin care bucureștenii pot spune cum doresc ei să arate două dintre bulevardele centrale ale Capitalei, respectiv Bălcescu și Magheru, trebuie completat acum.",
+      "date": "2026-11-21T16:48:00.000Z",
+      "url": "https://www.profit.ro/perspective/foto-tot-centrul-bucurestiului-schimbat-chestionarul-bucurestenii-pot-spune-doresc-arate-doua-dintre-bulevardele-centrale-capitalei-respectiv-balcescu-magheru-completat-acum-23002507?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Perspective"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33242/23002507/10/bulevard.jpg?width=800",
+      "imageAlt": "FOTO Cel mai aglomerat bulevard din București va fi transformat radical",
+      "addedAt": "2026-11-21T17:01:18.279Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-hotnews-contestatara-lui-bolojan-inlaturata-de-la-f6a34f",
+      "title": "Contestatara lui Bolojan, înlăturată de la șefia unei organizații din PNL",
+      "summary": "Senatoarea Nicoleta Pauliuc a fost înlăturată de la șefia Organizației Femeilor Liberale în urma unui vot secret al membrelor Biroului Politic Național al OFL. Pauliuc face parte din tabăra contestarilor din PNL ai lui Ilie Bolojan. Senatoarea a anunțat că va ataca decizia de demitere „pe căile prevăzute de statut și de lege”. Într-un comunicat …",
+      "date": "2026-11-21T16:47:47.000Z",
+      "url": "https://hotnews.ro/contestatara-lui-bolojan-inlaturata-de-la-sefia-unei-organizatii-din-pnl-2410640",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Politic"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Contestatara lui Bolojan, înlăturată de la șefia unei organizații din PNL",
+      "addedAt": "2026-11-21T17:01:16.190Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-newsro-motogp-marco-bezzecchi-s-a-impus-in-cursa-f09fac",
+      "title": "MotoGP: Marco Bezzecchi s-a impus în cursa sprint a Marelui Premiu al Portugaliei; Marc Marquez a căzut",
+      "summary": "Pilotul italian Marco Bezzecchi a câştigat sâmbătă cursa sprint a Marelui Premiu al Portugaliei. Spaniolul Marc Marquez a căzut în ultimele tururi, ratând o altă oportunitate de a câştiga titlul mondial.",
+      "date": "2026-11-21T16:47:28.000Z",
+      "url": "https://www.news.ro/sport/motogp-marco-bezzecchi-s-a-impus-in-cursa-sprint-a-marelui-premiu-al-portugaliei-marc-marquez-a-cazut-1922404721282026111823002473",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "MotoGP: Marco Bezzecchi s-a impus în cursa sprint a Marelui Premiu al Portugaliei; Marc Marquez a căzut",
+      "addedAt": "2026-11-21T17:01:22.748Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-newsro-mexicul-l-a-capturat-pe-baronul-drogurilor-584537",
+      "title": "Mexicul l-a capturat pe baronul drogurilor „El Chapo Isidro”, unul dintre cei mai căutaţi fugari de pe lista FBI",
+      "summary": "Autorităţile mexicane l-au capturat noaptea trecută pe Fausto Isidro Meza Flores, unul dintre cei mai importanţi lideri de cartel, cunoscut sub numele de „El Chapo Isidro”, în statul Sinaloa, relatează AP.",
+      "date": "2026-11-21T16:45:23.000Z",
+      "url": "https://www.news.ro/externe/mexicul-l-a-capturat-pe-baronul-drogurilor-el-chapo-isidro-unul-dintre-cei-mai-cautati-fugari-de-pe-lista-fbi-1922404521232026111823002483",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Mexicul l-a capturat pe baronul drogurilor „El Chapo Isidro”, unul dintre cei mai căutaţi fugari de pe lista FBI",
+      "addedAt": "2026-11-21T17:01:22.749Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-newsro-nicoleta-pauliuc-eu-nu-consider-ca-am-0e933b",
+      "title": "Nicoleta Pauliuc: Eu nu consider că am greşit, dar am ajuns la şase sancţiuni pentru acelaşi lucru. Regulamentul OFL e clar: preşedinta e aleasă de Congres şi numai Congresul o…",
+      "summary": "Nicoleta Pauliuc, în cazul căreia BPN al Organizaţiei Femeilor LIberale a votat, sâmbătă, demiterea din funcţia de preşedinte al OFL, susţine că doar Congresul partidului o poate demite. ”Eu nu consider că am greşit, dar am ajuns la şase sancţiuni pentru acelaşi lucru”, afirmă ea. Pauliuc susţine că, în ultimul an şi jumătate, viaţa internă a PNL a fost ”realmente îngheţată”. ”Am aflat de la televizor despre decizii importante, despre măsuri care afectau milioane de români, despre direcţia în care merge partidul nostru. Nu ne-a întrebat nimeni ce credem”, arată ea, menţionând că va contesta decizia.",
+      "date": "2026-11-21T16:41:20.000Z",
+      "url": "https://www.news.ro/politic-intern/nicoleta-pauliuc-consider-gresit-ajuns-sase-sanctiuni-acelasi-lucru-regulamentul-ofl-e-clar-presedinta-e-aleasa-congres-numai-congresul-demite-pana-raman-presedinta-ofl-1922404121202026111823002486",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Nicoleta Pauliuc: Eu nu consider că am greşit, dar am ajuns la şase sancţiuni pentru acelaşi lucru. Regulamentul OFL e clar: preşedinta e aleasă de Congres şi numai Congresul o poa",
+      "addedAt": "2026-11-21T17:01:22.749Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-profit-foto-brico-acum-sub-seful-altex-a-lansat-in-4f5ceb",
+      "title": "FOTO Brico, acum sub șeful Altex, a lansat în România un nou format. Brico Studio va fi extins în multe orașe",
+      "summary": "BRICO, acum parte din grupul Altex România, a deschis primul showroom BRICO Studio, în incinta Aurora Retail Park Giurgiu.",
+      "date": "2026-11-21T16:41:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/retail/foto-brico-acum-sub-seful-altex-a-lansat-in-romania-un-nou-format-brico-studio-va-fi-extins-in-multe-orase-23002503?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Retail"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://i0.1616.ro/media/2/2621/33215/23002503/11/degalfoto-ro-133.jpg?width=800",
+      "imageAlt": "FOTO Brico, acum sub șeful Altex, a lansat în România un nou format. Brico Studio va fi extins în multe orașe",
+      "addedAt": "2026-11-21T17:01:18.279Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-profit-ultima-ora-o-sa-auziti-de-dosare-noi-am-271b62",
+      "title": "ULTIMA ORĂ O să auziți de dosare noi. Am găsit nereguli în finanțarea partidelor parlamentare, am decis confiscarea unor sume importante de bani de la toate partidele! …",
+      "summary": "Verificări efectuate pentru anii electorali 2024 și 2025 de Autoritatea Electorală Permanentă (AEP) indică nereguli în finanțarea de care au dispus partidele parlamentare, anunță președintele AEP, Adrian Țuțuianu.",
+      "date": "2026-11-21T16:38:00.000Z",
+      "url": "https://www.profit.ro/stiri/politic/ultima-ora-o-sa-auziti-de-dosare-noi-am-gasit-nereguli-in-finantarea-partidelor-parlamentare-am-decis-confiscarea-unor-sume-importante-de-bani-de-la-toate-partidele-presedinte-aep-23002487?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Politic"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://i0.1616.ro/media/2/2621/33238/23002487/3/vot-seara-07-inquam-photos-octav-ganea.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ O să auziți de dosare noi. Am găsit nereguli în finanțarea partidelor parlamentare, am decis confiscarea unor sume importante de bani de la toate partidele! - Președinte",
+      "addedAt": "2026-11-21T17:01:18.279Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-g4media-aproape-jumatate-dintre-germani-vor-1ddfc8",
+      "title": "Aproape jumătate dintre germani vor reducerea sau oprirea ajutorului acordat Ucrainei, arată datele unui recent sondaj",
+      "summary": "Aproape jumătate dintre germani, respectiv 49%, consideră că ajutorul acordat Ucrainei ar trebui redus sau oprit, potrivit unui sondaj realizat de YouGov pentru publicaţia germană Welt am Sonntag, publicat sâmbătă, relatează agenția de știri dpa, citată de Agerpres. Un sfert dintre respondenţi (25%) se pronunţă pentru oprirea completă a sprijinului, în timp ce 24% doresc […] © G4Media.ro .",
+      "date": "2026-11-21T16:35:21.000Z",
+      "url": "https://www.g4media.ro/aproape-jumatate-dintre-germani-vor-reducerea-sau-oprirea-ajutorului-acordat-ucrainei-arata-datele-unui-recent-sondaj.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "ajutor ucraina",
+        "germani"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2025/09/dreamstime_m_21897394.jpg",
+      "imageAlt": "Aproape jumătate dintre germani vor reducerea sau oprirea ajutorului acordat Ucrainei, arată datele unui recent sondaj",
+      "addedAt": "2026-11-21T17:01:21.918Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-digi24-aproape-jumatate-dintre-germani-vor-f50645",
+      "title": "Aproape jumătate dintre germani vor reducerea sau oprirea ajutorului acordat Ucrainei. Opiniile, în funcţie de preferinţele politice",
+      "summary": "Aproape jumătate dintre germani, respectiv 49%, consideră că ajutorul acordat Ucrainei ar trebui redus sau oprit, potrivit unui sondaj realizat de YouGov pentru publicaţia germană Welt am Sonntag, publicat sâmbătă, relatează dpa.",
+      "date": "2026-11-21T16:35:11.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/aproape-jumatate-dintre-germani-vor-reducerea-sau-oprirea-ajutorului-acordat-ucrainei-opiniile-in-functie-de-preferintele-politice-4047281",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjIxJTJGMzA4MTIzMF8zMDgx/MjMwX2RyYXBlbC1nZXJtYW5pYS1nZXR0/eWltYWdlcy5qcGcmaGFzaD0yNmQ0MmI5/OTI3YzQ3OWNjNzg0ZGE0YWZiNzQ0MjljMQ==.jpg",
+      "imageAlt": "Aproape jumătate dintre germani vor reducerea sau oprirea ajutorului acordat Ucrainei. Opiniile, în funcţie de preferinţele politice",
+      "addedAt": "2026-11-21T17:01:20.329Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-newsro-handbal-masculin-runar-sandefjord-potaissa-fa5769",
+      "title": "Handbal masculin: Runar Sandefjord – Potaissa Turda, scor 32-31, în turul III al European Cup",
+      "summary": "Echipa Potaissa Potaissa Turda a pierdut la limită sâmbătă, în deplasare, prima manşă din turul III al European Cup, scor 31-32 (16-16), cu formaţia norvegiană Runar Sandefjord.",
+      "date": "2026-11-21T16:33:13.000Z",
+      "url": "https://www.news.ro/sport/handbal-masculin-runar-sandefjord-potaissa-turda-scor-32-31-in-turul-iii-al-european-cup-1922403321132026111823002484",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Handbal masculin: Runar Sandefjord – Potaissa Turda, scor 32-31, în turul III al European Cup",
+      "addedAt": "2026-11-21T17:01:22.749Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-g4media-o-cetateana-americana-detinuta-in-cuba-timp-336a8b",
+      "title": "O cetăţeană americană deţinută în Cuba timp de aproape zece ani a fost eliberată / Femeia, de profesie educatoare, fusese condamnată la 13 ani de închisoare pentru spionaj",
+      "summary": "Autorităţile cubaneze au eliberat o cetăţeană americană deţinută în Cuba timp de aproape zece ani, a anunţat vineri Departamentul de Stat, confirmând o relatare a postului CNN, informează agenția de știri AFP, citată de Agerpres. „Am salutat întoarcerea Alinei Lopez în Statele Unite în septembrie”, a declarat un purtător de cuvânt al Departamentului de Stat […] © G4Media.ro .",
+      "date": "2026-11-21T16:29:23.000Z",
+      "url": "https://www.g4media.ro/o-cetateana-americana-detinuta-in-cuba-timp-de-aproape-zece-ani-a-fost-eliberata.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "cetăţeană americană",
+        "eliberare Cuba"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "sigurnost",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/01/Harta-Cuba-e1769080032172.jpg",
+      "imageAlt": "O cetăţeană americană deţinută în Cuba timp de aproape zece ani a fost eliberată / Femeia, de profesie educatoare, fusese condamnată la 13 ani de închisoare pentru spionaj",
+      "addedAt": "2026-11-21T17:01:21.918Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-hotnews-tenorul-cezar-ouatu-jefuit-in-propria-casa-fd7149",
+      "title": "Tenorul Cezar Ouatu, jefuit în propria casă. Hoții au furat ceasuri de colecţie şi bijuterii. Mărturia artistului",
+      "summary": "Cunoscutul interpret de operă Cezar Ouatu a anunțat că a fost victima unui jaf, după ce hoții au intrat în locuința sa din Ilfov și i-au furat mai multe ceasuri de colecție și bijuterii din aur. Artistul a sesizat poliția, care a anunțat că „are un cerc de suspecți”. Jaful s-a petrecut între 13-18 noiembrie, …",
+      "date": "2026-11-21T16:27:38.000Z",
+      "url": "https://hotnews.ro/tenorul-cezar-ouatu-jefuit-in-propria-casa-hotii-au-furat-ceasuri-de-colectie-si-bijuterii-din-aur-marturia-artistului-2410624",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ramona Ciobanu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Tenorul Cezar Ouatu, jefuit în propria casă. Hoții au furat ceasuri de colecţie şi bijuterii. Mărturia artistului",
+      "addedAt": "2026-11-21T17:01:16.191Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-zf-ce-solutii-propune-industria-de-energie-aab05e",
+      "title": "Ce soluţii propune industria de energie pentru scăderea facturilor: de la ajutor de stat pentru consumatorii industriali, contracte pe termen lung până la analiza structurii…",
+      "summary": "Pe data de 16 noiembrie, ZF a organizat o nouă edi­ţie a conferinţei ZF Energie, dezbaterea care-şi propune să facă de fiecare dată un bilanţ al anului, dar şi să anticipeze temele pentru ZF Power Summit, cel mai mare eveniment ZF dedicat energiei, care va avea loc în perioada 17-19 februarie 2027.",
+      "date": "2026-11-21T16:25:00.000Z",
+      "url": "https://www.zf.ro/companii/energie/solutii-propune-industria-energie-scaderea-facturilor-ajutor-stat-consumatorii-industriali-contracte-termen-lung-pana-analiza-structurii-facturilor-lucreaza-schimb-ministerul-energiei-schema-23284109",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Energie"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21330/23284109/1/1-zf-energie-2026-1.jpg?width=700",
+      "imageAlt": "Ce soluţii propune industria de energie pentru scăderea facturilor: de la ajutor de stat pentru consumatorii industriali, contracte pe termen lung până la analiza structurii factur",
+      "addedAt": "2026-11-21T17:01:18.180Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-newsro-ue-si-indonezia-au-semnat-un-acord-1b8f97",
+      "title": "UE şi Indonezia au semnat un acord comercial după zece ani de negocieri",
+      "summary": "Uniunea Europeană şi Indonezia au semnat sâmbătă un acord comercial cuprinzător şi un acord privind protecţia investiţiilor, după zece ani de negocieri, a anunţat Comisia Europeană, transmite Reuters. Înţelegerea face parte din strategia Bruxellesului de diversificare a relaţiilor comerciale şi de reducere a impactului tarifelor vamale impuse de preşedintele american Donald Trump.",
+      "date": "2026-11-21T16:24:00.000Z",
+      "url": "https://www.news.ro/economic/ue-si-indonezia-au-semnat-un-acord-comercial-dupa-zece-ani-de-negocieri-1922402421002026111823002429",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "UE şi Indonezia au semnat un acord comercial după zece ani de negocieri",
+      "addedAt": "2026-11-21T17:01:22.749Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-digi24-nicoleta-pauliuc-pierde-sefia-organizatiei-defc49",
+      "title": "Nicoleta Pauliuc pierde șefia Organizației de Femei a PNL",
+      "summary": "Nicoleta Pauliuc, una dintre vocile critice la adresa conducerii PNL, a pierdut conducerea Organizației de Femei a partidului, funcție pe care o ocupa din 2023.",
+      "date": "2026-11-21T16:23:19.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/nicoleta-pauliuc-pierde-sefia-organizatiei-de-femei-a-pnl-4047187",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjMl/MkYwNyUyRjI3JTJGMTc3MTk2Ml8xNzcx/OTYyX25pY29sZXRhLXBhdWxpdWMtZm90/by1mYi5qcGcmaGFzaD0yNjBjOWJjM2FiNzJjM2NlNzg5ZTUwMDIyMTg5OWI2YQ==.jpg",
+      "imageAlt": "Nicoleta Pauliuc pierde șefia Organizației de Femei a PNL",
+      "addedAt": "2026-11-21T17:01:20.329Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-g4media-gianni-de-gennaro-fost-sef-al-politiei-b44a9d",
+      "title": "Gianni De Gennaro, fost şef al poliţiei italiene, a fost găsit mort / Era anchetat pentru o presupusă obstrucţionare a anchetei referitoare la asasinarea în stil mafiot a…",
+      "summary": "Gianni De Gennaro, fostul şef atotputernic al poliţiei italiene şi actualul preşedinte al Eurolink, consorţiul care a câştigat contractul pentru construirea podului peste Strâmtoarea Messina, a fost găsit mort sâmbătă, potrivit presei locale, informează agenția de știri EFE, citată de Agerpres. Moartea lui De Gennaro are loc în contextul deschiderii unei cercetări împotriva sa privind […] © G4Media.ro .",
+      "date": "2026-11-21T16:21:00.000Z",
+      "url": "https://www.g4media.ro/gianni-de-gennaro-fost-sef-al-politiei-italiene-a-fost-gasit-mort-era-anchetat-pentru-o-presupusa-obstructionare-a-anchetei-referitoare-la-asasinarea-in-stil-mafiot-a-judecatorului-paolo-borsellin.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Gianni De Gennaro"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2025/09/dreamstime_m_377010613.jpg",
+      "imageAlt": "Gianni De Gennaro, fost şef al poliţiei italiene, a fost găsit mort / Era anchetat pentru o presupusă obstrucţionare a anchetei referitoare la asasinarea în stil mafiot a judecător",
+      "addedAt": "2026-11-21T17:01:21.918Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-newsro-serie-a-victorii-pentru-como-si-lazio-18c2d5",
+      "title": "Serie A: Victorii pentru Como şi Lazio",
+      "summary": "Echipa italiană Lazio Roma a învins sâmbătă, pe teren propriu, scor 3-0, gruparea Lecce, în etapa a 12-a din Serie A. În aceeaşi etapă, Como a dispus acasă, scor 2-0, de Cagliari.",
+      "date": "2026-11-21T16:16:02.000Z",
+      "url": "https://www.news.ro/sport/serie-a-victorii-pentru-como-si-lazio-1922401621022026111823002465",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Serie A: Victorii pentru Como şi Lazio",
+      "addedAt": "2026-11-21T17:01:22.750Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-g4media-vietnamul-interzice-cetatenilor-straini-cb7b77",
+      "title": "Vietnamul interzice cetăţenilor străini accesul pe lista de aşteptare pentru organe de la donatori decedaţi",
+      "summary": "Adunarea Naţională a Vietnamului a adoptat sâmbătă o lege care interzice cetăţenilor străini să se înscrie pe lista naţională de aşteptare pentru organe provenite de la donatori decedaţi, înăsprind reglementările pe fondul îngrijorărilor legate de deficitul de organe şi de comerţul ilegal cu acestea, informează agenția de știri dpa, citată de Agerpres. Conform noii legislaţii, […] © G4Media.ro .",
+      "date": "2026-11-21T16:15:48.000Z",
+      "url": "https://www.g4media.ro/vietnamul-interzice-cetatenilor-straini-accesul-pe-lista-de-asteptare-pentru-organe-de-la-donatori-decedati.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "donatori",
+        "organe",
+        "vietnam"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2025/07/dreamstime_s_108771128-1.jpg",
+      "imageAlt": "Vietnamul interzice cetăţenilor străini accesul pe lista de aşteptare pentru organe de la donatori decedaţi",
+      "addedAt": "2026-11-21T17:01:21.918Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-hotnews-trump-le-a-spus-liderilor-ue-ca-ar-putea-8e8de9",
+      "title": "Trump le-a spus liderilor UE că ar putea folosi pentru propriile țări banii trimiși Ucrainei",
+      "summary": "Preşedintele american Donald Trump le-a spus liderilor europeni, în cadrul reuniunii Coaliţiei de Voinţă desfăşurate joi la Berlin, că Europa cheltuieşte prea mulţi bani pentru războiul din Ucraina şi că ar putea folosi aceste fonduri pentru propriile ţări după încheierea conflictului, a declarat sâmbătă preşedintele ucrainean Volodimir Zelenski, relatează Reuters, preluată de Agerpres. Trump a …",
+      "date": "2026-11-21T16:10:57.000Z",
+      "url": "https://hotnews.ro/trump-le-a-spus-liderilor-ue-ca-ar-putea-folosi-pentru-propriile-tari-banii-trimisi-ucrainei-2410630",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Trump le-a spus liderilor UE că ar putea folosi pentru propriile țări banii trimiși Ucrainei",
+      "addedAt": "2026-11-21T17:01:16.191Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-profit-dezvaluire-am-ajuns-fara-bilet-cu-ultimul-3c36a1",
+      "title": "Dezvăluire: „Am ajuns fără bilet, cu ultimul tren, în ultimul vagon, în China!”. Șeful Renault Group regretă că nu i-a spus fostului său șef, Carlos Ghons, că greșește",
+      "summary": "Francois Provost, actualul CEO al Renault Group, conducea activitățile companiei în China, în anii în care Carlos Ghosn visa la cucerirea acestei piețe cu modelele Kadjar sau Koleos, dar și cu Dacia Spring, care acolo se chema Renault City K-ZE. Acum își amintește că a vrut să-i spună fostului său șef că e o greșeală, dar n-a făcut-o și regretă.",
+      "date": "2026-11-21T16:08:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/dezvaluire-am-ajuns-fara-bilet-cu-ultimul-tren-in-ultimul-vagon-in-china-seful-renault-group-regreta-ca-nu-i-a-spus-fostului-sau-sef-carlos-ghons-ca-greseste-23002283?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33217/23002283/1/francois-provost-romania-2.jpg?width=800",
+      "imageAlt": "Dezvăluire: „Am ajuns fără bilet, cu ultimul tren, în ultimul vagon, în China!”. Șeful Renault Group regretă că nu i-a spus fostului său șef, Carlos Ghons, că greșește",
+      "addedAt": "2026-11-21T17:01:18.280Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-digi24-dan-dungaciu-ironizeaza-teama-lui-nicusor-203424",
+      "title": "Dan Dungaciu ironizează teama lui Nicușor Dan privind alegerile din 2028: „Se coace ceva la Cotroceni”",
+      "summary": "AUR ironizează teama președintelui Nicușor Dan pentru alegerile parlamentare din 2028. Prim-vicepreședintele partidului, Dan Dungaciu, susține că „sigur se coace ceva la Cotroceni”. El a mai adăugat că 2027 va fi un an care va schimba fața Europei, întrucât valul naționalist va câștiga alegerile în multe țări. Reacția AUR vine după ce șeful statului a susținut într-o declarație că îi este frică de votul românilor de peste doi ani.",
+      "date": "2026-11-21T16:00:39.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/dan-dungaciu-ironizeaza-teama-lui-nicusor-dan-privind-alegerile-din-2028-se-coace-ceva-la-cotroceni-4047237",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjIxJTJGMzA4MTE3OV8zMDgx/MTc5X1BUYzRNQ1pvUFRRME1DWm9ZWE5v/UFdKaE9URTROR1E0TmpWbVkyRTNPVFUw/Wmpoa01USm1NV05oTVRsak56WmhfdGh1/bWItMS5qcGcmaGFzaD1mZDkyNDlhNTdmYTAwYWViY2E3ZTFlODgyMjgwM2ZhNQ==.jpg",
+      "imageAlt": "Dan Dungaciu ironizează teama lui Nicușor Dan privind alegerile din 2028: „Se coace ceva la Cotroceni”",
+      "addedAt": "2026-11-21T17:01:20.330Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-digi24-la-gala-sportului-dinamovist-marian-neacsu-825673",
+      "title": "La Gala Sportului Dinamovist, Marian Neacșu a primit două premii, iar David Popovici – doar unul",
+      "summary": "Ministrul de Interne a primit mai multe premii decât David Popovici la Gala Sportului Dinamovist, eveniment la care Marian Neacșu a primit trofee atât din partea Comitetului Olimpic, cât și din partea clubului CS Dinamo, club aflat în subordinea ministerului pe care Neacșu îl conduce. De cealaltă parte, David Popovici a plecat acasă cu un singur trofeu, cel pentru sportivul anului.",
+      "date": "2026-11-21T15:55:43.000Z",
+      "url": "https://www.digi24.ro/stiri/sport/video-la-gala-sportului-dinamovist-marian-neacsu-a-primit-doua-premii-iar-david-popovici-doar-unul-4047229",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjIxJTJGMzA4MTE2NV8zMDgx/MTY1X2NvdmFsaXUtbmVhY3N1LmpwZyZo/YXNoPWRmMDg4YTU1M2IyMjUyYTM3MDA1YzQzNDRjY2UyY2Jm.jpg",
+      "imageAlt": "La Gala Sportului Dinamovist, Marian Neacșu a primit două premii, iar David Popovici – doar unul",
+      "addedAt": "2026-11-21T17:01:20.330Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-zf-trump-le-a-transmis-liderilor-europeni-ca-c950fb",
+      "title": "Trump le-a transmis liderilor europeni că alocă sume importante pentru Ucraina, afirmă Zelenski",
+      "summary": "",
+      "date": "2026-11-21T15:49:18.000Z",
+      "url": "https://www.zf.ro/business-international/trump-le-a-transmis-liderilor-europeni-ca-aloca-sume-importante-pentru-ucraina-afirma-zelenski-23286601",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Internaţional"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21450/23286601/1/hepta-9136744.jpg?width=700",
+      "imageAlt": "Trump le-a transmis liderilor europeni că alocă sume importante pentru Ucraina, afirmă Zelenski",
+      "addedAt": "2026-11-21T17:01:18.180Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-hotnews-povestea-de-succes-a-lui-yasmin-razavi-0928b4",
+      "title": "Povestea de succes a lui Yasmin Razavi, tânăra născută în Iran care a pariat pe Anthropic înainte să devină una dintre cele mai valoroase companii",
+      "summary": "După listarea la bursă a Anthropic, Yasmin Razavi, a devenit singurul investitor extern cu loc în consiliul de administrație al creatorului Claude. Partener general la fondul de investiții Spark Capital, Razavi a susținut Anthropic într-o perioadă în care compania nu era încă un nume important în domeniul inteligenței artificiale, potrivit profilui ei publicat de Financial …",
+      "date": "2026-11-21T15:43:51.000Z",
+      "url": "https://hotnews.ro/povestea-de-succes-a-lui-yasmin-razavi-tanara-nascuta-in-iran-care-a-pariat-pe-anthropic-inainte-sa-devina-una-dintre-cele-mai-valoroase-companii-2409465",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ramona Ciobanu",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Povestea de succes a lui Yasmin Razavi, tânăra născută în Iran care a pariat pe Anthropic înainte să devină una dintre cele mai valoroase companii",
+      "addedAt": "2026-11-21T17:01:16.191Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-hotnews-onu-va-stabili-reguli-privind-folosirea-in-077e5c",
+      "title": "ONU va stabili reguli privind folosirea în luptă a „roboților ucigași”. Care este principalul dezacord între statele membre",
+      "summary": "Cele 128 de state părţi la Convenţia ONU privind anumite arme convenţionale au ajuns, sâmbătă, la un compromis pentru continuarea procesului de reglementare a armelor autonome letale, cunoscute şi sub denumirea de „roboţi ucigaşi”, după o săptămână de negocieri dificile la Geneva. Acordul prevede elaborarea unui instrument internaţional în următorii doi ani, fără a stabili …",
+      "date": "2026-11-21T15:34:55.000Z",
+      "url": "https://hotnews.ro/onu-va-stabili-reguli-privind-folosirea-in-lupta-a-robotilor-ucigasi-care-este-principalul-dezacord-intre-statele-membre-2410620",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "ONU va stabili reguli privind folosirea în luptă a „roboților ucigași”. Care este principalul dezacord între statele membre",
+      "addedAt": "2026-11-21T17:01:16.191Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-zf-scumpirile-continua-de-sarbatori-in-f802ef",
+      "title": "Scumpirile continuă de sărbători, în principal din cauza preţurilor mari la energie. Isărescu, BNR: Pentru mine e o durere. Nu mă aşteptam ca după atâţia ani să avem iar probleme…",
+      "summary": "Problemele din domeniul ener­­­­ge­tic cu care a ajuns să se con­­­­­­frunte din nou România, deşi nu mai avem industrii ener­­go­­­fa­ge ca înainte de Revo­lu­ţie, au luat prin surprindere şi au deza­mă­git, tot­odată, şi BNR, inclusiv prin prisma im­­­pac­tu­lui asupra inflaţiei, având în vedere că pre­ţul ma­­re la energie “se duce în toate părţile”, cu e­fec­te în lanţ. Şi, în plus, şi pe plan extern ex­is­tă o ten­sionare a pieţei energiei şi a carbu­ran­ţilor.",
+      "date": "2026-11-21T15:31:00.000Z",
+      "url": "https://www.zf.ro/banci-si-asigurari/scumpirile-continua-sarbatori-principal-cauza-preturilor-mari-energie-isarescu-bnr-mine-e-durere-ma-asteptam-dupa-atatia-ani-avem-iar-probleme-serioase-energia-semne-bune-economia-isi-revine-incet-23283303",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Bănci și Asigurări"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22466/23283303/1/5-mugur-isarescu-2.jpg?width=700",
+      "imageAlt": "Scumpirile continuă de sărbători, în principal din cauza preţurilor mari la energie. Isărescu, BNR: Pentru mine e o durere. Nu mă aşteptam ca după atâţia ani să avem iar probleme „",
+      "addedAt": "2026-11-21T17:01:18.181Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-zf-europarlamentarul-siegfried-muresan-96fce4",
+      "title": "Europarlamentarul Siegfried Mureşan: Parlamentul European va respinge tăierile nejustificate din bugetul UE propuse de Costa",
+      "summary": "",
+      "date": "2026-11-21T14:59:44.000Z",
+      "url": "https://www.zf.ro/politica/europarlamentarul-siegfried-muresan-parlamentul-european-va-respinge-taierile-nejustificate-din-bugetul-ue-propuse-de-costa-23286581",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Politică"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21448/23286581/1/siegfried-muresan-plen-29-11-2017.jpg?width=700",
+      "imageAlt": "Europarlamentarul Siegfried Mureşan: Parlamentul European va respinge tăierile nejustificate din bugetul UE propuse de Costa",
+      "addedAt": "2026-11-21T17:01:18.181Z"
+    },
+    {
+      "slug": "bukurest-2026-11-21-zf-secretarul-general-al-nato-mark-rutte-da-966812",
+      "title": "Secretarul general al NATO, Mark Rutte, dă asigurări Poloniei: NATO va apăra fiecare centimetru din teritoriul polonez",
+      "summary": "",
+      "date": "2026-11-21T14:45:53.000Z",
+      "url": "https://www.zf.ro/business-international/secretarul-general-al-nato-mark-rutte-da-asigurari-poloniei-nato-va-apara-fiecare-centimetru-din-teritoriul-polonez-23286580",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Internaţional"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21450/23286580/1/mark-rutte-la-nato-industry-forum.jpg?width=700",
+      "imageAlt": "Secretarul general al NATO, Mark Rutte, dă asigurări Poloniei: NATO va apăra fiecare centimetru din teritoriul polonez",
+      "addedAt": "2026-11-21T17:01:18.181Z"
+    },
     {
       "slug": "bukurest-2026-11-21-agerpres-antonio-costa-propune-reducerea-bugetului-5a9b94",
       "title": "Antonio Costa propune reducerea bugetului UE pentru perioada 2028-2034 cu peste 200 de miliarde de euro",
