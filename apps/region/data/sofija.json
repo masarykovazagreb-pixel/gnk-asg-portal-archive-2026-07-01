@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-11-20T16:57:17.282Z",
+  "updatedAt": "2026-11-21T00:59:08.649Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-20T16:57:10.141Z"
+      "checkedAt": "2026-11-21T00:59:01.400Z"
     },
     {
       "id": "capital",
@@ -27,17 +27,20 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T16:57:10.874Z"
+      "checkedAt": "2026-11-21T00:59:01.969Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": true,
-      "fetched": 10,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-20T16:57:12.045Z"
+      "errors": [
+        "https://www.mediapool.bg/rss: HTTP 304",
+        "https://www.mediapool.bg/rss/: HTTP 304"
+      ],
+      "checkedAt": "2026-11-21T00:59:04.374Z"
     },
     {
       "id": "dnevnikbg",
@@ -49,7 +52,7 @@
       "errors": [
         "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-20T16:57:13.380Z"
+      "checkedAt": "2026-11-21T00:59:05.612Z"
     },
     {
       "id": "actualno",
@@ -59,7 +62,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T16:57:13.672Z"
+      "checkedAt": "2026-11-21T00:59:05.857Z"
     },
     {
       "id": "sega",
@@ -69,7 +72,7 @@
       "fetched": 91,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T16:57:13.926Z"
+      "checkedAt": "2026-11-21T00:59:06.040Z"
     },
     {
       "id": "novinite",
@@ -81,7 +84,7 @@
       "errors": [
         "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-20T16:57:15.401Z"
+      "checkedAt": "2026-11-21T00:59:06.941Z"
     },
     {
       "id": "btaen",
@@ -93,10 +96,265 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-20T16:57:17.281Z"
+      "checkedAt": "2026-11-21T00:59:08.648Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-11-21-sega-sport-t-po-televizi-ta-21-noemvri-670b1d",
+      "title": "Спортът по телевизията - 21 ноември",
+      "summary": "",
+      "date": "2026-11-21T01:03:03.000Z",
+      "url": "https://www.segabg.com/category-sport/sportut-po-televiziyata-21-noemvri",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Спорт"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2020/01/tv_1.jpg",
+      "imageAlt": "Спортът по телевизията - 21 ноември",
+      "addedAt": "2026-11-21T00:59:06.041Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-actualno-za-nas-to-opredeleno-e-vrag-zelenski-s-d57d69",
+      "title": "\"За нас той определено е враг\": Зеленски с коментар на топлите коментари на Тръмп за Путин (ВИДЕО)",
+      "summary": "Украинският президент Володимир Зеленски отговори на топлите коментари на Тръмп за Путин по време на срещата на върха на...",
+      "date": "2026-11-20T23:50:00.000Z",
+      "url": "https://www.actualno.com/europe/za-nas-toj-opredeleno-e-vrag-zelenski-s-komentar-na-toplite-komentari-na-trymp-za-putin-video-news_2665302.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/21/cea50343b2bbdf3ff6696b857ecdfb9d_2665302_1920x1080.jpg",
+      "imageAlt": "\"За нас той определено е враг\": Зеленски с коментар на топлите коментари на Тръмп за Путин (ВИДЕО)",
+      "addedAt": "2026-11-21T00:59:05.858Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-actualno-tr-mp-sef-t-na-nvidia-zasluzava-vtori-sans-24fa84",
+      "title": "Тръмп: Шефът на NVidia заслужава втори шанс (ВИДЕО)",
+      "summary": "Президентът на САЩ Доналд Тръмп призова днес технологичния гигант Nvidia да възстанови Дженсън Хуан на поста главен изпъ...",
+      "date": "2026-11-20T22:50:00.000Z",
+      "url": "https://www.actualno.com/sciencelogy/trymp-shefyt-na-nvidia-zaslujava-vtori-shans-video-news_2665295.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Технологии"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/21/1292a17e742e3a0e772efe07aeefd6a8_2665295_1920x1080.jpg",
+      "imageAlt": "Тръмп: Шефът на NVidia заслужава втори шанс (ВИДЕО)",
+      "addedAt": "2026-11-21T00:59:05.858Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-actualno-tr-mp-putin-e-v-trudna-situaci-za-oto-e-v-v-697b69",
+      "title": "Тръмп: Путин е в трудна ситуация, защото е във война, която трябваше да свърши за ден (ВИДЕО)",
+      "summary": "Президентът на САЩ Доналд Тръмп смята, че Русия е готова да прекрати войната срещу Украйна по дипломатически път, но лич...",
+      "date": "2026-11-20T22:47:00.000Z",
+      "url": "https://www.actualno.com/america/trymp-putin-e-v-trudna-situacija-zashtoto-e-vyv-vojna-kojato-trjabvashe-da-svyrshi-za-den-video-news_2665296.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Америка"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "rat",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/21/70825ca35af2efea6d6c96fcc395329e_2665296_1920x1080.jpg",
+      "imageAlt": "Тръмп: Путин е в трудна ситуация, защото е във война, която трябваше да свърши за ден (ВИДЕО)",
+      "addedAt": "2026-11-21T00:59:05.858Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-actualno-bezotgovorna-igra-makron-ostro-os-di-3488f8",
+      "title": "\"Безотговорна игра\": Макрон остро осъди руските атаки",
+      "summary": "Френският президент Еманюел Макрон осъди тази вечер \"агресивната политика\" на Русия на европейска територия\" като \"безот...",
+      "date": "2026-11-20T22:30:00.000Z",
+      "url": "https://www.actualno.com/europe/bezotgovorna-igra-makron-ostro-osydi-ruskite-ataki-news_2665294.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/21/d3336b5af3f4ecc9bf3d5813fdc226ae_2665294_1920x1080.jpg",
+      "imageAlt": "\"Безотговорна игра\": Макрон остро осъди руските атаки",
+      "addedAt": "2026-11-21T00:59:05.858Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-actualno-ft-tr-mp-zasilva-natiska-sre-u-ukra-na-iska-ba1249",
+      "title": "FT: Тръмп засилва натиска срещу Украйна, иска мир преди демократите да поемат Конгреса през януари",
+      "summary": "Администрацията на американския президент Доналд Тръмп се стреми да постигне мирно споразумение между Украйна и Русия до...",
+      "date": "2026-11-20T22:11:00.000Z",
+      "url": "https://www.actualno.com/america/ft-trymp-zasilva-natiska-sreshtu-ukrajna-iska-mir-predi-demokratite-da-poemat-kongresa-prez-januari-news_2665293.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Америка"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/21/8e16b35d33910ae503da79d975a5d117_2665293_1920x1080.jpg",
+      "imageAlt": "FT: Тръмп засилва натиска срещу Украйна, иска мир преди демократите да поемат Конгреса през януари",
+      "addedAt": "2026-11-21T00:59:05.858Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-actualno-e-im-nalagam-veto-tr-mp-zaplasi-da-spira-f525a8",
+      "title": "\"Ще им налагам вето\": Тръмп заплаши да спира всички решения на демократите",
+      "summary": "Президентът на САЩ Доналд Тръмп се закани днес да налага вето на законите, приети от демократите, когато поемат контрол ...",
+      "date": "2026-11-20T21:47:00.000Z",
+      "url": "https://www.actualno.com/america/shte-im-nalagam-veto-trymp-zaplashi-da-spira-vsichki-reshenija-na-demokratite-news_2665290.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Америка"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/20/5f2dadd0a87a989646153978b8c10e94_2665290_1920x1080.jpg",
+      "imageAlt": "\"Ще им налагам вето\": Тръмп заплаши да спира всички решения на демократите",
+      "addedAt": "2026-11-21T00:59:05.858Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-sega-vezenkov-i-ko-razrusiha-real-madrid-5d6f5e",
+      "title": "Везенков и ко. разрушиха \"Реал\" (Мадрид)",
+      "summary": "",
+      "date": "2026-11-20T21:35:50.000Z",
+      "url": "https://www.segabg.com/hot/category-sport/vezenkov-i-ko-razrushiha-real-madrid",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/7f13f255-aa20-43b1-9785-2bb3caae86ec.jpeg",
+      "imageAlt": "Везенков и ко. разрушиха \"Реал\" (Мадрид)",
+      "addedAt": "2026-11-21T00:59:06.041Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-sega-f-g-lorka-vd-hnov-va-ge-eposa-cernoto-topce-c7af78",
+      "title": "Ф. Г. Лорка вдъхновява гей епоса \"Черното топче\"",
+      "summary": "",
+      "date": "2026-11-20T21:16:13.000Z",
+      "url": "https://www.segabg.com/category-movie-release/f-g-lorka-vduhnovyava-gey-eposa-chernoto-topche",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Кинопремиера"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/top4e.jpg",
+      "imageAlt": "Ф. Г. Лорка вдъхновява гей епоса \"Черното топче\"",
+      "addedAt": "2026-11-21T00:59:06.041Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-dnevnikbg-minete-na-nasa-strana-putin-prizova-c95499",
+      "title": "\"Минете на наша страна\": Путин призова украинците да дезертират в Русия",
+      "summary": "Руският президент Владимир Путин призова украинските войници да дезертират в Русия. В интервю, дадено на сръбския режисьор Емир Костурица, той ги насърчава да преминат на руска страна в името на единството. Интервюто е публикувано в...",
+      "date": "2026-11-20T21:02:00.000Z",
+      "url": "https://www.dnevnik.bg/sviat/voinata_v_ukraina/2026/11/20/4982815_putin_prizova_ukraincite_da_dezertirat_v_rusiia/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "4992"
+      ],
+      "author": "Йовка Димитрова",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4982814.jpg",
+      "imageAlt": "\"Минете на наша страна\": Путин призова украинците да дезертират в Русия",
+      "addedAt": "2026-11-21T00:59:05.612Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-dnevnikbg-dve-novi-k-icki-za-knigi-se-otkrivat-v-sofi-420e69",
+      "title": "Две нови къщички за книги се откриват в София",
+      "summary": "Две нови къщички за книги се откриват в София. Те ще дадат възможност на жителите и гостите на София да откриват интересни заглавия, да споделят вече прочетени книги и да ги предават на следващите читатели. Проектът се...",
+      "date": "2026-11-20T20:47:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/20/4982817_dve_novi_kushtichki_za_knigi_se_otkrivat_v_sofiia/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4982816.jpg",
+      "imageAlt": "Две нови къщички за книги се откриват в София",
+      "addedAt": "2026-11-21T00:59:05.612Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-dnevnikbg-frenski-t-senat-dade-na-polici-ta-304ce4",
+      "title": "Френският Сенат даде на полицията \"разрешително да убива\"",
+      "summary": "Използването на оръжие от френската полиция е правомерно по презумпция. Това е залегнало в закон, одобрен в петък от Сената с 205 срещу 110 гласа. Той предвижда, че ако полицай убие човек при стрелба, се приема, че той е действал...",
+      "date": "2026-11-20T20:36:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/20/4982810_frenskiiat_senat_dade_na_policiiata_razreshitelno_da/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4982813.jpg",
+      "imageAlt": "Френският Сенат даде на полицията \"разрешително да убива\"",
+      "addedAt": "2026-11-21T00:59:05.612Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-dnevnikbg-citat-na-den-kolegite-ot-pp-se-bor-t-za-dve-8087c1",
+      "title": "Цитат на деня: Колегите от ПП се борят за две неща, \"Прогресивна България\" ги прави по-добре от тях",
+      "summary": "\"Колегите от \"Продължаваме промяната\" се борят за две неща. Съдебна реформа и социална политика. \"Прогресивна България\" прави двете по-добре от тях\". Това каза вицепремиерът Атанас Пеканов в \"Панорама\" по БНТ в спор с лидера на ПП Асен Василев....",
+      "date": "2026-11-20T20:08:00.000Z",
+      "url": "https://www.dnevnik.bg/citat_na_deniia/2026/11/20/4982812_citat_na_denia_kolegite_ot_pp_se_boriat_za_dve_neshta/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "2499"
+      ],
+      "author": "Георги Пауновски",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4982811.jpg",
+      "imageAlt": "Цитат на деня: Колегите от ПП се борят за две неща, \"Прогресивна България\" ги прави по-добре от тях",
+      "addedAt": "2026-11-21T00:59:05.612Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-dnevnikbg-tr-mp-n-mame-sdelka-s-rusi-po-garanciite-za-77b1b6",
+      "title": "Тръмп: нямаме сделка с Русия по гаранциите за Украйна",
+      "summary": "Доналд Тръмп каза, че е доволен от срещата си Владимир Путин за Украйна. Двамата разговаряха 40 минути в Китай в четвъртък. \"Водим много добри разговори. Мисля, че има наистина добър шанс да постигнем това (край на войната, б.а.)\",...",
+      "date": "2026-11-20T20:04:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/20/4982806_trump_niamame_sdelka_s_rusiia_po_garanciite_za_ukraina/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "rat",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4982807.jpg",
+      "imageAlt": "Тръмп: нямаме сделка с Русия по гаранциите за Украйна",
+      "addedAt": "2026-11-21T00:59:05.612Z"
+    },
+    {
+      "slug": "sofija-2026-11-20-sega-tankerite-s-ruski-dizel-pristignaha-v-3c7686",
+      "title": "Танкерите с руски дизел пристигнаха в Бразилия вместо в САЩ",
+      "summary": "",
+      "date": "2026-11-20T19:47:48.000Z",
+      "url": "https://www.segabg.com/hot/category-foreign-country/tankerite-ruski-dizel-pristignaha-braziliya-vmesto-sasht",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/screenshot_2026-11-20_at_10-43-30_dva_tankera_s_rossiyskim_dizelem_pribyli_v_braziliyu_-_the_insider.png",
+      "imageAlt": "Танкерите с руски дизел пристигнаха в Бразилия вместо в САЩ",
+      "addedAt": "2026-11-21T00:59:06.041Z"
+    },
     {
       "slug": "sofija-2026-11-20-sega-ostavat-broeni-dni-za-izbor-na-podfond-za-05b3a3",
       "title": "Остават броени дни за избор на подфонд за втора пенсия",
