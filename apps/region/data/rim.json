@@ -4,7 +4,7 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-11-20T18:36:48.252Z",
+  "updatedAt": "2026-11-21T03:13:40.071Z",
   "sources": [
     {
       "id": "ansa",
@@ -14,17 +14,22 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T18:36:41.556Z"
+      "checkedAt": "2026-11-21T03:13:29.918Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
-      "ok": true,
-      "fetched": 30,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-20T18:36:41.938Z"
+      "errors": [
+        "https://www.repubblica.it/rss/homepage/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/politica/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/economia/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/sport/rss2.0.xml: HTTP 403"
+      ],
+      "checkedAt": "2026-11-21T03:13:33.155Z"
     },
     {
       "id": "ilpost",
@@ -36,7 +41,7 @@
       "errors": [
         "https://www.ilpost.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-20T18:36:43.840Z"
+      "checkedAt": "2026-11-21T03:13:34.514Z"
     },
     {
       "id": "sole24",
@@ -46,7 +51,7 @@
       "fetched": 37,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T18:36:44.947Z"
+      "checkedAt": "2026-11-21T03:13:35.947Z"
     },
     {
       "id": "corriere",
@@ -56,17 +61,19 @@
       "fetched": 69,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-20T18:36:45.375Z"
+      "checkedAt": "2026-11-21T03:13:36.784Z"
     },
     {
       "id": "lastampa",
       "name": "La Stampa",
       "url": "https://www.lastampa.it/rss",
-      "ok": true,
-      "fetched": 59,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-20T18:36:46.058Z"
+      "errors": [
+        "https://www.lastampa.it/rss: HTTP 403"
+      ],
+      "checkedAt": "2026-11-21T03:13:37.765Z"
     },
     {
       "id": "fanpage",
@@ -78,7 +85,7 @@
       "errors": [
         "https://www.fanpage.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-20T18:36:46.826Z"
+      "checkedAt": "2026-11-21T03:13:38.785Z"
     },
     {
       "id": "adnkronos",
@@ -90,10 +97,100 @@
       "errors": [
         "https://www.adnkronos.com/rss: nije feed"
       ],
-      "checkedAt": "2026-11-20T18:36:48.251Z"
+      "checkedAt": "2026-11-21T03:13:40.071Z"
     }
   ],
   "items": [
+    {
+      "slug": "rim-2026-11-21-ansa-cnn-nuovo-attacco-hacker-all-fbi-violato-l-7a8ffc",
+      "title": "Cnn, 'nuovo attacco hacker all'Fbi, violato l'archivio criminale'",
+      "summary": "Il Bureau sta indagando. A settembre sottratti dati personali dei dipendenti",
+      "date": "2026-11-21T02:55:40.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/21/cnn-nuovo-attacco-hacker-allfbi-violato-larchivio-criminale_9eb51b6b-4217-46c4-bed4-11e35d613963.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Cnn, 'nuovo attacco hacker all'Fbi, violato l'archivio criminale'",
+      "addedAt": "2026-11-21T03:13:29.918Z"
+    },
+    {
+      "slug": "rim-2026-11-21-ansa-f1-in-prove-libere-las-vegas-miglior-tempo-3e1c7b",
+      "title": "F1: in prove libere Las Vegas miglior tempo per Russell, poi Antonelli",
+      "summary": "Leclerc su Ferrari chiude la sessione al quarto posto",
+      "date": "2026-11-21T02:11:24.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/21/f1-in-prove-libere-las-vegas-miglior-tempo-per-russell-poi-antonelli_8430fe4c-9d64-4e2c-9cae-00e9fed97f1c.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "F1: in prove libere Las Vegas miglior tempo per Russell, poi Antonelli",
+      "addedAt": "2026-11-21T03:13:29.918Z"
+    },
+    {
+      "slug": "rim-2026-11-21-ansa-terremoto-di-magnitudo-6-7-colpisce-il-086f27",
+      "title": "Terremoto di magnitudo 6.7 colpisce il centro del Perù, gente in strada a Lima",
+      "summary": "Al momento non si hanno notizie di vittime o danni",
+      "date": "2026-11-21T00:57:41.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/21/terremoto-di-magnitudo-6.7-colpisce-il-centro-del-peru-gente-in-strada-a-lima_8d76c1b6-b034-4a65-b70c-ccc6f252af0c.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "potres",
+      "image": "",
+      "imageAlt": "Terremoto di magnitudo 6.7 colpisce il centro del Perù, gente in strada a Lima",
+      "addedAt": "2026-11-21T03:13:29.918Z"
+    },
+    {
+      "slug": "rim-2026-11-20-ansa-giudice-usa-la-bayer-paghera-7-25-miliardi-b5a49a",
+      "title": "Giudice Usa, 'la Bayer pagherà 7,25 miliardi alle vittime del diserbante Roundup'",
+      "summary": "E' uno dei più grandi risarcimenti collettivi della storia americana",
+      "date": "2026-11-20T22:35:27.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/20/giudice-usa-la-bayer-paghera-725-miliardi-alle-vittime-del-diserbante_ee4a5a94-1f99-4407-a8dd-14bd6adbdcec.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Giudice Usa, 'la Bayer pagherà 7,25 miliardi alle vittime del diserbante Roundup'",
+      "addedAt": "2026-11-21T03:13:29.919Z"
+    },
+    {
+      "slug": "rim-2026-11-20-ansa-gli-usa-annunciano-nuove-sanzioni-contro-l-aee1b9",
+      "title": "Gli Usa annunciano nuove sanzioni contro l'Iran, colpiti '4 fiduciari del petrolio'",
+      "summary": "C'è anche il fratello del presidente della Federcalcio iraniana",
+      "date": "2026-11-20T22:30:40.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/20/gli-usa-annunciano-nuove-sanzioni-contro-liran-colpiti-4-fiduciari-del_d18e2414-8888-4bb9-8434-b2e353a2f64b.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Gli Usa annunciano nuove sanzioni contro l'Iran, colpiti '4 fiduciari del petrolio'",
+      "addedAt": "2026-11-21T03:13:29.919Z"
+    },
+    {
+      "slug": "rim-2026-11-20-ansa-wall-street-chiude-in-forte-calo-dj-2-03-f33e82",
+      "title": "Wall Street chiude in forte calo. Dj -2,03%, Nasdaq -5,37%",
+      "summary": "S500 -3,81%",
+      "date": "2026-11-20T21:16:33.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/20/wall-street-chiude-in-forte-calo.-dj-203-nasdaq-537_2603c36d-1094-48af-b17a-590d5705aa0b.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Wall Street chiude in forte calo. Dj -2,03%, Nasdaq -5,37%",
+      "addedAt": "2026-11-21T03:13:29.919Z"
+    },
     {
       "slug": "rim-2026-11-20-ansa-trump-se-i-big-tech-costruiranno-i-data-efad5d",
       "title": "Trump, 'se i big tech costruiranno i data center all'estero li tasseremo pesantemente'",
