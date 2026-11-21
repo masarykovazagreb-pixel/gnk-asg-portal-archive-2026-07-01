@@ -106,3 +106,12 @@
   document.addEventListener('visibilitychange', function () { if (!document.hidden) check(); });
   window.addEventListener('online', check);
 })();
+
+/* All 201 HR/EN country directories share one small topic chooser; all other pages unchanged. */
+(function () {
+  if (!/^\/(?:en\/)?gnk-aktual\/media\/[^/]+\/?$/.test(location.pathname)) return;
+  var script = document.createElement('script');
+  script.src = '/assets/aktual-world-choices-v1.js?v=20261121';
+  script.defer = true;
+  (document.head || document.documentElement).appendChild(script);
+})();
