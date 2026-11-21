@@ -27,7 +27,9 @@ jobs:
           AKTUAL_FETCH_CONCURRENCY: '8'
           AKTUAL_ITEMS_PER_COUNTRY: '30'
         run: node scripts/refresh-aktual-world-headlines-v1.mjs
-      - name: Prepare up to 30 sourced original-article assignments per country (never autopublish)\n        run: node scripts/aktual-world-editorial-queue-v1.mjs\n      - name: Regenerate static pages and RSS without copying article bodies
+      - name: Prepare up to 30 sourced original-article assignments per country (never autopublish)
+        run: node scripts/aktual-world-editorial-queue-v1.mjs
+      - name: Regenerate static pages and RSS without copying article bodies
         env:
           AKTUAL_WORLD_OUT: apps/portal/gnk-aktual
         run: |
