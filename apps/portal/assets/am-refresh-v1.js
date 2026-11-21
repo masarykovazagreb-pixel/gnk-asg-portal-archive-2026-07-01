@@ -114,4 +114,8 @@
   script.src = '/assets/aktual-world-choices-v1.js?v=20261121';
   script.defer = true;
   (document.head || document.documentElement).appendChild(script);
+  var live = document.createElement('script');
+  live.src = '/assets/aktual-world-live-brief-v1.js?v=20261121';
+  live.defer = true;
+  (document.head || document.documentElement).appendChild(live);
 })();
