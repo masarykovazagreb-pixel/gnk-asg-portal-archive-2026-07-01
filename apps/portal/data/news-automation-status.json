@@ -1,7 +1,7 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-11-21T01:57:46+01:00",
+  "updated_at": "2026-11-21T03:49:02+01:00",
   "engine": "single_publication_engine_v14_github_actions",
   "cadence": "six times daily at 01:37, 05:37, 09:37, 13:37, 17:37 and 21:37 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
@@ -12,7 +12,7 @@
   "feeds_usable": 50,
   "feeds_empty": 23,
   "feeds_failed": 11,
-  "current_cycle_validated_items": 1319,
+  "current_cycle_validated_items": 1323,
   "current_cycle_distinct_sources": 50,
   "source_diversity_floor": 6,
   "public_items_target": 300,
@@ -202,7 +202,7 @@
       "source": "The Hindu BusinessLine",
       "ok": true,
       "usable": true,
-      "items": 54,
+      "items": 55,
       "error": null
     },
     {
@@ -244,7 +244,7 @@
       "source": "Channel News Asia",
       "ok": true,
       "usable": true,
-      "items": 8,
+      "items": 10,
       "error": null
     },
     {
@@ -273,7 +273,7 @@
       "ok": false,
       "usable": false,
       "items": 0,
-      "error": "HTTP 404"
+      "error": "HTTP 403"
     },
     {
       "source": "Agencia Brasil",
