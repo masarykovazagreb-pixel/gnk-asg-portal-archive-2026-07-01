@@ -19,6 +19,7 @@
 export const REGION_IMAGE_HOSTS = [
   // Hrvatska
   ['media.jutarnji.hr', 'Jutarnji list', 'HR'],
+  ['api.hrt.hr', 'Hrvatska radiotelevizija', 'HR'],
   ['bucket.index.hr', 'Index.hr', 'HR'],
   ['n1info.hr', 'N1 Hrvatska', 'HR'],
   ['www.telegram.hr', 'Telegram.hr', 'HR'],
@@ -54,6 +55,7 @@ export const REGION_IMAGE_HOSTS = [
   ['img.dnevnik.bg', 'Dnevnik.bg', 'BG'],
   ['www.segabg.com', 'Sega.bg', 'BG'],
   ['cdn.actualno.eu', 'Actualno.com', 'BG'],
+  ['static.actualno.com', 'Actualno.com', 'BG'],
   // Rumunjska
   ['www.g4media.ro', 'G4Media', 'RO'],
   ['s.iw.ro', 'Impact / iw.ro', 'RO'],
@@ -76,6 +78,7 @@ export const REGION_IMAGE_HOSTS = [
   ['media.skynewsarabia.com', 'Sky News Arabia', 'AE'],
   ['cdn.i-scmp.com', 'South China Morning Post', 'HK'],
   ['image5.sixthtone.com', 'Sixth Tone', 'CN'],
+  ['cloud.sixthtone.com', 'Sixth Tone', 'CN'],
   ['www.japantimes.co.jp', 'The Japan Times', 'JP'],
   // Amerika
   ['static01.nyt.com', 'The New York Times', 'US'],
@@ -86,6 +89,7 @@ export const REGION_IMAGE_HOSTS = [
   ['media.cnn.com', 'CNN', 'US'],
   ['www.propublica.org', 'ProPublica', 'US'],
   ['conteudo.imguol.com.br', 'UOL', 'BR'],
+  ['thumb.mais.uol.com.br', 'UOL', 'BR'],
   ['f.i.uol.com.br', 'UOL (Folha)', 'BR'],
   ['cdn.portfolio.hu', 'Portfolio', 'HU'],
   ['www.lastampastatic.it', 'La Stampa', 'IT'],
