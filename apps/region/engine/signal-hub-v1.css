@@ -1,0 +1,55 @@
+/* AKTUAL SIGNAL — editorial atlas. First-party only, no trackers or remote fonts. */
+:root{--sh-night:#080f1a;--sh-navy:#13253a;--sh-ink:#1b293d;--sh-gold:#e5c689;--sh-border:#d8e0e6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f5f5f1;color:var(--sh-ink);font:400 15px/1.6 system-ui,-apple-system,Segoe UI,Arial,sans-serif}a{color:inherit}
+.sh-skip{position:absolute;z-index:200;left:12px;top:-90px;padding:10px 15px;background:white;color:black}.sh-skip:focus{top:10px}
+.sh-header{display:flex;gap:28px;justify-content:space-between;align-items:center;padding:20px max(22px,calc((100% - 1300px)/2));background:#07111f;color:#e7f1f8;border-bottom:1px solid rgba(255,255,255,.16)}
+.sh-brand{font-weight:500;font-size:24px;letter-spacing:-.045em;text-decoration:none;white-space:nowrap}.sh-brand span{font-weight:900;color:var(--sh-gold)}
+.sh-header nav{display:flex;gap:clamp(12px,2vw,30px);flex-wrap:wrap;font:700 12px/1.5 system-ui,sans-serif}.sh-header nav a{color:#d3dee5;text-decoration:none}.sh-header nav a:hover{text-decoration:underline;color:var(--sh-gold)}
+.sh-hero{background:#0e1d31;position:relative;isolation:isolate;overflow:hidden;color:#fff;padding:clamp(55px,7vw,118px) max(25px,calc((100% - 1300px)/2)) 32px}
+.sh-hero-media{position:absolute;z-index:-2;inset:0;background:url('/assets/atlas/aktual-media-atlas-1600.webp') center/cover;opacity:.54}
+.sh-hero:before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(93deg,rgba(4,10,21,.98) 10%,rgba(6,18,33,.82) 52%,rgba(4,13,28,.48)),radial-gradient(circle at 90% 15%,rgba(212,168,102,.21),transparent 35%)}
+.sh-kicker{font:850 11px/1.6 system-ui,sans-serif;letter-spacing:.19em;color:#d6b879;text-transform:uppercase}
+.sh-hero-content{max-width:900px}
+.sh-hero h1{font:500 clamp(3rem,7vw,7rem)/.98 Georgia,serif;letter-spacing:-.065em;margin:16px 0 24px;text-wrap:balance}
+.sh-hero h1 em{font-weight:400;color:#f6dba3}
+.sh-hero-content>p:not(.sh-kicker){font:400 clamp(1rem,1.7vw,1.2rem)/1.75 system-ui,sans-serif;color:#d4e0e8;max-width:740px}
+.sh-hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin:30px 0 58px}
+.sh-hero-actions a,.sh-bottom>a{display:inline-flex;gap:10px;align-items:center;border:1px solid #dbbd80;color:#101b2b;background:#f1dbad;text-decoration:none;font:800 12px/1.5 system-ui,sans-serif;padding:12px 20px;border-radius:5px}
+.sh-hero-actions a+ a{color:#e8eef6;background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.4)}
+.sh-hero-numbers{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid rgba(255,255,255,.27)}
+.sh-hero-numbers>div{padding:22px 45px 5px 0;min-width:180px}
+.sh-hero-numbers strong{display:block;font:700 clamp(1.6rem,3.4vw,3rem)/1.12 system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.sh-hero-numbers span{display:block;color:#cadbe6;font:700 11px/1.5 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.1em}
+.sh-explainer{max-width:1350px;margin:0 auto;display:grid;gap:20px;grid-template-columns:180px 1fr;align-items:center;padding:35px 25px;border-bottom:1px solid var(--sh-border)}
+.sh-explainer p{margin:0;max-width:105ch;color:#4c6074}
+.sh-directory{max-width:1350px;margin:0 auto;padding:65px 25px}
+.sh-heading{display:flex;align-items:end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.sh-heading h2,.sh-bottom h2{font:500 clamp(1.8rem,3.5vw,3.35rem)/1.1 Georgia,serif;letter-spacing:-.04em;margin:10px 0 0}
+.sh-heading>span{color:#62768a;font:600 12px/1.5 system-ui,sans-serif}
+.sh-filter{display:grid;grid-template-columns:minmax(260px,2fr) minmax(180px,1fr);gap:16px;margin-top:32px}
+.sh-filter label{font:750 12px/1.5 system-ui,sans-serif;color:#53697c;display:flex;flex-direction:column;gap:8px}
+.sh-filter :is(input,select){width:100%;font:500 15px/1.4 system-ui,sans-serif;border:1px solid #bac8d2;border-radius:7px;padding:12px 14px;background:#fff;color:#162d40;box-shadow:0 10px 26px -24px #000}
+.sh-filter :is(input,select):focus-visible{outline:3px solid #7ab5cb;outline-offset:3px}
+.sh-count{margin:15px 0 24px;color:#627486;font-size:12px;font-weight:700}
+.sh-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.sh-card{min-width:0;position:relative;background:#fff;border:1px solid #dce3e8;box-shadow:0 18px 32px -32px #1a2737;overflow:hidden;border-radius:12px;transition:transform .2s,box-shadow .2s}
+.sh-card:hover{transform:translateY(-4px);box-shadow:0 23px 36px -26px #152b3e}
+.sh-card[hidden]{display:none!important}
+.sh-card-link{display:block;text-decoration:none}
+.sh-card img{display:block;aspect-ratio:1.5;width:100%;height:auto;object-fit:cover;background:linear-gradient(120deg,#1c3450,#394e64);filter:saturate(.9)}
+.sh-card-copy{display:flex;flex-direction:column;gap:3px;padding:19px 20px 22px}
+.sh-card-copy small{font:800 10px/1.5 system-ui,sans-serif;letter-spacing:.11em;color:#977545;text-transform:uppercase}
+.sh-card-copy strong{font:600 clamp(1.3rem,2.1vw,2.1rem)/1.2 Georgia,serif;letter-spacing:-.03em;color:#192a3a}
+.sh-card-copy span{font-size:12px;color:#63788b}
+.sh-card-copy em{margin-top:12px;color:#125d7e;font-size:12px;font-weight:800;font-style:normal}
+.sh-empty{padding:25px;color:#5d758a;text-align:center}
+.sh-bottom{background:#0e2134;color:#fff;padding:55px max(25px,calc((100% - 1300px)/2));display:flex;gap:35px;align-items:center;justify-content:space-between}
+.sh-bottom p{max-width:85ch;color:#cad9e5}
+.sh-bottom>a{flex:none}
+.sh-footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px;background:#07111c;color:#c5d6e2;padding:24px max(22px,calc((100% - 1300px)/2));font-size:12px}
+.sh-footer a{text-decoration:none;color:#ecce95;font-weight:700}
+@media(max-width:1160px){.sh-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:900px){.sh-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.sh-explainer{grid-template-columns:1fr}.sh-bottom{flex-wrap:wrap}.sh-header{flex-wrap:wrap}}
+@media(max-width:600px){.sh-cards,.sh-filter{grid-template-columns:1fr}.sh-hero{padding-top:52px}.sh-hero-numbers>div{min-width:110px;padding-right:18px}.sh-directory{padding:45px 17px}.sh-header{padding:18px}.sh-header nav{gap:12px}.sh-brand{font-size:21px}.sh-hero h1{font-size:clamp(2.5rem,12vw,4.3rem)}.sh-hero-actions{margin-bottom:35px}.sh-card img{aspect-ratio:1.75}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sh-card{transition:none}.sh-card:hover{transform:none}}
+@media(forced-colors:active){.sh-card,.sh-hero,.sh-bottom{border:2px solid CanvasText}}
