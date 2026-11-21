@@ -1,0 +1,45 @@
+name: AKTUAL price.download — daily private intake (NO auto publish)
+on:
+  schedule:
+    # 08:15 CET / 09:15 CEST, never notify user in 20:00–08:00 Zagreb quiet hours.
+    - cron: '15 7 * * *'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/price-download-daily-v1.mjs'
+      - 'tests/test-price-download-daily-v1.mjs'
+      - '.github/workflows/aktual-price-download-daily-v1.yml'
+permissions:
+  contents: read
+concurrency:
+  group: aktual-price-download-private-intake
+  cancel-in-progress: false
+jobs:
+  private-intake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Security and adapter tests
+        run: |
+          node --check scripts/price-download-daily-v1.mjs
+          node --test tests/test-price-download-daily-v1.mjs
+      - name: Fetch price.download only with approved contract and reuse rights
+        if: github.event_name != 'pull_request'
+        env:
+          PRICE_DOWNLOAD_API_KEY: ${{ secrets.PRICE_DOWNLOAD_API_KEY }}
+          PRICE_DOWNLOAD_API_ENDPOINT: ${{ vars.PRICE_DOWNLOAD_API_ENDPOINT }}
+          PRICE_DOWNLOAD_API_CONTRACT_VERIFIED: ${{ vars.PRICE_DOWNLOAD_API_CONTRACT_VERIFIED }}
+          PRICE_DOWNLOAD_REUSE_APPROVED: ${{ vars.PRICE_DOWNLOAD_REUSE_APPROVED }}
+        run: node scripts/price-download-daily-v1.mjs
+      - name: Upload status ONLY (no raw vendor data)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: price-download-private-status
+          path: artifacts/price-download/last-intake-status.json
+          if-no-files-found: warn
+          retention-days: 7
