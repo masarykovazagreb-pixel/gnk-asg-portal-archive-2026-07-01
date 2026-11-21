@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-21T16:59:46.901Z",
+  "updatedAt": "2026-11-21T22:23:39.291Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-21T16:59:41.304Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-21T22:23:36.023Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T16:59:41.749Z"
+      "checkedAt": "2026-11-21T22:23:36.190Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T16:59:42.417Z"
+      "checkedAt": "2026-11-21T22:23:36.331Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T16:59:43.193Z"
+      "checkedAt": "2026-11-21T22:23:36.876Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-21T16:59:45.381Z"
+      "checkedAt": "2026-11-21T22:23:38.741Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T16:59:45.594Z"
+      "checkedAt": "2026-11-21T22:23:38.934Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,394 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T16:59:46.900Z"
+      "checkedAt": "2026-11-21T22:23:39.290Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-21-24hu-mbappe-buntetot-rontott-vegul-megis-nyert-a-9264f9",
+      "title": "Mbappé büntetőt rontott, végül mégis nyert a Real Madrid",
+      "summary": "Hátrányból felállva csikarta ki a győzelmet José Mourinho együttese. The post Mbappé büntetőt rontott, végül mégis nyert a Real Madrid first appeared on 24.hu .",
+      "date": "2026-11-21T22:16:12.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/21/mbappe-buntetot-rontott-vegul-megis-nyert-a-real-madrid/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "sport",
+        "foci",
+        "labdarúgás"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-2306257182-e1795297347631-1024x575.jpg",
+      "imageAlt": "Mbappé büntetőt rontott, végül mégis nyert a Real Madrid",
+      "addedAt": "2026-11-21T22:23:38.934Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-24hu-a-letartoztatasa-elott-kiszallt-a-cegeibol-053c4a",
+      "title": "A letartóztatása előtt kiszállt a cégeiből a lélegeztetőgép-biznisz egyik érintettje",
+      "summary": "A férfi volt a vezérigazgatója az egyik, kínai lélegeztetőgépek beszerzését bonyolító vállalatnak. The post A letartóztatása előtt kiszállt a cégeiből a lélegeztetőgép-biznisz egyik érintettje first appeared on 24.hu .",
+      "date": "2026-11-21T21:30:42.000Z",
+      "url": "https://24.hu/belfold/2026/11/21/lelegeztetogep-beszerzes-ugy-letartoztatas/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "lélegeztetőgép",
+        "lélegeztetőgép-beszerzés",
+        "lélegeztetőgép-biznisz"
+      ],
+      "author": "Dienes Gábriel",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/admin-ajax.png",
+      "imageAlt": "A letartóztatása előtt kiszállt a cégeiből a lélegeztetőgép-biznisz egyik érintettje",
+      "addedAt": "2026-11-21T22:23:38.934Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-24hu-ezek-voltak-a-nap-legfontosabb-hirei-8b1ece",
+      "title": "Ezek voltak a nap legfontosabb hírei",
+      "summary": "Kert Attila lett a közmédia új vezetője, Seszták házát zár alá vették, bezár a felcsúti Hotel Pancho. The post Ezek voltak a nap legfontosabb hírei first appeared on 24.hu .",
+      "date": "2026-11-21T21:09:40.000Z",
+      "url": "https://24.hu/belfold/2026/11/21/ezek-voltak-a-nap-legfontosabb-hirei-8/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "kert attila",
+        "hírösszefoglaló",
+        "közmédia"
+      ],
+      "author": "Dienes Gábriel",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/kert-attila_euronews-36863-768x432-1.jpg",
+      "imageAlt": "Ezek voltak a nap legfontosabb hírei",
+      "addedAt": "2026-11-21T22:23:38.934Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-portfolio-a-horvat-miniszterelnok-is-felszolalt-a-e31d57",
+      "title": "A horvát miniszterelnök is felszólalt a megfizethető turizmusért",
+      "summary": "Horvátország az idén összesen várhatóan 22 millió látogatót és csaknem 15,9 milliárd eurós rekordbevételt könyvelhet el, a jövőbeli stratégiai cél azonban a puszta mennyiségi növekedés helyett egyértelműen a minőség és a kedvező ár-érték arány megteremtése. A horvát kormányzat szerint az ágazatnak fenntarthatóbbá kell válnia, hogy a gazdasági fellendülés mellett a helyi lakosok életminőségét is javítsa, miközben az ország megfizethető marad a belföldi utazók számára is - írta a Vijesti.hrt.hr .",
+      "date": "2026-11-21T20:59:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261121/a-horvat-miniszterelnok-is-felszolalt-a-megfizetheto-turizmusert-878212",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://cdn.portfolio.hu/articles/images-xl/g/e/t/gettyimages-858534806-horvat-tengerpart-horvatorszag-tengerpart-strand-nyaralas-turizmus-nyar-t-871738.jpg",
+      "imageAlt": "A horvát miniszterelnök is felszólalt a megfizethető turizmusért",
+      "addedAt": "2026-11-21T22:23:36.877Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-24hu-negyet-kapott-a-chelsea-nem-hasznalta-ki-a-eed2c6",
+      "title": "Négyet kapott a Chelsea, nem használta ki a City botlását az Arsenal",
+      "summary": "Fordulatos játéknapot hozott a Premier League. The post Négyet kapott a Chelsea, nem használta ki a City botlását az Arsenal first appeared on 24.hu .",
+      "date": "2026-11-21T20:55:35.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/21/premier-league-newcastle-united-arsenal/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "sport",
+        "foci",
+        "labdarúgás"
+      ],
+      "author": "24.hu",
+      "theme": "sport",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-2305669012-e1795294166964-1024x575.jpg",
+      "imageAlt": "Négyet kapott a Chelsea, nem használta ki a City botlását az Arsenal",
+      "addedAt": "2026-11-21T22:23:38.935Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-hvg-csalok-gyujtenek-penzt-telefonon-a-heim-pal-f8d986",
+      "title": "Csalók gyűjtenek pénzt telefonon a Heim Pál Gyermekkórház nevében",
+      "summary": "Az intézmény elhatárolódik a hívásoktól és arra kérik a lakosságot, hogy forduljon a rendőrséghez.",
+      "date": "2026-11-21T20:49:35.000Z",
+      "url": "https://hvg.hu/elet/20261121_csalok-gyujtenek-penzt-telefonon-a-heim-pal-gyermekkorhaz-neveben",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "egészségügy",
+        "Heim Pál Gyermekkórház",
+        "csalók"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/d9f39ec7-64d2-42d2-91d6-711fc51d20c1.jpg",
+      "imageAlt": "Csalók gyűjtenek pénzt telefonon a Heim Pál Gyermekkórház nevében",
+      "addedAt": "2026-11-21T22:23:36.331Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-portfolio-tobb-mint-szaz-embert-vert-at-a-fiatal-6fb2c2",
+      "title": "Több mint száz embert vert át a fiatal magyar csaló: kamu tengerparti nyaralásokkal és hamis koncertjegyekkel kaszált",
+      "summary": "Vádat emelt a Szolnoki Járási Ügyészség egy 20 éves szentesi férfi ellen, aki nem létező horvátországi szállásfoglalásokkal, hamis koncertjegyekkel és soha el nem küldött termékekkel csapott be összesen több mint száz embert. A vádirat szerint a férfi álprofilokkal hirdetett közösségi oldalakon, és egy ismerőse adataival 28 internetes fizetési fiókot hozott létre. A szállásokért előleget kért, majd elérhetetlenné vált, a hamis QR-kódos belépőkről pedig a vevők csak a bejáratnál tudták meg, hogy érvénytelenek. A kicsalt pénzt a mindennapi megélhetésére költötte. Az ügyészség a csalás miatt már négyszer elítélt férfira börtönbüntetést, pénzbüntetést és vagyonelkobzást kér, az ügyben a…",
+      "date": "2026-11-21T20:45:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261121/tobb-mint-szaz-embert-vert-at-a-fiatal-magyar-csalo-kamu-tengerparti-nyaralasokkal-es-hamis-koncertjegyekkel-kaszalt-878226",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-173753506-birosag-borton-buncselekmeny-buntetes-bunugy-igazsagszolgaltatas-776928.jpg",
+      "imageAlt": "Több mint száz embert vert át a fiatal magyar csaló: kamu tengerparti nyaralásokkal és hamis koncertjegyekkel kaszált",
+      "addedAt": "2026-11-21T22:23:36.877Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-24hu-meghalt-kiss-gabor-a-szomszedok-szinesze-d0ccf3",
+      "title": "Meghalt Kiss Gábor, a Szomszédok színésze",
+      "summary": "Halálhírét a József Attila Színház jelentette be. The post Meghalt Kiss Gábor, a Szomszédok színésze first appeared on 24.hu .",
+      "date": "2026-11-21T20:44:02.000Z",
+      "url": "https://24.hu/kultura/2026/11/21/kiss-gabor-szinmuvesz-meghalt/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kultúra",
+        "kiss gábor",
+        "szomszéd"
+      ],
+      "author": "Csontos Kata",
+      "theme": "sigurnost",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-0423988629-e1795293728631-1024x576.jpg",
+      "imageAlt": "Meghalt Kiss Gábor, a Szomszédok színésze",
+      "addedAt": "2026-11-21T22:23:38.935Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-portfolio-65-eves-melyponton-ragadt-a-vilag-2c8f96",
+      "title": "65 éves mélyponton ragadt a világ bortermelése",
+      "summary": "Idén is történelmi mélypont közelében maradt a globális bortermelés, így már zsinórban a negyedik éve alakul az átlag alatt a világ kibocsátása. A Nemzetközi Szőlészeti és Borászati Szervezet (OIV) friss becslése szerint a hőség, az aszály és a fagyok jelentősen visszavették a hozamokat a legfontosabb borvidékeken, miközben a kereslet is folyamatosan csökken - tudósított az ESM Magazin .",
+      "date": "2026-11-21T20:30:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261121/65-eves-melyponton-ragadt-a-vilag-bortermelese-878200",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/z/o/l/zold-vilag-europai-unio-klimavaltozas-idojaras-franciaorszag-forrosag-bor-boraszat-asz-871734.jpg",
+      "imageAlt": "65 éves mélyponton ragadt a világ bortermelése",
+      "addedAt": "2026-11-21T22:23:36.877Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-24hu-decemberben-ujra-bekoltoznek-a-szomszedok-a-620071",
+      "title": "Decemberben újra beköltöznek a Szomszédok a nappalikba",
+      "summary": "A kultikus magyar teleregény visszatér a televízió képernyőjére. The post Decemberben újra beköltöznek a Szomszédok a nappalikba first appeared on 24.hu .",
+      "date": "2026-11-21T20:19:53.000Z",
+      "url": "https://24.hu/elet-stilus/2026/11/21/szomszedok-ismetles-kozmedia/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kikapcs",
+        "szomszédok",
+        "közmédia",
+        "ismétlés"
+      ],
+      "author": "Csontos Kata",
+      "theme": "sigurnost",
+      "image": "https://s.24.hu/app/uploads/2026/11/szomszedok-e1768834114827-1140x641-1-1024x576.jpg",
+      "imageAlt": "Decemberben újra beköltöznek a Szomszédok a nappalikba",
+      "addedAt": "2026-11-21T22:23:38.935Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-hvg-elhunyt-paolo-bulgari-olasz-ekszertervezo-a-6a33f4",
+      "title": "Elhunyt Paolo Bulgari olasz ékszertervező, a Bulgari-ház feje",
+      "summary": "89 évesen családja körében halt meg.",
+      "date": "2026-11-21T20:19:42.000Z",
+      "url": "https://hvg.hu/elet/20261121_elhunyt-paolo-bulgari-olasz-ekszertervezo-a-bulgari-haz-feje",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Élet+Stílus",
+        "kultúra",
+        "halálhír",
+        "ékszerek"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/5ba407f5-41ba-4376-a861-bfaf57faf879.jpg",
+      "imageAlt": "Elhunyt Paolo Bulgari olasz ékszertervező, a Bulgari-ház feje",
+      "addedAt": "2026-11-21T22:23:36.331Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-portfolio-tuntettek-zagrabban-miutan-egy-egykori-715196",
+      "title": "Tüntettek Zágrábban, miután egy egykori sportolót megöltek egy pszichiátriai intézetben",
+      "summary": "Ezrek vonultak utcára Zágrábban szombat este, hogy egy 32 éves férfi halála miatt tiltakozzanak, aki egy pszichiátriai intézetben vesztette életét. A tüntetők a felelősök megbüntetését és a kórházi kezelések szigorúbb szabályozását követelték, miután nyilvánosságra kerültek az áldozat bántalmazásáról készült biztonságikamerás felvételek.",
+      "date": "2026-11-21T20:19:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261121/tuntettek-zagrabban-miutan-egy-egykori-sportolot-megoltek-egy-pszichiatriai-intezetben-878258",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Tüntettek Zágrábban, miután egy egykori sportolót megöltek egy pszichiátriai intézetben",
+      "addedAt": "2026-11-21T22:23:36.877Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-portfolio-drontamadas-ert-egy-orosz-teherhajot-a-finn-53a707",
+      "title": "Dróntámadás ért egy orosz teherhajót a Finn-öbölben",
+      "summary": "Dróntámadás ért egy Kalinyingrádba tartó orosz teherhajót a Finn-öböl keleti részén – közölték szombaton az orosz és a finn hatóságok. A Sparta II nevű hajó a csapás után kigyulladt, majd átsodródott a finn felségvizekre. A finn védelmi erők feltételezése szerint a támadás mögött Ukrajna állhat, Kijev azonban egyelőre nem kommentálta az esetet - számolt be a BBC .",
+      "date": "2026-11-21T20:10:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261121/drontamadas-ert-egy-orosz-teherhajot-a-finn-obolben-878256",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-2177392110-tenger-felho-idojaras-vihar-ocean-termeszet-viz-meteorologia-eso-871768.jpg",
+      "imageAlt": "Dróntámadás ért egy orosz teherhajót a Finn-öbölben",
+      "addedAt": "2026-11-21T22:23:36.878Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-hvg-a-vizugyi-szakemberek-most-minden-letezo-c081d5",
+      "title": "A vízügyi szakemberek most minden létező területet elárasztanak, hogy megtartsák a vizet",
+      "summary": "Egyebek mellett lezárt zsilipekkel, patakokon épített fenékküszöbökkel, holtágak és tározók feltöltésével, vizes élőhelyek feltöltésével igyekeztek emelni a vízhiányos talaj nedvességtartalmát.",
+      "date": "2026-11-21T20:02:39.000Z",
+      "url": "https://hvg.hu/itthon/20261121_a-vizugyi-szakemberek-kozel-30-helyszinen-tartjak-vissza-a-teruletukre-lehullott-esot",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "élhető környezet",
+        "Gajdos László",
+        "vízügy"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/3653602a-b87c-4009-8e40-c40617e4c433.jpg",
+      "imageAlt": "A vízügyi szakemberek most minden létező területet elárasztanak, hogy megtartsák a vizet",
+      "addedAt": "2026-11-21T22:23:36.332Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-hvg-remego-alultaplalt-kutyakat-mentettek-ki-67346e",
+      "title": "Remegő, alultáplált kutyákat mentettek ki egy házból Péteriben",
+      "summary": "A rendőrség állatkínzás gyanújával nyomoz az idős tulajdonos ellen.",
+      "date": "2026-11-21T19:40:27.000Z",
+      "url": "https://hvg.hu/itthon/20261121_remego-alultaplalt-kutyak-mentetettek-ki-egy-hazbol-peteriben",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "bűnügyek",
+        "állatkínzás",
+        "kutyák"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/8249ade8-87a8-4d61-a719-811407364af8.jpg",
+      "imageAlt": "Remegő, alultáplált kutyákat mentettek ki egy házból Péteriben",
+      "addedAt": "2026-11-21T22:23:36.332Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-hvg-napokkal-az-elfogasa-elott-felesegenek-adta-6efa1e",
+      "title": "Napokkal az elfogása előtt feleségének adta át cégét a lélegeztetőgépek beszerzője",
+      "summary": "A férfi abból a cégből is kilépett, amelyik a lélegeztetőgépek beszerzésében is közreműködött.",
+      "date": "2026-11-21T19:09:29.000Z",
+      "url": "https://hvg.hu/gazdasag/20261121_napokkal-az-elfogasa-elott-felesegenek-adta-at-ceget-a-lelegeztetogepek-beszerzoje",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "gazdaság",
+        "kínai lélegeztetőgép",
+        "NAV"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/f5649e25-269c-42c5-ae0c-4bbef4ae9469.jpg",
+      "imageAlt": "Napokkal az elfogása előtt feleségének adta át cégét a lélegeztetőgépek beszerzője",
+      "addedAt": "2026-11-21T22:23:36.332Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-444-meghalt-paolo-bulgari-4d31ee",
+      "title": "Meghalt Paolo Bulgari",
+      "summary": "Az olasz üzletember 89 éves volt.",
+      "date": "2026-11-21T19:05:53.000Z",
+      "url": "https://444.hu/2026/11/21/meghalt-paolo-bulgari?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Bulgari",
+        "olaszország",
+        "halál",
+        "paolo bulgari"
+      ],
+      "author": "Molnár Kristóf",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8Q1cKxqt7yqJ10Ngcs.jpeg",
+      "imageAlt": "Meghalt Paolo Bulgari",
+      "addedAt": "2026-11-21T22:23:36.191Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-hvg-kivalo-is-lehetne-vivo-uj-csucsmobilja-kar-2410af",
+      "title": "Kiváló is lehetne Vivo új csúcsmobilja, kár, hogy néhány dologban visszafejlődött – teszten az X500 Pro Max",
+      "summary": "Képalkotás terén érezhető az előrelépés, hardveresen viszont felemás a kép: a Vivo X500 Pro Max hozza azt, amit ma egy csúcskészüléktől elvárunk, csak ne lenne az az egy-két „de”.",
+      "date": "2026-11-21T19:03:00.000Z",
+      "url": "https://hvg.hu/tudomany/20261121_vivo-x500-pro-max-kameras-okostelefon-zeiss-teszt-velemeny",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Tech",
+        "techteszt",
+        "kamera",
+        "Vivo"
+      ],
+      "author": "j.kasza@hvg.hu (Kasza János)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/4c862214-61dd-4614-8fd0-3595be388fb1.jpg",
+      "imageAlt": "Kiváló is lehetne Vivo új csúcsmobilja, kár, hogy néhány dologban visszafejlődött – teszten az X500 Pro Max",
+      "addedAt": "2026-11-21T22:23:36.332Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-444-kert-attila-lett-a-kozmedia-uj-4df45c",
+      "title": "Kert Attila lett a közmédia új vezérigazgatója",
+      "summary": "Határozatlan idejű kinevezést és bruttó havi 2,9 millió forintos alapfizetést kap.",
+      "date": "2026-11-21T18:12:12.000Z",
+      "url": "https://444.hu/2026/11/21/kert-attila-lett-a-kozmedia-uj-vezerigazgatoja?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Kert Attila",
+        "mrtv",
+        "Független Közmédia Testület",
+        "Szabó Stein Imre"
+      ],
+      "author": "Molnár Kristóf",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8PzzXDJWRmN0WKI0s.png",
+      "imageAlt": "Kert Attila lett a közmédia új vezérigazgatója",
+      "addedAt": "2026-11-21T22:23:36.191Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-21-444-bezar-a-felcsuti-hotel-pancho-90c346",
+      "title": "Bezár a felcsúti Hotel Pancho",
+      "summary": "A négycsillagos szálloda 2022-ben készült el.",
+      "date": "2026-11-21T17:01:53.000Z",
+      "url": "https://444.hu/2026/11/21/bezar-a-felcsuti-hotel-pancho?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "felcsút",
+        "bezárás",
+        "Hotel Pancho",
+        "ÉLET"
+      ],
+      "author": "Molnár Kristóf",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/7pZKlFD6uqrUciLms.jpeg",
+      "imageAlt": "Bezár a felcsúti Hotel Pancho",
+      "addedAt": "2026-11-21T22:23:36.191Z"
+    },
     {
       "slug": "budimpesta-2026-11-21-24hu-bezar-a-felcsuti-hotel-pancho-a-dolgozokat-e255a0",
       "title": "Bezár a felcsúti Hotel Pancho, a dolgozókat már értesítették",
