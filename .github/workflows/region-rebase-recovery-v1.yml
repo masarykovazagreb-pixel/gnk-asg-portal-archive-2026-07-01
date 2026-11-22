@@ -1,0 +1,31 @@
+name: REGION Rebase Conflict Safe Recovery
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/region-daily.yml'
+      - '.github/workflows/region-rebase-recovery-v1.yml'
+      - 'scripts/recover-region-homepage-rebase-v1.sh'
+      - 'tests/test-region-rebase-recovery-v1.sh'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/region-daily.yml'
+      - '.github/workflows/region-rebase-recovery-v1.yml'
+      - 'scripts/recover-region-homepage-rebase-v1.sh'
+      - 'tests/test-region-rebase-recovery-v1.sh'
+permissions:
+  contents: read
+jobs:
+  recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Shell syntax
+        run: |
+          bash -n scripts/recover-region-homepage-rebase-v1.sh
+          bash -n tests/test-region-rebase-recovery-v1.sh
+      - name: Reproduce homepage conflict and verify fail-closed behavior
+        run: bash tests/test-region-rebase-recovery-v1.sh
