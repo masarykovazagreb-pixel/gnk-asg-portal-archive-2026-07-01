@@ -1,0 +1,26 @@
+name: MASTER AI Context — unit tests
+on:
+  pull_request:
+    paths:
+      - 'workers/gnk-asg-direct-operator/src/master-ai-context-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js'
+      - 'workers/gnk-asg-direct-operator/tests/master-ai-context-v1.test.mjs'
+      - '.github/workflows/master-ai-context-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  context-unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: |
+          node --check workers/gnk-asg-direct-operator/src/master-ai-context-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
+      - name: Unit tests (no deploy, no outbound secrets)
+        run: node --test workers/gnk-asg-direct-operator/tests/master-ai-context-v1.test.mjs
