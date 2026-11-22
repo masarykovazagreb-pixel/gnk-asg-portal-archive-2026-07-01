@@ -159,7 +159,6 @@ export function renderReview(item, lang) {
     ? { kicker: 'AI pregled', sources: 'Izvori (s poveznicama na izdavače)', tags: 'Hashtagovi', related: 'Povezano', list: '← Svi AI pregledi', lang: 'hr', alt: 'English version' }
     : { kicker: 'AI review', sources: 'Sources (linked to publishers)', tags: 'Hashtags', related: 'Related', list: '← All AI reviews', lang: 'en', alt: 'Hrvatska verzija' };
   const city = item.city;
-  const band = authorBand(lang, item.channel, { portrait: '/assets/people/nermin-sefic.webp' });
   const body = t.paragraphs.map((p) => `<p>${esc(p)}</p>`).join('\n');
   const sourceList = sources.map((s) => `<li class="ag-src"><strong>${esc(s.publisher)}</strong>, ${esc(s.date)}: <a href="${esc(s.url)}" rel="nofollow external noopener">${esc(s.title)}</a></li>`).join('\n');
   const tags = hashtags.map((h) => `<li>${esc(h)}</li>`).join('');
@@ -219,7 +218,6 @@ ${sourceList}
 <a href="${pathAlt}">${L.alt}</a>
 </nav>
 <p class="ag-src">${relatedLinks}</p>
-${band}
 </main>
 ${impressumBlock(lang)}
 </body>

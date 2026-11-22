@@ -95,7 +95,7 @@ if (existsSync(hrPath) && existsSync(enPath)) {
   check((hr.match(/href="https?:\/\//g) || []).length >= 6, 'HR stranica mora imati ≥6 poveznica');
   check(hr.includes('#AKTUALMEDIA') && hr.includes('article:tag'), 'hashtagovi moraju biti vidljivi i u meta podacima');
   check(hr.includes('<a href="/gnk-aktual/">/gnk-aktual/</a>'), 'povezane adrese moraju biti klikabilne, ne escapirani HTML');
-  check(hr.includes('data-am-author="v1"'), 'autorska traka urednika mora biti na stranici');
+  check(!hr.includes('data-am-author="v1"') && !en.includes('data-am-author="v1"'), 'AI pregled ne smije prikazivati ljudsku autorsku traku');
 }
 
 check(existsSync(join(portal, 'agenti', 'pregledi', 'index.html')), 'HR popis mora postojati');
