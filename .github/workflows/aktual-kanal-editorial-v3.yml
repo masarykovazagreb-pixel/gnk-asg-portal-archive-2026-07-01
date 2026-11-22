@@ -1,0 +1,36 @@
+name: AKTUAL Kanal Editorial V3 Contract
+
+on:
+  pull_request:
+    paths:
+      - 'apps/region/engine/kanal-design-v2.mjs'
+      - 'apps/region/engine/feed.mjs'
+      - 'apps/portal/assets/ai-reference-v1.css'
+      - 'tests/test-kanal-editorial-v3.mjs'
+      - '.github/workflows/aktual-kanal-editorial-v3.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/region/engine/kanal-design-v2.mjs'
+      - 'apps/region/engine/feed.mjs'
+      - 'apps/portal/assets/ai-reference-v1.css'
+      - 'tests/test-kanal-editorial-v3.mjs'
+      - '.github/workflows/aktual-kanal-editorial-v3.yml'
+permissions:
+  contents: read
+jobs:
+  editorial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and image/feed/design contracts
+        run: |
+          node --check apps/region/engine/kanal-design-v2.mjs
+          node --check apps/region/engine/feed.mjs
+          node --test tests/test-kanal-editorial-v3.mjs

@@ -158,3 +158,35 @@ button,a{ -webkit-tap-highlight-color:transparent }
   .ai-footer{display:block;margin-top:48px}.ai-footer p{margin:6px 0}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* AI Reference V2: coherent 1120px shell / 76ch editorial reading column.
+   Shared by /ai/ and /ai/hr/; no hardcoded viewport widths. */
+:root{--ai-shell-width:1120px;--ai-reading-width:76ch}
+.ai-topbar,.ai-shell{width:min(var(--ai-shell-width),calc(100% - 40px));margin-inline:auto}
+.ai-shell,.ai-shell > *,main.ai-shell{min-width:0}
+.ai-hero,.ai-section,.ai-card-grid,.ai-fact-list,.ai-source-list,.ai-steps{min-width:0}
+.ai-section-heading,.ai-hero-copy,.ai-card,.ai-fact-card,.ai-source,.ai-step{min-width:0}
+.ai-shell p,.ai-shell li,.ai-shell a,.ai-shell code{overflow-wrap:break-word}
+.ai-section > p,.ai-section > ul,.ai-section > ol,.ai-section > blockquote,
+.ai-section-heading p,.ai-lede,.ai-privacy-note,.ai-caveat,.ai-review-status{
+  max-width:min(100%,var(--ai-reading-width));
+}
+.ai-section > p,.ai-section > ul,.ai-section > ol{margin-inline:0}
+.ai-card p,.ai-fact-card p,.ai-step p,.ai-review-record p{max-width:68ch;line-height:1.6}
+.ai-source span,.ai-card h3,.ai-fact-card h3,.ai-section h2{overflow-wrap:anywhere}
+.ai-shell img,.ai-shell svg{max-width:100%;height:auto}
+.ai-shell pre,.ai-shell table{max-width:100%;overflow-x:auto}
+.ai-shell pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.ai-source-list,.ai-fact-list,.ai-card-grid,.ai-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ai-hero{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}
+.ai-section{margin-bottom:clamp(48px,5vw,76px)}
+@media(max-width:850px){
+ .ai-hero{grid-template-columns:minmax(0,1fr)}
+ .ai-card-grid,.ai-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+ .ai-topbar,.ai-shell{width:calc(100% - 28px)}
+ .ai-card-grid,.ai-steps,.ai-source-list,.ai-fact-list{grid-template-columns:minmax(0,1fr)}
+ .ai-shell p,.ai-shell li{line-height:1.65}
+}
