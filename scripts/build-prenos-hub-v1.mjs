@@ -87,16 +87,21 @@ function missingCopy(target, item) {
 
 const absent = [];
 const items = readCorpus(ROOT).map((item) => {
-  const copies = TARGETS.map((target) => {
+  const copies = TARGETS.flatMap((target) => {
     const missing = missingCopy(target, item);
-    if (missing) absent.push(`${target.key}: ${missing}`);
-    return { target, url: copyUrl(target, item) };
+    if (missing) {
+      absent.push(`${target.key}: ${missing}`);
+      return []; // Never advertise a verified-missing local copy as published.
+    }
+    return [{ target, url: copyUrl(target, item) }];
   });
   return { ...item, copies };
 }).filter((item) => item.copies.length > 0);
 
 if (absent.length) {
-  console.error(`::warning::Najavljena kopija ne postoji na disku (${absent.length}): ${absent.slice(0, 5).join(', ')}`);
+  console.error(`::error::Najavljena kopija ne postoji na disku (${absent.length}): ${absent.slice(0, 5).join(', ')}`);
+  console.error('Prvo generiraj kopije: node apps/sites/build.mjs; zatim pokreni node scripts/build-prenos-hub-v1.mjs i ponovno --check. Ne uklanjaj provjere.');
+  process.exitCode = 1;
 }
 
 const addresses = TARGETS.map((target) => ({
