@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "created_on": "2026-11-21",
+  "status": "draft_requires_source_review",
+  "public_release": false,
+  "note": "Original editorial drafts, not published; source URLs require editorial validation before release.",
+  "articles": [
+    {
+      "slug": "sto-je-canonical-url",
+      "title": "Canonical URL: zašto tražilici treba pokazati izvornu adresu",
+      "category": "Digitalna infrastruktura",
+      "sources": [
+        "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls"
+      ],
+      "paragraphs": [
+        "Ista internetska stranica može biti dostupna preko više adresa: s parametrima kampanje, različitim putanjama ili zasebnim verzijama za dijeljenje. Za posjetitelja je sadržaj gotovo isti, ali tražilica mora odlučiti koju adresu prikazati.",
+        "Oznaka rel=\"canonical\" signalizira preferiranu adresu dokumenta. To je snažan signal, ali nije naredba: tražilica može izabrati drugu kanonsku adresu ako postoje proturječni signali.",
+        "Za izdavača je najvažnija dosljednost. Interni linkovi, XML sitemap, preusmjeravanja i canonical oznake trebaju pokazivati istu javnu verziju. Ako se oznaka slučajno usmjeri na naslovnicu, pojedinačni članak može izgubiti vlastitu vidljivost.",
+        "Prije objave provjerite vraća li preferirana adresa uspješan HTTP odgovor, prikazuje li pravi sadržaj i ne sadrži li oznaku noindex. Na višejezičnim portalima canonical i hreflang imaju različite uloge: prvi označava preferiranu verziju, a drugi jezične ili regionalne alternative."
+      ],
+      "status": "draft_requires_source_review",
+      "approved": false,
+      "public_release": false
+    },
+    {
+      "slug": "sto-je-xml-sitemap",
+      "title": "XML sitemap nije jamstvo indeksiranja: što doista radi",
+      "category": "SEO i dostupnost",
+      "sources": [
+        "https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview"
+      ],
+      "paragraphs": [
+        "XML sitemap je strukturirani popis URL-ova koji vlasnik web-stranice želi učiniti dostupnima tražilicama. Posebno je koristan velikim portalima na kojima se sadržaj brzo mijenja i gdje se nove stranice ne mogu uvijek otkriti samo praćenjem poveznica.",
+        "Uvrštavanje URL-a u sitemap ne znači da će tražilica tu stranicu automatski indeksirati. Za indeksiranje su važni i dostupnost, kvaliteta, kanonski signali te tehnička pravila stranice.",
+        "Česta je pogreška objaviti sitemap s adresama koje vraćaju pogrešku, preusmjeravaju na druge stranice ili imaju noindex. Takav popis otežava održavanje i ne donosi korist čitatelju.",
+        "Za mrežu međunarodnih izdanja preporučuje se automatizirana provjera: svaki navedeni URL mora biti valjan, kanonski usklađen i povezan s odgovarajućim jezikom. Vrijeme posljednje izmjene treba odražavati stvarnu značajnu promjenu sadržaja, a ne samo ponovno pokretanje generatora."
+      ],
+      "status": "draft_requires_source_review",
+      "approved": false,
+      "public_release": false
+    },
+    {
+      "slug": "ai-urednicka-provjera",
+      "title": "AI može pomoći redakciji, ali ne može zamijeniti provjeru činjenica",
+      "category": "AI i automatizacija",
+      "sources": [
+        "https://www.unesco.org/en/artificial-intelligence/recommendation-ethics"
+      ],
+      "paragraphs": [
+        "Automatizacija redakciji može pomoći u otkrivanju tema, izradi nacrta, grupiranju izvora i provjeri tehničkih metapodataka. Međutim, jezično uvjerljiv tekst nije dokaz da je tvrdnja točna.",
+        "Posebno su rizični izmišljeni citati, pogrešno pripisani podaci, zastarjele informacije i slike za koje izdavač nema pravo korištenja. Automatski sustav zato treba jasno razlikovati preuzimanje izvora, neovisnu potvrdu činjenica i uredničko odobrenje.",
+        "Praktičan postupak ima nekoliko vrata: izvor mora biti dostupan, ključne tvrdnje provjerene, naslov usklađen s tekstom, fotografija zakonito korištena, a datum objave točan. Bez tih uvjeta nacrt ostaje neobjavljen.",
+        "Kod velikih mreža portala broj objava nije jedino mjerilo uspjeha. Pouzdanost, mogućnost ispravka, transparentno autorstvo i kvaliteta informacija važniji su od automatskog povećanja količine sadržaja."
+      ],
+      "status": "draft_requires_source_review",
+      "approved": false,
+      "public_release": false
+    }
+  ]
+}
