@@ -4,7 +4,7 @@
   "lang": "ar",
   "city": "Kairo",
   "country": "Egipat",
-  "updatedAt": "2026-11-22T03:08:40.287Z",
+  "updatedAt": "2026-11-22T06:33:05.300Z",
   "sources": [
     {
       "id": "madamasr",
@@ -14,7 +14,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T03:08:33.321Z"
+      "checkedAt": "2026-11-22T06:32:28.834Z"
     },
     {
       "id": "egyptindependent",
@@ -24,7 +24,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T03:08:33.394Z"
+      "checkedAt": "2026-11-22T06:32:28.922Z"
     },
     {
       "id": "youm7",
@@ -36,7 +36,7 @@
       "errors": [
         "https://www.youm7.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-22T03:08:34.379Z"
+      "checkedAt": "2026-11-22T06:32:29.965Z"
     },
     {
       "id": "almasryalyoum",
@@ -48,7 +48,7 @@
       "errors": [
         "https://www.almasryalyoum.com/rss/: nije feed"
       ],
-      "checkedAt": "2026-11-22T03:08:34.590Z"
+      "checkedAt": "2026-11-22T06:32:30.040Z"
     },
     {
       "id": "aljazeera",
@@ -61,17 +61,17 @@
         "https://www.aljazeera.net/aljazeera/rss/ar: HTTP 404",
         "https://www.aljazeera.net/aljazeera/rss/all: HTTP 404"
       ],
-      "checkedAt": "2026-11-22T03:08:37.132Z"
+      "checkedAt": "2026-11-22T06:32:32.750Z"
     },
     {
       "id": "skynewsarabia",
       "name": "Sky News Arabia",
       "url": "https://www.skynewsarabia.com/rss",
       "ok": true,
-      "fetched": 58,
+      "fetched": 61,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T03:08:37.441Z"
+      "checkedAt": "2026-11-22T06:32:32.972Z"
     },
     {
       "id": "ahram",
@@ -83,7 +83,7 @@
       "errors": [
         "https://gate.ahram.org.eg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-22T03:08:38.268Z"
+      "checkedAt": "2026-11-22T06:32:33.788Z"
     },
     {
       "id": "ahramonline",
@@ -95,20 +95,97 @@
       "errors": [
         "https://english.ahram.org.eg/rss.aspx: HTTP 403"
       ],
-      "checkedAt": "2026-11-22T03:08:39.206Z"
+      "checkedAt": "2026-11-22T06:32:34.598Z"
     },
     {
       "id": "dailynewsegypt",
       "name": "Daily News Egypt (English)",
       "url": "https://www.dailynewsegypt.com/feed/",
-      "ok": true,
-      "fetched": 10,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-22T03:08:40.286Z"
+      "errors": [
+        "https://www.dailynewsegypt.com/feed/: This operation was aborted"
+      ],
+      "checkedAt": "2026-11-22T06:33:05.300Z"
     }
   ],
   "items": [
+    {
+      "slug": "kairo-2026-11-22-skynewsarabia-osvrt-860659",
+      "title": "حكومة وحدة بلا نتنياهو.. هل تنجح معادلة آيزنكوت؟",
+      "summary": "دخلت مفاوضات تشكيل الحكومة الإسرائيلية مرحلة أكثر تعقيدا، بعدما تمسك معسكر غادي آيزنكوت باستبعاد بنيامين نتنياهو من رئاسة الحكومة المقبلة، رغم دعوته حزب الليكود إلى مفاوضات مكثفة لتشكيل حكومة وحدة وطنية، في وقت كشفت فيه خلافات بين حلفاء آيزنكوت بشأن الاستعانة بالأحزاب الدينية أو العربية لتأمين أغلبية برلمانية.",
+      "date": "2026-11-22T06:25:49.000Z",
+      "url": "https://www.skynewsarabia.com/middle-east/1906291-%D8%AD%D9%83%D9%88%D9%85%D8%A9-%D9%88%D8%AD%D8%AF%D8%A9-%D8%A8%D9%84%D8%A7-%D9%86%D8%AA%D9%86%D9%8A%D8%A7%D9%87%D9%88-%D8%AA%D9%86%D8%AC%D8%AD-%D9%85%D8%B9%D8%A7%D8%AF%D9%84%D8%A9-%D8%A2%D9%8A%D8%B2%D9%86%D9%83%D9%88%D8%AA",
+      "source": "skynewsarabia",
+      "sourceName": "Sky News Arabia",
+      "categories": [],
+      "author": "سكاي نيوز عربية - أبوظبي",
+      "theme": "politika",
+      "image": "https://images.skynewsarabia.com/images/v1/2026/11/22/1906290/95/53/1-1906290.jpg",
+      "imageAlt": "حكومة وحدة بلا نتنياهو.. هل تنجح معادلة آيزنكوت؟",
+      "addedAt": "2026-11-22T06:32:32.973Z"
+    },
+    {
+      "slug": "kairo-2026-11-22-skynewsarabia-170-166bc4",
+      "title": "روسيا تُسقط 170 مسيرة وتستهدف منشآت طاقة وبنى تحتية أوكرانية",
+      "summary": "أعلنت وزارة الدفاع الروسية، اليوم الأحد، أن أنظمة الدفاع الجوي التابعة لها تمكنت من إسقاط 170 طائرة مسيرة أوكرانية فوق عدة مناطق روسية، خلال الليل.",
+      "date": "2026-11-22T06:10:59.000Z",
+      "url": "https://www.skynewsarabia.com/world/1906289-%D8%B1%D9%88%D8%B3%D9%8A%D8%A7-%D8%AA%D8%B3%D9%82%D8%B7-170-%D9%85%D8%B3%D9%8A%D8%B1%D8%A9-%D9%88%D8%AA%D8%B3%D8%AA%D9%87%D8%AF%D9%81-%D9%85%D9%86%D8%B4%D8%A2%D8%AA-%D8%B7%D8%A7%D9%82%D8%A9-%D9%88%D8%A8%D9%86%D9%89-%D8%AA%D8%AD%D8%AA%D9%8A%D8%A9-%D8%A3%D9%88%D9%83%D8%B1%D8%A7%D9%86%D9%8A%D8%A9",
+      "source": "skynewsarabia",
+      "sourceName": "Sky News Arabia",
+      "categories": [],
+      "author": "سكاي نيوز عربية - أبوظبي",
+      "theme": "energija",
+      "image": "https://images.skynewsarabia.com/images/v1/2026/01/17/1846834/95/53/1-1846834.jpg",
+      "imageAlt": "روسيا تُسقط 170 مسيرة وتستهدف منشآت طاقة وبنى تحتية أوكرانية",
+      "addedAt": "2026-11-22T06:32:32.973Z"
+    },
+    {
+      "slug": "kairo-2026-11-22-skynewsarabia-osvrt-43a633",
+      "title": "ترامب حاول التواصل مع الزعيم الكوري الشمالي.. لكن كيم لم يرد",
+      "summary": "كشفت مصادر مطلعة أن المحادثات التمهيدية لعقد لقاء مباشر بين الرئيس الأميركي دونالد ترامب والزعيم الكوري الشمالي كيم جونغ أون، خلال جولة ترامب الآسيوية الأخيرة، اصطدمت بطريق مسدود، بعد طرح بيونغيانغ شروطا لم تتمكن واشنطن من قبولها.",
+      "date": "2026-11-22T05:17:44.000Z",
+      "url": "https://www.skynewsarabia.com/world/1906287-%D8%AA%D8%B1%D8%A7%D9%85%D8%A8-%D8%AD%D8%A7%D9%88%D9%84-%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84-%D8%A7%D9%84%D8%B2%D8%B9%D9%8A%D9%85-%D8%A7%D9%84%D9%83%D9%88%D8%B1%D9%8A-%D8%A7%D9%84%D8%B4%D9%85%D8%A7%D9%84%D9%8A-%D9%83%D9%8A%D9%85-%D9%8A%D8%B1%D8%AF",
+      "source": "skynewsarabia",
+      "sourceName": "Sky News Arabia",
+      "categories": [],
+      "author": "سكاي نيوز عربية - أبوظبي",
+      "theme": "politika",
+      "image": "https://images.skynewsarabia.com/images/v1/2026/11/22/1906286/95/53/1-1906286.JPG",
+      "imageAlt": "ترامب حاول التواصل مع الزعيم الكوري الشمالي.. لكن كيم لم يرد",
+      "addedAt": "2026-11-22T06:32:32.973Z"
+    },
+    {
+      "slug": "kairo-2026-11-22-skynewsarabia-osvrt-9b2399",
+      "title": "مصر تنفي سحب خبرائها العسكريين من بنغازي",
+      "summary": "نفى وزير الدولة للإعلام المصري ضياء رشوان، ما تداولته وسائل إعلام ومواقع تواصل اجتماعي بشأن سحب مصر خبراءها العسكريين من مدينة بنغازي، على خلفية مزاعم بوجود خلافات بين القاهرة والقيادة العامة للجيش الوطني الليبي.",
+      "date": "2026-11-22T04:57:09.000Z",
+      "url": "https://www.skynewsarabia.com/middle-east/1906285-%D9%85%D8%B5%D8%B1-%D8%AA%D9%86%D9%81%D9%8A-%D8%B3%D8%AD%D8%A8-%D8%AE%D8%A8%D8%B1%D8%A7%D8%A6%D9%87%D8%A7-%D8%A7%D9%84%D8%B9%D8%B3%D9%83%D8%B1%D9%8A%D9%8A%D9%86-%D8%A8%D9%86%D8%BA%D8%A7%D8%B2%D9%8A",
+      "source": "skynewsarabia",
+      "sourceName": "Sky News Arabia",
+      "categories": [],
+      "author": "سكاي نيوز عربية - أبوظبي",
+      "theme": "drustvo",
+      "image": "https://images.skynewsarabia.com/images/v1/2026/11/22/1906284/95/53/1-1906284.jpg",
+      "imageAlt": "مصر تنفي سحب خبرائها العسكريين من بنغازي",
+      "addedAt": "2026-11-22T06:32:32.973Z"
+    },
+    {
+      "slug": "kairo-2026-11-22-skynewsarabia-osvrt-991464",
+      "title": "\"الذكاء الاصطناعي\" يطيح بوزير التعليم في كوريا الجنوبية",
+      "summary": "أعلن وزير التعليم في كوريا الجنوبية، اليوم الأحد، استقالته على خلفية فضيحة الغش باستخدام الذكاء الاصطناعي التي كُشف عنها الأسبوع الماضي قبيل إجراء امتحانات القبول الجامعي السنوية.",
+      "date": "2026-11-22T04:39:15.000Z",
+      "url": "https://www.skynewsarabia.com/technology/1906283-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%8A%D8%B7%D9%8A%D8%AD-%D8%A8%D9%88%D8%B2%D9%8A%D8%B1-%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85-%D9%83%D9%88%D8%B1%D9%8A%D8%A7-%D8%A7%D9%84%D8%AC%D9%86%D9%88%D8%A8%D9%8A%D8%A9",
+      "source": "skynewsarabia",
+      "sourceName": "Sky News Arabia",
+      "categories": [],
+      "author": "سكاي نيوز عربية - أبوظبي",
+      "theme": "drustvo",
+      "image": "https://images.skynewsarabia.com/images/v1/2026/11/21/1906183/95/53/1-1906183.JPG",
+      "imageAlt": "\"الذكاء الاصطناعي\" يطيح بوزير التعليم في كوريا الجنوبية",
+      "addedAt": "2026-11-22T06:32:32.973Z"
+    },
     {
       "slug": "kairo-2026-11-22-skynewsarabia-11-e0e3a4",
       "title": "بسبب اعتقال \"إل تشابو إيسيدرو\".. 11 قتيلا في موجة عنف",
