@@ -25,6 +25,7 @@ export const REGION_IMAGE_HOSTS = [
   ['www.telegram.hr', 'Telegram.hr', 'HR'],
   ['www.tportal.hr', 'tportal', 'HR'],
   ['www.poslovni.hr', 'Poslovni dnevnik', 'HR'],
+  ['api.hrt.hr', 'Hrvatska radiotelevizija', 'HR'],
   ['i2.res.24o.it', '24sata / RCS', 'HR'],
   // Srbija
   ['www.danas.rs', 'Danas', 'RS'],
