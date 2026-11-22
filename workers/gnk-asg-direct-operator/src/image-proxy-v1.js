@@ -23,6 +23,8 @@ const ALLOWED_HOSTS = new Set([
   'img.youtube.com',
   'i.guim.co.uk',
   'ichef.bbci.co.uk',
+  // BBC Travel image in the canonical 2026-11-20 feed; exact host, no wildcard.
+  'ychef.files.bbci.co.uk',
   'static01.nyt.com',
   'www.tportal.hr',
   'bl-i.thgim.com',
