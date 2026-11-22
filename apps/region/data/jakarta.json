@@ -4,17 +4,19 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-11-21T23:10:11.524Z",
+  "updatedAt": "2026-11-22T09:44:59.546Z",
   "sources": [
     {
       "id": "antara",
       "name": "ANTARA",
       "url": "https://www.antaranews.com/rss/terkini.xml",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-21T23:10:03.721Z"
+      "errors": [
+        "https://www.antaranews.com/rss/terkini.xml: empty response"
+      ],
+      "checkedAt": "2026-11-22T09:44:42.332Z"
     },
     {
       "id": "kompas",
@@ -27,7 +29,7 @@
         "https://www.kompas.com/rss: HTTP 404",
         "https://nasional.kompas.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-21T23:10:05.755Z"
+      "checkedAt": "2026-11-22T09:44:44.804Z"
     },
     {
       "id": "detik",
@@ -39,7 +41,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-11-21T23:10:08.086Z"
+      "checkedAt": "2026-11-22T09:44:56.535Z"
     },
     {
       "id": "tempo",
@@ -51,7 +53,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-21T23:10:08.843Z"
+      "checkedAt": "2026-11-22T09:44:57.337Z"
     },
     {
       "id": "cnnindonesia",
@@ -61,7 +63,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T23:10:09.175Z"
+      "checkedAt": "2026-11-22T09:44:57.461Z"
     },
     {
       "id": "republika",
@@ -71,7 +73,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T23:10:09.732Z"
+      "checkedAt": "2026-11-22T09:44:58.150Z"
     },
     {
       "id": "cnbcindonesia",
@@ -81,7 +83,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-21T23:10:10.063Z"
+      "checkedAt": "2026-11-22T09:44:58.478Z"
     },
     {
       "id": "kumparan",
@@ -93,10 +95,245 @@
       "errors": [
         "https://kumparan.com/feed: nije feed"
       ],
-      "checkedAt": "2026-11-21T23:10:11.523Z"
+      "checkedAt": "2026-11-22T09:44:59.545Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-11-22-cnnindonesia-pabrik-permen-terbakar-perusahaan-minta-d3b8a9",
+      "title": "Pabrik Permen Terbakar, Perusahaan Minta Maaf",
+      "summary": "Manajemen PT Fonusa Agung Mulia (FAM) menyampaikan permohonan maaf atas musibah kebakaran pabrik di Kawasan Industri Pancatama, Kecamatan Cikande.",
+      "date": "2026-11-22T09:31:42.000Z",
+      "url": "https://www.cnnindonesia.com/nasional/20261122162701-20-1430106/pabrik-permen-terbakar-perusahaan-minta-maaf",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/22/korban-kebakaran-pabrik-permen-cikande-1795330088678_169.jpeg?w=360&q=90",
+      "imageAlt": "Pabrik Permen Terbakar, Perusahaan Minta Maaf",
+      "addedAt": "2026-11-22T09:44:57.461Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-cnnindonesia-sejenak-tertawa-warga-gaza-nikmati-6edcd3",
+      "title": "Sejenak Tertawa, Warga Gaza Nikmati Perhelatan Festival Film Anak",
+      "summary": "Festival Film Anak Gaza kembali digelar di Kota Gaza, Palestina, pada Jumat (20/11).",
+      "date": "2026-11-22T09:30:00.000Z",
+      "url": "https://www.cnnindonesia.com/hiburan/20261122150732-252-1430084/sejenak-tertawa-warga-gaza-nikmati-perhelatan-festival-film-anak",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/22/thumbnail-video-1795335000126_169.jpeg?w=360&q=90",
+      "imageAlt": "Sejenak Tertawa, Warga Gaza Nikmati Perhelatan Festival Film Anak",
+      "addedAt": "2026-11-22T09:44:57.462Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-cnbcindonesia-ka-bandara-soetta-bakal-tembus-bogor-ini-ee8f50",
+      "title": "KA Bandara Soetta Bakal Tembus Bogor, Ini Bocoran Rute dan Jadwalnya",
+      "summary": "Kabarnya Kereta Bandara Soekarno-Hatta akan memperpanjang rute ke Stasiun Bogor mulai 1 Desember 2026. Ini bocorannya.",
+      "date": "2026-11-22T09:30:00.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261122122834-4-787300/ka-bandara-soetta-bakal-tembus-bogor-ini-bocoran-rute-dan-jadwalnya",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2020/07/02/ka-bandara-soekarno-hatta-mulai-beroprasi-ada-sekat-pembatas-kursi-cnbc-indonesia-tri-susilo-9_169.jpeg?w=1200&q=90",
+      "imageAlt": "KA Bandara Soetta Bakal Tembus Bogor, Ini Bocoran Rute dan Jadwalnya",
+      "addedAt": "2026-11-22T09:44:58.478Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-cnnindonesia-foto-chelsea-remuk-di-stamford-bridge-d1d638",
+      "title": "FOTO: Chelsea Remuk di Stamford Bridge",
+      "summary": "Chelsea dipermalukan Leeds United lewat kekalahan telak 1-4 dalam pertandingan pekan ke-11 Liga Inggris di Stadion Stamford Bridge, Sabtu (21/11).",
+      "date": "2026-11-22T09:25:41.000Z",
+      "url": "https://www.cnnindonesia.com/olahraga/20261122145927-144-1430074/foto-chelsea-remuk-di-stamford-bridge",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/22/chelsea-dibantai-leeds-1-4-1795333404995_169.jpeg?w=360&q=90",
+      "imageAlt": "FOTO: Chelsea Remuk di Stamford Bridge",
+      "addedAt": "2026-11-22T09:44:57.462Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-republika-pimpinan-majelis-rasulullah-minta-hentikan-b9a76f",
+      "title": "Pimpinan Majelis Rasulullah Minta Hentikan Adu Domba Habaib dan Kiai",
+      "summary": "JAKARTA – Pimpinan Majelis Rasulullah, Habib Nabiel Al Musawa, mengimbau pemerintah dan aparat penegak hukum agar tidak membiarkan praktik adu domba di tengah umat Islam terus berkembang. Dia meminta aparat...",
+      "date": "2026-11-22T09:24:16.000Z",
+      "url": "https://news.republika.co.id/berita/towcsg320/pimpinan-majelis-rasulullah-minta-hentikan-adu-domba-habaib-dan-kiai",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Islam"
+      ],
+      "author": "Nashih Nashrullah",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/wakil-ketua-komisi-dakwah-majelis-ulama-indonesia-mui-habib_230718173435-115.png",
+      "imageAlt": "Pimpinan Majelis Rasulullah Minta Hentikan Adu Domba Habaib dan Kiai",
+      "addedAt": "2026-11-22T09:44:58.150Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-republika-manajemen-pt-fonusa-minta-maaf-atas-musibah-8e502c",
+      "title": "Manajemen PT Fonusa Minta Maaf atas Musibah Kebakaran Pabrik",
+      "summary": "REPUBLIKA.CO.ID, SERANG -- Manajemen PT Fonusa Agung Mulia (FAM) menyampaikan permohonan maaf atas musibah kebakaran pabrik di Kawasan Industri Pancatama, Kecamatan Cikande, Kabupaten Serang, Provinsi Banten, Sabtu (21/11/2026). Manajemen...",
+      "date": "2026-11-22T09:19:59.000Z",
+      "url": "https://news.republika.co.id/berita/towclb484/manajemen-pt-fonusa-minta-maaf-atas-musibah-kebakaran-pabrik",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional News"
+      ],
+      "author": "Erik Purnama Putra",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261122162102-736.png",
+      "imageAlt": "Manajemen PT Fonusa Minta Maaf atas Musibah Kebakaran Pabrik",
+      "addedAt": "2026-11-22T09:44:58.150Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-cnnindonesia-video-polisi-gagalkan-penyelundupan-tiga-d8a7ed",
+      "title": "VIDEO: Polisi Gagalkan Penyelundupan Tiga WNA ke Malaysia",
+      "summary": "Tim gabungan Polres Bengkalis dan Polda Riau menggagalkan tiga warga negara asing yang diberangkatkan secara ilegal ke Malaysia.",
+      "date": "2026-11-22T09:16:00.000Z",
+      "url": "https://www.cnnindonesia.com/tv/20261122160559-400-1430103/video-polisi-gagalkan-penyelundupan-tiga-wna-ke-malaysia",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/22/thumbnail-1795338449859_169.jpeg?w=360&q=90",
+      "imageAlt": "VIDEO: Polisi Gagalkan Penyelundupan Tiga WNA ke Malaysia",
+      "addedAt": "2026-11-22T09:44:57.462Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-cnbcindonesia-singkirkan-hr-v-dan-alphard-ini-raja-mobil-d378eb",
+      "title": "Singkirkan HR-V dan Alphard, Ini Raja Mobil Hybrid RI",
+      "summary": "Persaingan mobil hybrid di Indonesia semakin ketat. Mobil ini jadi raja dengan penjualan terbanyak.",
+      "date": "2026-11-22T09:15:00.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261122120742-4-787294/singkirkan-hr-v-dan-alphard-ini-raja-mobil-hybrid-ri",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2025/12/30/foto-kombinasi-mobil-hybrid-cr-v-dan-innova-zenix-hybrid-dok-ist-1767071156782_169.png?w=1200&q=90",
+      "imageAlt": "Singkirkan HR-V dan Alphard, Ini Raja Mobil Hybrid RI",
+      "addedAt": "2026-11-22T09:44:58.478Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-cnnindonesia-detik-detik-kebakaran-pabrik-permen-di-96721f",
+      "title": "Detik-detik Kebakaran Pabrik Permen di Serang",
+      "summary": "Kebakaran melanda pabrik PT Fonusa Agung Mulia (FAM) di Kabupaten Serang pada Sabtu (21/11) sekitar pukul 16.30 WIB.",
+      "date": "2026-11-22T09:14:16.000Z",
+      "url": "https://www.cnnindonesia.com/nasional/20261122160041-24-1430102/detik-detik-kebakaran-pabrik-permen-di-serang",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/22/thumbnail-video-1795338158650_169.jpeg?w=360&q=90",
+      "imageAlt": "Detik-detik Kebakaran Pabrik Permen di Serang",
+      "addedAt": "2026-11-22T09:44:57.462Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-republika-suara-anak-ramaikan-hari-terakhir-art-b5d2d4",
+      "title": "Suara Anak Ramaikan Hari Terakhir Art & Resilience: Sumud Of Palestine",
+      "summary": "JAKARTA – Puluhan anak beserta keluarganya meramaikan hari terakhir kegiatan Art & Resilience: Sumud Of Palestine yang berlangsung di Taman Ismail Marzuki (TIM), Jakarta Pusat pada Ahad (22/11/2026). Pada...",
+      "date": "2026-11-22T09:13:16.000Z",
+      "url": "https://news.republika.co.id/berita/towca4320/suara-anak-ramaikan-hari-terakhir-art-resilience-sumud-of-palestine",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Islam"
+      ],
+      "author": "Nashih Nashrullah",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261122161218-994.jpg",
+      "imageAlt": "Suara Anak Ramaikan Hari Terakhir Art & Resilience: Sumud Of Palestine",
+      "addedAt": "2026-11-22T09:44:58.150Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-republika-kisah-ismail-zaffi-raih-cumlaude-di-ubsi-e9bb6a",
+      "title": "Kisah Ismail Zaffi Raih Cumlaude di UBSI, Tempa Diri dari Kementan hingga Infrastruktur Jaringan",
+      "summary": "BEKASI -- Menjadi mahasiswa teknologi informasi bukan hanya tentang memahami bahasa pemrograman, merancang aplikasi, atau mempelajari bagaimana komputer saling terhubung. Lebih dari itu, ada proses panjang untuk membangun kemampuan,...",
+      "date": "2026-11-22T09:10:27.000Z",
+      "url": "https://news.republika.co.id/berita/towc5f425/kisah-ismail-zaffi-raih-cumlaude-di-ubsi-tempa-diri-dari-kementan-hingga-infrastruktur-jaringan",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Bina Sarana Informatika"
+      ],
+      "author": "Qommarria Rostanti",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261122160344-695.png",
+      "imageAlt": "Kisah Ismail Zaffi Raih Cumlaude di UBSI, Tempa Diri dari Kementan hingga Infrastruktur Jaringan",
+      "addedAt": "2026-11-22T09:44:58.150Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-republika-palestina-berhak-bebas-dan-merdeka-9de6d1",
+      "title": "Palestina Berhak Bebas dan Merdeka",
+      "summary": "Oleh Rizky Suryarandika \"Kita punya hak bebas dan merdeka\". Isu kemerdekaan Palestina ternyata bukan milik orang dewasa saja. Anak-anak pun kini menyuarakan hal serupa. Begitulah pesan Safiya Mahya saat mengikuti hari...",
+      "date": "2026-11-22T09:00:48.000Z",
+      "url": "https://news.republika.co.id/berita/towbpc484/palestina-berhak-bebas-dan-merdeka",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional News"
+      ],
+      "author": "Erik Purnama Putra",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261122155948-291.png",
+      "imageAlt": "Palestina Berhak Bebas dan Merdeka",
+      "addedAt": "2026-11-22T09:44:58.150Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-cnbcindonesia-video-pr-dan-peluang-indonesia-tekan-emisi-19a2bb",
+      "title": "Video: PR dan Peluang Indonesia Tekan Emisi Karbon hingga Percepat EBT",
+      "summary": "PR dan Peluang Indonesia Tekan Emisi Karbon hingga Percepat EBT",
+      "date": "2026-11-22T09:00:03.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261118084720-8-786152/video-pr-peluang-indonesia-tekan-emisi-karbon-hingga-percepat-ebt",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/20/pr-peluang-indonesia-tekan-emisi-karbon-hingga-percepat-ebt-1795148658164_169.png?w=1200&q=90",
+      "imageAlt": "Video: PR dan Peluang Indonesia Tekan Emisi Karbon hingga Percepat EBT",
+      "addedAt": "2026-11-22T09:44:58.478Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-cnbcindonesia-diam-diam-mau-dilewati-mrt-kawasan-pasar-2090fd",
+      "title": "Diam-Diam Mau Dilewati MRT, Kawasan Pasar Senen Akan Berubah Total",
+      "summary": "Kawasan Pasar Senen akan berubah total karena dilewati MRT, KRL, sampai TransJakarta.",
+      "date": "2026-11-22T09:00:00.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261122122310-4-787299/diam-diam-mau-dilewati-mrt-kawasan-pasar-senen-akan-berubah-total",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://awsimages.detik.net.id/visual/2026/05/26/calon-tiba-di-peron-stasiun-pasar-senen-jakarta-selasa-2652026-1779791926021_169.jpeg?w=1200&q=90",
+      "imageAlt": "Diam-Diam Mau Dilewati MRT, Kawasan Pasar Senen Akan Berubah Total",
+      "addedAt": "2026-11-22T09:44:58.478Z"
+    },
+    {
+      "slug": "jakarta-2026-11-22-cnbcindonesia-sentimen-pasar-pekan-depan-ada-kabar-407bc1",
+      "title": "Sentimen Pasar Pekan Depan, Ada Kabar Penting dari Prabowo, AS dan China",
+      "summary": "Pelaku pasar saham Indonesia akan mencermati agenda korporasi dan politik, termasuk kabar penting dari Prabowo, AS dan China.",
+      "date": "2026-11-22T08:53:15.000Z",
+      "url": "https://www.cnbcindonesia.com/research/20261122153727-128-787328/sentimen-pasar-pekan-depan-ada-kabar-penting-dari-prabowo-as-china",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://awsimages.detik.net.id/visual/2026/06/04/pengunjung-mengamati-layar-digital-pergerakan-indeks-harga-saham-gabungan-ihsg-di-bursa-efek-indonesia-jakarta-kamis-462026-1780551446532_169.jpeg?w=1200&q=90",
+      "imageAlt": "Sentimen Pasar Pekan Depan, Ada Kabar Penting dari Prabowo, AS dan China",
+      "addedAt": "2026-11-22T09:44:58.478Z"
+    },
     {
       "slug": "jakarta-2026-11-21-antara-bmkg-peringatkan-hujan-lebat-di-sejumlah-2e7de1",
       "title": "BMKG peringatkan hujan lebat di sejumlah wilayah Indonesia pada Minggu",
