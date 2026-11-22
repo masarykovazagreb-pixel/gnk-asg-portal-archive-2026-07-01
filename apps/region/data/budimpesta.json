@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-22T17:25:13.888Z",
+  "updatedAt": "2026-11-22T17:48:24.882Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-22T17:25:10.570Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-22T17:48:19.423Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:25:10.726Z"
+      "checkedAt": "2026-11-22T17:48:20.634Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:25:10.999Z"
+      "checkedAt": "2026-11-22T17:48:21.025Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:25:11.580Z"
+      "checkedAt": "2026-11-22T17:48:21.817Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-22T17:25:13.322Z"
+      "checkedAt": "2026-11-22T17:48:23.748Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:25:13.512Z"
+      "checkedAt": "2026-11-22T17:48:23.940Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,45 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:25:13.887Z"
+      "checkedAt": "2026-11-22T17:48:24.881Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-22-portfolio-afrikai-kikotoben-ert-drontamadas-egy-orosz-c82ee8",
+      "title": "Afrikai kikötőben ért dróntámadás egy orosz hajót",
+      "summary": "Előzetes vizsgálatok szerint dróntámadás okozhatott robbanást egy orosz hajón Bengázi kikötőjében - közölte vasárnap a kelet-líbiai kormányzat.",
+      "date": "2026-11-22T17:38:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261122/afrikai-kikotoben-ert-drontamadas-egy-orosz-hajot-878318",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/e/s/z/eszak-afrika-terkep-stock-algeria-marokko-libia-mali-niger-csad-695319.jpg",
+      "imageAlt": "Afrikai kikötőben ért dróntámadás egy orosz hajót",
+      "addedAt": "2026-11-22T17:48:21.817Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-22-hvg-lakohazat-dontott-romba-egy-orosz-raketa-dac630",
+      "title": "Lakóházat döntött romba egy orosz rakéta, közben orosz hadihajót is találat ért",
+      "summary": "Legalább hárman meghaltak és sokan megsérültek egy ukrán falu elleni orosz támadásban, egy orosz hajót pedig dróntalálat ért egy líbiai kikötőben.",
+      "date": "2026-11-22T17:33:59.000Z",
+      "url": "https://hvg.hu/vilag/20261122_lakohazat-dontott-romba-egy-orosz-raketa-orosz-hadihajot-ert-talalat",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "világ"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/e8046e00-3f49-4bbd-8ca5-bad35166c5ea.jpg",
+      "imageAlt": "Lakóházat döntött romba egy orosz rakéta, közben orosz hadihajót is találat ért",
+      "addedAt": "2026-11-22T17:48:21.025Z"
+    },
     {
       "slug": "budimpesta-2026-11-22-portfolio-egyre-jobbak-a-hoeselyek-magyarorszagon-nem-ed7560",
       "title": "Egyre jobbak a hóesélyek Magyarországon: nem csak a hegyekben hullhat",

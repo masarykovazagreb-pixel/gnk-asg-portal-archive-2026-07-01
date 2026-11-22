@@ -4,20 +4,19 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-22T17:26:40.306Z",
+  "updatedAt": "2026-11-22T17:49:26.738Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://www.agerpres.ro/rss/",
+      "ok": true,
+      "fetched": 20,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: This operation was aborted",
-        "https://www.agerpres.ro/rss/: This operation was aborted"
+        "https://www.agerpres.ro/rss: HTTP 500"
       ],
-      "checkedAt": "2026-11-22T17:26:32.574Z"
+      "checkedAt": "2026-11-22T17:49:18.851Z"
     },
     {
       "id": "hotnews",
@@ -27,7 +26,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:26:32.720Z"
+      "checkedAt": "2026-11-22T17:49:18.915Z"
     },
     {
       "id": "zf",
@@ -37,7 +36,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:26:36.840Z"
+      "checkedAt": "2026-11-22T17:49:20.820Z"
     },
     {
       "id": "profit",
@@ -47,17 +46,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:26:36.986Z"
+      "checkedAt": "2026-11-22T17:49:21.028Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 183,
+      "fetched": 185,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:26:38.469Z"
+      "checkedAt": "2026-11-22T17:49:24.143Z"
     },
     {
       "id": "g4media",
@@ -67,7 +66,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:26:39.999Z"
+      "checkedAt": "2026-11-22T17:49:25.778Z"
     },
     {
       "id": "newsro",
@@ -77,10 +76,282 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:26:40.303Z"
+      "checkedAt": "2026-11-22T17:49:26.736Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-22-agerpres-fotbal-victorie-clara-a-universitatii-8c1bb2",
+      "title": "Fotbal: Victorie clară a Universității Craiova, 6-2 cu UTA, la Arad, în Superligă",
+      "summary": "",
+      "date": "2026-11-22T17:49:18.852Z",
+      "url": "https://agerpres.ro/sport/2026/11/22/fotbal-victorie-clara-a-universitatii-craiova-6-2-cu-uta-la-arad-in-superliga--1615716",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Fotbal: Victorie clară a Universității Craiova, 6-2 cu UTA, la Arad, în Superligă",
+      "addedAt": "2026-11-22T17:49:18.852Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-agerpres-atac-asupra-unei-nave-rusesti-in-portul-725b64",
+      "title": "Atac asupra unei nave rusești în portul libian Benghazi",
+      "summary": "",
+      "date": "2026-11-22T17:49:18.852Z",
+      "url": "https://agerpres.ro/politic-extern/2026/11/22/atac-asupra-unei-nave-rusesti-in-portul-libian-benghazi--1615715",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Atac asupra unei nave rusești în portul libian Benghazi",
+      "addedAt": "2026-11-22T17:49:18.852Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-agerpres-video-rogobete-despre-birocratie-dupa-o-4d09be",
+      "title": "VIDEO Rogobete, despre birocrație după o vizită la SCJU Baia Mare: Am început să simplificăm procedurile",
+      "summary": "",
+      "date": "2026-11-22T17:49:18.852Z",
+      "url": "https://agerpres.ro/sanatate/2026/11/22/video-rogobete-despre-birocratie-dupa-o-vizita-la-scju-baia-mare-am-inceput-sa-simplificam-proceduri--1615714",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "VIDEO Rogobete, despre birocrație după o vizită la SCJU Baia Mare: Am început să simplificăm procedurile",
+      "addedAt": "2026-11-22T17:49:18.852Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-agerpres-maramures-trafic-in-conditii-de-iarna-si-pe-5920db",
+      "title": "Maramureș: Trafic în condiții de iarnă și pe DN 18, în pasurile montane Gutâi și Prislop",
+      "summary": "",
+      "date": "2026-11-22T17:49:18.852Z",
+      "url": "https://agerpres.ro/social/2026/11/22/maramures-trafic-in-conditii-de-iarna-si-pe-dn-18-in-pasurile-montane-gutai-si-prislop--1615708",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Maramureș: Trafic în condiții de iarnă și pe DN 18, în pasurile montane Gutâi și Prislop",
+      "addedAt": "2026-11-22T17:49:18.852Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-agerpres-proiect-pilot-pentru-noi-planuri-de-afaceri-bfda60",
+      "title": "Proiect-pilot pentru noi planuri de afaceri la teatrele Masca și Țăndărică",
+      "summary": "",
+      "date": "2026-11-22T17:49:18.852Z",
+      "url": "https://agerpres.ro/cultura-media/2026/11/22/proiect-pilot-pentru-noi-planuri-de-afaceri-la-teatrele-masca-si-tandarica--1615709",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Proiect-pilot pentru noi planuri de afaceri la teatrele Masca și Țăndărică",
+      "addedAt": "2026-11-22T17:49:18.852Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-agerpres-ungaria-aloca-322-milioane-de-euro-pentru-d144f8",
+      "title": "Ungaria alocă 322 milioane de euro pentru reparații de drumuri",
+      "summary": "",
+      "date": "2026-11-22T17:49:18.852Z",
+      "url": "https://agerpres.ro/politic-extern/2026/11/22/ungaria-aloca-322-milioane-de-euro-pentru-reparatii-de-drumuri--1615706",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Ungaria alocă 322 milioane de euro pentru reparații de drumuri",
+      "addedAt": "2026-11-22T17:49:18.852Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-g4media-toate-zborurile-directe-din-europa-catre-d9087d",
+      "title": "Toate zborurile directe din Europa către Caraibe: Ce destinații poți alege pentru o vacanță la soare în timpul iernii?",
+      "summary": "Caraibele rămân una dintre cele mai căutate destinații pentru europenii care vor să scape de frigul iernii, iar mai multe companii aeriene oferă zboruri directe din marile orașe europene către regiune, relatează Euronews.com. De la Republica Dominicană și Jamaica până la Barbados, Aruba sau Saint Lucia, turiștii au la dispoziție numeroase variante fără escale excesive. […] © G4Media.ro .",
+      "date": "2026-11-22T17:45:07.000Z",
+      "url": "https://www.g4media.ro/toate-zborurile-directe-din-europa-catre-caraibe-ce-destinatii-poti-alege-pentru-o-vacanta-la-soare-in-timpul-iernii.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Travel",
+        "calatorie caraibe",
+        "europa caraibe",
+        "iarna frig"
+      ],
+      "author": "Redacția",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/profimedia-0300666057-scaled.jpg",
+      "imageAlt": "Toate zborurile directe din Europa către Caraibe: Ce destinații poți alege pentru o vacanță la soare în timpul iernii?",
+      "addedAt": "2026-11-22T17:49:25.778Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-digi24-incendiu-devastator-in-zanzibar-cel-putin-4b77e0",
+      "title": "Incendiu devastator în Zanzibar: Cel puțin șase hoteluri au fost mistuite de flăcări. Au ars și multe restaurante și magazine",
+      "summary": "Incendiu devastator în Zanzibar. Cel puțin șase hoteluri de pe o plajă au fost transformate în cenușă. De asemenea, magazine și restaurante au fost mistuite de flăcări. Mai mulți turiști au fost văzuți fugind din calea focului pentru a se salva. Unii, fără să mai apuce să se îmbrace, în timp ce flăcările cuprindeau cele șase hoteluri din paradisul exotic.",
+      "date": "2026-11-22T17:43:56.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/incendiu-devastator-in-zanzibar-cel-putin-sase-hoteluri-au-fost-mistuite-de-flacari-au-ars-si-multe-restaurante-si-magazine-4048111",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjIyJTJGMzA4MTg5MF8zMDgx/ODkwX2luY2VuZGl1LXphbnppYmFyLnBu/ZyZoYXNoPWMxOWU4MzFlMjYwNDFmZTI1NTZiZDg1M2Y5ZTIzOTY3.png",
+      "imageAlt": "Incendiu devastator în Zanzibar: Cel puțin șase hoteluri au fost mistuite de flăcări. Au ars și multe restaurante și magazine",
+      "addedAt": "2026-11-22T17:49:24.146Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-newsro-trei-rachete-rusesti-au-patruns-vineri-in-5e4f24",
+      "title": "Trei rachete ruseşti au pătruns vineri în Polonia, spun procurorii",
+      "summary": "Toate cele trei obiecte care au pătruns vineri în spaţiul aerian polonez erau rachete ruseşti de tip Kh-101, au anunţat procurorii polonezi într-un comunicat emis duminică.",
+      "date": "2026-11-22T17:40:19.000Z",
+      "url": "https://www.news.ro/externe/trei-rachete-rusesti-au-patruns-vineri-in-polonia-spun-procurorii-1922404022192026111923004326",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Trei rachete ruseşti au pătruns vineri în Polonia, spun procurorii",
+      "addedAt": "2026-11-22T17:49:26.737Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-digi24-mesajul-sefului-serviciilor-de-informatii-e629fd",
+      "title": "Mesajul șefului serviciilor de informații americane despre Putin, după ce Trump l-a numit prieten",
+      "summary": "Preşedintele rus Vladimir Putin nu este un prieten al Statelor Unite în ceea ce priveşte Ucraina, a declarat duminică directorul Serviciului Naţional de Informaţii al SUA, Jay Clayton, la câteva zile după ce preşedintele Donald Trump a vorbit în termeni elogioşi despre liderul rus, relatează Reuters.",
+      "date": "2026-11-22T17:35:37.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/mesajul-sefului-serviciilor-de-informatii-americane-despre-putin-dupa-ce-trump-l-a-numit-prieten-4048107",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjIyJTJGMzA4MTg4OV8zMDgx/ODg5X01XRTVOMkl4Wm1Oa1lUUmxaRFps/Tm1RMU9XRmlaVEppWkFfdGh1bWJfLmpw/ZyZoYXNoPTk0YzE2NGFjYzI3MzI4Y2YxYTcxM2Q3NmM3NGI2YWQw.jpg",
+      "imageAlt": "Mesajul șefului serviciilor de informații americane despre Putin, după ce Trump l-a numit prieten",
+      "addedAt": "2026-11-22T17:49:24.146Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-digi24-un-pompier-beat-si-drogat-care-a-lovit-cu-1f708e",
+      "title": "Un pompier beat și drogat care a lovit cu mașina un polițist în timpul unei control rutier a fost reținut",
+      "summary": "Un poliţist de la Serviciul Rutier Timiş a fost lovit cu autoturismul de un şofer oprit în trafic, care a refuzat să se legitimeze în timpul controlului. Agentul de Poliţie a fost lovit în momentul în care a vrut să verifice numărul de înmatriculare al maşinii. Bărbatul aflat la volan a fugit de la locul incidentului, fiind identificat. Testele rapide cu aparatele din dotarea Poliţiei indică faptul că se afla sub influenţa alcoolului şi, posibil, a drogurilor. Autorul incidentului este cadru militar, ancheta derulându-se sub coordonarea procurorului din cadrul Parchetului Militar de pe lângă Tribunalul Militar Timişoara. După audieri, bărbatul a fost reținut.",
+      "date": "2026-11-22T17:35:22.000Z",
+      "url": "https://www.digi24.ro/stiri/un-militar-beat-si-drogat-a-lovit-cu-masina-un-politist-in-timpul-unei-control-rutier-in-timis-apoi-a-fugit-4047895",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwMSUyRjAxJTJGMjUxNjgzOV8yNTE2/ODM5X3BvbGl0aWUtbWFzaW5hLW5vYXB0/ZWEtZ2lyb2Zhci5wbmcmaGFzaD0xMWJj/YTMxNDYwYTFlYTg2YTExNzI0OTFiNTFiYWY5Yw==.png",
+      "imageAlt": "Un pompier beat și drogat care a lovit cu mașina un polițist în timpul unei control rutier a fost reținut",
+      "addedAt": "2026-11-22T17:49:24.146Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-g4media-foto-video-noul-centru-reformat-din-960316",
+      "title": "FOTO VIDEO | Noul Centru Reformat din Timișoara vrea să devină un pol cultural / Comunitatea maghiară își deschide porțile către întregul oraș",
+      "summary": "Ultima clădire din cadrul Centru Reformat “Noul Mileniu” de pe Splaiul Morarilor, din cartierul timișorean Fabric, a fost finalizată. Proiectat de celebrul arhitect budapestan Imre Makovecz (1935-2011), considerat părintele arhitecturii organice, complexul a fost construit în etape, pe parcursul a aproape trei decenii. Deși a fost gândit în jurul comunității reformate, centrul nu va fi […] © G4Media.ro .",
+      "date": "2026-11-22T17:33:43.000Z",
+      "url": "https://www.g4media.ro/foto-video-noul-centru-reformat-din-timisoara-vrea-sa-devina-un-pol-cultural-comunitatea-maghiara-isi-deschide-portile-catre-intregul-oras.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Timișoara",
+        "arhitectura imre makovecz",
+        "centru reformat noul mileniu timisoara",
+        "maghiarii din timisoara"
+      ],
+      "author": "Ștefan Both",
+      "theme": "sport",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/Biserica-reformata-15.jpg",
+      "imageAlt": "FOTO VIDEO | Noul Centru Reformat din Timișoara vrea să devină un pol cultural / Comunitatea maghiară își deschide porțile către întregul oraș",
+      "addedAt": "2026-11-22T17:49:25.778Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-hotnews-o-nava-ruseasca-a-fost-lovita-de-o-drona-ecb4dc",
+      "title": "O navă rusească a fost lovită de o dronă într-un port la Marea Mediterană",
+      "summary": "Autorităţile din estul Libiei au condamnat duminică un presupus atac cu dronă care a provocat o explozie la bordul unei nave ruseşti în baza navală din Benghazi, în estul ţării, informează DPA, preluată de Agerpres. Guvernul est-libian, susţinut de parlament, a comunicat că vasul se înapoia în Rusia şi făcuse o escală pentru realimentare şi …",
+      "date": "2026-11-22T17:31:05.000Z",
+      "url": "https://hotnews.ro/o-nava-ruseasca-a-fost-lovita-de-o-drona-intr-un-port-la-marea-mediterana-2411119",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "O navă rusească a fost lovită de o dronă într-un port la Marea Mediterană",
+      "addedAt": "2026-11-22T17:49:18.916Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-g4media-un-ucrainean-a-murit-in-muntii-695007",
+      "title": "Un ucrainean a murit în Munții Maramureșului, după ce s-a rătăcit în apropierea frontierei / Alți doi au fost salvați",
+      "summary": "Un cetățean ucrainean a fost găsit mort în Munții Maramureșului, după ce s-ar fi rătăcit într-o zonă montană din apropierea frontierei cu Ucraina. Alți doi ucraineni, care se aflau împreună cu acesta, au fost recuperați de echipe mixte formate din polițiști de frontieră și salvamontiști, a anunțat duminică purtătorul de cuvânt al Inspectoratului Teritorial al […] © G4Media.ro .",
+      "date": "2026-11-22T17:30:21.000Z",
+      "url": "https://www.g4media.ro/un-ucrainean-a-murit-in-muntii-maramuresului-dupa-ce-s-a-ratacit-in-apropierea-frontierei-alti-doi-au-fost-salvati.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "munții Maramureșului",
+        "ucrainean mort"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "rat",
+      "image": "https://www.g4media.ro/wp-content/uploads/2021/11/MM3.jpg",
+      "imageAlt": "Un ucrainean a murit în Munții Maramureșului, după ce s-a rătăcit în apropierea frontierei / Alți doi au fost salvați",
+      "addedAt": "2026-11-22T17:49:25.779Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-newsro-cca-precizari-in-urma-incidentelor-de-la-89b07c",
+      "title": "CCA, precizări în urma incidentelor de la partida Dinamo – Petrolul: Au fost aruncate obiecte şi lichide atât către tehnicieni, cât şi către echipamente",
+      "summary": "Comisia Centrală a Arbitrilor a făcut câteva precizări, duminică, pentru clarificarea desfăşurării procedurii VAR şi a circumstanţelor care au condus la întreruperea acesteia la meciul Dinamo – Petrolul, din Superligă.",
+      "date": "2026-11-22T17:29:58.000Z",
+      "url": "https://www.news.ro/sport/cca-precizari-in-urma-incidentelor-de-la-partida-dinamo-petrolul-au-fost-aruncate-obiecte-si-lichide-atat-catre-tehnicieni-cat-si-catre-echipamente-1922402922582026111923004286",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "CCA, precizări în urma incidentelor de la partida Dinamo – Petrolul: Au fost aruncate obiecte şi lichide atât către tehnicieni, cât şi către echipamente",
+      "addedAt": "2026-11-22T17:49:26.737Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-newsro-baschet-masculin-u-bt-cluj-esec-acasa-cu-04c691",
+      "title": "Baschet masculin: U BT Cluj, eşec acasă cu Zadar, în Liga Adriatică; naţionala de handbal feminin, în BT Arena",
+      "summary": "Campioana U BT Cluj a pierdut duminică, pe teren propriu, cu formaţia Zadar, scor 75-81 (34-40), în etapa a IX-a, ultima a turului grupei B. La meci au asistat şi jucătoarele din naţionala de handbal feminin a României, reunite deja pentru Campionatul European, la care vor evolua în aceeaşi sală.",
+      "date": "2026-11-22T17:28:22.000Z",
+      "url": "https://www.news.ro/sport/baschet-masculin-u-bt-cluj-esec-acasa-cu-zadar-in-liga-adriatica-nationala-de-handbal-feminin-in-bt-arena-1922402822222026111923004303",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Baschet masculin: U BT Cluj, eşec acasă cu Zadar, în Liga Adriatică; naţionala de handbal feminin, în BT Arena",
+      "addedAt": "2026-11-22T17:49:26.737Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-newsro-superliga-spectacol-cu-opt-goluri-la-arad-6e56bd",
+      "title": "Superliga: Spectacol cu opt goluri la Arad, UTA – Universitatea Craiova 2-6",
+      "summary": "Echipa campioană, Universitatea Craiova, a învins duminică, în deplasare, scor 6-2, gruparea UTA Arad, în etapa a 16-a din Superligă.",
+      "date": "2026-11-22T17:26:10.000Z",
+      "url": "https://www.news.ro/sport/superliga-spectacol-cu-opt-goluri-la-arad-uta-universitatea-craiova-2-6-1922402622102026111923004283",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Superliga: Spectacol cu opt goluri la Arad, UTA – Universitatea Craiova 2-6",
+      "addedAt": "2026-11-22T17:49:26.737Z"
+    },
     {
       "slug": "bukurest-2026-11-22-g4media-ljubljana-si-calvia-desemnate-capitale-cf1490",
       "title": "Ljubljana și Calvià, desemnate Capitale Europene ale Turismului pentru 2027",
