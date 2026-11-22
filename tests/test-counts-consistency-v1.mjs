@@ -14,7 +14,7 @@
  *      razlikuje od izračunatog (dopušten je regionalni podskup, ali mora
  *      pisati da je podskup).
  */
-import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -32,14 +32,18 @@ if (!counts) { console.log(JSON.stringify({ ok: false, failures: fails.length })
 
 /* --- 1. zapis odgovara podacima --- */
 const regionDir = join(ROOT, 'apps/region/data');
+const registry = readJSON(join(ROOT, 'apps/region/channels.json'), { channels: [] });
+const channelIds = (registry.channels || []).map((channel) => channel.id);
+check(channelIds.length > 0, 'registar kanala je prazan');
+check(new Set(channelIds).size === channelIds.length, 'registar sadrži duplicirane ID-jeve kanala');
 let realTexts = 0;
-let channels = 0;
-for (const name of readdirSync(regionDir)) {
-  if (!name.endsWith('.json') || name.startsWith('_')) continue;
-  const data = readJSON(join(regionDir, name), { items: [] });
-  realTexts += (data.items || []).length;
-  channels += 1;
+for (const id of channelIds) {
+  const file = join(regionDir, `${id}.json`);
+  const data = readJSON(file);
+  check(data && Array.isArray(data.items), `nedostaje valjana arhiva kanala ${id}`);
+  if (data && Array.isArray(data.items)) realTexts += data.items.length;
 }
+const channels = channelIds.length;
 check(counts.texts === realTexts, `zapis kaže ${counts.texts} tekstova, podaci ${realTexts}`);
 check(counts.cities === channels, `zapis kaže ${counts.cities} gradova, podaci ${channels}`);
 check(Array.isArray(counts.channels) && counts.channels.length === channels, 'po kanalu nema svih zapisa');
