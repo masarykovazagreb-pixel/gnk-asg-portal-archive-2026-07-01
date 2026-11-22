@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-22T17:49:26.738Z",
+  "updatedAt": "2026-11-22T22:49:37.892Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: HTTP 500"
+        "https://www.agerpres.ro/rss: HTTP 502",
+        "https://www.agerpres.ro/rss/: HTTP 500"
       ],
-      "checkedAt": "2026-11-22T17:49:18.851Z"
+      "checkedAt": "2026-11-22T22:49:30.290Z"
     },
     {
       "id": "hotnews",
@@ -26,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:49:18.915Z"
+      "checkedAt": "2026-11-22T22:49:30.838Z"
     },
     {
       "id": "zf",
@@ -36,7 +37,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:49:20.820Z"
+      "checkedAt": "2026-11-22T22:49:32.348Z"
     },
     {
       "id": "profit",
@@ -46,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:49:21.028Z"
+      "checkedAt": "2026-11-22T22:49:32.716Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 185,
+      "fetched": 174,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:49:24.143Z"
+      "checkedAt": "2026-11-22T22:49:34.973Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:49:25.778Z"
+      "checkedAt": "2026-11-22T22:49:36.279Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,583 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T17:49:26.736Z"
+      "checkedAt": "2026-11-22T22:49:37.890Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-22-zf-nato-si-ue-investitiile-straine-si-d5c247",
+      "title": "NATO şi UE, investiţiile străine şi dezvoltarea capitalului românesc ne-au adus până aici. Întrebarea este cine duce România înainte de acum, cu toate crizele care ne lovesc",
+      "summary": "",
+      "date": "2026-11-22T22:36:24.000Z",
+      "url": "https://www.zf.ro/opinii/nato-si-ue-investitiile-straine-si-dezvoltarea-capitalului-romanesc-ne-au-adus-pana-aici-intrebarea-este-cine-duce-romania-inainte-de-acum-cu-toate-crizele-care-ne-lovesc-23287113",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Opinii"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10369/23287113/1/66-fini-fini-nou-2.jpg?width=700",
+      "imageAlt": "NATO şi UE, investiţiile străine şi dezvoltarea capitalului românesc ne-au adus până aici. Întrebarea este cine duce România înainte de acum, cu toate crizele care ne lovesc",
+      "addedAt": "2026-11-22T22:49:32.348Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-newsro-un-detinut-a-incercat-sa-se-spanzure-in-23bad5",
+      "title": "Un deţinut a încercat să se spânzure în Centrul de Reţinere şi Arestare Preventivă al Poliţiei Maramureş",
+      "summary": "Un deţinut a încercat să se spânzure, duminică, în Centrul de Reţinere şi Arestare Preventivă al Inspectoratului de Poliţie Judeţean Maramureş, poliţiştii intervenind şi oprindu-l la timp.",
+      "date": "2026-11-22T22:16:10.000Z",
+      "url": "https://www.news.ro/eveniment/un-detinut-a-incercat-sa-se-spanzure-in-centrul-de-retinere-si-arestare-preventiva-al-politiei-maramures-1922401623102026110023004805",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Un deţinut a încercat să se spânzure în Centrul de Reţinere şi Arestare Preventivă al Poliţiei Maramureş",
+      "addedAt": "2026-11-22T22:49:37.890Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-profit-tranzactie-surpriza-in-romania-cu-tinta-1ae178",
+      "title": "Tranzacție surpriză în România, cu țintă spre America. ATM Ventures, vehicul de investiții al fondatorilor grupului Autonom, a intrat în acționariatul unei firme din Roznov care…",
+      "summary": "ATM Ventures, vehicul de investiții în companii cu potențial de creștere accelerată, fondat în 2020 de Marius și Dan Ștefan, acționarii Grupului Autonom, a intrat în acționariatul Deep Learning Solutions, companie care furnizează putere de calcul GPU dezvoltatorilor de tehnologii de inteligență artificială și platformelor de computere din Statele Unite al Americii.",
+      "date": "2026-11-22T22:16:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/tranzactie-surpriza-romania-tinta-spre-america-atm-ventures-vehicul-investitii-fondatorilor-grupului-autonom-intrat-actionariatul-unei-firme-roznov-furnizeaza-putere-calcul-gpu-dezvoltatorilor-23003891?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Povești cu Profit"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33209/23003891/2/burlacu.png?width=800",
+      "imageAlt": "Tranzacție surpriză în România, cu țintă spre America. ATM Ventures, vehicul de investiții al fondatorilor grupului Autonom, a intrat în acționariatul unei firme din Roznov care fu",
+      "addedAt": "2026-11-22T22:49:32.717Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-digi24-o-pastila-care-imita-viagra-poate-incetini-bae711",
+      "title": "O pastilă care imită Viagra poate încetini declinul cognitiv la persoanele cu Alzheimer, sugerează un studiu: „O etapă importantă”",
+      "summary": "O pastilă care imită Viagra prin relaxarea vaselor de sânge și creșterea fluxului sanguin către creier poate încetini declinul cognitiv la persoanele cu Alzheimer cu aproape o treime, sugerează un studiu global, relatează The Guardian.",
+      "date": "2026-11-22T22:15:14.000Z",
+      "url": "https://www.digi24.ro/stiri/sci-tech/descoperiri/o-pastila-care-imita-viagra-poate-incetini-declinul-cognitiv-la-persoanele-cu-alzheimer-sugereaza-un-studiu-o-etapa-importanta-4041459",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjQl/MkYwMyUyRjA2JTJGMTkyMzMwMF8xOTIz/MzAwX3NodXR0ZXJzdG9ja18xNjUyNTky/MjY4LmpwZyZoYXNoPTJiNmM2ZWU1MzUzMTM3MDU4OTViYzEwMTRmYmUyYTY1.jpg",
+      "imageAlt": "O pastilă care imită Viagra poate încetini declinul cognitiv la persoanele cu Alzheimer, sugerează un studiu: „O etapă importantă”",
+      "addedAt": "2026-11-22T22:49:34.975Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-newsro-patru-misiuni-ale-salvamont-maramures-3ef1bc",
+      "title": "Patru misiuni ale Salvamont Maramureş pentru recuperarea unor ucraineni din munţi/ Salvamont anunţă că un bărbat a murit, fiind al 25-lea ucrainean care moare după ce intră în…",
+      "summary": "Salvamontiştii din Maramureş anunţă că, duminică, au fost solicitaţi să intervină la patru misiuni pentru recuperarea unor ucraineni din munţi. Un bărbat a murit, fiind al 25-lea ucrainean care moare după ce intră în România, prin munţii Maramureşului, de la începutul războiului.",
+      "date": "2026-11-22T22:13:20.000Z",
+      "url": "https://www.news.ro/eveniment/patru-misiuni-salvamont-maramures-recuperarea-unor-ucraineni-munti-salvamont-anunta-barbat-murit-fiind-25-lea-ucrainean-moare-dupa-intra-romania-inceputul-razboiului-1922401323202026110023004234",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Patru misiuni ale Salvamont Maramureş pentru recuperarea unor ucraineni din munţi/ Salvamont anunţă că un bărbat a murit, fiind al 25-lea ucrainean care moare după ce intră în Româ",
+      "addedAt": "2026-11-22T22:49:37.890Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-profit-emag-se-imprumuta-cu-mai-multe-milioane-de-a9b222",
+      "title": "eMAG se împrumută cu mai multe milioane de euro de la Exim Banca Românească pentru finanțarea activității curene DOCUMENT",
+      "summary": "Acționarii Dante International, administratorul eMAG, cel mai mare retailer online din România, au aprobat contractarea de la Exim Banca Românească a unui credit de 15 milioane de euro pentru susținerea activității curente a companiei.",
+      "date": "2026-11-22T22:12:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/retail/emag-se-imprumuta-cu-mai-multe-milioane-de-euro-de-la-exim-banca-romaneasca-pentru-finantarea-activitatii-curene-document-23003885?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Retail"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33215/23003885/10/emag.png?width=800",
+      "imageAlt": "eMAG se împrumută cu mai multe milioane de euro de la Exim Banca Românească pentru finanțarea activității curene DOCUMENT",
+      "addedAt": "2026-11-22T22:49:32.717Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-profit-ultima-ora-document-acuzatii-de-frauda-la-ac043d",
+      "title": "ULTIMA ORĂ DOCUMENT Acuzații de fraudă la SMR-urile nucleare de la Doicești: Americanii NuScale sunt acuzați că i-ar fi indus în eroare pe investitori. Mesaj de răspuns către…",
+      "summary": "Compania americană NuScale, listată la New York Stock Exchange (NYSE), proprietara tehnologiei reactoarelor modulare mici (SMR) cu care dorește ca România să construiască o centrală nucleară de 462 MW la Doicești, se confruntă cu un nou proces colectiv în care este acuzată că ar fi încălcat legislația piețelor de capital din SUA, prin furnizarea de informații false și înșelătoare investitorilor în acțiuni NuScale și nedezvăluirea altora, influențându-le astfel acestora în mod fraudulos deciziile de achiziție și provocându-le pierderi financiare.",
+      "date": "2026-11-22T22:10:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/energie/ultima-ora-document-acuzatii-frauda-smr-urile-nucleare-doicesti-americanii-nuscale-acuzati-i-ar-indus-eroare-investitori-mesaj-raspuns-catre-profit-ne-mentinem-angajamentul-avansa-22997645?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Energie"
+      ],
+      "author": "",
+      "theme": "energija",
+      "image": "https://i0.1616.ro/media/2/2621/33214/22997645/1/nuscale.jpg?width=800",
+      "imageAlt": "ULTIMA ORĂ DOCUMENT Acuzații de fraudă la SMR-urile nucleare de la Doicești: Americanii NuScale sunt acuzați că i-ar fi indus în eroare pe investitori. Mesaj de răspuns către Profi",
+      "addedAt": "2026-11-22T22:49:32.717Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-zf-romanii-au-mizat-pe-claude-40-50-milioane-c1a5a0",
+      "title": "Românii au mizat pe Claude 40-50 milioane de dolari în listarea secolului, Anthropic, prin platforme bursiere interne şi internaţionale. Doar BT Capital Partners a raportat…",
+      "summary": "Clienţii BT Capital Partners, cel mai mare broker de la BVB, au tranzacţionat acţiuni Anthropic de 4,3 mil. dolari în primele două zile de la debutul companiei pe Nasdaq, joi şi vineri, arată datele transmise de BT CP la solicitarea ZF.",
+      "date": "2026-11-22T22:08:00.000Z",
+      "url": "https://www.zf.ro/burse-fonduri-mutuale/romanii-au-mizat-claude-40-50-milioane-dolari-listarea-secolului-anthropic-platforme-bursiere-interne-internationale-bt-capital-partners-raportat-tranzactii-anthropic-4-mil-dolari-23286981",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Burse - Fonduri mutuale"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22467/23286981/1/1-antropic-listare-1.jpg?width=700",
+      "imageAlt": "Românii au mizat pe Claude 40-50 milioane de dolari în listarea secolului, Anthropic, prin platforme bursiere interne şi internaţionale. Doar BT Capital Partners a raportat tranzac",
+      "addedAt": "2026-11-22T22:49:32.349Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-profit-exclusiv-mcdonald-s-accelereaza-in-romania-3be8d9",
+      "title": "EXCLUSIV McDonald's accelerează în România, cu produse noi în meniu și peste 1.400 de locuri de muncă pregătite",
+      "summary": "Compania Premier Restaurants România, operatorul lanțului de restaurante McDonald's pe piața locală, va încheia anul 2026 cu 123 de restaurante în 34 de orașe, după inaugurarea a nouă unități noi, comparativ cu opt deschideri în anul precedent. Compania intenționează să introducă produse noi, păstrând în același timp preparatele consacrate, și să dezvolte ofertele și beneficiile disponibile prin aplicația mobilă.",
+      "date": "2026-11-22T22:08:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/exclusiv-mcdonald-s-accelereaza-in-romania-cu-produse-noi-in-meniu-si-peste-1-400-de-locuri-de-munca-pregatite-23004367?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Povești cu Profit"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33209/23004367/3/mcdonald-s-electroputere-dt-1.jpg?width=800",
+      "imageAlt": "EXCLUSIV McDonald's accelerează în România, cu produse noi în meniu și peste 1.400 de locuri de muncă pregătite",
+      "addedAt": "2026-11-22T22:49:32.717Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-zf-banca-transilvania-principalul-finantator-48138b",
+      "title": "Banca Transilvania, principalul finanţator al economiei, a majorat creditarea cu 11% an/an în 9 luni/2026, la 110 mld. lei. BT a dat credite noi de peste 33 mld. lei, din care 23…",
+      "summary": "Banca Transilvania, cea mai mare instituţie de credit după active din România, a acordat com­paniilor în primele nouă luni din acest an finanţări noi de 23,1 mld. lei, cu mai mult de 44% peste nivelul din aceeaşi perioadă a anului trecut, iar pentru populaţie a acordat credite noi de 10,1 mld. lei, din care 32% au fost credite imo­­biliare/ipotecare şi circa două treimi au fost credite pentru nevoi curente.",
+      "date": "2026-11-22T22:07:00.000Z",
+      "url": "https://www.zf.ro/banci-si-asigurari/banca-transilvania-principalul-finantator-economiei-majorat-creditarea-11-an-an-9-luni-2026-110-mld-lei-bt-dat-credite-peste-33-mld-lei-23-mld-lei-firme-mer-tetik-ceo-avem-dinamica-comerciala-foarte-23286594",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Bănci și Asigurări"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22466/23286594/1/poza-omer-tetik-bt-pt-main-zf-28-de-ani.jpg?width=700",
+      "imageAlt": "Banca Transilvania, principalul finanţator al economiei, a majorat creditarea cu 11% an/an în 9 luni/2026, la 110 mld. lei. BT a dat credite noi de peste 33 mld. lei, din care 23 m",
+      "addedAt": "2026-11-22T22:49:32.349Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-zf-gunter-deuber-economistul-sef-al-raiffeisen-c03e4d",
+      "title": "Gunter Deuber, economistul-şef al Raiffeisen Bank International: O eventuală reducere a ratingului României va avea un impact modest, pentru că acest topic este deja inclus în…",
+      "summary": "Gunter Deuber, managing di­rector şi economistul-şef al Raiffeisen Bank Internatio­nal, a declarat vineri, la Vie­na, că o eventuală reducere a ratingului de ţară al României, dacă s-ar pune această problemă, va avea un impact modest, pentru că acest topic este deja inclus în preţ, iar investitorii sunt conştienţi de acest lucru.",
+      "date": "2026-11-22T22:07:00.000Z",
+      "url": "https://www.zf.ro/banci-si-asigurari/gunter-deuber-economistul-sef-raiffeisen-bank-international-eventuala-reducere-ratingului-romaniei-avea-impact-modest-acest-topic-inclus-pretul-dobanzilor-situatia-fiscala-principala-problema-23286908",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Bănci și Asigurări"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22466/23286908/1/3-gunter-deuber.jpg?width=700",
+      "imageAlt": "Gunter Deuber, economistul-şef al Raiffeisen Bank International: O eventuală reducere a ratingului României va avea un impact modest, pentru că acest topic este deja inclus în preţ",
+      "addedAt": "2026-11-22T22:49:32.349Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-zf-cel-mai-bun-an-din-istorie-cele-mai-75d9bf",
+      "title": "Cel mai bun an din istorie. Cele mai valoroase zece companii din economie sunt evaluate la 83 mld. euro în 2026, o sumă record, cu 32% peste anul trecut şi de patru ori peste…",
+      "summary": "Cele mai valoroase zece companii din economie sunt evaluate la 83 de miliarde de euro în 2026, cea mai mare valoare din ultimii 21 de ani, de când Ziarul Financiar a lansat catalogul ZF Top 100 cele mai valoroase companii din România, realizat în parteneriat cu BT Capital Partners şi cu Veridio.",
+      "date": "2026-11-22T22:07:00.000Z",
+      "url": "https://www.zf.ro/companii/cel-mai-bun-an-din-istorie-cele-mai-valoroase-zece-companii-din-economie-sunt-evaluate-la-83-mld-euro-in-2026-o-suma-record-cu-32-peste-anul-trecut-si-de-patru-ori-peste-nivelul-de-acum-un-deceniu-23286955",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Companii"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/25566/23286955/1/1-grafic-fotoinfo.jpg?width=700",
+      "imageAlt": "Cel mai bun an din istorie. Cele mai valoroase zece companii din economie sunt evaluate la 83 mld. euro în 2026, o sumă record, cu 32% peste anul trecut şi de patru ori peste nivel",
+      "addedAt": "2026-11-22T22:49:32.349Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-profit-fabrica-repornita-in-romania-de-miliardarul-f3aab5",
+      "title": "Fabrică repornită în România de miliardarul Victor Pinchuk, al doilea cel mai bogat ucrainean",
+      "summary": "Grupul ucrainean Interpipe, printre cei mai mari producători globali de țevi de oțel, controlat de miliardarul Victor Pinchuk, al doilea cel mai bogat om din Ucraina, care a reluat în primăvară producția la fosta fabrică ArcelorMittal din Roman, recent achiziționată, a decis să contracteze un credit substanțial, de până la 20 milioane euro, relevă date analizate de Profit.ro.",
+      "date": "2026-11-22T22:06:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/foto-fabrica-repornita-in-romania-de-miliardarul-victor-pinchuk-al-doilea-cel-mai-bogat-ucrainean-interpipe-a-semnat-pentru-un-credit-substantial-la-fosta-fabrica-arcelormittal-din-roman-23001363?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Povești cu Profit"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://i0.1616.ro/media/2/2621/33209/23001363/5/interpipe-roman.jpg?width=800",
+      "imageAlt": "Fabrică repornită în România de miliardarul Victor Pinchuk, al doilea cel mai bogat ucrainean",
+      "addedAt": "2026-11-22T22:49:32.717Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-newsro-la-liga-getafe-atletico-madrid-0-3-773790",
+      "title": "La Liga: Getafe – Atletico Madrid 0-3",
+      "summary": "Echipa spaniolă Atletico Madrid a învins duminică seara, în deplasare, scor 3-0, formaţia Getafe, în etapa a 13-a din La Liga.",
+      "date": "2026-11-22T22:03:57.000Z",
+      "url": "https://www.news.ro/sport/la-liga-getafe-atletico-madrid-0-3-1922400323572026110023004783",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "La Liga: Getafe – Atletico Madrid 0-3",
+      "addedAt": "2026-11-22T22:49:37.890Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-digi24-incendiu-puternic-la-un-hotel-din-poiana-310050",
+      "title": "Incendiu puternic la un hotel din Poiana Braşov. La intervenție au fost aduși în sprijin pompieri din încă trei județe",
+      "summary": "Un incendiu a izbucnit, duminică seara, la Hotelul Alpin din Poiana Braşov, pompierii intervenind cu mai multe autospeciale pentru a preveni extinderea focului. Forţele de intervenţie au fost suplimentate din judeţele Prahova, Covasna şi Argeş. Aproximativ 150 de persoane au fost evacuate din clădire, fără a fi înregistrate victime.",
+      "date": "2026-11-22T21:56:25.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/incendiu-puternic-la-un-hotel-din-poiana-brasov-intervin-pompieri-din-patru-judete-4048199",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjIyJTJGMzA4MjAwMl8zMDgy/MDAyX2ljb24tSU5TVEFOVF9QT0lBTkFf/QlJBU09WX0lOQ0VORElVX0FMUElOXzA1/X0lOUVVBTV9QaG90b3NfQWxleF9OaWNv/ZGltLnBuZyZoYXNoPWQwNWQ3MzcxN2NhYjkwMTlhYTZjNjhhZDBjNTNiN2E5.png",
+      "imageAlt": "Incendiu puternic la un hotel din Poiana Braşov. La intervenție au fost aduși în sprijin pompieri din încă trei județe",
+      "addedAt": "2026-11-22T22:49:34.975Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-digi24-catalin-drula-nodul-dintre-a0-a3-a-fost-a60274",
+      "title": "Cătălin Drulă: „Nodul dintre A0-A3 a fost umflat de la 82 la 208 hectare”. Ce nereguli reclamă fostul ministru al Transporturilor",
+      "summary": "Deputatul USR Cătălin Drulă, fost ministru al Transporturilor, apreciază că nodul rutier dintre Autostrada A0 și Autostrada A3 este construit pe o suprafață mai mare decât era necesar, ceea ce a generat cheltuieli suplimentare de 61 de milioane de lei, dar și mai mult timp petrecut în trafic pentru șoferi.",
+      "date": "2026-11-22T21:46:04.000Z",
+      "url": "https://www.digi24.ro/stiri/economie/transporturi/catalin-drula-nodul-dintre-a0-a3-a-fost-umflat-de-la-82-la-208-hectare-ce-nereguli-reclama-fostul-ministru-al-transporturilor-4048263",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjIyJTJGMzA4MjAzNl8zMDgy/MDM2X05EQW1hR0Z6YUQwM01tSmhZak5t/TURka01HVXhOMll5WlRBd01UaG1NR0kw/WWpOaU9EQXdOd190aHVtYl8uanBnJmhh/c2g9NTc5MzkyODNiOTc3OTIyNDBmMTA0MGFlMTBiZWUzYzE=.jpg",
+      "imageAlt": "Cătălin Drulă: „Nodul dintre A0-A3 a fost umflat de la 82 la 208 hectare”. Ce nereguli reclamă fostul ministru al Transporturilor",
+      "addedAt": "2026-11-22T22:49:34.975Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-newsro-serie-a-atalanta-a-revenit-de-la-1-3-si-2-4-8ed139",
+      "title": "Serie A: Atalanta a revenit de la 1-3 şi 2-4 cu Interul lui Chivu, iar scorul final a fost 4-4",
+      "summary": "Campioana Italiei, Inter Milano, antrenată de Cristian Chivu, a terminat la egalitate duminică seara, în deplasare, scor 4-4, cu gruparea Atalanta Bergamo, în etapa a 12-a din Serie A.",
+      "date": "2026-11-22T21:39:34.000Z",
+      "url": "https://www.news.ro/sport/serie-a-atalanta-a-revenit-de-la-1-3-si-2-4-cu-interul-lui-chivu-iar-scorul-final-a-fost-4-4-1922403922342026112323004756",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Serie A: Atalanta a revenit de la 1-3 şi 2-4 cu Interul lui Chivu, iar scorul final a fost 4-4",
+      "addedAt": "2026-11-22T22:49:37.890Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-newsro-costreie-pentru-mine-exista-o-linie-rosie-cc7b5b",
+      "title": "Costreie: Pentru mine există o linie roşie, şi anume ca oamenii din sistem să-şi primească salariile. Suntem într-o situaţie foarte dificilă şi există şi acest risc, pe ici, pe…",
+      "summary": "Ministrul Educaţiei, Sorin Costreie, spune că nu este ”foarte optimist” cu privire la creşteri de salarii în sectorul educaţiei. ”Pentru mine există o linie roşie, şi anume ca oamenii din sistem, profesorii şi tot personalul să-şi primească salariile. Suntem într-o situaţie foarte dificilă şi există şi acest risc, (...) pe ici, pe colo, nu neapărat profesori, dar există zone, de exemplu Casele elevilor”, afirmă Sorin Costreie.",
+      "date": "2026-11-22T21:34:03.000Z",
+      "url": "https://www.news.ro/edu-news/costreie-mine-exista-linie-rosie-anume-oamenii-sistem-primeasca-salariile-intr-situatie-foarte-dificila-exista-acest-risc-ici-colo-neaparat-profesori-exista-zone-exemplu-casele-elevilor-1922403422032026112323004745",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Costreie: Pentru mine există o linie roşie, şi anume ca oamenii din sistem să-şi primească salariile. Suntem într-o situaţie foarte dificilă şi există şi acest risc, pe ici, pe col",
+      "addedAt": "2026-11-22T22:49:37.891Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-newsro-sorin-costreie-consilierii-scolari-sunt-5d0711",
+      "title": "Sorin Costreie: Consilierii şcolari sunt văzuţi cum sunt văzuţi la noi, în societate, psihologii şi psihiatrii. Adică, dacă te duci la consiliere, tu, ca elev, ai o problemă",
+      "summary": "Elevii din România folosesc doar într-o proporţie foarte mică serviciile consilierilor şcolari, arată studii invocate de ministrul Educaţiei, Sorin Costreie. ”Aceştia sunt văzuţi cum sunt văzuţi la noi, în societate, psihologii şi psihiatrii. Adică, dacă te duci la consiliere, tu, ca elev, ai o problemă”, explică ministrul, care subliniază că serviciile consilierilor şcolari îi pot ajuta pe elevi inclusiv să îşi găsească drumul în ceea ce priveşte profesia.",
+      "date": "2026-11-22T21:29:07.000Z",
+      "url": "https://www.news.ro/edu-news/sorin-costreie-consilierii-scolari-sunt-vazuti-cum-sunt-vazuti-la-noi-in-societate-psihologii-si-psihiatrii-adica-daca-te-duci-la-consiliere-tu-ca-elev-ai-o-problema-1922402922072026112323004741",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Sorin Costreie: Consilierii şcolari sunt văzuţi cum sunt văzuţi la noi, în societate, psihologii şi psihiatrii. Adică, dacă te duci la consiliere, tu, ca elev, ai o problemă",
+      "addedAt": "2026-11-22T22:49:37.891Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-g4media-emirates-pe-primul-loc-in-topul-revistei-e8ac85",
+      "title": "Emirates, pe primul loc în topul revistei TIME al celor mai bune companii aeriene din lume pentru 2027 / Nicio companie europeană nu intră în primele zece",
+      "summary": "Revista TIME a publicat primul său clasament al celor mai bune companii aeriene din lume pentru 2027, iar Emirates ocupă prima poziție, relatează Euronews.com. Niciun transportator european nu a reușit să intre în top 10, deși mai multe companii de pe continent figurează în primele 20 de locuri. Clasamentul a fost realizat pe baza unor […] © G4Media.ro .",
+      "date": "2026-11-22T21:00:31.000Z",
+      "url": "https://www.g4media.ro/emirates-pe-primul-loc-in-topul-revistei-time-al-celor-mai-bune-companii-aeriene-din-lume-pentru-2027-nicio-companie-europeana-nu-intra-in-primele-zece.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "cele mai bune companii aeriene 2027",
+        "companii europene",
+        "top revista time"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/profimedia-1143174689-scaled.jpg",
+      "imageAlt": "Emirates, pe primul loc în topul revistei TIME al celor mai bune companii aeriene din lume pentru 2027 / Nicio companie europeană nu intră în primele zece",
+      "addedAt": "2026-11-22T22:49:36.280Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-digi24-un-autovehicul-al-stb-a-fost-implicat-intr-360af2",
+      "title": "Un autovehicul al STB a fost implicat într-un accident rutier. Trei pasageri au fost răniți",
+      "summary": "Un autovehicul al Societăţii de Transport Bucureşti a fost implicat îmtr-un accident rutier care s-a produs duminică seară pe Şoseaua Bucureşti-Târgovişte, trei persoane fiind rănite.",
+      "date": "2026-11-22T20:55:34.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/evenimente/un-autovehicul-al-stb-a-fost-implicat-intr-un-accident-rutier-trei-pasageri-au-fost-raniti-4048233",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjUl/MkYxMSUyRjA3JTJGMjQzMjMzN18yNDMy/MzM3X3N0Yi5qcGcmaGFzaD0zZGEyNGY5/OGYzMDUyODBmNWEzMzM3NDE1ZWU4ZGM0ZA==.jpg",
+      "imageAlt": "Un autovehicul al STB a fost implicat într-un accident rutier. Trei pasageri au fost răniți",
+      "addedAt": "2026-11-22T22:49:34.975Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-g4media-sub-amenintarea-lui-le-pen-germania-vrea-un-569303",
+      "title": "Sub amenințarea lui Le Pen, Germania vrea un mecanism prin care finanțarea Ucrainei să fie protejată de eventuale veto-uri ale guvernelor UE",
+      "summary": "Germania încearcă să introducă în următorul buget pe termen lung al Uniunii Europene un mecanism de finanțare pentru Ucraina care să nu poată fi blocat ușor de guvernele statelor membre, relatează Politico. Inițiativa Berlinului urmărește inclusiv să împiedice eventuale obstrucționări din partea unor viitoare administrații eurosceptice, precum un posibil guvern condus de Marine Le Pen […] © G4Media.ro .",
+      "date": "2026-11-22T20:50:32.000Z",
+      "url": "https://www.g4media.ro/sub-amenintarea-lui-le-pen-germania-vrea-un-mecanism-prin-care-finantarea-ucrainei-sa-fie-protejata-de-eventuale-veto-uri-ale-guvernelor-ue.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "amenintare extrema dreapta",
+        "finantare ucraina",
+        "germania mecanism"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "politika",
+      "image": "https://www.g4media.ro/wp-content/uploads/2022/06/d948c684-c7fc-405e-84de-8b49ae580b91-e1656072217299.jpg",
+      "imageAlt": "Sub amenințarea lui Le Pen, Germania vrea un mecanism prin care finanțarea Ucrainei să fie protejată de eventuale veto-uri ale guvernelor UE",
+      "addedAt": "2026-11-22T22:49:36.280Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-hotnews-nodul-dintre-a0-si-a3-a-fost-umflat-la-208-26f9ea",
+      "title": "„Nodul dintre A0 și A3 a fost umflat la 208 hectare”, susține un fost ministru al Transporturilor. Acuzații la adresa șefului CNAIR",
+      "summary": "Deputatul USR Cătălin Drulă, fost ministru al Transporturilor, susține că nodul rutier dintre Autostrada A0 şi Autostrada A3 este construit pe o suprafaţă mai mare decât era necesar, ceea ce a generat cheltuieli suplimentare de 61 de milioane de lei, precum şi mai mult timp în trafic pentru şoferi, informează Agerpres. Nodul rutier de lângă …",
+      "date": "2026-11-22T20:46:00.000Z",
+      "url": "https://hotnews.ro/nodul-dintre-a0-si-a3-a-fost-umflat-la-208-hectare-sustine-un-fost-ministru-al-transporturilor-acuzatii-la-adresa-sefului-cnair-2411164",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "„Nodul dintre A0 și A3 a fost umflat la 208 hectare”, susține un fost ministru al Transporturilor. Acuzații la adresa șefului CNAIR",
+      "addedAt": "2026-11-22T22:49:30.839Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-digi24-se-teme-aur-de-nicusor-dan-dungaciu-vor-fi-efea7d",
+      "title": "Se teme AUR de Nicușor Dan? Dungaciu: „Vor fi diverse presiuni de un tip sau de altul”",
+      "summary": "Prim-vicepreședintele AUR, Dan Dungaciu, a spus la Digi24 că temerile președintelui Nicușor Dan față de rezultatul alegerilor din 2028 sunt legate de faptul că „România e guvernată prost”. Pe de altă parte, întrebat dacă AUR se teme de Nicușor Dan, Dungaciu a susținut că se așteaptă la „presiuni, nu toate politice”.",
+      "date": "2026-11-22T20:35:40.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/se-teme-aur-de-nicusor-dan-dungaciu-vor-fi-diverse-presiuni-de-un-tip-sau-de-altul-4048219",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwNCUyRjI5JTJGMjcwMzUyMl8yNzAz/NTIyX2Rhbi1kdW5nYWNpdS5qcGcmaGFz/aD00ODNiMGFlMzZlNTc0MTVjZGQ1NGRjMWQxODZlNWJhOQ==.jpg",
+      "imageAlt": "Se teme AUR de Nicușor Dan? Dungaciu: „Vor fi diverse presiuni de un tip sau de altul”",
+      "addedAt": "2026-11-22T22:49:34.975Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-g4media-o-teorie-despre-originea-vietii-pe-pamant-367cea",
+      "title": "O teorie despre originea vieții pe Pământ, pusă sub semnul întrebării de simulări / Ce rol au avut cometele",
+      "summary": "O teorie potrivit căreia cometele au adus pe Pământ moleculele necesare apariției vieții ar putea avea nevoie de o revizuire, după ce noi simulări computerizate au arătat că aceste corpuri cerești ar fi avut șanse foarte mici să transporte până la suprafața planetei substanțe organice intacte, relatează CNN. Cercetarea, realizată de o echipă de la […] © G4Media.ro .",
+      "date": "2026-11-22T20:30:50.000Z",
+      "url": "https://www.g4media.ro/o-teorie-despre-originea-vietii-pe-pamant-pusa-sub-semnul-intrebarii-de-simulari-ce-rol-au-avut-cometele.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "originea vieții",
+        "rol comete",
+        "teorie simulare"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2023/01/cometa-cer-stele-apus-e1673104402606.jpg",
+      "imageAlt": "O teorie despre originea vieții pe Pământ, pusă sub semnul întrebării de simulări / Ce rol au avut cometele",
+      "addedAt": "2026-11-22T22:49:36.280Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-g4media-video-incendiu-puternic-la-un-hotel-din-6d0e4e",
+      "title": "VIDEO | Incendiu puternic la un hotel din Poiana Brașov: Flăcările au cuprins acoperișul, ultimele 3 etaje și mansarda, pe o suprafață de 2.000 mp / 150 de persoane evacuate / Nu…",
+      "summary": "Un incendiu a izbucnit duminică seara la un hotel din stațiunea Poiana Brașov, flăcările manifestându-se la nivelul mansardei și al fațadei clădirii, pe o suprafață de aproximativ 300 de metri pătrați. UPDATE 22:53 Incendiul de la hotelul din stațiunea Poiana Brașov s-a extins la acoperiș, mansardă și ultimele trei etaje ale clădirii, pe o suprafață […] © G4Media.ro .",
+      "date": "2026-11-22T20:30:44.000Z",
+      "url": "https://www.g4media.ro/video-incendiu-la-mansarda-unui-hotel-din-poiana-brasov-pompierii-intervin-cu-patru-autospeciale-de-stingere.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "incendiu hotel",
+        "poiana brasov"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/WhatsApp-Image-2026-11-22-at-22.59.38.jpeg",
+      "imageAlt": "VIDEO | Incendiu puternic la un hotel din Poiana Brașov: Flăcările au cuprins acoperișul, ultimele 3 etaje și mansarda, pe o suprafață de 2.000 mp / 150 de persoane evacuate / Nu s",
+      "addedAt": "2026-11-22T22:49:36.280Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-hotnews-incendiu-puternic-la-hotelul-alpin-din-dab2ad",
+      "title": "Incendiu puternic la hotelul Alpin din Poiana Brașov. Intervin pompieri din patru județe",
+      "summary": "Un incendiu a izbucnit, duminică seara, la mansarda şi la faţada Hotelului Alpin din Poiana Braşov, pompierii brașoveni intervenind cu mai multe autospeciale pentru a preveni extinderea focului. Forţele de intervenţie au fost suplimentate din judeţele Prahova, Covasna şi Argeş. Primele informaţii arată că nu sunt persoane surprinse în clădire, scrie News.ro. „În jurul orei …",
+      "date": "2026-11-22T20:14:13.000Z",
+      "url": "https://hotnews.ro/incendiu-la-un-hotel-din-poiana-brasov-intervin-pompieri-din-patru-judete-2411165",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Incendiu puternic la hotelul Alpin din Poiana Brașov. Intervin pompieri din patru județe",
+      "addedAt": "2026-11-22T22:49:30.839Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-g4media-un-jandarm-din-bacau-a-castigat-patru-53806b",
+      "title": "Un jandarm din Bacău a câștigat patru medalii la Cupa Mondială de skandenberg de la Constanța",
+      "summary": "Un jandarm din cadrul Inspectoratului de Jandarmi Județean (IJJ) „Ștefan cel Mare” Bacău a obținut patru medalii la competiția internațională de skandenberg Iron Arm World Cup, desfășurată în acest weekend la Constanța, scrie Agerpres. Sergentul major Bogdan Tarnoviețchi a câștigat o medalie de aur, două de argint și una de bronz, la categoriile Tineret și […] © G4Media.ro .",
+      "date": "2026-11-22T20:10:10.000Z",
+      "url": "https://www.g4media.ro/un-jandarm-din-bacau-a-castigat-patru-medalii-la-cupa-mondiala-de-skandenberg-de-la-constanta.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "cupa mondiala skandenberg",
+        "jandarm bacau"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/Captura-de-ecran-2026-11-22-171705.png",
+      "imageAlt": "Un jandarm din Bacău a câștigat patru medalii la Cupa Mondială de skandenberg de la Constanța",
+      "addedAt": "2026-11-22T22:49:36.280Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-g4media-premierul-niculescu-intalnire-cu-ministrul-9b1cdd",
+      "title": "Premierul Niculescu, întâlnire cu ministrul de Externe moldovean: România sprijină consolidarea capacităților de apărare ale Republicii Moldova",
+      "summary": "Premierul Luca Niculescu a discutat duminică, la Palatul Victoria, cu ministrul Afacerilor Externe al Republicii Moldova, Mihai Popșoi, și cu vicepremierul pentru Reintegrare, Valeriu Chiveri, despre cooperarea bilaterală, securitatea regională și parcursul european al Republicii Moldova. În urma întâlnirii, șeful Guvernului a reafirmat sprijinul României pentru consolidarea rezilienței statului vecin, inclusiv prin dezvoltarea capacităților sale […] © G4Media.ro .",
+      "date": "2026-11-22T19:58:51.000Z",
+      "url": "https://www.g4media.ro/premierul-niculescu-intalnire-cu-ministrul-de-externe-moldovean-romania-sprijina-consolidarea-capacitatilor-de-aparare-ale-republicii-moldova.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "luca niculescu",
+        "mihai popşoi",
+        "ministrul de externe moldovean"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "sigurnost",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/927531628_1172376895483455_717122849072210336_n.jpg",
+      "imageAlt": "Premierul Niculescu, întâlnire cu ministrul de Externe moldovean: România sprijină consolidarea capacităților de apărare ale Republicii Moldova",
+      "addedAt": "2026-11-22T22:49:36.281Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-digi24-valeriu-stoica-reforma-administrativ-386014",
+      "title": "Valeriu Stoica: Reforma administrativ-teritorială este mai mult decât proba de foc. Avem două mari probleme",
+      "summary": "Fostul președinte al PNL Valeriu Stoica a afirmat, duminică seara, în direct la Digi24, că reforma administrativ-teritorială este „mai mult decât proba de foc” și că presupune rezolvarea a două probleme majore: simplificarea structurilor județene și comasarea comunelor. El a subliniat că reforma nu poate fi realizată de un singur partid, ci este nevoie de un acord între toate formațiunile parlamentare, iar președintele României ar trebui „să solidarizeze partidele”.",
+      "date": "2026-11-22T19:46:27.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/valeriu-stoica-reforma-administrativ-teritoriala-este-mai-mult-decat-proba-de-foc-avem-doua-mari-probleme-4048181",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjIyJTJGMzA4MTk2NF8zMDgx/OTY0X1BUYzRNQ1pvUFRRME1DWm9ZWE5v/UFRsaVl6UmxaamhrTXpKbE1USm1ZVE0y/WVRZeU1UTTRNR1k1WmpFME9UZzJfdGh1/bWJfLmpwZyZoYXNoPWY5MWQ0NzNlZmU3ODkxY2VlNTc2ZDhkM2VhNjQ1YWIx.jpg",
+      "imageAlt": "Valeriu Stoica: Reforma administrativ-teritorială este mai mult decât proba de foc. Avem două mari probleme",
+      "addedAt": "2026-11-22T22:49:34.975Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-hotnews-adrian-mihalcea-daramat-dupa-ce-uta-a-fost-aa9876",
+      "title": "Adrian Mihalcea, dărâmat după ce UTA a fost zdrobită de Universitatea Craiova: „Îmi venea să plâng”",
+      "summary": "Adrian Mihalcea, antrenorul formației UTA Arad, a recunoscut că jucătorii săi au cedat total în fața Universității Craiova, fiind învinși pe teren propriu cu un categoric 2-6, duminică, în etapa a 16-a din SuperLiga. Tehnicianul s-a arătat copleșit de reacția publicului arădean, care a ales să aplaude jucătorii în loc să îi taxeze dur după …",
+      "date": "2026-11-22T19:39:47.000Z",
+      "url": "https://hotnews.ro/adrian-mihalcea-daramat-dupa-ce-uta-a-fost-zdrobita-de-universitatea-craiova-imi-venea-sa-plang-2411159",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "SuperLiga"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "ekonomija",
+      "image": "",
+      "imageAlt": "Adrian Mihalcea, dărâmat după ce UTA a fost zdrobită de Universitatea Craiova: „Îmi venea să plâng”",
+      "addedAt": "2026-11-22T22:49:30.839Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-hotnews-la-botezul-cu-lideri-psd-de-la-timisoara-c64a31",
+      "title": "La botezul cu lideri PSD de la Timișoara, „erau genți mai scumpe de câteva ori decât șinșila Sorinei Docuz”. „Și l-au anihilat complet pe Ciolacu”",
+      "summary": "Primarul PSD al Buzăului, Constantin Toma, a declarat, la Digi24, că Marcel Ciolacu a fost „executat” de conducerea partidului după botezul copilului lui Alfred Simonis, unde naș a fost Sorin Grindeanu. Toma susține că, deși discuția s-a axat pe haina de blană a partenerei lui Ciolacu, la petrecere au fost prezente femei cu genți „de …",
+      "date": "2026-11-22T19:26:31.000Z",
+      "url": "https://hotnews.ro/noi-dezvaluiri-despre-botezul-de-la-timisoara-la-care-au-participat-liderii-psd-erau-genti-mai-scumpe-de-cateva-ori-decat-sinsila-sorinei-docuz-2411150",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Politic"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "La botezul cu lideri PSD de la Timișoara, „erau genți mai scumpe de câteva ori decât șinșila Sorinei Docuz”. „Și l-au anihilat complet pe Ciolacu”",
+      "addedAt": "2026-11-22T22:49:30.839Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-hotnews-cu-mai-multi-ani-inainte-de-scandalul-de-cd51e0",
+      "title": "Cu mai mulți ani înainte de scandalul de spionaj de la Nvidia, China a declanșat o operațiune secretă privind AI. Abia acum ies la iveală detalii",
+      "summary": "Agenția de spionaj a Chinei derulează o campanie secretă pentru a ajuta companiile chinezești să obțină cipuri avansate necesare dezvoltării AI și obținerii de informații în acest domeniu, scrie The New York Times. Această campanie este considerată de o importanță majoră pentru regimul de la Beijing, fiind încredințată direct unor lideri proeminenți ai regimului. Obiectivul …",
+      "date": "2026-11-22T18:54:25.000Z",
+      "url": "https://hotnews.ro/china-a-declansat-o-operatiune-secreta-privind-ai-detalii-2411053",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Cu mai mulți ani înainte de scandalul de spionaj de la Nvidia, China a declanșat o operațiune secretă privind AI. Abia acum ies la iveală detalii",
+      "addedAt": "2026-11-22T22:49:30.839Z"
+    },
+    {
+      "slug": "bukurest-2026-11-22-hotnews-armament-testat-in-premiera-de-armata-43d1d8",
+      "title": "Armament testat în premieră de armata germană. Cum vrea Bundeswehr-ul să folosească inteligența artificială",
+      "summary": "Armata germană a început duminică primele teste tactice cu drone kamikaze în Lituania, în cadrul celor mai ample exerciţii militare desfăşurate până acum de Germania în această ţară. Militarii testează şi un sistem bazat pe inteligenţă artificială pentru identificarea ţintelor, în perspectiva consolidării prezenţei permanente a Bundeswehr pe flancul estic al NATO, transmite Reuters, preluată …",
+      "date": "2026-11-22T18:40:50.000Z",
+      "url": "https://hotnews.ro/armament-testat-in-premiera-de-armata-germana-cum-vrea-bundeswehr-ul-sa-foloseasca-inteligenta-artificiala-2411137",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Adrian Ilie",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Armament testat în premieră de armata germană. Cum vrea Bundeswehr-ul să folosească inteligența artificială",
+      "addedAt": "2026-11-22T22:49:30.840Z"
+    },
     {
       "slug": "bukurest-2026-11-22-agerpres-fotbal-victorie-clara-a-universitatii-8c1bb2",
       "title": "Fotbal: Victorie clară a Universității Craiova, 6-2 cu UTA, la Arad, în Superligă",
