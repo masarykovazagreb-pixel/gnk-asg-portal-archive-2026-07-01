@@ -76,7 +76,7 @@ test('Fast lane is narrowly enabled; other portal publication remains disabled',
  assert.match(auto,/content\/hr-news\/approved\/\*\.json/);
  assert.doesNotMatch(auto,/^\s+schedule:\s*$/m);
  assert.match(auto,/--diff-filter=A/);
- assert.match(auto,/hr-news-fastlane-preflight-v1\.mjs/);
+ assert.match(auto,/hr-news-fastlane-batch-v1\.mjs/);
  assert.match(release,/channels\?\.hrNewsFastlanePublish\?\.enabled/);
  assert.match(release,/gh workflow run all-gates-v1\.yml/);
  assert.match(release,/gh workflow run site-functional-readiness\.yml/);
