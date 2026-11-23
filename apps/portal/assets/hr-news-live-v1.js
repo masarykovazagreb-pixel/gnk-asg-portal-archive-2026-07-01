@@ -86,6 +86,28 @@
      draw();
    }finally{loading=false;$('refresh').disabled=false;}
  }
+ async function loadOriginals(){
+   const holder=$('originalItems');if(!holder)return;
+   try{
+     const d=await json('/data/hr-news-original-v1.json');
+     if(!d||!Array.isArray(d.items)||!d.items.length)return;
+     const frag=document.createDocumentFragment();
+     for(const article of d.items.slice(0,20)){
+       if(!article||!article.slug||!article.title||!article.url)continue;
+       const url=new URL(article.url);
+       if(url.origin!=='https://gnk-asg.hr'||!/^\/news\/clanci\/[a-z0-9-]+\/$/.test(url.pathname))continue;
+       const card=node('li','orig-card'),a=node('a');a.href=url.pathname;
+       if(/^\/assets\/editorial\/hr-news\/[a-z0-9-]+\.svg$/.test(article.image||'')){
+         const img=document.createElement('img');img.src=article.image;
+         img.width=1200;img.height=630;img.loading='lazy';img.alt='Izvorna ilustracija: '+article.title;a.appendChild(img);
+       }
+       const h=node('h3','',article.title);a.appendChild(h);card.appendChild(a);
+       card.appendChild(node('p','',new Date(article.publishedAt).toLocaleDateString('hr-HR',{timeZone:'Europe/Zagreb'})+' · '+String(article.author||'Uredništvo AKTUAL MEDIA')));
+       frag.appendChild(card);
+     }
+     if(frag.childNodes.length)holder.replaceChildren(frag);
+   }catch{/* No approved HR News originals yet; existing /objave/ archive remains linked. */}
+ }
  $('search').addEventListener('input',e=>{query=e.target.value.trim().toLocaleLowerCase('hr');visible=PAGE_SIZE;draw();});
  document.querySelectorAll('[data-hours]').forEach(b=>b.addEventListener('click',()=>{
    hours=Number(b.dataset.hours);visible=PAGE_SIZE;
@@ -96,4 +118,5 @@
  window.setInterval(()=>{if(!document.hidden&&Date.now()-lastRefresh>240000)update();},60000);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-lastRefresh>240000)update();});
  update();
+ loadOriginals();
 })();
