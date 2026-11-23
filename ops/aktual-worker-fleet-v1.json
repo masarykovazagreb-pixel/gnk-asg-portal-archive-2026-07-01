@@ -1,0 +1,246 @@
+{
+  "schema_version": "AKTUAL_WORKER_FLEET_V1",
+  "created_on": "2026-11-23",
+  "policy": "read-only audits and editorial assignments; no direct publishing or deploy",
+  "execution": {
+    "single_daily_existing_workflow": true,
+    "no_new_cron": true,
+    "max_channels_per_run": 20,
+    "max_role_tasks_per_channel": 20,
+    "max_source_network_requests": 0,
+    "max_ai_model_calls": 0,
+    "write_private_artifact_only": true
+  },
+  "governance": {
+    "source_verification_required": true,
+    "editorial_review_required": true,
+    "rights_clearance_required": true,
+    "full_release_gate_required": true,
+    "cloudflare_only": true,
+    "no_external_photos_without_license": true,
+    "no_cross_site_keyword_stuffing": true,
+    "no_unverified_201_live_claim": true
+  },
+  "roles": [
+    {
+      "id": "source-discovery",
+      "label": "Istraživač javnih izvora",
+      "team": "editorial",
+      "mode": "queue",
+      "enabled": true,
+      "priority": "high",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "source-independence",
+      "label": "Provjera neovisnosti izvora",
+      "team": "editorial",
+      "mode": "queue",
+      "enabled": true,
+      "priority": "high",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "fact-evidence",
+      "label": "Provjera činjeničnih tvrdnji",
+      "team": "editorial",
+      "mode": "queue",
+      "enabled": true,
+      "priority": "high",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "rights-review",
+      "label": "Autorska prava i fotografije",
+      "team": "editorial",
+      "mode": "queue",
+      "enabled": true,
+      "priority": "high",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "original-draft",
+      "label": "Autor originalnih nacrta",
+      "team": "editorial",
+      "mode": "queue",
+      "enabled": true,
+      "priority": "high",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "copy-editor",
+      "label": "Urednička lektura",
+      "team": "editorial",
+      "mode": "queue",
+      "enabled": true,
+      "priority": "high",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "translation-review",
+      "label": "Provjera prijevoda",
+      "team": "editorial",
+      "mode": "queue",
+      "enabled": true,
+      "priority": "high",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "seo-title",
+      "label": "SEO naslov",
+      "team": "seo",
+      "mode": "audit",
+      "enabled": true,
+      "priority": "normal",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "seo-description",
+      "label": "SEO opis",
+      "team": "seo",
+      "mode": "audit",
+      "enabled": true,
+      "priority": "normal",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "canonical",
+      "label": "Kanonske adrese",
+      "team": "seo",
+      "mode": "audit",
+      "enabled": true,
+      "priority": "normal",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "hreflang",
+      "label": "Jezici i lokalizacija",
+      "team": "seo",
+      "mode": "audit",
+      "enabled": true,
+      "priority": "normal",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "jsonld",
+      "label": "Strukturirani podaci",
+      "team": "seo",
+      "mode": "audit",
+      "enabled": true,
+      "priority": "normal",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "sitemap",
+      "label": "Sitemap indeksiranje",
+      "team": "seo",
+      "mode": "audit",
+      "enabled": true,
+      "priority": "normal",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "robots",
+      "label": "Crawl kontrola",
+      "team": "seo",
+      "mode": "audit",
+      "enabled": true,
+      "priority": "normal",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "open-graph",
+      "label": "Open Graph kartice",
+      "team": "seo",
+      "mode": "audit",
+      "enabled": true,
+      "priority": "normal",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "favicon",
+      "label": "Vizualni identitet",
+      "team": "quality",
+      "mode": "audit",
+      "enabled": true,
+      "priority": "normal",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "freshness",
+      "label": "Svježina izvora",
+      "team": "quality",
+      "mode": "audit",
+      "enabled": true,
+      "priority": "high",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "accessibility",
+      "label": "Pristupačnost",
+      "team": "quality",
+      "mode": "audit",
+      "enabled": true,
+      "priority": "high",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "release-readiness",
+      "label": "Gate i release dokaz",
+      "team": "quality",
+      "mode": "queue",
+      "enabled": true,
+      "priority": "high",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    },
+    {
+      "id": "distribution-review",
+      "label": "Distribucija tek nakon HTTPS dokaza",
+      "team": "quality",
+      "mode": "queue",
+      "enabled": true,
+      "priority": "high",
+      "publish": false,
+      "merge": false,
+      "deploy": false
+    }
+  ]
+}
