@@ -12,7 +12,7 @@ const ROOT='apps/portal/data/';
 const REG=JSON.parse(fs.readFileSync(ROOT+'hr-news-sources-v1.json','utf8'));
 const OUT=process.env.HR_NEWS_OUT||ROOT+'hr-news-feed-v1.json';
 const QUEUE=process.env.HR_NEWS_QUEUE_OUT||'artifacts/hr-news-editorial-queue-v1.json';
-const MAX=200, PITCHES=20, now=Date.now(), MAX_AGE=(REG.maxAgeHours||168)*3600000;
+const MAX=200, PITCHES=30, now=Date.now(), MAX_AGE=(REG.maxAgeHours||168)*3600000;
 const enabled=REG.sources.filter(s=>s.enabled);
 const publisher=hostname=>enabled.find(s=>hostname===s.domain||hostname.endsWith('.'+s.domain));
 const esc=s=>String(s||'')
@@ -95,10 +95,10 @@ if(!result.length) {
  process.exit(1);
 }
 const rows=result.map(item=>({...item,id:crypto.createHash('sha256').update(item.url).digest('hex').slice(0,20)}));
-const stats={fetchedAt:new Date(now).toISOString(),total:rows.length,target:MAX,sourceFeedsConfigured:enabled.length,successfulFeeds:attempts.filter(x=>x.status==='ok').length,failedFeeds:attempts.filter(x=>x.status==='failed').length,verifiedIndependentReporting:0,originalArticlesPublished:0};
+const stats={fetchedAt:new Date(now).toISOString(),total:rows.length,target:MAX,minimumDesiredExternalLinks:100,externalLinkTargetMet:rows.length>=100,shortfallTo100:Math.max(0,100-rows.length),sourceFeedsConfigured:enabled.length,successfulFeeds:attempts.filter(x=>x.status==='ok').length,failedFeeds:attempts.filter(x=>x.status==='failed').length,verifiedIndependentReporting:0,originalArticlesPublished:0};
 const publication={version:1,scope:'HR NEWS',policy:'external publisher title and direct link only; no third-party body or photographs',...stats,sourceChecks:attempts.sort((a,b)=>a.source.localeCompare(b.source)),items:rows};
 const pitches=rows.slice(0,PITCHES).map((x,i)=>({pitchId:'hr-'+x.id,source:x.source,sourceUrl:x.url,sourcePublishedAt:x.publishedAt,topicPrompt:x.title,originalArticleBody:null,independentFactCheck:false,editorApproved:false,imageRightsVerified:false,publicationStatus:'research_queue_only',agentLane:(i%10)+1}));
-const queue={version:1,day:new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zagreb',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(now)),targetOriginalReports:20,actualApprovedReports:0,totalPitches:pitches.length,releaseGate:'human_edit_and_source_verification_required',pitches};
+const queue={version:1,day:new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zagreb',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(now)),targetOriginalReports:30,actualApprovedReports:0,totalPitches:pitches.length,releaseGate:'human_edit_and_source_verification_required',pitches};
 fs.writeFileSync(OUT,JSON.stringify(publication,null,2)+'\n');
 fs.mkdirSync('artifacts',{recursive:true});
 fs.writeFileSync(QUEUE,JSON.stringify(queue,null,2)+'\n');
