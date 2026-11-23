@@ -73,3 +73,13 @@ test('unsafe editorial approvals and duplicate draft IDs are rejected',()=>{
  assert.throws(()=>evaluateEditorialDraft({...d,publication_url:'https://gnk-asg.hr/objave/unverified/'}));
  assert.throws(()=>validateFleet(fleet,channels,ideas,[d,d]));
 });
+
+test('SEO audit accepts semantically equivalent attributes regardless of their order',()=>{
+ const reordered=html
+  .replace(/<meta name="description" content="([^"]+)">/, '<meta content="$1" name="description">')
+  .replace('<link rel="canonical" href="'+url+'">','<link href="'+url+'" rel="canonical">')
+  .replace('<link rel="alternate" hreflang="hr" href="'+url+'">','<link href="'+url+'" hreflang="hr" rel="alternate">')
+  .replace('<meta property="og:title" content="Kanal Zagreb">','<meta content="Kanal Zagreb" property="og:title">');
+ const report=evaluateChannel(channels[0],reordered,{index,robots});
+ assert.equal(report.findings.length,0);
+});
