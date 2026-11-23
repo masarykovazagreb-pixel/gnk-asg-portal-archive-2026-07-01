@@ -34,6 +34,8 @@ jobs:
       - name: Reproduce all seven unresolved release checks with full logs
         shell: bash
         run: |
+          # Run all checks even if an early one fails; preserve each exit status.
+          set +e
           set -u -o pipefail
           mkdir -p artifacts/release-blockers-diagnostics
           failed=0
