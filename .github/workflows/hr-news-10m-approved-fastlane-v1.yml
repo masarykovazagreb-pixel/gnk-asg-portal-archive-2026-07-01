@@ -81,7 +81,6 @@ jobs:
           node scripts/hr-news-sitemap-v1.mjs
           node --test tests/test-hr-news-fastlane-v1.mjs
           node scripts/test-hr-news-v1.mjs
-          node scripts/validate_publication_sitemap_registry_v1.py --help >/dev/null 2>&1 || true
       - name: Commit exactly the reviewed article artifacts, without force
         id: publication
         shell: bash
