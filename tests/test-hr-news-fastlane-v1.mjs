@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {assessFastlane,verifyApprovedPath} from '../scripts/hr-news-fastlane-preflight-v1.mjs';
+import {parseApprovedBatch,checkApprovedBatch} from '../scripts/hr-news-fastlane-batch-v1.mjs';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -97,4 +98,25 @@ test('Verifier is a separate job so protected deploy cannot deadlock in the main
  assert.match(wf,/x-gnk-deploy-revision: \$SHA/);
  assert.match(wf,/VERIFIED_LIVE/);
  assert.match(wf,/tenMinuteGoalAchieved/);
+});
+
+test('Approve 1–20 articles as one atomic batch; reject duplicates and missing signoff',()=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'hr-news-batch-'));
+ try{
+  const dir=path.join(root,'content/hr-news/approved');fs.mkdirSync(dir,{recursive:true});
+  const a=valid(),b=valid();b.slug='drugi-izvorni-clanak';
+  fs.writeFileSync(path.join(dir,'prvi.json'),JSON.stringify(a));
+  fs.writeFileSync(path.join(dir,'drugi.json'),JSON.stringify(b));
+  const both='content/hr-news/approved/prvi.json,content/hr-news/approved/drugi.json';
+  const output=checkApprovedBatch(both,{cwd:root,now});
+  assert.equal(output.count,2);
+  assert.deepEqual(output.slugs,['test-originalnog-clanka','drugi-izvorni-clanak']);
+  assert.equal(output.publicationStatus,'BATCH_REVIEWED_NOT_LIVE');
+  assert.equal(parseApprovedBatch(both).length,2);
+  assert.throws(()=>parseApprovedBatch('content/hr-news/approved/prvi.json,content/hr-news/approved/prvi.json'),/Duplicate/);
+  assert.throws(()=>parseApprovedBatch('content/hr-news/drafts/prvi.json'),/Only/);
+  assert.throws(()=>parseApprovedBatch(Array(21).fill('content/hr-news/approved/one.json').join(',')),/1–20/);
+  b.independentFactCheck=false;fs.writeFileSync(path.join(dir,'drugi.json'),JSON.stringify(b));
+  assert.throws(()=>checkApprovedBatch(both,{cwd:root,now}),/HOLD/);
+ } finally { fs.rmSync(root,{recursive:true,force:true}); }
 });
