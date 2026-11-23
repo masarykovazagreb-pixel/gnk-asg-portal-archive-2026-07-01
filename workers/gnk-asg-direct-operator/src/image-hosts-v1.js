@@ -42,6 +42,7 @@ export const REGION_IMAGE_HOSTS = [
   ['n1info.si', 'N1 Slovenija', 'SI'],
   ['slovenskenovice.delo.si', 'Slovenske novice', 'SI'],
   ['www.delo.si', 'Delo', 'SI'],
+  ['img.rtvcdn.si', 'RTV Slovenija', 'SI'],
   ['iasstorage.vecer.com', 'Večer', 'SI'],
   // Mađarska
   ['img.hvg.hu', 'HVG', 'HU'],
@@ -65,6 +66,7 @@ export const REGION_IMAGE_HOSTS = [
   ['nation.africa', 'Daily Nation', 'KE'],
   ['www.monitor.co.ug', 'Daily Monitor', 'UG'],
   ['capitalfm.africa', 'Capital FM', 'KE'],
+  ['cdn.standardmedia.co.ke', 'The Standard', 'KE'],
   ['www.kbc.co.ke', 'KBC', 'KE'],
   ['www.madamasr.com', 'Mada Masr', 'EG'],
   ['images.dailynewsegypt.com', 'Daily News Egypt', 'EG'],
