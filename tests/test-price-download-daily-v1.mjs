@@ -32,3 +32,20 @@ test('Credentials sent only in request header, redirects rejected',async()=>{
   assert.equal(received[0].init.redirect,'error');
   assert.ok(!received[0].url.includes('dummy-not-real'));
 });
+
+test('Reject false zero prices, credential-bearing URLs and future observation timestamps',()=>{
+  const row={id:'one',title:'Example',retailer:'Example retailer',price:2.5,
+    currency:'EUR',observedAt:'2026-11-17T12:00:00Z',sourceUrl:'https://example.org/source'};
+  const check=(changes)=>validatePriceRows({schema:'aktual-price-adapter-v1',items:[{...row,...changes}]});
+  for(const value of ['',null,'0','2.5',undefined,NaN,Infinity])
+    assert.throws(()=>check({price:value}),/Invalid price row/,'price must be a finite number');
+  for(const sourceUrl of [
+    'https://user:password@example.org/source',
+    'https://127.0.0.1/source',
+    'https://service.local/source',
+    'https://example.org/source#fragment'
+  ]) assert.throws(()=>check({sourceUrl}),/Invalid price row/,'source URL must be safe for attribution');
+  assert.throws(()=>check({observedAt:new Date(Date.now()+60*60_000).toISOString()}),/Invalid price row/);
+  assert.throws(()=>check({observedAt:'November 17, 2026'}),/Invalid price row/);
+  assert.deepEqual(check({price:0})[0].price,0,'actual numeric zero remains valid');
+});
