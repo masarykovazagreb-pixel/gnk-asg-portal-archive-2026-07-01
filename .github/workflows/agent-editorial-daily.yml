@@ -16,6 +16,14 @@ on:
     # 05:52 UTC = 07:52 Zagreb: nakon jutarnjeg osvježavanja izvora, prije dnevnog izdanja.
     - cron: '52 5 * * *'
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/agents/aktual-worker-fleet-v1.mjs'
+      - 'tests/test-aktual-worker-fleet-v1.mjs'
+      - 'ops/aktual-worker-fleet-v1.json'
+      - 'content/editorial/aktual-ideas-2026-11-23.json'
+      - 'content/editorial/aktual-original-drafts-2026-11-23.json'
+      - '.github/workflows/agent-editorial-daily.yml'
   push:
     paths:
       - 'apps/agents/**'
@@ -66,6 +74,7 @@ jobs:
           node --test tests/test-aktual-worker-fleet-v1.mjs
 
       - name: Prekidač uredničkog tijeka
+        if: github.event_name != 'pull_request'
         id: editorial_switch
         run: |
           node --input-type=module -e 'import {killSwitchState} from "./apps/agents/lib/policy-v1.mjs"; import {appendFileSync} from "node:fs"; const s=killSwitchState(); appendFileSync(process.env.GITHUB_OUTPUT, `enabled=${s.enabled ? "true" : "false"}\n`); console.log(s.enabled ? "Urednički tijek omogućen" : "Urednički tijek zaustavljen: " + s.reason);'
