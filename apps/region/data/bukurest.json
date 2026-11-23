@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-23T10:43:28.200Z",
+  "updatedAt": "2026-11-23T20:55:37.529Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: This operation was aborted"
+        "https://www.agerpres.ro/rss: This operation was aborted",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
       ],
-      "checkedAt": "2026-11-23T10:43:21.623Z"
+      "checkedAt": "2026-11-23T20:55:30.547Z"
     },
     {
       "id": "hotnews",
@@ -26,17 +27,17 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-23T10:43:21.747Z"
+      "checkedAt": "2026-11-23T20:55:30.738Z"
     },
     {
       "id": "zf",
       "name": "Ziarul Financiar",
       "url": "https://www.zf.ro/rss",
       "ok": true,
-      "fetched": 20,
+      "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-23T10:43:24.128Z"
+      "checkedAt": "2026-11-23T20:55:32.519Z"
     },
     {
       "id": "profit",
@@ -46,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-23T10:43:24.444Z"
+      "checkedAt": "2026-11-23T20:55:32.936Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 182,
+      "fetched": 212,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-23T10:43:26.286Z"
+      "checkedAt": "2026-11-23T20:55:35.118Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-23T10:43:27.935Z"
+      "checkedAt": "2026-11-23T20:55:36.560Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,590 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-23T10:43:28.198Z"
+      "checkedAt": "2026-11-23T20:55:37.526Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-23-g4media-vreau-sa-avertizez-fiecare-stat-care-se-749b7e",
+      "title": "”Vreau să avertizez fiecare stat care se pregăteşte de alegeri” / Maia Sandu a cerut la Adunarea Parlamentară a NATO o strategie comună împotriva ingerinţelor ruseşti",
+      "summary": "Statele europene trebuie să înceapă protejarea alegerilor cu mult înaintea campaniilor electorale, să identifice şi să destructureze reţelele financiare prin care Rusia îşi finanţează operaţiunile de influenţă şi să-şi schimbe strategia de comunicare pentru a contracara propaganda Kremlinului. Sunt câteva dintre măsurile propuse de preşedintele Maia Sandu în discursul susţinut la plenara Adunării Parlamentare a […] © G4Media.ro .",
+      "date": "2026-11-23T20:49:56.000Z",
+      "url": "https://www.g4media.ro/vreau-sa-avertizez-fiecare-stat-care-se-pregateste-de-alegeri-maia-sandu-a-cerut-la-adunarea-parlamentara-a-nato-o-strategie-comuna-impotriva-ingerintelor-rusesti.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "alegeri",
+        "cum influenteaza rusia alegerile",
+        "maia sandu despre rusia"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "politika",
+      "image": "https://www.g4media.ro/wp-content/uploads/2024/11/profimedia-0929853854.jpg",
+      "imageAlt": "”Vreau să avertizez fiecare stat care se pregăteşte de alegeri” / Maia Sandu a cerut la Adunarea Parlamentară a NATO o strategie comună împotriva ingerinţelor ruseşti",
+      "addedAt": "2026-11-23T20:55:36.561Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-newsro-preturile-petrolului-au-scazut-luni-cu-f5c6dc",
+      "title": "Preţurile petrolului au scăzut luni cu peste 3%, la minimele ultimelor trei luni, după reluarea livrărilor din Libia şi creşterea ofertei din Orientul Mijlociu",
+      "summary": "Preţurile petrolului au scăzut luni cu peste 3%, atingând cele mai reduse niveluri din ultimele trei luni, pe fondul creşterii livrărilor din Orientul Mijlociu şi al reluării transportului de ţiţei printr-o conductă importantă din Libia. Majorarea ofertei a compensat îngrijorările provocate de atacurile asupra infrastructurii energetice şi transportului maritim din regiune, transmite Reuters.",
+      "date": "2026-11-23T20:47:00.000Z",
+      "url": "https://www.news.ro/economic/preturile-petrolului-au-scazut-luni-cu-peste-3-la-minimele-ultimelor-trei-luni-dupa-reluarea-livrarilor-din-libia-si-cresterea-ofertei-din-orientul-mijlociu-1922404723002026112223006771",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "",
+      "imageAlt": "Preţurile petrolului au scăzut luni cu peste 3%, la minimele ultimelor trei luni, după reluarea livrărilor din Libia şi creşterea ofertei din Orientul Mijlociu",
+      "addedAt": "2026-11-23T20:55:37.527Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-hotnews-cei-doi-politicieni-care-au-intervenit-28fa45",
+      "title": "Cei doi politicieni care au intervenit personal ca Jensen Huang să revină la șefia Nvidia. Argumentul invocat: doar el e apărătorul unui anume model de AI",
+      "summary": "Președintele american Donald Trump și vicepreședintele JD Vance au intervenit personal, în weekend, în decizia companiei Nvidia de a-l repune în funcție pe directorul executiv Jensen Huang, convinși că numai el apără modelele de inteligență artificială (AI) cu ponderi deschise fabricate în SUA, au declarat luni persoane familiarizate cu situația pentru agenția internațională de presă …",
+      "date": "2026-11-23T20:44:57.000Z",
+      "url": "https://hotnews.ro/donald-trump-si-jd-vance-au-intervenit-personal-pentru-readucerea-lui-jensen-huang-la-conducerea-nvidia-2412130",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "ai",
+        "donald trump"
+      ],
+      "author": "Andrei Stan",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Cei doi politicieni care au intervenit personal ca Jensen Huang să revină la șefia Nvidia. Argumentul invocat: doar el e apărătorul unui anume model de AI",
+      "addedAt": "2026-11-23T20:55:30.739Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-digi24-pierderile-rusiei-in-aproape-cinci-ani-de-513d11",
+      "title": "Pierderile Rusiei în aproape cinci ani de război, conform unor canale media ruse",
+      "summary": "Aproximativ 490.000 de soldaţi ruşi au murit în aproape cinci ani de război în Ucraina, potrivit unor surse media independente din Rusia, care citează statistici scurse de hackeri din Belarus şi Ucraina, relatează EFE.",
+      "date": "2026-11-23T20:43:53.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/pierderile-rusiei-in-aproape-cinci-ani-de-razboi-conform-unor-media-ruse-4049945",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjIzJTJGMzA4Mzk4OF8zMDgz/OTg4X3Byb2ZpbWVkaWEtMDg3OTI1NTk4/NS5qcGcmaGFzaD03MDIzODViN2YyMzNkMjdkNzJhNDUzNDZjNGIzMGRmZQ==.jpg",
+      "imageAlt": "Pierderile Rusiei în aproape cinci ani de război, conform unor canale media ruse",
+      "addedAt": "2026-11-23T20:55:35.120Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-digi24-dragos-benea-psd-judetele-ar-trebui-sa-aiba-fd5fa3",
+      "title": "Dragoș Benea (PSD): Județele ar trebui să aibă 1 milion de locuitori. Competiția pe fonduri de coeziune va fi mai acerbă ca niciodată",
+      "summary": "Coordonatorul proiectului de reorganizare administrativ-teritorială al PSD, Dragoș Benea, susține ideea ca județele comasate să formeze regiuni de 1 milion de locuitori, pe model european, însă să nu-și schimbe numele de județ. El a argumentat, luni seară, la Digi24, că această reformă e necesară pentru că în cadrul UE competiția pe fonduri de coeziune va fi mai acerbă ca niciodată.",
+      "date": "2026-11-23T20:42:48.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/dragos-benea-psd-judetele-ar-trebui-sa-aiba-1-milion-de-locuitori-competitia-pe-fonduri-de-coeziune-va-fi-mai-acerba-ca-niciodata-4049873",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjIzJTJGMzA4Mzk3N18zMDgz/OTc3X1NjcmVlbnNob3QtMjAyNi0xMS0y/My0yMTU0NDQucG5nJmhhc2g9ODI3MmYy/OWYzZGI3N2Y4OGQ4OTQ2Y2Q4NDFiNzA2YTE=.png",
+      "imageAlt": "Dragoș Benea (PSD): Județele ar trebui să aibă 1 milion de locuitori. Competiția pe fonduri de coeziune va fi mai acerbă ca niciodată",
+      "addedAt": "2026-11-23T20:55:35.121Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-g4media-sua-publica-documente-despre-legendara-1bde12",
+      "title": "SUA publică documente despre legendara creatură Bigfoot / Ce au descoperit anchetatorii?",
+      "summary": "Administrația președintelui american Donald Trump a făcut publice mai multe documente vechi de câteva decenii despre presupuse apariții ale lui Bigfoot, creatura legendară despre care se spune că ar trăi în pădurile din America de Nord, relatează The Guardian. Dosarele conțin investigații privind urme de dimensiuni neobișnuite, mărturii despre zgomote și mirosuri inexplicabile, dar și […] © G4Media.ro .",
+      "date": "2026-11-23T20:40:22.000Z",
+      "url": "https://www.g4media.ro/sua-publica-documente-despre-legendara-creatura-bigfoot-ce-au-descoperit-anchetatorii.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "bigfoot",
+        "creatura legendara",
+        "documente sua"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/profimedia-0823324934-scaled.jpg",
+      "imageAlt": "SUA publică documente despre legendara creatură Bigfoot / Ce au descoperit anchetatorii?",
+      "addedAt": "2026-11-23T20:55:36.561Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-g4media-se-schimba-scaunele-in-bt-arena-capitonate-47b082",
+      "title": "Se schimbă scaunele în BT Arena / Capitonate integral cu tapițerie din piele ecologică / Boc: ”Standarde internaționale de top”",
+      "summary": "Primarul Emil Boc a anunțat schimbarea tuturor scaunelor din BT Arena până în luna ianuarie 2027, precizând că fiecare spectator merită confort de VIP, condiții mai bune atât pentru spectatori și jucători prin scaune noi, capitonate, relatează Cluj24. ”Respectul pentru public înseamnă și condiții cât mai bune la fiecare eveniment organizat în Cluj-Napoca. (…) Se […] © G4Media.ro .",
+      "date": "2026-11-23T20:36:10.000Z",
+      "url": "https://www.g4media.ro/se-schimba-scaunele-in-bt-arena-capitonate-integral-cu-tapiterie-din-piele-ecologica-boc-standarde-internationale-de-top.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "de ce se schimba scaunele la stadionul din cluj",
+        "scaune noi la BT ARena"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/scaune-BT-cluj-arena-.jpg",
+      "imageAlt": "Se schimbă scaunele în BT Arena / Capitonate integral cu tapițerie din piele ecologică / Boc: ”Standarde internaționale de top”",
+      "addedAt": "2026-11-23T20:55:36.561Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-newsro-ludovic-orban-nicusor-dan-a-facut-tot-ce-e-d6e6bf",
+      "title": "Ludovic Orban: Nicuşor Dan a făcut tot ce e posibil să aducă PSD-ul la putere, să facă guvern PSD şi acum parcă face tot ce este posibil să valideze AUR ca principal opozant",
+      "summary": "Liderul partidului Forţa Dreptei, Ludovic Orban, susţine că Nicuşor Dan este cel care a adus PSD la guvernare, iar acum şeful statului încearcă să valideze AUR ca principal opozant.",
+      "date": "2026-11-23T20:33:00.000Z",
+      "url": "https://www.news.ro/politic-intern/ludovic-orban-nicusor-dan-a-facut-tot-ce-e-posibil-sa-aduca-psd-ul-la-putere-sa-faca-guvern-psd-si-acum-parca-face-tot-ce-este-posibil-sa-valideze-aur-ca-principal-opozant-1922403323002026112223006790",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Ludovic Orban: Nicuşor Dan a făcut tot ce e posibil să aducă PSD-ul la putere, să facă guvern PSD şi acum parcă face tot ce este posibil să valideze AUR ca principal opozant",
+      "addedAt": "2026-11-23T20:55:37.527Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-newsro-dr-anca-hancu-medic-nutritionist-de-multe-ae074c",
+      "title": "Dr. Anca Hâncu, medic nutritionist: De multe ori, ni se pare că avem intoleranţă la lactoză, dar noi, de fapt, combinăm nepotrivit lactatele / Mituri despre lactate, demontate",
+      "summary": "Dr. Anca Hâncu, medic nutritionist, doctor în ştiinţe medicale, coordonator program medicina stilului de viaţă, a declarant, luni seară, că multe personae care cred că au intoleranţă la lactoză combină nepotrivit lactatele sau alte alimente şi digestia este foarte mult îngreunată.",
+      "date": "2026-11-23T20:30:00.000Z",
+      "url": "https://www.news.ro/social/sanatate/dr-anca-hancu-medic-nutritionist-de-multe-ori-ni-se-pare-ca-avem-intoleranta-la-lactoza-dar-noi-de-fapt-combinam-nepotrivit-lactatele-mituri-despre-lactate-demontate-1922403023002026112223006784",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Dr. Anca Hâncu, medic nutritionist: De multe ori, ni se pare că avem intoleranţă la lactoză, dar noi, de fapt, combinăm nepotrivit lactatele / Mituri despre lactate, demontate",
+      "addedAt": "2026-11-23T20:55:37.527Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-g4media-o-autostrada-din-italia-a-ramas-fara-lumina-6c01c3",
+      "title": "O autostradă din Italia a rămas fără lumină după ce doi frați au furat o tonă de cabluri de cupru / Au avariat inclusiv sistemele anti-ceață",
+      "summary": "Doi frați albanezi au furat o tonă de cupru din cabluri electrice, lăsând în întuneric un întreg tronson al autostrăzii A4, între Vicenza și Verona, în nordul Italiei, anunță presa din peninsulă. Faptul s-a petrecut în noaptea de vineri spre sâmbătă. În timpul operațiunii de supraveghere nocturnă, agenții care supraveghează autostrada au observat sosirea a […] © G4Media.ro .",
+      "date": "2026-11-23T20:29:11.000Z",
+      "url": "https://www.g4media.ro/o-autostrada-din-italia-a-ramas-fara-lumina-dupa-ce-doi-frati-au-furat-o-tona-de-cabluri-de-cupru-au-avariat-inclusiv-sistemele-anti-ceata.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "autostrada lasata pe intuneric",
+        "furt de cupru"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2022/07/Cupru-1.jpg",
+      "imageAlt": "O autostradă din Italia a rămas fără lumină după ce doi frați au furat o tonă de cabluri de cupru / Au avariat inclusiv sistemele anti-ceață",
+      "addedAt": "2026-11-23T20:55:36.561Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-hotnews-o-cantareata-iraniana-si-membrii-trupei-39a806",
+      "title": "O cântăreață iraniană și membrii trupei sale, pedepsiți cu 74 de lovituri de bici pentru un concert",
+      "summary": "Cântăreața iraniană Parastoo Ahmadi și membrii trupei sale au primit 74 de lovituri de bici din cauza unui concert dfiuzat pe YouTube, a transmis agenția de presă Emtedad, care l-a citat pe avocatul artistei, informează DPA, conform Agerpres. Cântăreața și cei patru membri ai trupei sale au fost condamnați în luna iunie 2026 din cauza …",
+      "date": "2026-11-23T20:25:10.000Z",
+      "url": "https://hotnews.ro/o-cantareata-iraniana-si-membrii-trupei-sale-pedepsiti-cu-74-de-lovituri-de-bici-pentru-un-concert-2412112",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "O cântăreață iraniană și membrii trupei sale, pedepsiți cu 74 de lovituri de bici pentru un concert",
+      "addedAt": "2026-11-23T20:55:30.739Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-digi24-ce-se-va-intampla-cu-judetele-maghiare-la-62b2ae",
+      "title": "Ce se va întâmpla cu județele maghiare la reorganizarea administrativă. Benea: Se poate ajunge la o soluție prin negociere și compromis",
+      "summary": "Dragoș Benea a declarat luni seara, în exclusivitate pentru Digi24, că nu se așteaptă la un consens politic privind reorganizarea administrativ-teritorială, inclusiv în privința județelor cu populație majoritar maghiară. Coordonatorul proiectului PSD susține însă că se poate ajunge la o soluție prin negociere și compromis, astfel încât reforma să nu fie blocată.",
+      "date": "2026-11-23T20:21:28.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/ce-se-va-intampla-cu-judetele-maghiare-la-reorganizarea-administrativa-benea-se-poate-ajunge-la-o-solutie-prin-negociere-si-compromis-4049933",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA2dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjAl/MkYwNyUyRjEzJTJGMTIwNTg3MF8xMjA1/ODcwX2RyYWdvcy1iZW5lYV9JTlFVQU1f/UGhvdG9zX09jdGF2X0dhbmVhLmpwZyZo/YXNoPWU1ZDdlZTE1NGYzYjBhNzFiODUwMjlmNjQwYzA0Zjg3.jpg",
+      "imageAlt": "Ce se va întâmpla cu județele maghiare la reorganizarea administrativă. Benea: Se poate ajunge la o soluție prin negociere și compromis",
+      "addedAt": "2026-11-23T20:55:35.121Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-g4media-o-testoasa-de-194-de-ani-dezvaluie-indicii-2bcad9",
+      "title": "O țestoasă de 194 de ani dezvăluie indicii genetice despre longevitate",
+      "summary": "Jonathan, o țestoasă uriașă a cărei vârstă este estimată la 194 de ani, ar putea deține indicii importante despre mecanismele biologice care permit unor animale să îmbătrânească foarte lent. Cercetătorii care i-au analizat genomul au identificat caracteristici genetice ce ar putea explica rezistența sa excepțională și capacitatea de a-și păstra funcțiile biologice timp de aproape […] © G4Media.ro .",
+      "date": "2026-11-23T20:20:37.000Z",
+      "url": "https://www.g4media.ro/o-testoasa-de-194-de-ani-dezvaluie-indicii-genetice-despre-longevitate.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Analize",
+        "broască țestoasă",
+        "indicii genetice"
+      ],
+      "author": "Ștefan Munteanu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2022/12/seychelles-gfd1a1a18a_1280.jpg",
+      "imageAlt": "O țestoasă de 194 de ani dezvăluie indicii genetice despre longevitate",
+      "addedAt": "2026-11-23T20:55:36.562Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-zf-johan-norberg-cercetator-istoric-si-a7eef6",
+      "title": "Johan Norberg, cercetător, istoric şi scriitor, la Gala ZF 2026: România a redus sărăcia cu 90% într-o singură generaţie. Daţi românilor libertatea să inoveze şi veţi avea încă 28…",
+      "summary": "",
+      "date": "2026-11-23T20:20:12.000Z",
+      "url": "https://www.zf.ro/business-international/johan-norberg-cercetator-istoric-si-scriitor-la-gala-zf-2026-romania-a-redus-saracia-cu-90-intr-o-singura-generatie-dati-romanilor-libertatea-sa-inoveze-si-veti-avea-inca-28-de-ani-fabulosi-23287665",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Business Internaţional"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10368/23287665/1/10-johan-norberg.jpg?width=700",
+      "imageAlt": "Johan Norberg, cercetător, istoric şi scriitor, la Gala ZF 2026: România a redus sărăcia cu 90% într-o singură generaţie. Daţi românilor libertatea să inoveze şi veţi avea încă 28 ",
+      "addedAt": "2026-11-23T20:55:32.519Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-newsro-cupa-mondiala-u17-spania-a-reusit-o-12d119",
+      "title": "Cupa Mondială U17: Spania a reuşit o victorie zdrobitoare împotriva Fiji, scor... 15-0",
+      "summary": "În cea de-a doua partidă din faza grupelor a Cupei Mondiale U17, care se desfăşoară în perioada 19 noiembrie – 13 decembrie în Qatar, spaniolii i-au zdrobit pe jucătorii din Fiji: o victorie cu 15-0 care aminteşte de scorul de 12-0 la meciul Norvegiei în faţa Hondurasului, la Cupa Mondială U20 din 2019, când Erling Haaland a marcat nouă goluri.",
+      "date": "2026-11-23T20:18:14.000Z",
+      "url": "https://www.news.ro/sport/cupa-mondiala-u17-spania-a-reusit-o-victorie-zdrobitoare-impotriva-fiji-scor-15-0-1922401823142026112223006651",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Cupa Mondială U17: Spania a reuşit o victorie zdrobitoare împotriva Fiji, scor... 15-0",
+      "addedAt": "2026-11-23T20:55:37.527Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-newsro-ludovic-orban-despre-raportul-privind-055793",
+      "title": "Ludovic Orban, despre raportul privind anularea alegerilor: Dacă preşedintele a vorbit fără să fie sigur că există elementele necesare pentru a susţine un astfel de raport…",
+      "summary": "Liderul partidului Forţa Dreptei, Ludovic Orban, afirmă că, dacă Nicuşor Dan a vorbit despre raportul privind anularea alegerilor prezidenţiale fără să fie sigur că acesta va fi şi prezentat, atunci şeful statului face un imens serviciu propagandei ruseşti.",
+      "date": "2026-11-23T20:12:00.000Z",
+      "url": "https://www.news.ro/politic-intern/ludovic-orban-raportul-privind-anularea-alegerilor-presedintele-vorbit-fie-sigur-exista-elementele-necesare-sustine-astfel-raport-inseamna-facut-serviciu-imens-propagandei-rusesti-1922401223002026112223006757",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Ludovic Orban, despre raportul privind anularea alegerilor: Dacă preşedintele a vorbit fără să fie sigur că există elementele necesare pentru a susţine un astfel de raport, înseamn",
+      "addedAt": "2026-11-23T20:55:37.527Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-g4media-nicolae-stanciu-a-semnat-un-contract-pe-doi-2db849",
+      "title": "Nicolae Stanciu a semnat un contract pe doi ani și jumătate cu U Cluj / „Am ales cu sufletul”!",
+      "summary": "E oficial! Nicolae Stanciu, căpitanul echipei naționale, a semnat cu Universitatea Cluj din postură de jucător liber de contract, anunță Actual de Cluj. Mijlocașul a ieșit recent campion în China, dar a ales să se întoarcă acasă, în România. Stanciu a semnat pe doi ani și jumătate cu Universitatea Cluj și va putea juca din […] © G4Media.ro .",
+      "date": "2026-11-23T20:09:33.000Z",
+      "url": "https://www.g4media.ro/nicolae-stanciu-a-semnat-un-contract-pe-doi-ani-si-jumatate-cu-u-cluj-am-ales-cu-sufletul.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Sportz",
+        "cu cine a semnat Nicolae Stanciu",
+        "Nicolae Stanciu la U cluj"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/nicolae-stanciu-e1795464558908.jpeg",
+      "imageAlt": "Nicolae Stanciu a semnat un contract pe doi ani și jumătate cu U Cluj / „Am ales cu sufletul”!",
+      "addedAt": "2026-11-23T20:55:36.562Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-profit-inca-o-companie-romaneasca-cere-intrarea-in-f236a1",
+      "title": "Încă o companie românească cere intrarea în concordat preventiv. Chimcomplex apelează la această procedură după ce și-a adâncit pierderile",
+      "summary": "Compania Chimcomplex, care la începutul anului a anunțat disponibilizări importante, a solicitat instanței să îi admită intrarea în procedura de concordat preventiv, cea care previne insolvența.",
+      "date": "2026-11-23T20:08:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/financiar/piata-de-capital/inca-o-companie-romaneasca-cere-intrarea-in-concordat-preventiv-chimcomplex-apeleaza-la-aceasta-procedura-dupa-ce-si-a-adancit-pierderile-23006743?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Piața de capital"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33213/23006743/1/chimcomplex.jpg?width=800",
+      "imageAlt": "Încă o companie românească cere intrarea în concordat preventiv. Chimcomplex apelează la această procedură după ce și-a adâncit pierderile",
+      "addedAt": "2026-11-23T20:55:32.936Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-newsro-dr-anca-hancu-medic-nutritionist-98110a",
+      "title": "Dr. Anca Hâncu, medic nutriţionist: Intoleranţa la lactate nu este totuna cu intoleranţa la lactoză / Intoleranţa la lactoză poate fi genetică sau dobândită / Discuţia despre…",
+      "summary": "Dr. Anca Hâncu, medic nutriţionist, doctor în ştiinţe medicale, coordonator program medicina stilului de viaţă, a explicat, luni seară, că intoleranţa la lactate nu este totuna cu intoleranţa la lactoză, iar intoleranţa poate fi genetică, în cazuri de aproximativ 2%, sau dobândită. Medicul avertizează că în ultima perioadă a devenit ”la modă” să spui că ai intoleranţă şi crede că discuţia despre intoleranţa la lactoză este mult exagerată faţă de realitate.",
+      "date": "2026-11-23T20:07:00.000Z",
+      "url": "https://www.news.ro/social/sanatate/dr-anca-hancu-medic-nutritionist-intoleranta-lactate-totuna-intoleranta-lactoza-intoleranta-lactoza-genetica-dobandita-discutia-intoleranta-lactoza-mult-exagerata-fata-realitate-1922400723002026112223006750",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Dr. Anca Hâncu, medic nutriţionist: Intoleranţa la lactate nu este totuna cu intoleranţa la lactoză / Intoleranţa la lactoză poate fi genetică sau dobândită / Discuţia despre intol",
+      "addedAt": "2026-11-23T20:55:37.528Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-zf-gala-zf-2026-ziarul-financiar-a-premiat-top-b713e5",
+      "title": "Gala ZF 2026. Ziarul Financiar a premiat Top 10 cele mai valoroase companii din România",
+      "summary": "",
+      "date": "2026-11-23T20:05:00.000Z",
+      "url": "https://www.zf.ro/zf-28-de-ani/gala-zf-2026-ziarul-financiar-a-premiat-top-10-cele-mai-valoroase-companii-din-romania-23287623",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF 28 de ani"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/42806/23287623/1/dsc06834-original.jpg?width=700",
+      "imageAlt": "Gala ZF 2026. Ziarul Financiar a premiat Top 10 cele mai valoroase companii din România",
+      "addedAt": "2026-11-23T20:55:32.519Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-hotnews-proiectul-anuntat-de-rusia-dupa-ce-au-cf930b",
+      "title": "Proiectul anunțat de Rusia, după ce au răsunat sirenele aeriene în Kaliningrad pentru prima oară de la începutul războiului din Ucraina",
+      "summary": "Rusia va cheltui 47 de miliarde de ruble (576 de milioane de dolari, aproximativ 525 de milioane de euro) pentru a construi două feriboturi feroviare care să asigure aprovizionarea neîntreruptă a exclavei sale Kaliningrad, conform unui anunț făcut luni de premierul Mihail Mișustin, citat de Reuters. Kaliningrad a reprezentat periodic un punct de tensiune între …",
+      "date": "2026-11-23T20:02:27.000Z",
+      "url": "https://hotnews.ro/proiectul-anuntat-de-rusia-dupa-ce-au-rasunat-sirenele-aeriene-in-kaliningrad-pentru-prima-oara-de-la-inceputul-razboiului-din-ucraina-2412096",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "Kaliningrad",
+        "rusia"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Proiectul anunțat de Rusia, după ce au răsunat sirenele aeriene în Kaliningrad pentru prima oară de la începutul războiului din Ucraina",
+      "addedAt": "2026-11-23T20:55:30.739Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-digi24-benjamin-netanyahu-risca-sa-ajunga-la-6fece6",
+      "title": "Benjamin Netanyahu riscă să ajungă la închisoare dacă pierde puterea. Planul care i-ar oferi imunitate timp de alți șapte ani",
+      "summary": "Premierul israelian Benjamin Netanyahu ar putea pierde nu doar conducerea guvernului, ci și avantajele politice care i-au permis să gestioneze timp de mai mulți ani procesele de corupție în care este judecat. După ce a pierdut majoritatea parlamentară la alegerile din octombrie, liderul israelian se confruntă cu perspectiva trecerii în opoziție și a unei eventuale condamnări la închisoare. Potrivit unei analize publicate de The Washington Post, în cercurile politice israeliene este discutat inclusiv un scenariu prin care Netanyahu ar deveni președintele țării, funcție care i-ar asigura imunitate penală timp de șapte ani.",
+      "date": "2026-11-23T20:00:21.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/netanyahu-risca-sa-ajunga-la-inchisoare-daca-pierde-puterea-planul-care-i-ar-oferi-imunitate-timp-de-alti-sapte-ani-4049915",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjUl/MkYwNSUyRjIyJTJGMjI2NTcwOF8yMjY1/NzA4X2JlbmphbWluLW5ldGFueWFodS5q/cGcmaGFzaD02MGFjNzBkMDUwY2FjODA2Zjg1YWQxNTQ2NTUyZTM5Yw==.jpg",
+      "imageAlt": "Benjamin Netanyahu riscă să ajungă la închisoare dacă pierde puterea. Planul care i-ar oferi imunitate timp de alți șapte ani",
+      "addedAt": "2026-11-23T20:55:35.121Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-profit-tesla-se-chinuie-de-mai-multe-luni-sa-766dad",
+      "title": "Tesla se chinuie de mai multe luni să obțină o omologare la nivel european. Acum, Germania a omologat sistemul de conducere automată al Mercedes înaintea Tesla",
+      "summary": "Dosarul de omologare a tehnologiei de asistență care permite rularea automată sub supraveghere dezvoltată de Mercedes-Benz a fost aprobat în Germania și face din compania auto germană primul producător omologat cu o astfel de tehnologie din această țară.",
+      "date": "2026-11-23T20:00:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/tesla-se-chinuie-de-mai-multe-luni-sa-obtina-o-omologare-la-nivel-european-acum-germania-a-omologat-sistemul-de-conducere-automata-al-mercedes-inaintea-tesla-23006365?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33217/23006365/1/mercedes-mb-drive-asssist-pro.jpg?width=800",
+      "imageAlt": "Tesla se chinuie de mai multe luni să obțină o omologare la nivel european. Acum, Germania a omologat sistemul de conducere automată al Mercedes înaintea Tesla",
+      "addedAt": "2026-11-23T20:55:32.936Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-digi24-gisele-pelicot-umilita-din-nou-fotografii-e89976",
+      "title": "Gisele Pelicot, umilită din nou: Fotografii nud cu ea, folosite pentru promovarea unei cărți care o prezintă drept complice la abuzuri",
+      "summary": "Gisele Pelicot, franțuzoaica devenită un simbol al luptei împotriva violenței sexuale după ce fostul soț a drogat-o și a permis zecilor de bărbați să o violeze, a anunțat că va acționa în instanță o editură și o autoare, după ce fotografii în care apare nud au fost folosite fără consimțământul său pentru promovarea unei cărți care sugerează că ar fi fost complice la abuzurile suferite. Femeia, în vârstă de 73 de ani, s-a declarat „profund șocată” și a acuzat exploatarea vieții sale private în scopuri comerciale.",
+      "date": "2026-11-23T19:46:16.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/ue/gisele-pelicot-umilita-din-nou-fotografii-nud-cu-ea-folosite-pentru-promovarea-unei-carti-care-o-prezinta-drept-complice-la-abuzuri-4049897",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjQl/MkYxMSUyRjE5JTJGMjEzMjAzM18yMTMy/MDMzX3Byb2ZpbWVkaWEtMDkzNjM1MDMx/NC5qcGcmaGFzaD05NWNiNjMwOGJmODFkMjU1YzA3NzBiOWRjYTUzMTJlMA==.jpg",
+      "imageAlt": "Gisele Pelicot, umilită din nou: Fotografii nud cu ea, folosite pentru promovarea unei cărți care o prezintă drept complice la abuzuri",
+      "addedAt": "2026-11-23T20:55:35.121Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-hotnews-china-va-cumpara-inca-250-de-avioane-boeing-dea519",
+      "title": "China va cumpăra încă 250 de avioane Boeing, crede Trump. Mișcarea făcută ca SUA să transforme în avantaj dependența Beijingului de furnizorii americani",
+      "summary": "Președintele american Donald Trump a spus luni, la doar câteva zile după întâlnirea lui cu liderul chinez Xi Jinping, că el crede că Beijingul va accepta să cumpere încă 250 de avioane Boeing, informează Reuters. „Cred că vor mai cumpăra încă 250, așa că voi continua să vând”, a declarat Trump, într-un interviu la CNBC. …",
+      "date": "2026-11-23T19:44:32.000Z",
+      "url": "https://hotnews.ro/china-va-cumpara-inca-250-de-avioane-boeing-crede-trump-miscarea-facuta-ca-sua-sa-transforme-in-avantaj-dependenta-beijingului-de-furnizorii-americani-2412080",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "avioane boeing",
+        "china"
+      ],
+      "author": "Andrei Stan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "China va cumpăra încă 250 de avioane Boeing, crede Trump. Mișcarea făcută ca SUA să transforme în avantaj dependența Beijingului de furnizorii americani",
+      "addedAt": "2026-11-23T20:55:30.739Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-digi24-aur-a-prezentat-raportul-propriu-privind-1c7510",
+      "title": "AUR a prezentat raportul propriu privind anularea alegerilor: „Nu au existat ingerinţe ruseşti”",
+      "summary": "George Simion a prezentat la Parlament raportul AUR privind anularea alegerilor prezidențiale din 2024, intitulat „Cum a fost anulat votul a 9,4 milioane de cetățeni”. Documentul, realizat de deputata Laura Gherasim, are 432 de pagini și analizează circumstanțele anulării scrutinului, decizia autorităților și responsabilitatea instituțiilor implicate. Reprezentanții AUR susțin că raportul trebuie să conducă la clarificări și la răspunsuri din partea instituțiilor statului.",
+      "date": "2026-11-23T19:36:33.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/george-simion-prezinta-raportul-aur-privind-anularea-alegerilor-din-2024-trebuie-sa-aflam-adevarul-4049707",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMCUyRjA3JTJGMzAwMjY1OV8zMDAy/NjU5X3NpbWlvbi1nZW9yZ2VzY3UuanBn/Jmhhc2g9MjBjNzdkYmUwYjExNjQ1ZjcxNzRmZTVhODY5ZTkzYzk=.jpg",
+      "imageAlt": "AUR a prezentat raportul propriu privind anularea alegerilor: „Nu au existat ingerinţe ruseşti”",
+      "addedAt": "2026-11-23T20:55:35.121Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-hotnews-luca-niculescu-interviu-in-presa-franceza-3e0ff2",
+      "title": "Luca Niculescu, interviu în presa franceză. Ce spune despre securitatea Mării Negre și prezența militară americană în România",
+      "summary": "Premierul Luca Niculescu a declarat într-un interviu pentru revista franceză L’Express, publicat luni, că Marea Neagră a devenit unul dintre principalele puncte fierbinți ale lumii, în contextul războiului din Ucraina și al amenințărilor la adresa securității maritime, dar că autorităţile din România, alături de cele din Bulgaria şi cu sprijinul Uniunii Europene şi al NATO, …",
+      "date": "2026-11-23T19:26:23.000Z",
+      "url": "https://hotnews.ro/luca-niculescu-interviu-in-presa-franceza-ce-spune-despre-securitatea-marii-negre-si-prezenta-militara-americana-in-romania-2412079",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Luca Niculescu, interviu în presa franceză. Ce spune despre securitatea Mării Negre și prezența militară americană în România",
+      "addedAt": "2026-11-23T20:55:30.740Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-profit-bursa-incepe-saptamana-cu-o-sesiune-rosie-c398e3",
+      "title": "Bursa începe săptămâna cu o sesiune “roșie” GRAFIC",
+      "summary": "Pe o lichiditate mult sub media acestui an, indicele celor mai importante acțiuni românești a coborât cu 0,4%.",
+      "date": "2026-11-23T19:22:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/financiar/piata-de-capital/bursa-incepe-saptamana-cu-o-sesiune-rosie-grafic-23006586?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Piața de capital"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33213/23006586/2/dreamstime-m-79102060.jpg?width=800",
+      "imageAlt": "Bursa începe săptămâna cu o sesiune “roșie” GRAFIC",
+      "addedAt": "2026-11-23T20:55:32.936Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-hotnews-unul-dintre-cei-mai-cunoscuti-politologi-efe969",
+      "title": "Unul dintre cei mai cunoscuți politologi spune ce electorat vrea să preia George Simion și explică de ce liderul AUR „va ataca permanent sistemul”",
+      "summary": "Cristian Pîrvulescu a declarat că președintele AUR, George Simion, speră să obțină susținerea electoratului care i-a rămas fidel lui Călin Georgescu după anularea alegerilor prezidențiale din 2024. Într-o conferință de presă luni seară, George Simion, Gheorghe Piperea și Laura Gherasim au prezentat un raport privind anularea alegerilor din 2024. Politologul Cristian Pîrvulescu a spus, la …",
+      "date": "2026-11-23T19:07:40.000Z",
+      "url": "https://hotnews.ro/unul-dintre-cei-mai-cunoscuti-politologi-spune-ce-electorat-vrea-sa-preia-george-simion-si-explica-de-ce-liderul-aur-va-ataca-permanent-sistemul-2412071",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "AUR",
+        "George Simion",
+        "Nicusor Dan"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Unul dintre cei mai cunoscuți politologi spune ce electorat vrea să preia George Simion și explică de ce liderul AUR „va ataca permanent sistemul”",
+      "addedAt": "2026-11-23T20:55:30.740Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-profit-indemnizatia-de-crestere-a-copilului-pentru-6b13e7",
+      "title": "Indemnizația de creștere a copilului pentru venituri din drepturi de autor trebuie calculată fără diminuarea cu cota forfetară de 40% - Decizie ÎCCJ",
+      "summary": "Înalta Curte de Casație și Justiție (ICCJ) a stabilit cum va fi calculată indemnizația de creștere a copilului pentru persoanele care obțin venituri din drepturi de autor. Astfel, instanța a statuat că pentru stabilirea indemnizației pentru creșterea copilului, în cazul persoanelor care au realizat venituri din drepturi de proprietate intelectuală, venitul relevant se determină fără diminuarea acestuia cu cota forfetară de 40%.",
+      "date": "2026-11-23T19:06:00.000Z",
+      "url": "https://www.profit.ro/perspective/schimbari-legislative-pentru-firme/indemnizatia-de-crestere-a-copilului-pentru-venituri-din-drepturi-de-autor-trebuie-calculata-fara-diminuarea-cu-cota-forfetara-de-40-decizie-iccj-23006624?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Schimbări legislative pentru firme"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/39746/23006624/1/alley-1582731-1280.jpg?width=800",
+      "imageAlt": "Indemnizația de creștere a copilului pentru venituri din drepturi de autor trebuie calculată fără diminuarea cu cota forfetară de 40% - Decizie ÎCCJ",
+      "addedAt": "2026-11-23T20:55:32.936Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-zf-dan-sucu-presedintele-concordia-cota-unica-891c11",
+      "title": "Dan Şucu, preşedintele Concordia: Cota unică este a noastră, avem nevoie de ea, este cea care a asigurat prosperitatea şi a ajutat la miracolul economic al României. În ultimii 15…",
+      "summary": "",
+      "date": "2026-11-23T19:05:35.000Z",
+      "url": "https://www.zf.ro/eveniment/dan-sucu-presedintele-concordia-cota-unica-noastra-avem-nevoie-cea-asigurat-prosperitatea-ajutat-miracolul-economic-romaniei-ultimii-15-ani-clasa-medie-romania-crescut-42-60-fata-media-ue-iar-23287834",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Eveniment"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21333/23287834/1/screenshot-3.png?width=700",
+      "imageAlt": "Dan Şucu, preşedintele Concordia: Cota unică este a noastră, avem nevoie de ea, este cea care a asigurat prosperitatea şi a ajutat la miracolul economic al României. În ultimii 15 ",
+      "addedAt": "2026-11-23T20:55:32.519Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-profit-anunt-neasteptat-trei-marci-europene-906c8e",
+      "title": "Anunț neașteptat: Trei mărci europene, retrase definitiv din motorsport. Stellantis a anunțat că părăsește competițiile sportive cu motor, principalele mărci afectate sunt…",
+      "summary": "Grupul auto Stellantis a anunțat că părăsește competițiile sportive cu motor și se va orienta către acțiunile dedicate clienților și dezvoltarea de mașini de performanță. Principalele mărci afectate sunt Peugeot, Citroen și Opel.",
+      "date": "2026-11-23T19:00:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/auto-transporturi/anunt-neasteptat-trei-marci-europene-retrase-definitiv-din-motorsport-stellantis-a-anuntat-ca-paraseste-competitiile-sportive-cu-motor-principalele-marci-afectate-sunt-peugeot-citroen-si-opel-23006527?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Auto/Transporturi"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://i0.1616.ro/media/2/2621/33217/23006527/1/sebastien-loeb-2008-rally-catalunya.jpg?width=800",
+      "imageAlt": "Anunț neașteptat: Trei mărci europene, retrase definitiv din motorsport. Stellantis a anunțat că părăsește competițiile sportive cu motor, principalele mărci afectate sunt Peugeot,",
+      "addedAt": "2026-11-23T20:55:32.937Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-zf-primaria-timisoara-investeste-96-mil-lei-in-c5009f",
+      "title": "Primăria Timişoara investeşte 96 mil. lei în construirea unui nou pod peste râul Bega",
+      "summary": "",
+      "date": "2026-11-23T15:46:36.000Z",
+      "url": "https://www.zf.ro/zf-transilvania/primaria-timisoara-investeste-96-mil-lei-in-construirea-unui-nou-pod-peste-raul-bega-23287670",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF Transilvania"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10377/23287670/2/constructie2772618-publimedia-shutterstock.jpg?width=700",
+      "imageAlt": "Primăria Timişoara investeşte 96 mil. lei în construirea unui nou pod peste râul Bega",
+      "addedAt": "2026-11-23T20:55:32.519Z"
+    },
+    {
+      "slug": "bukurest-2026-11-23-zf-primaria-sibiu-a-investit-peste-4-9-mil-lei-013aab",
+      "title": "Primăria Sibiu a investit peste 4,9 mil. lei în modernizarea şi dotarea Colegiului Naţional ’’Gheorghe Lazăr’’",
+      "summary": "",
+      "date": "2026-11-23T15:43:53.000Z",
+      "url": "https://www.zf.ro/zf-transilvania/primaria-sibiu-a-investit-peste-4-9-mil-lei-in-modernizarea-si-dotarea-colegiului-national-gheorghe-lazar-23287667",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF Transilvania"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10377/23287667/1/6589546-mediafax-foto-raul-stef.jpg?width=700",
+      "imageAlt": "Primăria Sibiu a investit peste 4,9 mil. lei în modernizarea şi dotarea Colegiului Naţional ’’Gheorghe Lazăr’’",
+      "addedAt": "2026-11-23T20:55:32.519Z"
+    },
     {
       "slug": "bukurest-2026-11-23-agerpres-cristian-mungiu-continua-campania-de-afe61f",
       "title": "Cristian Mungiu continuă campania de promovare a filmului 'Fjord' în Statele Unite",
