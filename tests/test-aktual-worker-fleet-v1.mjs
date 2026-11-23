@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {evaluateChannel,validateFleet,buildReport,run} from '../scripts/agents/aktual-worker-fleet-v1.mjs';
+import {evaluateChannel,evaluateEditorialDraft,validateFleet,buildReport,run} from '../scripts/agents/aktual-worker-fleet-v1.mjs';
 const fleet=JSON.parse(readFileSync('ops/aktual-worker-fleet-v1.json','utf8'));
 const ideas=JSON.parse(readFileSync('content/editorial/aktual-ideas-2026-11-23.json','utf8')).items;
 const channels=[{id:'zagreb'}],url='https://gnk-asg.hr/kanal/zagreb/';
@@ -51,4 +51,25 @@ test('repository inventory audits are read-only and never prove live status',()=
  assert.equal(report.audits_executed,report.inspected_channels*11);
  assert.equal(report.release_status,'NOT_RELEASE_EVIDENCE');
  assert.equal(report.no_publish,true);
+});
+
+test('nine editorial checks examine every draft and never manufacture approval',()=>{
+ const drafts=JSON.parse(readFileSync('content/editorial/aktual-original-drafts-2026-11-23.json','utf8')).articles;
+ assert.equal(drafts.length,8);
+ const checked=drafts.map(evaluateEditorialDraft);
+ assert.ok(checked.every(x=>x.checks.length===9&&!x.publishable));
+ assert.ok(checked.every(x=>x.checks.some(c=>c.workerId==='fact-evidence'&&c.result.startsWith('needs-'))));
+ const report=buildReport({fleet,channels,ideas,drafts,pages:{zagreb:html},index,robots});
+ assert.equal(report.editorial_drafts_reviewed_metadata,8);
+ assert.equal(report.editorial_checks_executed,72);
+ assert.equal(report.editorial_drafts_publishable,0);
+ assert.ok(report.roles.find(x=>x.id==='copy-editor').inspected===8);
+ assert.ok(report.roles.find(x=>x.id==='source-independence').findings===8);
+});
+test('unsafe editorial approvals and duplicate draft IDs are rejected',()=>{
+ const d=JSON.parse(readFileSync('content/editorial/aktual-original-drafts-2026-11-23.json','utf8')).articles[0];
+ assert.throws(()=>evaluateEditorialDraft({...d,publish:true}));
+ assert.throws(()=>evaluateEditorialDraft({...d,approved:true}));
+ assert.throws(()=>evaluateEditorialDraft({...d,publication_url:'https://gnk-asg.hr/objave/unverified/'}));
+ assert.throws(()=>validateFleet(fleet,channels,ideas,[d,d]));
 });
