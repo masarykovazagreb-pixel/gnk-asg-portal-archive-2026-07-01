@@ -3,7 +3,7 @@
   "collection": "AKTUAL_MEDIA_ORIGINAL_EXPLAINERS",
   "created": "2026-11-23",
   "status": "DRAFT_ONLY_NOT_LIVE",
-  "draftCount": 6,
+  "draftCount": 10,
   "policy": "Original text grounded in authoritative primary sources. Sources were consulted for factual premise; independent editorial fact-check, author attribution, image rights, full release CI and Cloudflare exact-SHA deployment still required. Not automatically picked up by public article generator. No approval is implied.",
   "articles": [
     {
@@ -248,6 +248,174 @@
         "Operativni zaključak posebno je važan za višejezične medijske mreže. Broj generiranih datoteka pokazuje obujam pripreme; broj javno provjerenih URL-ova pokazuje stvarnu dostupnost. Izvješće koje jasno razdvaja ta dva broja pomaže upravi da ubrza izdavanje bez stvaranja lažne slike o opsegu objavljenog proizvoda."
       ],
       "articleBody": "U digitalnom izdavaštvu često se miješaju četiri pojma: tekst je napisan, commit postoji, izgradnja je prošla i javna stranica prikazuje promjenu. To nisu sinonimi. GitHub može sadržavati novi članak koji produkcija još nije preuzela. Uspješna tehnička izgradnja može završiti na razvojnoj okolini, dok stvarna domena poslužuje stariju verziju.\n\nCloudflareova dokumentacija razlikuje verziju Workera od deploymenta kojim se određuje koja verzija prima promet. Za dokaz produkcije zato treba povezati konkretan commit sa stvarno aktivnim izdanjem, a zatim neovisno očitati javnu HTTPS adresu. Takav zapis treba sadržavati vrijeme provjere, kanonski URL, očekivanu verziju i rezultat — ne samo zeleno svjetlo neke nepovezane provjere.\n\nPostupak brzog, ali kontroliranog izdanja izgleda ovako: mali pregledani PR, potrebni testovi, spajanje u glavnu granu, provjera točnog SHA-a, autorizirani produkcijski release i javni HTTP test. Ako provjera odgovora ili predviđenog sadržaja ne uspije, nije odgovorno označiti izdanje kao potvrđeno. Ranija stabilna verzija i mogućnost povrata trebaju ostati poznate.\n\nOperativni zaključak posebno je važan za višejezične medijske mreže. Broj generiranih datoteka pokazuje obujam pripreme; broj javno provjerenih URL-ova pokazuje stvarnu dostupnost. Izvješće koje jasno razdvaja ta dva broja pomaže upravi da ubrza izdavanje bez stvaranja lažne slike o opsegu objavljenog proizvoda.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null
+    },
+    {
+      "id": "aktual-tech-20261123-07",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "visejezicni-portal-hreflang-kanonicki-jezik",
+      "category": "SEO",
+      "title": "Višejezični portal treba jasne jezične adrese, ne automatsko množenje kopija",
+      "description": "Kako ispravno povezati jezična izdanja pomoću hreflanga, deklaracije jezika i stvarno lokaliziranog sadržaja.",
+      "tags": [
+        "#Hreflang",
+        "#VisejezicniWeb",
+        "#SEO"
+      ],
+      "sources": [
+        {
+          "name": "Google Search Central — Localized Versions",
+          "url": "https://developers.google.com/search/docs/specialty/international/localized-versions",
+          "supports": "Google opisuje uzajamne hreflang veze između stvarnih jezičnih varijanti stranice."
+        },
+        {
+          "name": "W3C — Declaring Language in HTML",
+          "url": "https://www.w3.org/International/questions/qa-html-language-declarations.en",
+          "supports": "W3C preporučuje deklaraciju stvarnog jezika sadržaja kroz HTML lang atribut."
+        }
+      ],
+      "paragraphs": [
+        "Širenje medijske mreže na više država ne postiže se samo izradom novih mapa s nazivima država. Ako stranica nosi oznaku engleskog izdanja, a glavnina teksta je na hrvatskom, čitatelj dobiva pogrešno očekivanje. Pretraživač dobiva nejasan signal, a uredništvo gubi pregled nad time koja je inačica doista prevedena, a koja je tek tehnička kopija.",
+        "Googleova dokumentacija o lokaliziranim verzijama opisuje upotrebu hreflang oznaka za povezivanje ekvivalentnih stranica. W3C naglašava da HTML element treba deklarirati stvarni jezik sadržaja. Ta dva mehanizma rješavaju različite probleme: jedan pomaže pronaći odgovarajuću jezičnu varijantu, a drugi opisuje jezik kojim je tekst napisan i važan je za alate pristupačnosti.",
+        "Praktična arhitektura traži zasebne kanonske URL-ove za odobrene prijevode, uzajamne jezične poveznice, jedinstvene uredničke identifikatore i status prijevoda. Rubrike bez dovršenog prijevoda mogu voditi na izvorno izdanje uz jasnu oznaku jezika, ali ne bi smjele tvrditi da predstavljaju potpuno prevedeni članak. Lokalizacija uključuje i pravilnu terminologiju, datume, izvore i razumljiv naslov, a ne samo promjenu prefiksa adrese.",
+        "U velikoj mreži vrijedi automatski provjeravati postoje li sve ciljne adrese i vraćaju li očekivani sadržaj. Ne treba obećavati broj aktivnih izdanja prema broju kreiranih direktorija. Objavljenim treba smatrati samo ono izdanje čiji se jezik, sadržaj i javna dostupnost mogu provjeriti."
+      ],
+      "articleBody": "Širenje medijske mreže na više država ne postiže se samo izradom novih mapa s nazivima država. Ako stranica nosi oznaku engleskog izdanja, a glavnina teksta je na hrvatskom, čitatelj dobiva pogrešno očekivanje. Pretraživač dobiva nejasan signal, a uredništvo gubi pregled nad time koja je inačica doista prevedena, a koja je tek tehnička kopija.\n\nGoogleova dokumentacija o lokaliziranim verzijama opisuje upotrebu hreflang oznaka za povezivanje ekvivalentnih stranica. W3C naglašava da HTML element treba deklarirati stvarni jezik sadržaja. Ta dva mehanizma rješavaju različite probleme: jedan pomaže pronaći odgovarajuću jezičnu varijantu, a drugi opisuje jezik kojim je tekst napisan i važan je za alate pristupačnosti.\n\nPraktična arhitektura traži zasebne kanonske URL-ove za odobrene prijevode, uzajamne jezične poveznice, jedinstvene uredničke identifikatore i status prijevoda. Rubrike bez dovršenog prijevoda mogu voditi na izvorno izdanje uz jasnu oznaku jezika, ali ne bi smjele tvrditi da predstavljaju potpuno prevedeni članak. Lokalizacija uključuje i pravilnu terminologiju, datume, izvore i razumljiv naslov, a ne samo promjenu prefiksa adrese.\n\nU velikoj mreži vrijedi automatski provjeravati postoje li sve ciljne adrese i vraćaju li očekivani sadržaj. Ne treba obećavati broj aktivnih izdanja prema broju kreiranih direktorija. Objavljenim treba smatrati samo ono izdanje čiji se jezik, sadržaj i javna dostupnost mogu provjeriti.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null
+    },
+    {
+      "id": "aktual-tech-20261123-08",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "fotografije-u-medijima-poveznica-nije-licencija",
+      "category": "Mediji",
+      "title": "Fotografija na internetu nije automatski slobodna za ponovnu objavu",
+      "description": "Razlika između povezivanja izvora, dozvole za reprodukciju fotografije i pravila Creative Commons licenci.",
+      "tags": [
+        "#AutorskoPravo",
+        "#Fotografije",
+        "#Mediji"
+      ],
+      "sources": [
+        {
+          "name": "WIPO — Copyright FAQ",
+          "url": "https://www.wipo.int/en/web/copyright/faq-copyright",
+          "supports": "WIPO objašnjava da fotografije mogu biti zaštićena autorska djela i da objava nije nužno oslobađanje prava."
+        },
+        {
+          "name": "Creative Commons — CC Licenses",
+          "url": "https://creativecommons.org/share-your-work/use-remix/cc-licenses/",
+          "supports": "Creative Commons navodi različite vrste licenci i posebne uvjete atribucije, prerade i komercijalne uporabe."
+        }
+      ],
+      "paragraphs": [
+        "Regionalni portal koji preuzima samo naslov i poveznicu na izvor radi nešto bitno drugačije od portala koji na vlastitom poslužitelju prikazuje tuđu fotografiju. Tehnička mogućnost dohvaćanja slike ne govori ništa o tome dopušta li autor njezino umnažanje. Dopuštena domena u mrežnoj konfiguraciji rješava sigurnost pristupa, ali ne dokazuje postojanje licence.",
+        "WIPO u svojim informacijama o autorskom pravu navodi fotografije među djelima koja mogu uživati zaštitu. Creative Commons opisuje više licenci s različitim uvjetima, uključujući atribuciju i ograničenja prerade ili komercijalne upotrebe. To znači da oznaka izvora fotografije jest važna, ali sama po sebi nije isto što i pravo na objavljivanje.",
+        "Operativni sustav trebao bi za svaku sliku čuvati autora, izdavača, točan izvor, vrstu licence, dokaz pribavljene dozvole ako je potrebna i tekst atribucije. U nedostatku provjerljivih prava uredništvo može prikazati vlastitu ilustraciju ili objaviti tekstualnu poveznicu na članak izvornog izdavača. Takvo rješenje ne zahtijeva prikrivanje identiteta izvora niti improvizirano kopiranje tuđih fotografija.",
+        "Ovo je informativni urednički pregled, ne individualni pravni savjet o određenoj fotografiji ili licenci. Za svaki konkretan slučaj treba provjeriti uvjete korištenja i moguće iznimke prema primjenjivom pravu. Brzo širenje kanala održivo je samo ako evidencija prava raste zajedno s evidencijom sadržaja."
+      ],
+      "articleBody": "Regionalni portal koji preuzima samo naslov i poveznicu na izvor radi nešto bitno drugačije od portala koji na vlastitom poslužitelju prikazuje tuđu fotografiju. Tehnička mogućnost dohvaćanja slike ne govori ništa o tome dopušta li autor njezino umnažanje. Dopuštena domena u mrežnoj konfiguraciji rješava sigurnost pristupa, ali ne dokazuje postojanje licence.\n\nWIPO u svojim informacijama o autorskom pravu navodi fotografije među djelima koja mogu uživati zaštitu. Creative Commons opisuje više licenci s različitim uvjetima, uključujući atribuciju i ograničenja prerade ili komercijalne upotrebe. To znači da oznaka izvora fotografije jest važna, ali sama po sebi nije isto što i pravo na objavljivanje.\n\nOperativni sustav trebao bi za svaku sliku čuvati autora, izdavača, točan izvor, vrstu licence, dokaz pribavljene dozvole ako je potrebna i tekst atribucije. U nedostatku provjerljivih prava uredništvo može prikazati vlastitu ilustraciju ili objaviti tekstualnu poveznicu na članak izvornog izdavača. Takvo rješenje ne zahtijeva prikrivanje identiteta izvora niti improvizirano kopiranje tuđih fotografija.\n\nOvo je informativni urednički pregled, ne individualni pravni savjet o određenoj fotografiji ili licenci. Za svaki konkretan slučaj treba provjeriti uvjete korištenja i moguće iznimke prema primjenjivom pravu. Brzo širenje kanala održivo je samo ako evidencija prava raste zajedno s evidencijom sadržaja.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null
+    },
+    {
+      "id": "aktual-tech-20261123-09",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "softverski-lanac-dokaz-izrade-i-podrijetla",
+      "category": "Sigurnost",
+      "title": "Zašto kod, paket i deploy trebaju poveziv dokaz podrijetla",
+      "description": "SLSA i OpenSSF Scorecard nude pristupe boljem praćenju softverskih isporuka i sigurnosti otvorenog koda.",
+      "tags": [
+        "#DevSecOps",
+        "#SLSA",
+        "#OpenSSF"
+      ],
+      "sources": [
+        {
+          "name": "SLSA — Provenance Specification",
+          "url": "https://slsa.dev/spec/v1.0/provenance",
+          "supports": "SLSA definira dokumentiranje podrijetla softverskog artefakta i procesa njegove izgradnje."
+        },
+        {
+          "name": "OpenSSF Scorecard — Project Repository",
+          "url": "https://github.com/ossf/scorecard",
+          "supports": "Projekt OpenSSF Scorecard objavljuje provjere sigurnosne prakse repozitorija otvorenog koda."
+        }
+      ],
+      "paragraphs": [
+        "U distribuciji web portala često se zna koji je tekst posljednji promijenjen, ali ne i od kojih je točno datoteka nastao javni paket. Time se otvara prostor za pogreške: testira se jedna verzija, spaja druga, a javni poslužitelj može koristiti treću. Problem nije samo brzina objave nego i pitanje može li se rezultat vjerodostojno rekonstruirati.",
+        "SLSA specifikacija opisuje provenance — podatke kojima se artefakt povezuje s izvorom i procesom izgradnje. Projekt OpenSSF Scorecard pomaže ocjenjivati sigurnosne prakse u projektima otvorenog koda. Ta dva pristupa nisu zamjena jedan za drugi. Jedan naglašava sljedivost isporuke, drugi pridonosi procjeni sigurnosnih navika i postavki projekta.",
+        "Za razvojnu ekipu korisna je jednostavna evidencija: izvorni commit, rezultati obveznih testova, identifikator izgradnje, sažetak promijenjenih datoteka, ciljna okolina i rezultat javne provjere. Za svaki korak treba postojati dokaz koji se može provjeriti bez pozivanja na nečije sjećanje. Ako je dio lanca nepoznat, izdanje treba označiti nepotvrđenim umjesto da se praznina popuni pretpostavkom.",
+        "Takva disciplina skraćuje vrijeme analize kvarova i olakšava povrat na prethodnu stabilnu inačicu. Ona također štiti uredništvo od pogrešnog zaključka da je članak objavljen samo zato što je promijenjen u repozitoriju. Mreža može rasti brzo, ali svaki javni rezultat mora ostati povezan s točno određenim izvorom i odobrenim postupkom."
+      ],
+      "articleBody": "U distribuciji web portala često se zna koji je tekst posljednji promijenjen, ali ne i od kojih je točno datoteka nastao javni paket. Time se otvara prostor za pogreške: testira se jedna verzija, spaja druga, a javni poslužitelj može koristiti treću. Problem nije samo brzina objave nego i pitanje može li se rezultat vjerodostojno rekonstruirati.\n\nSLSA specifikacija opisuje provenance — podatke kojima se artefakt povezuje s izvorom i procesom izgradnje. Projekt OpenSSF Scorecard pomaže ocjenjivati sigurnosne prakse u projektima otvorenog koda. Ta dva pristupa nisu zamjena jedan za drugi. Jedan naglašava sljedivost isporuke, drugi pridonosi procjeni sigurnosnih navika i postavki projekta.\n\nZa razvojnu ekipu korisna je jednostavna evidencija: izvorni commit, rezultati obveznih testova, identifikator izgradnje, sažetak promijenjenih datoteka, ciljna okolina i rezultat javne provjere. Za svaki korak treba postojati dokaz koji se može provjeriti bez pozivanja na nečije sjećanje. Ako je dio lanca nepoznat, izdanje treba označiti nepotvrđenim umjesto da se praznina popuni pretpostavkom.\n\nTakva disciplina skraćuje vrijeme analize kvarova i olakšava povrat na prethodnu stabilnu inačicu. Ona također štiti uredništvo od pogrešnog zaključka da je članak objavljen samo zato što je promijenjen u repozitoriju. Mreža može rasti brzo, ali svaki javni rezultat mora ostati povezan s točno određenim izvorom i odobrenim postupkom.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null
+    },
+    {
+      "id": "aktual-tech-20261123-10",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "seo-vidljivost-ne-znaci-javni-dokaz",
+      "category": "SEO",
+      "title": "Dobra SEO oznaka ne jamči vidljivost: što zapravo treba mjeriti",
+      "description": "Zašto broj članaka, meta oznaka i hashtagova treba odvojiti od dostupnosti, indeksiranja i koristi za čitatelja.",
+      "tags": [
+        "#SEO",
+        "#Analitika",
+        "#KvalitetaSadrzaja"
+      ],
+      "sources": [
+        {
+          "name": "Google Search Central — SEO Starter Guide",
+          "url": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+          "supports": "Google naglašava koristan sadržaj, jasne URL-ove i osnovne postupke za lakše pronalaženje stranica."
+        },
+        {
+          "name": "W3C — Web Content Accessibility Guidelines 2.2",
+          "url": "https://www.w3.org/TR/WCAG22/",
+          "supports": "W3C navodi mjerljive kriterije koji pomažu korisnicima pristupati web sadržaju."
+        }
+      ],
+      "paragraphs": [
+        "Na velikom portalu lako je mjeriti ono što se najjednostavnije broji: broj naslova, broj jezičnih mapa, broj hashtagova i količinu generiranih meta podataka. No te metrike same ne dokazuju da čitatelj može otvoriti stranicu, da je tražilica indeksira ili da tekst donosi novu vrijednost. U izvještavanju treba odvojiti količinu proizvedenih datoteka od stvarne dostupnosti i korisnosti.",
+        "Googleov SEO vodič daje prednost sadržaju koji je relevantan i razumljiv ljudima. W3C-ovi kriteriji pristupačnosti pomažu prepoznati prepreke pri korištenju. Iz te dvije perspektive proizlazi praktična lekcija: naslov nije uspješan ako vodi na nepostojeću adresu, a napredni dizajn ne pomaže ako korisnik ne može doći do teksta pomoću tipkovnice ili čitača zaslona.",
+        "Za realno upravljanje preporučljivo je pratiti nekoliko razdvojenih skupova pokazatelja: pripremljeni tekstovi, urednički odobreni tekstovi, javno dostupni URL-ovi, kanonski ispravne stranice, indeksirane stranice i stvarne interakcije. Uz svaki broj treba zapisati način mjerenja i vrijeme provjere. Posebno je važno ne prikazivati podatak o generiranoj stranici kao dokaz da je već objavljena.",
+        "Brz razvoj nije u sukobu s točnim mjerenjem. Naprotiv, kada se jasno vidi gdje sadržaj zapinje — kod izvora, autorizacije, izgradnje, dostave ili indeksiranja — tim može rješavati konkretan problem. To je kvalitetniji oblik ubrzanja od dodavanja još stotina neprovjerenih stranica u evidenciju."
+      ],
+      "articleBody": "Na velikom portalu lako je mjeriti ono što se najjednostavnije broji: broj naslova, broj jezičnih mapa, broj hashtagova i količinu generiranih meta podataka. No te metrike same ne dokazuju da čitatelj može otvoriti stranicu, da je tražilica indeksira ili da tekst donosi novu vrijednost. U izvještavanju treba odvojiti količinu proizvedenih datoteka od stvarne dostupnosti i korisnosti.\n\nGoogleov SEO vodič daje prednost sadržaju koji je relevantan i razumljiv ljudima. W3C-ovi kriteriji pristupačnosti pomažu prepoznati prepreke pri korištenju. Iz te dvije perspektive proizlazi praktična lekcija: naslov nije uspješan ako vodi na nepostojeću adresu, a napredni dizajn ne pomaže ako korisnik ne može doći do teksta pomoću tipkovnice ili čitača zaslona.\n\nZa realno upravljanje preporučljivo je pratiti nekoliko razdvojenih skupova pokazatelja: pripremljeni tekstovi, urednički odobreni tekstovi, javno dostupni URL-ovi, kanonski ispravne stranice, indeksirane stranice i stvarne interakcije. Uz svaki broj treba zapisati način mjerenja i vrijeme provjere. Posebno je važno ne prikazivati podatak o generiranoj stranici kao dokaz da je već objavljena.\n\nBrz razvoj nije u sukobu s točnim mjerenjem. Naprotiv, kada se jasno vidi gdje sadržaj zapinje — kod izvora, autorizacije, izgradnje, dostave ili indeksiranja — tim može rješavati konkretan problem. To je kvalitetniji oblik ubrzanja od dodavanja još stotina neprovjerenih stranica u evidenciju.",
       "originalWork": true,
       "independentFactCheck": false,
       "editorApproved": false,
