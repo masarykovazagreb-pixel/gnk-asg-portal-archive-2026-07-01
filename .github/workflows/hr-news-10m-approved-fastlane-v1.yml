@@ -42,7 +42,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Fail closed on disabled portal publishing, release fence, stale main or unsafe event
+      - name: Fail closed on HR-News-only publication switch, fence, stale main or unsafe event
         shell: bash
         env:
           APPROVAL: ${{ inputs.confirm_publication }}
@@ -57,7 +57,7 @@ jobs:
           import fs from 'node:fs';
           const state=JSON.parse(fs.readFileSync('ops/automation-kill-switches.json','utf8'));
           if(state.releaseFence?.enabled!==false)throw Error('Production release fence is active or unknown');
-          if(state.channels?.portalPublish?.enabled!==true)throw Error('Portal publish kill switch is OFF; no automatic release');
+          if(state.channels?.hrNewsFastlanePublish?.enabled!==true)throw Error('Approved HR News fast-lane switch is OFF; no release');
           if(state.releaseRules?.requireGreenPremiumContract!==true)throw Error('Required quality gate cannot be disabled');
           console.log('Publication switch and quality policy authorized.');
           NODE
