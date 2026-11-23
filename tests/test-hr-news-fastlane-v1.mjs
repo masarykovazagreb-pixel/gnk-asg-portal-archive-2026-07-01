@@ -77,8 +77,13 @@ test('Fast lane is narrowly enabled; other portal publication remains disabled',
  assert.match(auto,/--diff-filter=A/);
  assert.match(auto,/hr-news-fastlane-preflight-v1\.mjs/);
  assert.match(release,/channels\?\.hrNewsFastlanePublish\?\.enabled/);
- assert.match(release,/All gates \(portal\)/);
- assert.match(release,/Site Functional Readiness/);
+ assert.match(release,/gh workflow run all-gates-v1\.yml/);
+ assert.match(release,/gh workflow run site-functional-readiness\.yml/);
+ assert.match(release,/for workflow in all-gates-v1\.yml site-functional-readiness\.yml/);
+ const fullGate=fs.readFileSync('.github/workflows/all-gates-v1.yml','utf8');
+ const readiness=fs.readFileSync('.github/workflows/site-functional-readiness.yml','utf8');
+ assert.match(fullGate,/workflow_dispatch:/);
+ assert.match(readiness,/workflow_dispatch:/);
  assert.match(release,/approved_sha="\$SHA"/);
  assert.doesNotMatch(release,/vercel|--force\b/i);
 });
