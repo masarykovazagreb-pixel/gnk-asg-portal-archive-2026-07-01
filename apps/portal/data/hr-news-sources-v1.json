@@ -2,7 +2,7 @@
   "version": 1,
   "description": "HR News uses up to 200 real external Croatian-publisher headline LINKS; publisher owns full text and images",
   "goalExternalLinks": 200,
-  "goalOriginalApprovedReportsPerDay": 20,
+  "goalOriginalApprovedReportsPerDay": 30,
   "actualOriginalReportsPublishedByThisManifest": 0,
   "sourceAccess": "fetch limited to registry feeds and approved domains",
   "noHinaWithoutLicense": true,
@@ -12,10 +12,10 @@
   "sources": [
     {
       "name": "HRT Vijesti",
-      "feed": "https://www.hrt.hr/rss/vijesti/",
+      "feed": "https://feed.hrt.hr/vijesti/page.xml",
       "domain": "hrt.hr",
       "enabled": true,
-      "feedAvailability": "must_verify_on_each_run",
+      "feedAvailability": "official HRT RSS listing verified 2026-11-23; runtime fetch still required",
       "rights": "external_title_link_only",
       "images": "do_not_download_or_republish"
     },
@@ -127,5 +127,7 @@
       "rights": "external_title_link_only",
       "images": "do_not_download_or_republish"
     }
-  ]
+  ],
+  "minDesiredExternalLinks": 100,
+  "mediaCards": "AKTUAL MEDIA original artwork unless a documented licence explicitly permits photo reuse"
 }
