@@ -72,7 +72,7 @@
      if(data&&Array.isArray(data.items)){
        all=merge(data.items);
        $('lastUpdate').textContent=data.fetchedAt?fmt(Date.parse(data.fetchedAt)):'—';
-       status.textContent='Izvori: '+all.length+' poveznica · uspješno dohvaćenih RSS kanala: '+(data.successfulFeeds||0)+'/'+(data.sourceFeedsConfigured||0);
+       status.textContent=data.archiveSeed?'Početna baza iz postojeće arhive: '+all.length+' izvornih poveznica. Svježi RSS izvori još nisu provjereni.':'Izvori: '+all.length+' poveznica · uspješno dohvaćenih RSS kanala: '+(data.successfulFeeds||0)+'/'+(data.sourceFeedsConfigured||0);
      }else{
        const fallback=await Promise.allSettled([json('/data/news.json'),json('/data/news_archive.json')]);
        const [fresh,archive]=fallback.map(x=>x.status==='fulfilled'?rows(x.value):[]);
