@@ -12,6 +12,8 @@ on:
       - 'scripts/hr-news-refresh-v1.mjs'
       - 'scripts/hr-news-agents-v1.mjs'
       - 'apps/portal/data/hr-news-sources-v1.json'
+      - 'scripts/hr-news-one-command-v1.mjs'
+      - 'content/hr-news/approved/**'
       - 'scripts/normalize-aktual-hourly-contract.mjs'
       - 'scripts/freshness-status-v2.mjs'
       - 'ops/automation-kill-switches.json'
@@ -80,6 +82,21 @@ jobs:
         run: |
           node scripts/hr-news-refresh-v1.mjs && node scripts/hr-news-agents-v1.mjs || echo "::warning::HR News source/agent refresh unavailable; retain existing cache and continue canonical news."
 
+      - name: Build source-verified, explicitly approved HR News original submissions
+        if: steps.control.outputs.should_run == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          submissions=(content/hr-news/approved/*.json)
+          if (( ${#submissions[@]} > 30 )); then
+            echo "::error::More than 30 signed HR News submissions in one release; split batches."
+            exit 1
+          fi
+          for entry in "${submissions[@]}"; do
+            node scripts/hr-news-one-command-v1.mjs "$entry"
+          done
+
       - name: Normalize public refresh contract
         if: steps.control.outputs.should_run == 'true'
         run: |
@@ -123,6 +140,10 @@ jobs:
               echo "::notice::Main changed; rebuilding the news feed from current main (attempt $attempt)."
               node scripts/gnk-news-refresh.mjs
               node scripts/hr-news-refresh-v1.mjs && node scripts/hr-news-agents-v1.mjs || echo "::warning::HR News source/agent refresh unavailable on retry."
+              shopt -s nullglob
+              submissions=(content/hr-news/approved/*.json)
+              if (( ${#submissions[@]} > 30 )); then echo "Too many HR News submissions" >&2; exit 1; fi
+              for entry in "${submissions[@]}"; do node scripts/hr-news-one-command-v1.mjs "$entry"; done
               node scripts/normalize-aktual-hourly-contract.mjs
               node scripts/render-aktual-noscript-v1.mjs
               node scripts/freshness-status-v2.mjs
@@ -150,6 +171,9 @@ jobs:
             if test -f apps/portal/data/hr-news-feed-v1.json; then
               git add apps/portal/data/hr-news-feed-v1.json
             fi
+            if test -d apps/portal/news/clanci; then git add -A apps/portal/news/clanci; fi
+            if test -d apps/portal/assets/editorial/hr-news; then git add -A apps/portal/assets/editorial/hr-news; fi
+            if test -f apps/portal/data/hr-news-original-v1.json; then git add apps/portal/data/hr-news-original-v1.json; fi
             if git diff --cached --quiet; then
               echo "No news changes to commit."
               echo "changed=false" >> "$GITHUB_OUTPUT"
