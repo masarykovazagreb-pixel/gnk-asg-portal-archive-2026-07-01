@@ -6,6 +6,10 @@ on:
       - fix/portal-en-favicon-release-gate-20261122
     paths:
       - .github/workflows/repair-generated-site-contracts-once-v1.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/repair-generated-site-contracts-once-v1.yml
 
 permissions:
   contents: write
@@ -16,12 +20,15 @@ concurrency:
 
 jobs:
   rebuild:
-    if: github.ref == 'refs/heads/fix/portal-en-favicon-release-gate-20261122'
+    if: >-
+      (github.event_name == 'push' && github.ref == 'refs/heads/fix/portal-en-favicon-release-gate-20261122') ||
+      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'fix/portal-en-favicon-release-gate-20261122')
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: fix/portal-en-favicon-release-gate-20261122
           fetch-depth: 1
           persist-credentials: true
       - uses: actions/setup-node@v4
