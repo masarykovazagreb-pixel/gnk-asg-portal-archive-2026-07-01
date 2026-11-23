@@ -10,6 +10,9 @@ on:
       - '.github/workflows/gnk-news-refresh-v2.yml'
       - '.github/workflows/hr-news-v1-validate.yml'
   workflow_dispatch:
+concurrency:
+  group: hr-news-quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:

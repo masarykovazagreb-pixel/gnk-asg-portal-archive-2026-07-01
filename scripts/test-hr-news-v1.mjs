@@ -14,6 +14,7 @@ for(const s of sources.sources) {
  domains.add(s.domain);
 }
 assert.ok(!domains.has('hina.hr'),'HINA without a content license must not be scraped');
+assert.equal(sources.sources.find(s=>s.name==='tportal')?.feed,'https://www.tportal.hr/rss-najnovije.xml','Use publisher-supported tportal RSS endpoint');
 const index=load('apps/portal/news/index.html');
 assert.match(index,/<title>HR News/);
 assert.match(index,/id="count"/);

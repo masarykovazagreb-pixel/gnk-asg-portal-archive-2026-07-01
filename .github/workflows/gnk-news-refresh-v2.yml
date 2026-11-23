@@ -108,6 +108,20 @@ jobs:
           # Same canonical writer, no additional cron or competing main writer.
           node scripts/public-status-snapshot-v1.mjs
 
+      # Evidence only: source links and review decisions, never keys or unpublished stories.
+      # Artifacts remain in GitHub Actions, not the public site.
+      - name: Preserve HR News agent diagnostics for owner review
+        if: steps.control.outputs.should_run == 'true'
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: hr-news-safe-diagnostics-${{ github.run_id }}
+          path: |
+            artifacts/hr-news-agent-activity-v1.json
+            artifacts/hr-news-editorial-queue-v1.json
+          if-no-files-found: warn
+          retention-days: 3
+
       - name: Validate AKTUAL output before commit
         if: steps.control.outputs.should_run == 'true'
         run: |

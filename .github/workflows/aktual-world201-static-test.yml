@@ -9,6 +9,9 @@ on:
       - 'apps/portal/assets/aktual-world-choices-v1.js'
       - 'apps/portal/assets/aktual-world-live-brief-v1.js'
       - '.github/workflows/aktual-world201-static-test.yml'
+concurrency:
+  group: aktual-world201-quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
