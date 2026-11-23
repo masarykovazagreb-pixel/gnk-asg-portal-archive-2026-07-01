@@ -82,3 +82,14 @@ test('Fast lane is narrowly enabled; other portal publication remains disabled',
  assert.match(release,/approved_sha="\$SHA"/);
  assert.doesNotMatch(release,/vercel|--force\b/i);
 });
+
+test('Verifier is a separate job so protected deploy cannot deadlock in the main writer queue',()=>{
+ const wf=fs.readFileSync('.github/workflows/hr-news-10m-approved-fastlane-v1.yml','utf8');
+ assert.match(wf,/prepare-and-dispatch:\s*\n\s*concurrency:\s*\n\s*group: gnk-asg-main-mutation/);
+ assert.doesNotMatch(wf,/^concurrency:\s*$/m);
+ assert.match(wf,/\n  verify-public-article:\n/);
+ assert.match(wf,/needs: prepare-and-dispatch/);
+ assert.match(wf,/x-gnk-deploy-revision: \$SHA/);
+ assert.match(wf,/VERIFIED_LIVE/);
+ assert.match(wf,/tenMinuteGoalAchieved/);
+});
