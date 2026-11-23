@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       article_path:
-        description: 'Approved single original JSON e.g. content/hr-news/approved/example.json'
+        description: 'One or comma-separated approved originals; max 20 JSON files'
         type: string
         required: true
       confirm_publication:
@@ -27,7 +27,7 @@ jobs:
       cancel-in-progress: false
     outputs:
       approved_sha: ${{ steps.publication.outputs.sha }}
-      slug: ${{ steps.article.outputs.slug }}
+      slugs: ${{ steps.article.outputs.slugs }}
       approved_at: ${{ steps.article.outputs.approved_at }}
       dispatch_utc: ${{ steps.release.outputs.sent_at }}
     if: github.ref == 'refs/heads/main' && inputs.confirm_publication == 'PUBLISH_APPROVED_HR_NEWS' && vars.GNK_ASG_RELEASE_FENCE != 'true'
@@ -72,18 +72,21 @@ jobs:
           ARTICLE_PATH: ${{ inputs.article_path }}
         run: |
           set -euo pipefail
-          node scripts/hr-news-fastlane-preflight-v1.mjs "$ARTICLE_PATH" > /tmp/hr-fastlane-preflight.json
-          slug="$(node -p "JSON.parse(require('fs').readFileSync('/tmp/hr-fastlane-preflight.json','utf8')).slug")"
-          echo "slug=$slug" >> "$GITHUB_OUTPUT"
-          approved_at="$(node -p "JSON.parse(require('fs').readFileSync('/tmp/hr-fastlane-preflight.json','utf8')).approvedAt")"
+          node scripts/hr-news-fastlane-batch-v1.mjs "$ARTICLE_PATH" > /tmp/hr-fastlane-preflight.json
+          slugs="$(node -p "JSON.parse(require('fs').readFileSync('/tmp/hr-fastlane-preflight.json','utf8')).slugs.join(',')")"
+          echo "slugs=$slugs" >> "$GITHUB_OUTPUT"
+          approved_at="$(node -p "JSON.parse(require('fs').readFileSync('/tmp/hr-fastlane-preflight.json','utf8')).earliestApprovedAt")"
           echo "approved_at=$approved_at" >> "$GITHUB_OUTPUT"
-          echo 'Source-checked original article approved for controlled build, NOT LIVE.'
+          echo 'Source-checked approved originals grouped into ONE controlled release; NOT LIVE.'
       - name: Build original article, original SVG, metadata and sitemap
         env:
           ARTICLE_PATH: ${{ inputs.article_path }}
         run: |
           set -euo pipefail
-          node scripts/hr-news-one-command-v1.mjs "$ARTICLE_PATH"
+          IFS=',' read -r -a files <<< "$ARTICLE_PATH"
+          for file in "${files[@]}"; do
+            node scripts/hr-news-one-command-v1.mjs "$file"
+          done
           node scripts/hr-news-sitemap-v1.mjs
           node --test tests/test-hr-news-fastlane-v1.mjs
           node scripts/test-hr-news-v1.mjs
@@ -91,21 +94,24 @@ jobs:
         id: publication
         shell: bash
         env:
-          SLUG: ${{ steps.article.outputs.slug }}
+          SLUGS: ${{ steps.article.outputs.slugs }}
         run: |
           set -euo pipefail
           git config user.name 'aktual-reviewed-publisher'
           git config user.email 'actions@github.com'
-          git add "apps/portal/news/clanci/$SLUG/index.html" \
-            "apps/portal/assets/editorial/hr-news/$SLUG.svg" \
-            apps/portal/data/hr-news-original-v1.json \
+          IFS=',' read -r -a slugs <<< "$SLUGS"
+          for slug in "${slugs[@]}"; do
+            git add "apps/portal/news/clanci/$slug/index.html" \
+              "apps/portal/assets/editorial/hr-news/$slug.svg"
+          done
+          git add apps/portal/data/hr-news-original-v1.json \
             apps/portal/news/sitemap.xml
           test -n "$(git diff --cached --name-only)"
           git fetch origin main --no-tags
           test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" || {
             echo '::error::main changed during validation: refuse stale push'; exit 1;
           }
-          git commit -m "Publish reviewed HR NEWS original: $SLUG"
+          git commit -m "Publish reviewed HR NEWS originals: $SLUGS"
           sha="$(git rev-parse HEAD)"
           git push origin HEAD:main
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
@@ -177,7 +183,7 @@ jobs:
           echo "sent_at=$sent_at" >> "$GITHUB_OUTPUT"
           {
             echo '## HR NEWS fast lane'
-            echo "**Article:** /news/clanci/${{ steps.article.outputs.slug }}/"
+            echo "**Articles:** $SLUGS"
             echo "**Exact SHA:** $SHA"
             echo '**State:** Cloudflare deploy dispatched, LIVE not yet verified'
             echo '**Target:** 10 minutes after documented editorial approval; no SLA promise while gates are queued or failing'
@@ -195,7 +201,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       SHA: ${{ needs.prepare-and-dispatch.outputs.approved_sha }}
-      SLUG: ${{ needs.prepare-and-dispatch.outputs.slug }}
+      SLUGS: ${{ needs.prepare-and-dispatch.outputs.slugs }}
       APPROVED_AT: ${{ needs.prepare-and-dispatch.outputs.approved_at }}
       DISPATCHED_AT: ${{ needs.prepare-and-dispatch.outputs.dispatch_utc }}
     steps:
@@ -204,7 +210,7 @@ jobs:
         run: |
           set -euo pipefail
           [[ "$SHA" =~ ^[a-f0-9]{40}$ ]]
-          [[ "$SLUG" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]
+          [[ "$SLUGS" =~ ^[a-z0-9,-]+$ ]]
           test -n "$DISPATCHED_AT"
           deadline=$(( $(date +%s) + 840 ))
           run_id=''
