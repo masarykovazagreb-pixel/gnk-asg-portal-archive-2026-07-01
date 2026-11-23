@@ -23,9 +23,9 @@ jobs:
         run: node --test tests/test-aktual-world-v1.mjs
       - name: Fetch external headlines as links only
         env:
-          AKTUAL_FEEDS_PER_COUNTRY: '2'
+          AKTUAL_FEEDS_PER_COUNTRY: '4'
           AKTUAL_FETCH_CONCURRENCY: '8'
-          AKTUAL_ITEMS_PER_COUNTRY: '10'
+          AKTUAL_ITEMS_PER_COUNTRY: '30'
         run: node scripts/refresh-aktual-world-headlines-v1.mjs
       - name: Regenerate static pages and RSS without copying article bodies
         env:
