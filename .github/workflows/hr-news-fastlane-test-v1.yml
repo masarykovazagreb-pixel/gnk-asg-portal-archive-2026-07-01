@@ -1,0 +1,23 @@
+name: HR NEWS — fast-lane safety checks
+on:
+  pull_request:
+    paths:
+      - 'scripts/hr-news-fastlane-preflight-v1.mjs'
+      - 'tests/test-hr-news-fastlane-v1.mjs'
+      - '.github/workflows/hr-news-10m-approved-fastlane-v1.yml'
+      - '.github/workflows/hr-news-fastlane-test-v1.yml'
+permissions:
+  contents: read
+jobs:
+  preflight-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate syntax, editorial safeguards and timer semantics
+        run: |
+          node --check scripts/hr-news-fastlane-preflight-v1.mjs
+          node --test tests/test-hr-news-fastlane-v1.mjs
