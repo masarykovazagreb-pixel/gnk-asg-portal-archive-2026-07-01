@@ -170,3 +170,16 @@ test('quality gate rejects forged independence of known Styria media brands',()=
  assert.equal(result.eligible,false);
  assert.ok(result.problems.includes('misstated-editorial-ownership'));
 });
+
+test('human approval cannot predate the most recent inspected evidence',()=>{
+ const d=draft();
+ // Source material was inspected after the editor's recorded approval.
+ d.sources[1].evidenceCheckedAt='2026-11-13T11:30:00Z';
+ d.humanEditorialReview.article_sha256=editorialFingerprint(d);
+ const result=assessDraft(d,{now:NOW});
+ assert.equal(result.eligible,false);
+ assert.ok(result.problems.includes('missing-substantive-human-review'));
+ // An actual fresh review after all checks can be eligible again.
+ d.humanEditorialReview.approvedAt='2026-11-13T11:45:00Z';
+ assert.equal(assessDraft(d,{now:NOW}).eligible,true);
+});
