@@ -1,0 +1,77 @@
+name: HR NEWS — auto-queue newly approved originals
+# Event-driven only. No cron, no PR publication, no secret or production mutation here.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/hr-news/approved/*.json'
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: gnk-hr-news-fastlane-event-queue
+  cancel-in-progress: false
+
+jobs:
+  enqueue:
+    if: github.ref == 'refs/heads/main' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          fetch-tags: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify independent article-only authorization
+        run: |
+          set -euo pipefail
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const s=JSON.parse(fs.readFileSync('ops/automation-kill-switches.json','utf8'));
+          if(s.channels?.hrNewsFastlanePublish?.enabled!==true)throw Error('Fast lane paused');
+          if(s.releaseFence?.enabled!==false)throw Error('Release fence active');
+          if(s.releaseRules?.requireGreenPremiumContract!==true)throw Error('Quality gates required');
+          console.log('Approved HR News only. Other publication channels remain unchanged.');
+          NODE
+      - name: Find newly added approved originals and dispatch controlled fast lane
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_BASE: ${{ github.event.before }}
+          EVENT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EVENT_SHA"
+          # A genuinely approved original is a newly ADDED file under /approved/.
+          # Changes to existing approvals cannot silently republish an existing article.
+          git cat-file -e "$EVENT_BASE^{commit}"
+          mapfile -t files < <(git diff --diff-filter=A --name-only "$EVENT_BASE" "$EVENT_SHA" -- 'content/hr-news/approved/*.json')
+          if (( ${#files[@]} == 0 )); then
+            echo 'No newly added approved original in this event.'
+            exit 0
+          fi
+          if (( ${#files[@]} > 20 )); then
+            echo '::error::More than 20 approvals in one commit; hold for operator batching.'
+            exit 1
+          fi
+          for f in "${files[@]}"; do
+            [[ "$f" =~ ^content/hr-news/approved/[a-z0-9][a-z0-9-]*\.json$ ]] || {
+              echo '::error::Invalid approved filename'; exit 1;
+            }
+            # Fail closed independently for every item, before dispatching any writer.
+            node scripts/hr-news-fastlane-preflight-v1.mjs "$f" >/dev/null
+          done
+          for f in "${files[@]}"; do
+            gh workflow run hr-news-10m-approved-fastlane-v1.yml \
+              --repo "$GITHUB_REPOSITORY" --ref main \
+              -f article_path="$f" \
+              -f confirm_publication=PUBLISH_APPROVED_HR_NEWS \
+              -f notify_search_engines=true
+            echo "Queued reviewed original $f for protected Cloudflare release; NOT LIVE."
+          done
