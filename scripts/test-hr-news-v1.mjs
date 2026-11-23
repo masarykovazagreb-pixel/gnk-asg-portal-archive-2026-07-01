@@ -39,7 +39,7 @@ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'hr-news-contract-'));
 try {
  const paras=Array.from({length:4},(_,i)=>'Izvorni autorski pregled '+(i+1)+': dvije javno dostupne službene stranice daju provjerljive primjere sustava distribuiranja informacija i prava izdavača. Urednička analiza razlikuje činjenice od preporuka te poziva na čitanje izvornika.');
  const sample={slug:'primjer-urednicke-provjere',title:'Kako odgovorno povezivati izvore i provjeravati javne informacije',description:'Primjer uredničkog članka o provjeri izvora i pravilnom povezivanju prema izvornim izdavačima bez preuzimanja njihovih zaštićenih fotografija.',paragraphs:paras,
- approvedForPublication:true,originalWork:true,editorialEvidenceReviewed:true,hashtags:['#AktualMedia','#HRNews'],
+ approvedForPublication:true,originalWork:true,editorialEvidenceReviewed:true,publishedAt:new Date().toISOString(),hashtags:['#AktualMedia','#HRNews'],
  sources:[{name:'Zakonodavstvo RH',url:'https://zakonodavstvo.gov.hr/rss/394',checkedAt:new Date().toISOString(),factSupported:'Javni službeni izvor objavljuje RSS stranicu.'},{name:'24sata RSS',url:'https://www.24sata.hr/flatpages/rss/',checkedAt:new Date().toISOString(),factSupported:'Izdavač javno navodi RSS kanale za vijesti.'}]};
  const fixture=path.join(tmp,'reviewed.json');fs.writeFileSync(fixture,JSON.stringify(sample));
  const env={...process.env,HR_NEWS_BUILD_ROOT:path.join(tmp,'out')};
