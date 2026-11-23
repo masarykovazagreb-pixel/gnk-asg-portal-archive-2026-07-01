@@ -29,14 +29,20 @@ export function validatePriceRows(input) {
     const id = String(item?.id ?? '').trim();
     const title = String(item?.title ?? '').trim();
     const retailer = String(item?.retailer ?? '').trim();
-    const price = Number(item?.price);
+    // A reviewed adapter must emit a number; Number('') and Number(null) misleadingly produce 0.
+    const price = item?.price;
     const observedAt = String(item?.observedAt ?? '');
+    const validObservedAt = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/.test(observedAt)
+      && Number.isFinite(Date.parse(observedAt)) && Date.parse(observedAt) <= Date.now() + 5 * 60_000;
     let source;
     try { source = new URL(item?.sourceUrl); } catch { throw Error('Invalid original source URL at '+index); }
-    if (!id || id.length > 128 || !title || title.length > 300 || !retailer ||
-        !Number.isFinite(price) || price < 0 || item.currency !== 'EUR' ||
-        Number.isNaN(Date.parse(observedAt)) || source.protocol !== 'https:' ||
-        ids.has(id)) throw Error('Invalid price row at '+index);
+    const publicSource = source.protocol === 'https:' && !source.username && !source.password && !source.hash
+      && source.href.length <= 2048 && source.hostname.includes('.')
+      && !/^\d{1,3}(?:\.\d{1,3}){3}$/.test(source.hostname)
+      && !/\.local\.?$|\.internal\.?$/i.test(source.hostname);
+    if (!id || id.length > 128 || !title || title.length > 300 || !retailer || retailer.length > 160 ||
+        typeof price !== 'number' || !Number.isFinite(price) || price < 0 || item.currency !== 'EUR' ||
+        !validObservedAt || !publicSource || ids.has(id)) throw Error('Invalid price row at '+index);
     ids.add(id);
     return { id, title, retailer, price, currency: 'EUR', observedAt, sourceUrl: source.href };
   });
