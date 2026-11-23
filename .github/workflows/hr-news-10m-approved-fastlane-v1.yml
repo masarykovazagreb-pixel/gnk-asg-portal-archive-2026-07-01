@@ -214,6 +214,7 @@ jobs:
           test -n "$DISPATCHED_AT"
           deadline=$(( $(date +%s) + 840 ))
           run_id=''
+          deploy_verified=false
           while [ "$(date +%s)" -lt "$deadline" ]; do
             runs="$(gh run list --repo "$GITHUB_REPOSITORY" \
               --workflow deploy-admin-auth-v6.yml --limit 50 \
@@ -229,6 +230,7 @@ jobs:
               if [ "$state" = 'completed' ]; then
                 if [ "$conclusion" = 'success' ]; then
                   echo "Protected deployment run $run_id succeeded for $SHA."
+                  deploy_verified=true
                   break
                 fi
                 echo "::error::Protected deployment $run_id completed as $conclusion; NOT LIVE"
@@ -237,7 +239,7 @@ jobs:
             fi
             sleep 15
           done
-          if [ -z "$run_id" ] || [ "$(date +%s)" -ge "$deadline" ]; then
+          if [ "$deploy_verified" != true ]; then
             echo '::error::No timely successful protected deployment; NOT LIVE'
             exit 1
           fi
