@@ -1,0 +1,101 @@
+#!/usr/bin/env node
+/**
+ * AKTUAL MEDIA bounded specialist fleet: executable read-only SEO audits
+ * and source-gated editorial assignments, not 20 model instances.
+ * No network, no keys, no public writes, no merge or deploy.
+ */
+import {readFileSync,existsSync,mkdirSync,writeFileSync} from 'node:fs';
+import {join,resolve,dirname,relative} from 'node:path';
+import {fileURLToPath} from 'node:url';
+const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'../..');
+const read=(p)=>readFileSync(join(ROOT,p),'utf8');
+const parse=(p)=>JSON.parse(read(p));
+const matches=(html,re)=>re.test(html);
+const content=(html,re)=>html.match(re)?.[1]?.trim()||'';
+const ORIGIN='https://gnk-asg.hr';
+const AUDITS=[
+  ['seo-title',(h)=>{const t=content(h,/<title[^>]*>([^<]*)<\/title>/i);return t.length>=20&&t.length<=100?'ok':'review-title-length';}],
+  ['seo-description',(h)=>{const d=content(h,/<meta\s+name=["']description["']\s+content=["']([^"']*)/i);return d.length>=65&&d.length<=165?'ok':'review-meta-description';}],
+  ['canonical',(h,c)=>matches(h,new RegExp('<link\\s+rel=["\\x27]canonical["\\x27]\\s+href=["\\x27]'+ORIGIN.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'/kanal/'+c.id+'/["\\x27]','i'))?'ok':'canonical-mismatch'],
+  ['hreflang',(h)=>matches(h,/rel=["']alternate["'][^>]*hreflang=/i)?'ok':'missing-hreflang'],
+  ['jsonld',(h)=>matches(h,/type=["']application\/ld\+json["']/i)?'ok':'missing-jsonld'],
+  ['sitemap',(_h,c,ctx)=>ctx.index.includes(ORIGIN+'/kanal/'+c.id+'/sitemap.xml')?'ok':'missing-channel-sitemap-index'],
+  ['robots',(h,_,ctx)=>!/name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(h)&&ctx.robots.includes('Sitemap:')?'ok':'robots-review'],
+  ['open-graph',(h)=>matches(h,/property=["']og:title["']/i)&&matches(h,/property=["']og:url["']/i)?'ok':'missing-og-metadata'],
+  ['favicon',(h)=>matches(h,/rel=["']icon["']/i)?'ok':'missing-icon'],
+  ['freshness',(h)=>matches(h,/data-(?:region-)?fresh(?:ness)?/i)?'ok':'missing-source-freshness-signal'],
+  ['accessibility',(h)=>matches(h,/<html\b[^>]*lang=["'][^"']+["']/i)&&matches(h,/<h1\b/i)?'ok':'missing-language-or-h1']
+];
+export function evaluateChannel(channel,html,context){
+  if(!/^[a-z0-9-]+$/.test(channel?.id||''))throw Error('Unsafe channel identifier');
+  const checks=AUDITS.map(([workerId,fn])=>({workerId,result:fn(html,channel,context)}));
+  return {channel:channel.id,checks,findings:checks.filter(x=>x.result!=='ok')};
+}
+export function validateFleet(fleet,channels,ideas){
+  if(fleet.schema_version!=='AKTUAL_WORKER_FLEET_V1')throw Error('Unknown fleet schema');
+  if(fleet.execution?.no_new_cron!==true||fleet.execution?.max_ai_model_calls!==0||
+    fleet.execution?.write_private_artifact_only!==true||fleet.execution?.max_source_network_requests!==0||
+    fleet.governance?.editorial_review_required!==true||fleet.governance?.rights_clearance_required!==true||
+    fleet.governance?.full_release_gate_required!==true||fleet.governance?.cloudflare_only!==true)
+    throw Error('Fleet safety policy cannot be weakened');
+  const roles=fleet.roles||[];
+  if(roles.length!==20||new Set(roles.map(r=>r.id)).size!==roles.length||
+    roles.some(r=>r.enabled!==true||r.publish!==false||r.deploy!==false||r.merge!==false)||
+    AUDITS.some(([id])=>!roles.some(r=>r.id===id&&r.mode==='audit')))
+    throw Error('Unsafe or incomplete fleet role registry');
+  if(!Array.isArray(channels)||channels.length<1||channels.length>fleet.execution.max_channels_per_run||
+    new Set(channels.map(c=>c.id)).size!==channels.length)
+    throw Error('Channel inventory cannot be processed safely');
+  if(!Array.isArray(ideas)||ideas.length<1||new Set(ideas.map(i=>i.id)).size!==ideas.length||
+    ideas.some(i=>i.status!=='research_required'||i.publish!==false||!i.title||!i.angle))
+    throw Error('Unreviewed editorial ideas cannot enter public publishing');
+  return true;
+}
+export function buildReport({fleet,channels,ideas,pages,index,robots,sha='unverified'}){
+  validateFleet(fleet,channels,ideas);
+  const coverage=channels.map(c=>evaluateChannel(c,pages[c.id]||'',{index,robots}));
+  const findings=coverage.flatMap(c=>c.findings.map(x=>({channel:c.channel,...x})));
+  const roleSummary=fleet.roles.map(r=>({
+    id:r.id,mode:r.mode,enabled:r.enabled,
+    inspected:r.mode==='audit'?channels.length:0,
+    findings:r.mode==='audit'?findings.filter(f=>f.workerId===r.id).length:0,
+    work_state:r.mode==='audit'?'read-only-completed':'awaiting-verified-input'
+  }));
+  return {
+    schema_version:'AKTUAL_WORKER_AUDIT_V1',source_sha:sha,release_status:'NOT_RELEASE_EVIDENCE',
+    no_publish:true,no_deploy:true,no_model_execution:true,verified_live_channels:null,
+    stated_world201_goal:201,inspected_channels:channels.length,
+    audits_executed:channels.length*AUDITS.length,worker_roles:roleSummary.length,
+    editorial_ideas_queued:ideas.length,editorial_ideas_publishable:0,
+    findings,roles:roleSummary,
+    next_action:'Review findings and source evidence in existing editorial workflow; publish only after full CI, Cloudflare exact-SHA release and public HTTPS proof'
+  };
+}
+export function run({writePrivate=false,sha=process.env.SOURCE_SHA||'unverified'}={}){
+  const fleet=parse('ops/aktual-worker-fleet-v1.json');
+  const channels=parse('apps/region/channels.json').channels;
+  const ideas=parse('content/editorial/aktual-ideas-2026-11-23.json').items;
+  const pages={};
+  for(const c of channels){
+    const name='apps/portal/kanal/'+c.id+'/index.html';
+    pages[c.id]=existsSync(join(ROOT,name))?read(name):'';
+  }
+  const report=buildReport({fleet,channels,ideas,pages,
+    index:read('apps/portal/sitemap-index.xml'),robots:read('apps/portal/robots.txt'),sha});
+  if(writePrivate){
+    const dir=resolve(process.env.AGENT_OUT||'');
+    const rel=relative(join(ROOT,'artifacts'),dir);
+    if(!process.env.AGENT_OUT||rel.startsWith('..')||rel==='..'||rel.startsWith('/')||rel==='') {
+      throw Error('Output must be an explicit private artifacts/ subdirectory');
+    }
+    mkdirSync(dir,{recursive:true});
+    writeFileSync(join(dir,'worker-fleet-audit.json'),JSON.stringify(report,null,2)+'\n',{mode:0o600});
+  }
+  return report;
+}
+if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
+  const report=run({writePrivate:process.argv.includes('--write-private')});
+  console.log(JSON.stringify({roles:report.worker_roles,channels:report.inspected_channels,
+    audits:report.audits_executed,findings:report.findings.length,
+    ideas:report.editorial_ideas_queued,published:0,deploy:false,output:process.argv.includes('--write-private')?'private-artifact':'stdout-only'}));
+}
