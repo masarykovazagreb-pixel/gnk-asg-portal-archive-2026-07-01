@@ -57,3 +57,13 @@ try {
  assert.notEqual(invalid.status,0,'Unapproved report unexpectedly published');
 } finally {fs.rmSync(tmp,{recursive:true,force:true});}
 console.log(JSON.stringify({ok:true,hrNews:true,publishers:sources.sources.length,maxExternalLinks:200,operationalProcessors:10,targetOriginalReportsPerDay:20,publishRequiresReviewedOriginal:true,isolatedBuildTest:true}));
+
+// Corporate network SEO must remain semantic: no fabricated parent-child corporate links.
+const networkHtml=load('apps/portal/poslovna-mreza/index.html');
+for(const name of ['GNK ASG','GNK DINAMO Ltd.','AKTUAL MEDIA','Sports Performance Tracking','Omega Holding Beograd','Organa','Geotehnika Eko','Nermin Sefić']) assert.ok(networkHtml.includes(name),'Missing entity '+name);
+assert.match(load('apps/portal/index.html'),/href="\/poslovna-mreza\/"/);
+assert.match(load('apps/portal/sitemap.xml'),/https:\/\/gnk-asg\.hr\/poslovna-mreza\//);
+assert.doesNotMatch(networkHtml,/\"parentOrganization\"|\"subOrganization\"/);
+const tags=JSON.parse(load('apps/portal/data/corporate-seo-taxonomy-v1.json'));
+assert.equal(tags.topicHashtags.length,20);
+assert.ok(tags.defaultPerArticleHashtagLimit<=5);

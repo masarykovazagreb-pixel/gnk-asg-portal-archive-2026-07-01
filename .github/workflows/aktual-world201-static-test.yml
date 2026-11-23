@@ -5,6 +5,8 @@ on:
       - 'apps/portal/world/**'
       - 'scripts/test-aktual-world201-static-v1.mjs'
       - 'scripts/test-aktual-world-fast-news-v1.mjs'
+      - 'scripts/world201-edition-agent-plan-v1.mjs'
+      - 'scripts/test-world201-edition-agent-plan-v1.mjs'
       - 'apps/portal/assets/am-refresh-v1.js'
       - 'apps/portal/assets/aktual-world-choices-v1.js'
       - 'apps/portal/assets/aktual-world-live-brief-v1.js'
@@ -29,3 +31,4 @@ jobs:
         run: |
           node --test scripts/test-aktual-world201-static-v1.mjs
           node scripts/test-aktual-world-fast-news-v1.mjs
+          node scripts/test-world201-edition-agent-plan-v1.mjs

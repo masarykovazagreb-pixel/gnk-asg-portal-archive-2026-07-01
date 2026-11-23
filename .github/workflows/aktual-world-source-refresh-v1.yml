@@ -27,6 +27,17 @@ jobs:
           AKTUAL_FETCH_CONCURRENCY: '8'
           AKTUAL_ITEMS_PER_COUNTRY: '30'
         run: node scripts/refresh-aktual-world-headlines-v1.mjs
+      - name: Assign one source-research desk per 201 countries and Zagreb priority
+        run: |
+          node scripts/test-world201-edition-agent-plan-v1.mjs
+          node scripts/world201-edition-agent-plan-v1.mjs
+      - name: Save private source-research assignments for editorial verification
+        uses: actions/upload-artifact@v4
+        with:
+          name: world201-source-research-${{ github.run_id }}
+          path: artifacts/world201-agent-assignments-v1.json
+          if-no-files-found: error
+          retention-days: 3
       - name: Regenerate static pages and RSS without copying article bodies
         env:
           AKTUAL_WORLD_OUT: apps/portal/gnk-aktual
