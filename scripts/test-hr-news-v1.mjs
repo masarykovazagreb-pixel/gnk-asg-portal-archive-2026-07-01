@@ -50,13 +50,25 @@ try {
  const svg=load(path.join(tmp,'out/assets/editorial/hr-news/'+sample.slug+'.svg'));
  const generated=JSON.parse(load(path.join(tmp,'out/data/hr-news-original-v1.json')));
  assert.match(html,/NewsArticle/);assert.match(html,/Provjerljivi izvori/);
+ assert.match(html,/Urednik deska: <strong>Nermin Sefić<\/strong>/);
+ assert.match(html,/<meta name="editor" content="Nermin Sefić">/);
+ assert.match(html,/<meta property="article:tag" content="NerminSefic">/);
+ assert.match(html,/<meta name="twitter:card" content="summary_large_image">/);
+ assert.match(html,/#NerminSefic/);
+ assert.match(html,/"editor":\{"@type":"Person","name":"Nermin Sefić"\}/);
+
  assert.match(svg,/<svg/);assert.match(svg,/Izvorna konceptualna ilustracija/);
  assert.equal(generated.items.length,1);
+ assert.equal(generated.items[0].editor,'Nermin Sefić');
+ assert.ok(generated.items[0].hashtags.includes('#NerminSefic'));
+ assert.ok(generated.items[0].hashtags.includes('#AktualMedia'));
+ assert.equal(generated.items[0].seo.canonical,'https://gnk-asg.hr/news/clanci/'+sample.slug+'/');
+
  sample.approvedForPublication=false;fs.writeFileSync(fixture,JSON.stringify(sample));
  const invalid=spawnSync(process.execPath,['scripts/hr-news-one-command-v1.mjs',fixture],{encoding:'utf8',env});
  assert.notEqual(invalid.status,0,'Unapproved report unexpectedly published');
 } finally {fs.rmSync(tmp,{recursive:true,force:true});}
-console.log(JSON.stringify({ok:true,hrNews:true,publishers:sources.sources.length,maxExternalLinks:200,operationalProcessors:10,targetOriginalReportsPerDay:20,publishRequiresReviewedOriginal:true,isolatedBuildTest:true}));
+console.log(JSON.stringify({ok:true,hrNews:true,publishers:sources.sources.length,maxExternalLinks:200,operationalProcessors:10,targetOriginalReportsPerDay:30,publishRequiresReviewedOriginal:true,isolatedBuildTest:true}));
 
 // Corporate network SEO must remain semantic: no fabricated parent-child corporate links.
 const networkHtml=load('apps/portal/poslovna-mreza/index.html');
