@@ -31,7 +31,30 @@ export function evaluateChannel(channel,html,context){
   const checks=AUDITS.map(([workerId,fn])=>({workerId,result:fn(html,channel,context)}));
   return {channel:channel.id,checks,findings:checks.filter(x=>x.result!=='ok')};
 }
-export function validateFleet(fleet,channels,ideas){
+/** Metadata-only review. Not independent fact-checking or editorial approval. */
+const EDITORIAL_ROLES=['source-discovery','source-independence','fact-evidence','rights-review','original-draft','copy-editor','translation-review','release-readiness','distribution-review'];
+export function evaluateEditorialDraft(draft){
+  if(!draft || typeof draft!=='object'||!/^DRAFT-[0-9-]+$/.test(draft.id||''))
+    throw Error('Invalid editorial draft identifier');
+  if(draft.publish!==false||draft.approved!==false||
+     draft.status!=='draft_requires_source_review'||draft.publication_url!==null)
+    throw Error('Unverified draft must remain unpublished');
+  const wordCount=Array.isArray(draft.body)?draft.body.join(' ').trim().split(/\s+/).filter(Boolean).length:0;
+  const state={
+    'source-discovery':'needs-verified-original-sources',
+    'source-independence':'needs-independent-publisher-check',
+    'fact-evidence':'needs-primary-and-secondary-evidence',
+    'rights-review':draft.image_rights==='not_applicable_no_image'?'no-image-to-license':'needs-image-rights-evidence',
+    'original-draft':wordCount>=140&&String(draft.title||'').length>=25?'original-draft-present':'insufficient-draft',
+    'copy-editor':'needs-substantive-editorial-review',
+    'translation-review':draft.language==='hr'?'no-translation-submitted':'needs-language-review',
+    'release-readiness':'blocked-until-full-ci-and-cloudflare-exact-sha',
+    'distribution-review':'blocked-until-independent-public-https-proof'
+  };
+  return {id:draft.id,title:draft.title,words:wordCount,publishable:false,
+    checks:EDITORIAL_ROLES.map(workerId=>({workerId,result:state[workerId]}))};
+}
+export function validateFleet(fleet,channels,ideas,drafts=[]){
   if(fleet.schema_version!=='AKTUAL_WORKER_FLEET_V1')throw Error('Unknown fleet schema');
   if(fleet.execution?.no_new_cron!==true||fleet.execution?.max_ai_model_calls!==0||
     fleet.execution?.write_private_artifact_only!==true||fleet.execution?.max_source_network_requests!==0||
@@ -41,7 +64,8 @@ export function validateFleet(fleet,channels,ideas){
   const roles=fleet.roles||[];
   if(roles.length!==20||new Set(roles.map(r=>r.id)).size!==roles.length||
     roles.some(r=>r.enabled!==true||r.publish!==false||r.deploy!==false||r.merge!==false)||
-    AUDITS.some(([id])=>!roles.some(r=>r.id===id&&r.mode==='audit')))
+    AUDITS.some(([id])=>!roles.some(r=>r.id===id&&r.mode==='audit'))||
+    EDITORIAL_ROLES.some(id=>!roles.some(r=>r.id===id&&r.mode==='queue')))
     throw Error('Unsafe or incomplete fleet role registry');
   if(!Array.isArray(channels)||channels.length<1||channels.length>fleet.execution.max_channels_per_run||
     new Set(channels.map(c=>c.id)).size!==channels.length)
@@ -49,17 +73,22 @@ export function validateFleet(fleet,channels,ideas){
   if(!Array.isArray(ideas)||ideas.length<1||new Set(ideas.map(i=>i.id)).size!==ideas.length||
     ideas.some(i=>i.status!=='research_required'||i.publish!==false||!i.title||!i.angle))
     throw Error('Unreviewed editorial ideas cannot enter public publishing');
+  if(!Array.isArray(drafts)||new Set(drafts.map(d=>d.id)).size!==drafts.length||
+     drafts.some(d=>d.publish!==false||d.approved!==false||d.publication_url!==null))
+    throw Error('Unsafe or duplicate unpublished draft');
   return true;
 }
-export function buildReport({fleet,channels,ideas,pages,index,robots,sha='unverified'}){
-  validateFleet(fleet,channels,ideas);
+export function buildReport({fleet,channels,ideas,drafts=[],pages,index,robots,sha='unverified'}){
+  validateFleet(fleet,channels,ideas,drafts);
   const coverage=channels.map(c=>evaluateChannel(c,pages[c.id]||'',{index,robots}));
   const findings=coverage.flatMap(c=>c.findings.map(x=>({channel:c.channel,...x})));
+  const editorial=drafts.map(evaluateEditorialDraft);
   const roleSummary=fleet.roles.map(r=>({
     id:r.id,mode:r.mode,enabled:r.enabled,
-    inspected:r.mode==='audit'?channels.length:0,
-    findings:r.mode==='audit'?findings.filter(f=>f.workerId===r.id).length:0,
-    work_state:r.mode==='audit'?'read-only-completed':'awaiting-verified-input'
+    inspected:r.mode==='audit'?channels.length:drafts.length,
+    findings:r.mode==='audit'?findings.filter(f=>f.workerId===r.id).length:
+      editorial.flatMap(e=>e.checks).filter(x=>x.workerId===r.id&&x.result.startsWith('needs-')).length,
+    work_state:r.mode==='audit'?'read-only-completed':'metadata-reviewed-no-source-verification'
   }));
   return {
     schema_version:'AKTUAL_WORKER_AUDIT_V1',source_sha:sha,release_status:'NOT_RELEASE_EVIDENCE',
@@ -67,7 +96,10 @@ export function buildReport({fleet,channels,ideas,pages,index,robots,sha='unveri
     stated_world201_goal:201,inspected_channels:channels.length,
     audits_executed:channels.length*AUDITS.length,worker_roles:roleSummary.length,
     editorial_ideas_queued:ideas.length,editorial_ideas_publishable:0,
-    findings,roles:roleSummary,
+    editorial_drafts_reviewed_metadata:editorial.length,
+    editorial_checks_executed:editorial.length*EDITORIAL_ROLES.length,
+    editorial_drafts_publishable:0,
+    findings,editorial,roles:roleSummary,
     next_action:'Review findings and source evidence in existing editorial workflow; publish only after full CI, Cloudflare exact-SHA release and public HTTPS proof'
   };
 }
@@ -75,12 +107,13 @@ export function run({writePrivate=false,sha=process.env.SOURCE_SHA||'unverified'
   const fleet=parse('ops/aktual-worker-fleet-v1.json');
   const channels=parse('apps/region/channels.json').channels;
   const ideas=parse('content/editorial/aktual-ideas-2026-11-23.json').items;
+  const drafts=parse('content/editorial/aktual-original-drafts-2026-11-23.json').articles;
   const pages={};
   for(const c of channels){
     const name='apps/portal/kanal/'+c.id+'/index.html';
     pages[c.id]=existsSync(join(ROOT,name))?read(name):'';
   }
-  const report=buildReport({fleet,channels,ideas,pages,
+  const report=buildReport({fleet,channels,ideas,drafts,pages,
     index:read('apps/portal/sitemap-index.xml'),robots:read('apps/portal/robots.txt'),sha});
   if(writePrivate){
     const dir=resolve(process.env.AGENT_OUT||'');
@@ -97,5 +130,6 @@ if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   const report=run({writePrivate:process.argv.includes('--write-private')});
   console.log(JSON.stringify({roles:report.worker_roles,channels:report.inspected_channels,
     audits:report.audits_executed,findings:report.findings.length,
-    ideas:report.editorial_ideas_queued,published:0,deploy:false,output:process.argv.includes('--write-private')?'private-artifact':'stdout-only'}));
+    ideas:report.editorial_ideas_queued,drafts:report.editorial_drafts_reviewed_metadata,
+    editorial_checks:report.editorial_checks_executed,published:0,deploy:false,output:process.argv.includes('--write-private')?'private-artifact':'stdout-only'}));
 }
