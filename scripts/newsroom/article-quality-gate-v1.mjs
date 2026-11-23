@@ -50,6 +50,7 @@ export function assessDraft(draft, {now=Date.now()} = {}) {
   const ids=new Set(), hosts=new Set(), evidenceById=new Map();
   const groups=new Set();
   let primaryCount=0;
+  let latestEvidenceCheckedAt=0;
   const validSources=[];
   for(const s of sources) {
     if(!httpsUrl(s?.url) || typeof s?.id!=='string' || !s.id.trim() || ids.has(s.id)) {
@@ -74,6 +75,8 @@ export function assessDraft(draft, {now=Date.now()} = {}) {
        !String(s.evidenceNote||'').trim()) {
       problems.push('source-material-not-inspected');
     }
+    if(Number.isFinite(checkedAt) && checkedAt<=now && checkedAt>=stamp)
+      latestEvidenceCheckedAt=Math.max(latestEvidenceCheckedAt,checkedAt);
     if(['primary-document','official-record'].includes(s.materialType) &&
        Number.isFinite(checkedAt) && checkedAt<=now && checkedAt>=stamp)primaryCount++;
     evidenceById.set(s.id,group);
@@ -108,6 +111,7 @@ export function assessDraft(draft, {now=Date.now()} = {}) {
     !review.editorialResponsibilityAccepted ||
     !Number.isFinite(Date.parse(String(review.approvedAt||''))) || Date.parse(String(review.approvedAt||'')) > now ||
     (Number.isFinite(issuedAt) && Date.parse(String(review.approvedAt||''))<issuedAt) ||
+    (latestEvidenceCheckedAt>0 && Date.parse(String(review.approvedAt||''))<latestEvidenceCheckedAt) ||
     review.article_sha256!==fingerprint);
   flag('privacy-rights-screen-missing',draft.privacyAndRightsReviewed!==true);
   flag('corrections-policy-missing',!httpsUrl(draft.correctionsUrl));
