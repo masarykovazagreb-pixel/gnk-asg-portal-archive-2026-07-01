@@ -32,7 +32,7 @@ jobs:
       dispatch_utc: ${{ steps.release.outputs.sent_at }}
     if: github.ref == 'refs/heads/main' && inputs.confirm_publication == 'PUBLISH_APPROVED_HR_NEWS' && vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 19
+    timeout-minutes: 35
     permissions:
       contents: write
       actions: write
@@ -110,6 +110,21 @@ jobs:
           git push origin HEAD:main
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
           echo "Main writer SHA $sha created; NOT YET LIVE."
+      - name: Explicitly dispatch both read-only required CI workflows on token-authored exact SHA
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ steps.publication.outputs.sha }}
+        run: |
+          set -euo pipefail
+          git fetch origin main --no-tags
+          test "$(git rev-parse origin/main)" = "$SHA" || {
+            echo '::error::Main advanced before CI dispatch: refuse stale release'; exit 1;
+          }
+          # A GITHUB_TOKEN-authored push does not recursively fire other push workflows.
+          # workflow_dispatch is an explicitly supported trigger. Both runs stay read-only.
+          gh workflow run all-gates-v1.yml --repo "$GITHUB_REPOSITORY" --ref main
+          gh workflow run site-functional-readiness.yml --repo "$GITHUB_REPOSITORY" --ref main
       - name: Wait for required full CI before permitting exact-SHA deploy
         shell: bash
         env:
@@ -117,8 +132,8 @@ jobs:
           SHA: ${{ steps.publication.outputs.sha }}
         run: |
           set -euo pipefail
-          deadline=$(( $(date +%s) + 420 ))
-          for workflow in 'All gates (portal)' 'Site Functional Readiness'; do
+          deadline=$(( $(date +%s) + 1200 ))
+          for workflow in all-gates-v1.yml site-functional-readiness.yml; do
             while true; do
               result="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$workflow" \
                 --commit "$SHA" --limit 2 --json headSha,status,conclusion 2>/dev/null || echo '[]')"
