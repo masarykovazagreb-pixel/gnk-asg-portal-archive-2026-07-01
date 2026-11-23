@@ -245,39 +245,43 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          page="https://gnk-asg.hr/news/clanci/$SLUG/"
           headers="$(mktemp)"
           body="$(mktemp)"
           trap 'rm -f "$headers" "$body"' EXIT
-          deadline=$(( $(date +%s) + 100 ))
-          verified=false
-          while [ "$(date +%s)" -lt "$deadline" ]; do
-            code="$(curl --silent --show-error --max-time 15 --max-redirs 0 \
-              --dump-header "$headers" --output "$body" --write-out '%{http_code}' \
-              "$page?exact-sha=$SHA" || true)"
-            if [ "$code" = '200' ] &&
-               grep -Fiq "x-gnk-deploy-revision: $SHA" "$headers" &&
-               grep -Fq "<link rel=\"canonical\" href=\"$page\">" "$body" &&
-               grep -Fq '<script type="application/ld+json">' "$body"; then
-              verified=true
-              break
+          IFS=',' read -r -a slugs <<< "$SLUGS"
+          for slug in "${slugs[@]}"; do
+            page="https://gnk-asg.hr/news/clanci/$slug/"
+            deadline=$(( $(date +%s) + 100 ))
+            verified=false
+            while [ "$(date +%s)" -lt "$deadline" ]; do
+              code="$(curl --silent --show-error --max-time 15 --max-redirs 0 \
+                --dump-header "$headers" --output "$body" --write-out '%{http_code}' \
+                "$page?exact-sha=$SHA" || true)"
+              if [ "$code" = '200' ] &&
+                 grep -Fiq "x-gnk-deploy-revision: $SHA" "$headers" &&
+                 grep -Fq "<link rel=\"canonical\" href=\"$page\">" "$body" &&
+                 grep -Fq '<script type="application/ld+json">' "$body"; then
+                verified=true
+                break
+              fi
+              sleep 8
+            done
+            if [ "$verified" != true ]; then
+              echo "::error::Missing HTTP 200, canonical metadata or exact production SHA for $slug; NOT LIVE"
+              exit 1
             fi
-            sleep 8
+            echo "Verified public original: $page at $SHA"
           done
-          if [ "$verified" != true ]; then
-            echo '::error::Missing article HTTP 200, canonical metadata or exact production SHA; NOT LIVE'
-            exit 1
-          fi
           export VERIFIED_AT="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
           node --input-type=module - <<'NODE'
           const from=Date.parse(process.env.APPROVED_AT);
           const at=Date.parse(process.env.VERIFIED_AT);
           const elapsed=Number.isFinite(from)&&Number.isFinite(at)?Math.max(0,Math.round((at-from)/1000)):null;
-          console.log(JSON.stringify({verdict:'VERIFIED_LIVE',url:'https://gnk-asg.hr/news/clanci/'+process.env.SLUG+'/',sha:process.env.SHA,verifiedAt:process.env.VERIFIED_AT,secondsAfterApproval:elapsed,tenMinuteGoalAchieved:elapsed!==null&&elapsed<=600}));
+          console.log(JSON.stringify({verdict:'VERIFIED_LIVE',articles:process.env.SLUGS.split(',').map(x=>'https://gnk-asg.hr/news/clanci/'+x+'/'),sha:process.env.SHA,verifiedAt:process.env.VERIFIED_AT,secondsAfterEarliestApproval:elapsed,tenMinuteGoalAchievedForWholeBatch:elapsed!==null&&elapsed<=600}));
           NODE
           {
             echo '## Verified original HR NEWS article'
-            echo "**Public URL:** $page"
+            echo "**Verified article slugs:** $SLUGS"
             echo "**Production SHA:** $SHA"
             echo '**Proof:** HTTP 200 + canonical article metadata + exact release header'
             echo "**Verified UTC:** $VERIFIED_AT"
