@@ -35,6 +35,15 @@ for (const item of data.articles) {
   assert.equal(item.articleBody, item.paragraphs.join('\n\n'));
   assert.ok(item.articleBody.split(/\s+/).length >= 175, 'Original text too short');
   assert.ok(Array.isArray(item.tags) && item.tags.length >= 2);
+  assert.equal(item.editorDesk, 'Nermin Sefić', 'Every draft must record the desk editor');
+  assert.ok(item.tags.includes('#NerminSefic'), 'Desk editor hashtag missing');
+  assert.ok(item.tags.includes('#AktualMedia'), 'Editorial publisher hashtag missing');
+  assert.ok(item.tags.length <= 5, 'Too many hashtags');
+  assert.equal(item.seo?.title, item.title);
+  assert.equal(item.seo?.metaDescription, item.description);
+  assert.equal(item.seo?.canonical, null, 'Never claim a canonical live URL while draft');
+  assert.equal(item.seo?.publicationState, 'DRAFT_ONLY_NOT_INDEXABLE');
+
   assert.ok(Array.isArray(item.sources) && item.sources.length >= 2);
   const sources = new Set();
   for (const s of item.sources) {
