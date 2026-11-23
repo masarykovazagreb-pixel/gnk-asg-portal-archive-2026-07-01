@@ -13,16 +13,19 @@ const parse=(p)=>JSON.parse(read(p));
 const matches=(html,re)=>re.test(html);
 const content=(html,re)=>html.match(re)?.[1]?.trim()||'';
 const ORIGIN='https://gnk-asg.hr';
+const tags=(html,name)=>[...String(html).matchAll(new RegExp('<'+name+'\\b[^>]*>','gi'))]
+  .map(m=>Object.fromEntries([...m[0].matchAll(/([a-z][a-z0-9:-]*)\s*=\s*(["'])(.*?)\2/gi)]
+    .map(a=>[a[1].toLowerCase(),a[3]])));
 const AUDITS=[
   ['seo-title',(h)=>{const t=content(h,/<title[^>]*>([^<]*)<\/title>/i);return t.length>=20&&t.length<=100?'ok':'review-title-length';}],
-  ['seo-description',(h)=>{const d=content(h,/<meta\s+name=["']description["']\s+content=["']([^"']*)/i);return d.length>=65&&d.length<=165?'ok':'review-meta-description';}],
-  ['canonical',(h,c)=>matches(h,new RegExp('<link\\s+rel=["\\x27]canonical["\\x27]\\s+href=["\\x27]'+ORIGIN.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'/kanal/'+c.id+'/["\\x27]','i'))?'ok':'canonical-mismatch'],
-  ['hreflang',(h)=>matches(h,/rel=["']alternate["'][^>]*hreflang=/i)?'ok':'missing-hreflang'],
-  ['jsonld',(h)=>matches(h,/type=["']application\/ld\+json["']/i)?'ok':'missing-jsonld'],
+  ['seo-description',(h)=>{const d=tags(h,'meta').find(x=>x.name?.toLowerCase()==='description')?.content||'';return d.length>=65&&d.length<=165?'ok':'review-meta-description';}],
+  ['canonical',(h,c)=>tags(h,'link').some(x=>x.rel?.toLowerCase()==='canonical'&&x.href===ORIGIN+'/kanal/'+c.id+'/')?'ok':'canonical-mismatch'],
+  ['hreflang',(h)=>tags(h,'link').some(x=>x.rel?.toLowerCase()==='alternate'&&x.hreflang)?'ok':'missing-hreflang'],
+  ['jsonld',(h)=>tags(h,'script').some(x=>x.type?.toLowerCase()==='application/ld+json')?'ok':'missing-jsonld'],
   ['sitemap',(_h,c,ctx)=>ctx.index.includes(ORIGIN+'/kanal/'+c.id+'/sitemap.xml')?'ok':'missing-channel-sitemap-index'],
-  ['robots',(h,_,ctx)=>!/name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(h)&&ctx.robots.includes('Sitemap:')?'ok':'robots-review'],
-  ['open-graph',(h)=>matches(h,/property=["']og:title["']/i)&&matches(h,/property=["']og:url["']/i)?'ok':'missing-og-metadata'],
-  ['favicon',(h)=>matches(h,/rel=["']icon["']/i)?'ok':'missing-icon'],
+  ['robots',(h,_,ctx)=>!tags(h,'meta').some(x=>x.name?.toLowerCase()==='robots'&&/\bnoindex\b/i.test(x.content||''))&&ctx.robots.includes('Sitemap:')?'ok':'robots-review'],
+  ['open-graph',(h)=>tags(h,'meta').some(x=>x.property?.toLowerCase()==='og:title')&&tags(h,'meta').some(x=>x.property?.toLowerCase()==='og:url')?'ok':'missing-og-metadata'],
+  ['favicon',(h)=>tags(h,'link').some(x=>x.rel?.toLowerCase()==='icon')?'ok':'missing-icon'],
   ['freshness',(h)=>matches(h,/data-(?:region-)?fresh(?:ness)?/i)?'ok':'missing-source-freshness-signal'],
   ['accessibility',(h)=>matches(h,/<html\b[^>]*lang=["'][^"']+["']/i)&&matches(h,/<h1\b/i)?'ok':'missing-language-or-h1']
 ];
