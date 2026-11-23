@@ -13,6 +13,7 @@ on:
       - 'scripts/hr-news-agents-v1.mjs'
       - 'apps/portal/data/hr-news-sources-v1.json'
       - 'scripts/hr-news-one-command-v1.mjs'
+      - 'scripts/hr-news-sitemap-v1.mjs'
       - 'content/hr-news/approved/**'
       - 'scripts/normalize-aktual-hourly-contract.mjs'
       - 'scripts/freshness-status-v2.mjs'
@@ -96,6 +97,7 @@ jobs:
           for entry in "${submissions[@]}"; do
             node scripts/hr-news-one-command-v1.mjs "$entry"
           done
+          node scripts/hr-news-sitemap-v1.mjs
 
       - name: Normalize public refresh contract
         if: steps.control.outputs.should_run == 'true'
@@ -144,6 +146,7 @@ jobs:
               submissions=(content/hr-news/approved/*.json)
               if (( ${#submissions[@]} > 30 )); then echo "Too many HR News submissions" >&2; exit 1; fi
               for entry in "${submissions[@]}"; do node scripts/hr-news-one-command-v1.mjs "$entry"; done
+              node scripts/hr-news-sitemap-v1.mjs
               node scripts/normalize-aktual-hourly-contract.mjs
               node scripts/render-aktual-noscript-v1.mjs
               node scripts/freshness-status-v2.mjs
@@ -174,6 +177,7 @@ jobs:
             if test -d apps/portal/news/clanci; then git add -A apps/portal/news/clanci; fi
             if test -d apps/portal/assets/editorial/hr-news; then git add -A apps/portal/assets/editorial/hr-news; fi
             if test -f apps/portal/data/hr-news-original-v1.json; then git add apps/portal/data/hr-news-original-v1.json; fi
+            git add apps/portal/news/sitemap.xml
             if git diff --cached --quiet; then
               echo "No news changes to commit."
               echo "changed=false" >> "$GITHUB_OUTPUT"
