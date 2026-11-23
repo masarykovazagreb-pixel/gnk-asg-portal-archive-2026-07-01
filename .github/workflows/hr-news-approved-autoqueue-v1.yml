@@ -60,18 +60,12 @@ jobs:
             echo '::error::More than 20 approvals in one commit; hold for operator batching.'
             exit 1
           fi
-          for f in "${files[@]}"; do
-            [[ "$f" =~ ^content/hr-news/approved/[a-z0-9][a-z0-9-]*\.json$ ]] || {
-              echo '::error::Invalid approved filename'; exit 1;
-            }
-            # Fail closed independently for every item, before dispatching any writer.
-            node scripts/hr-news-fastlane-preflight-v1.mjs "$f" >/dev/null
-          done
-          for f in "${files[@]}"; do
-            gh workflow run hr-news-10m-approved-fastlane-v1.yml \
-              --repo "$GITHUB_REPOSITORY" --ref main \
-              -f article_path="$f" \
-              -f confirm_publication=PUBLISH_APPROVED_HR_NEWS \
-              -f notify_search_engines=true
-            echo "Queued reviewed original $f for protected Cloudflare release; NOT LIVE."
-          done
+          # One atomic CI and one exact-SHA Cloudflare deploy for the whole batch.
+          approved_batch="$(IFS=,; echo "${files[*]}")"
+          node scripts/hr-news-fastlane-batch-v1.mjs "$approved_batch" >/dev/null
+          gh workflow run hr-news-10m-approved-fastlane-v1.yml \
+            --repo "$GITHUB_REPOSITORY" --ref main \
+            -f article_path="$approved_batch" \
+            -f confirm_publication=PUBLISH_APPROVED_HR_NEWS \
+            -f notify_search_engines=true
+          echo "Queued ${#files[@]} reviewed originals as ONE protected Cloudflare release; NOT LIVE."
