@@ -64,3 +64,21 @@ test('Approved path rejects traversal, unapproved submissions and symlinks',()=>
   assert.throws(()=>verifyApprovedPath('content/hr-news/approved/linked.json',{cwd:root}));
  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });
+
+test('Fast lane is narrowly enabled; other portal publication remains disabled',()=>{
+ const policy=JSON.parse(fs.readFileSync('ops/automation-kill-switches.json','utf8'));
+ assert.equal(policy.channels?.hrNewsFastlanePublish?.enabled,true);
+ assert.equal(policy.channels?.portalPublish?.enabled,false);
+ const auto=fs.readFileSync('.github/workflows/hr-news-approved-autoqueue-v1.yml','utf8');
+ const release=fs.readFileSync('.github/workflows/hr-news-10m-approved-fastlane-v1.yml','utf8');
+ assert.match(auto,/push:\s*\n\s*branches: \[main\]/);
+ assert.match(auto,/content\/hr-news\/approved\/\*\.json/);
+ assert.doesNotMatch(auto,/^\s+schedule:\s*$/m);
+ assert.match(auto,/--diff-filter=A/);
+ assert.match(auto,/hr-news-fastlane-preflight-v1\.mjs/);
+ assert.match(release,/channels\?\.hrNewsFastlanePublish\?\.enabled/);
+ assert.match(release,/All gates \(portal\)/);
+ assert.match(release,/Site Functional Readiness/);
+ assert.match(release,/approved_sha="\$SHA"/);
+ assert.doesNotMatch(release,/vercel|--force\b/i);
+});
