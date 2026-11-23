@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "collection": "AKTUAL_MEDIA_ORIGINAL_EXPLAINERS",
+  "created": "2026-11-23",
+  "status": "DRAFT_ONLY_NOT_LIVE",
+  "draftCount": 6,
+  "policy": "Original text grounded in authoritative primary sources. Sources were consulted for factual premise; independent editorial fact-check, author attribution, image rights, full release CI and Cloudflare exact-SHA deployment still required. Not automatically picked up by public article generator. No approval is implied.",
+  "articles": [
+    {
+      "id": "aktual-tech-20261123-01",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "ai-agenti-odgovornost-nist-2026",
+      "category": "Tehnologija",
+      "title": "AI agenti trebaju trag odluka, a ne samo brzinu odgovora",
+      "description": "Kako NIST-ov okvir upravljanja AI rizicima pretvoriti u konkretne kontrole autonomnih digitalnih agenata.",
+      "tags": [
+        "#UmjetnaInteligencija",
+        "#AIRizici",
+        "#DigitalWorkforce"
+      ],
+      "sources": [
+        {
+          "name": "NIST AI Risk Management Framework",
+          "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+          "supports": "NIST objavljuje dobrovoljni okvir za upravljanje rizicima AI sustava."
+        },
+        {
+          "name": "NIST AI RMF Core",
+          "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+          "supports": "Središnje funkcije okvira su Govern, Map, Measure i Manage."
+        }
+      ],
+      "paragraphs": [
+        "Autonomni softverski agent može u minuti obaviti desetke radnji, ali taj podatak sam po sebi ne govori radi li pouzdano. Za poslovnu upotrebu važnije je tko mu je odobrio zadatak, koje podatke smije koristiti, može li se njegov rezultat ponoviti i tko zaustavlja pogrešnu odluku. Povećanje broja agenata bez takvih odgovora povećava opseg mogućih pogrešaka jednako brzo kao i kapacitet sustava.",
+        "NIST-ov AI Risk Management Framework namijenjen je dobrovoljnom upravljanju rizicima umjetne inteligencije. Njegove četiri povezane funkcije — Govern, Map, Measure i Manage — nude razumljiv operativni jezik. Urednička interpretacija tog okvira za digitalnu radnu snagu znači postaviti vlasnika svakog procesa, opisati dopuštene radnje, mjeriti pogreške i definirati reakciju kad kontrola zakaže.",
+        "Praktična primjena može početi bez skupih platformi: svaki agent dobiva identifikator zadatka, verziju ulaznih podataka, zapis izvora, razinu dopuštenja i razdvojene oznake 'predloženo', 'provjereno' i 'izvršeno'. Akcije koje objavljuju tekst, šalju poštu ili mijenjaju produkciju trebaju dodatnu provjeru. Sustav treba moći dokazati i negativan rezultat — da se određena radnja nije dogodila — umjesto naknadnog zaključivanja iz nepotpunih logova.",
+        "Ovdje nije riječ o tvrdnji da bilo koji konkretan sustav već zadovoljava te uvjete. Riječ je o kontrolnom popisu kojim se može provjeriti takva tvrdnja. Brzina automatizacije postaje poslovna prednost tek kada organizacija može razlikovati izvršenje od simulacije, test od javne produkcije i obradenu informaciju od potvrđene činjenice."
+      ],
+      "articleBody": "Autonomni softverski agent može u minuti obaviti desetke radnji, ali taj podatak sam po sebi ne govori radi li pouzdano. Za poslovnu upotrebu važnije je tko mu je odobrio zadatak, koje podatke smije koristiti, može li se njegov rezultat ponoviti i tko zaustavlja pogrešnu odluku. Povećanje broja agenata bez takvih odgovora povećava opseg mogućih pogrešaka jednako brzo kao i kapacitet sustava.\n\nNIST-ov AI Risk Management Framework namijenjen je dobrovoljnom upravljanju rizicima umjetne inteligencije. Njegove četiri povezane funkcije — Govern, Map, Measure i Manage — nude razumljiv operativni jezik. Urednička interpretacija tog okvira za digitalnu radnu snagu znači postaviti vlasnika svakog procesa, opisati dopuštene radnje, mjeriti pogreške i definirati reakciju kad kontrola zakaže.\n\nPraktična primjena može početi bez skupih platformi: svaki agent dobiva identifikator zadatka, verziju ulaznih podataka, zapis izvora, razinu dopuštenja i razdvojene oznake 'predloženo', 'provjereno' i 'izvršeno'. Akcije koje objavljuju tekst, šalju poštu ili mijenjaju produkciju trebaju dodatnu provjeru. Sustav treba moći dokazati i negativan rezultat — da se određena radnja nije dogodila — umjesto naknadnog zaključivanja iz nepotpunih logova.\n\nOvdje nije riječ o tvrdnji da bilo koji konkretan sustav već zadovoljava te uvjete. Riječ je o kontrolnom popisu kojim se može provjeriti takva tvrdnja. Brzina automatizacije postaje poslovna prednost tek kada organizacija može razlikovati izvršenje od simulacije, test od javne produkcije i obradenu informaciju od potvrđene činjenice.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null
+    },
+    {
+      "id": "aktual-tech-20261123-02",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "sitemap-lastmod-stvarni-datum-izmjene",
+      "category": "SEO",
+      "title": "Sitemap nije brojač URL-ova: zašto lažni datumi štete pouzdanosti",
+      "description": "Googleova preporuka za sitemap i lastmod pokazuje zašto se promjena stvarnog sadržaja mora razlikovati od tehničkog builda.",
+      "tags": [
+        "#SEO",
+        "#Sitemap",
+        "#SearchConsole"
+      ],
+      "sources": [
+        {
+          "name": "Google Search Central — Build and Submit a Sitemap",
+          "url": "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap",
+          "supports": "Google upotrebljava lastmod ako je dosljedno i provjerljivo točan."
+        },
+        {
+          "name": "Google Search Central — Manage Sitemap Index Files",
+          "url": "https://developers.google.com/search/docs/crawling-indexing/sitemaps/large-sitemaps",
+          "supports": "Google opisuje sitemap indekse i njihove neobavezne oznake."
+        }
+      ],
+      "paragraphs": [
+        "Kada portal ima više jezika, gradova i tematskih rubrika, sitemap se lako pretvori u dugu tablicu adresa koja izgleda impresivno. No broj zapisa nije dokaz kvalitete ni indeksiranja. Sitemap prvenstveno pomaže tražilici otkrivati stranice, a smislen signal daje tek kada URL vodi na stvarnu, dostupnu i kanonski određenu stranicu.",
+        "Google Search Central navodi da se oznaka lastmod koristi kada je dosljedno i provjerljivo točna. Datum dnevne izgradnje projekta nije automatski datum značajne izmjene svakog članka. Ako se deset tisuća starih članaka regenerira zbog promjene zaglavlja, njihove stvarne uredničke izmjene i dalje treba razlikovati od tehničkog objavljivanja. Bez te razlike tražilici se šalje signal čiju vjerodostojnost nije moguće potvrditi.",
+        "Dobar postupak ima tri sloja: registar izvornog sadržaja s datumima, generator koji reproducira URL-ove i validaciju koja provjerava da nijedan zapis ne vodi na nepostojeću datoteku. Za veće mreže sitemap indeks može okupiti pojedinačna izdanja. Svaki jezični URL treba imati logičan canonical i jezične poveznice, dok promjene statusa iz nacrta u javnu objavu moraju biti jasno evidentirane.",
+        "Najbrži put do vidljivosti zato nije masovno dodavanje datuma i hashtagova. Prioritet imaju dostupna stranica, izvorni sadržaj, točan naslov, jasna informacija o izdavaču te provjerljiv datum izmjene. Ako podaci o promjeni ne postoje, poštenije je izostaviti neobaveznu oznaku nego je izmišljati."
+      ],
+      "articleBody": "Kada portal ima više jezika, gradova i tematskih rubrika, sitemap se lako pretvori u dugu tablicu adresa koja izgleda impresivno. No broj zapisa nije dokaz kvalitete ni indeksiranja. Sitemap prvenstveno pomaže tražilici otkrivati stranice, a smislen signal daje tek kada URL vodi na stvarnu, dostupnu i kanonski određenu stranicu.\n\nGoogle Search Central navodi da se oznaka lastmod koristi kada je dosljedno i provjerljivo točna. Datum dnevne izgradnje projekta nije automatski datum značajne izmjene svakog članka. Ako se deset tisuća starih članaka regenerira zbog promjene zaglavlja, njihove stvarne uredničke izmjene i dalje treba razlikovati od tehničkog objavljivanja. Bez te razlike tražilici se šalje signal čiju vjerodostojnost nije moguće potvrditi.\n\nDobar postupak ima tri sloja: registar izvornog sadržaja s datumima, generator koji reproducira URL-ove i validaciju koja provjerava da nijedan zapis ne vodi na nepostojeću datoteku. Za veće mreže sitemap indeks može okupiti pojedinačna izdanja. Svaki jezični URL treba imati logičan canonical i jezične poveznice, dok promjene statusa iz nacrta u javnu objavu moraju biti jasno evidentirane.\n\nNajbrži put do vidljivosti zato nije masovno dodavanje datuma i hashtagova. Prioritet imaju dostupna stranica, izvorni sadržaj, točan naslov, jasna informacija o izdavaču te provjerljiv datum izmjene. Ako podaci o promjeni ne postoje, poštenije je izostaviti neobaveznu oznaku nego je izmišljati.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null
+    },
+    {
+      "id": "aktual-tech-20261123-03",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "ai-urednistvo-izvori-dokazi-objava",
+      "category": "Mediji",
+      "title": "AI redakcija nije isto što i automatski objavljena vijest",
+      "description": "Zašto naslov iz RSS-a, urednički nacrt i objavljen autorski tekst moraju imati različit status.",
+      "tags": [
+        "#AktualMedia",
+        "#Urednistvo",
+        "#ProvjeraCinjenica"
+      ],
+      "sources": [
+        {
+          "name": "Google Search Central — Helpful, Reliable Content",
+          "url": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+          "supports": "Google preporučuje korisne, pouzdane sadržaje napisane prvenstveno za ljude."
+        },
+        {
+          "name": "Google Search Central — Article Structured Data",
+          "url": "https://developers.google.com/search/docs/appearance/structured-data/article",
+          "supports": "Google opisuje Article, NewsArticle i BlogPosting strukturirane podatke i autorstvo."
+        }
+      ],
+      "paragraphs": [
+        "Digitalna redakcija može svakog sata prikupiti velik broj poveznica na objavljene naslove drugih medija. To je korisno za pregled događaja, ali nije isto što i proizvodnja vlastitih reportaža. RSS naslov otkriva da je izdavač objavio određenu informaciju; ne potvrđuje automatski sve tvrdnje, pravo na fotografiju ili postojanje samostalnog istraživačkog rada.",
+        "Prva granica mora biti vidljiva čitatelju: vanjski naslov i poveznica označavaju se kao preuzeti podatak o izvoru, dok izvorna analiza sadrži vlastito objašnjenje, zaključivanje i provjerljive reference. Druga granica postoji unutar sustava: prijedlog teme, nacrt, provjera i odobrena objava zasebni su koraci. Automatska obrada ne smije sama sebi dodijeliti uredničko odobrenje.",
+        "Googleova dokumentacija o korisnom sadržaju naglašava korisnost i pouzdanost za čitatelja. Dokumentacija o člancima opisuje strukturirane podatke kojima se može navesti pravi autor i vrijeme objave. Ni oznaka NewsArticle ni tehnički valjan JSON-LD nisu zamjena za istinit sadržaj. Ne treba navoditi pojedinu osobu kao autora samo zato što je ona izdavač ili glavni urednik portala.",
+        "Radno pravilo za veliku medijsku mrežu može biti jednostavno: svaki zapis mora imati izvor, datum, status prava na sliku, provjeru glavnih tvrdnji i dokaz stvarne objave. Ako ijedna ključna stavka nedostaje, tekst ostaje u pripremi. Sustav time možda objavi manje naslova u jednoj minuti, ali dugoročno proizvodi arhivu koju je moguće razumjeti, ispraviti i odgovorno koristiti."
+      ],
+      "articleBody": "Digitalna redakcija može svakog sata prikupiti velik broj poveznica na objavljene naslove drugih medija. To je korisno za pregled događaja, ali nije isto što i proizvodnja vlastitih reportaža. RSS naslov otkriva da je izdavač objavio određenu informaciju; ne potvrđuje automatski sve tvrdnje, pravo na fotografiju ili postojanje samostalnog istraživačkog rada.\n\nPrva granica mora biti vidljiva čitatelju: vanjski naslov i poveznica označavaju se kao preuzeti podatak o izvoru, dok izvorna analiza sadrži vlastito objašnjenje, zaključivanje i provjerljive reference. Druga granica postoji unutar sustava: prijedlog teme, nacrt, provjera i odobrena objava zasebni su koraci. Automatska obrada ne smije sama sebi dodijeliti uredničko odobrenje.\n\nGoogleova dokumentacija o korisnom sadržaju naglašava korisnost i pouzdanost za čitatelja. Dokumentacija o člancima opisuje strukturirane podatke kojima se može navesti pravi autor i vrijeme objave. Ni oznaka NewsArticle ni tehnički valjan JSON-LD nisu zamjena za istinit sadržaj. Ne treba navoditi pojedinu osobu kao autora samo zato što je ona izdavač ili glavni urednik portala.\n\nRadno pravilo za veliku medijsku mrežu može biti jednostavno: svaki zapis mora imati izvor, datum, status prava na sliku, provjeru glavnih tvrdnji i dokaz stvarne objave. Ako ijedna ključna stavka nedostaje, tekst ostaje u pripremi. Sustav time možda objavi manje naslova u jednoj minuti, ali dugoročno proizvodi arhivu koju je moguće razumjeti, ispraviti i odgovorno koristiti.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null
+    },
+    {
+      "id": "aktual-tech-20261123-04",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "wcag22-pristupacnost-nije-ukras",
+      "category": "Web",
+      "title": "Pristupačnost portala nije ukras: što donosi WCAG 2.2",
+      "description": "Kako standard pristupačnosti povezati s navigacijom, fokusom, čitljivošću i testiranjem web izdanja.",
+      "tags": [
+        "#Pristupacnost",
+        "#WCAG22",
+        "#WebStandardi"
+      ],
+      "sources": [
+        {
+          "name": "W3C — WCAG 2.2",
+          "url": "https://www.w3.org/TR/WCAG22/",
+          "supports": "W3C objavljuje normativne smjernice WCAG 2.2."
+        },
+        {
+          "name": "W3C — WCAG at a Glance",
+          "url": "https://www.w3.org/WAI/standards-guidelines/wcag/glance/",
+          "supports": "W3C daje pregled načela i zahtjeva pristupačnosti."
+        }
+      ],
+      "paragraphs": [
+        "Web može biti vizualno atraktivan, a istodobno težak za korištenje ljudima koji se oslanjaju na tipkovnicu, čitač zaslona ili povećani prikaz. Na medijskom portalu problem postaje ozbiljniji kada ista pogreška postoji na stotinama jezičnih i gradskih izdanja. Jedan neispravno označen gumb ili slabo vidljiv fokus ponavlja se kroz cijelu mrežu.",
+        "W3C-ove smjernice WCAG 2.2 pružaju mjerila pristupačnosti sadržaja. Iz njih slijedi praktična urednička i razvojna obveza: naslovna hijerarhija treba biti razumljiva, poveznice moraju imati smislen tekst, slike odgovarajući alternativni opis, a radnje trebaju biti dostupne bez miša. Nije dovoljno provjeriti samo izgled naslovnice na jednom zaslonu.",
+        "Za velike portale preporučljiv je niz ponovljivih kontrola. Komponenta koja prolazi kroz test tipkovnice i kontrasta zatim se primjenjuje na sva izdanja, umjesto da se pojedinačno popravlja svaka stranica. Automatizirani test može otkriti dio problema, ali razumljivost teksta, redoslijed čitanja i stvarnu uporabljivost treba provjeriti i ljudskim pregledom.",
+        "Pristupačnost zato nije projekt koji dolazi nakon SEO-a i dizajna. Ona utječe na to može li čitatelj uopće doći do informacije, prepoznati izvor i dovršiti radnju. Uredništvo i razvojni tim trebaju dijeliti jedinstven popis pogrešaka i evidenciju njihovih ispravaka, umjesto da dostupnost proglašavaju na temelju izgleda ili samog postojanja certifikacijske oznake."
+      ],
+      "articleBody": "Web može biti vizualno atraktivan, a istodobno težak za korištenje ljudima koji se oslanjaju na tipkovnicu, čitač zaslona ili povećani prikaz. Na medijskom portalu problem postaje ozbiljniji kada ista pogreška postoji na stotinama jezičnih i gradskih izdanja. Jedan neispravno označen gumb ili slabo vidljiv fokus ponavlja se kroz cijelu mrežu.\n\nW3C-ove smjernice WCAG 2.2 pružaju mjerila pristupačnosti sadržaja. Iz njih slijedi praktična urednička i razvojna obveza: naslovna hijerarhija treba biti razumljiva, poveznice moraju imati smislen tekst, slike odgovarajući alternativni opis, a radnje trebaju biti dostupne bez miša. Nije dovoljno provjeriti samo izgled naslovnice na jednom zaslonu.\n\nZa velike portale preporučljiv je niz ponovljivih kontrola. Komponenta koja prolazi kroz test tipkovnice i kontrasta zatim se primjenjuje na sva izdanja, umjesto da se pojedinačno popravlja svaka stranica. Automatizirani test može otkriti dio problema, ali razumljivost teksta, redoslijed čitanja i stvarnu uporabljivost treba provjeriti i ljudskim pregledom.\n\nPristupačnost zato nije projekt koji dolazi nakon SEO-a i dizajna. Ona utječe na to može li čitatelj uopće doći do informacije, prepoznati izvor i dovršiti radnju. Uredništvo i razvojni tim trebaju dijeliti jedinstven popis pogrešaka i evidenciju njihovih ispravaka, umjesto da dostupnost proglašavaju na temelju izgleda ili samog postojanja certifikacijske oznake.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null
+    },
+    {
+      "id": "aktual-tech-20261123-05",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "owasp2025-sigurnost-prije-objave",
+      "category": "Sigurnost",
+      "title": "Sigurnost prije objave: što urednici mogu naučiti iz OWASP Top 10",
+      "description": "Kako zaštititi javni portal i automatizirane objave bez skrivanja pogrešaka i zaobilaženja CI provjera.",
+      "tags": [
+        "#KibernetickaSigurnost",
+        "#OWASP",
+        "#ReleaseGate"
+      ],
+      "sources": [
+        {
+          "name": "OWASP — Top 10",
+          "url": "https://owasp.org/projects/Top-Ten",
+          "supports": "OWASP održava projekt Top 10 web sigurnosnih rizika, s izdanjem za 2025."
+        },
+        {
+          "name": "UK NCSC — Software Security Code of Practice",
+          "url": "https://www.ncsc.gov.uk/collection/software-security-code-of-practice-implementation-guidance/about",
+          "supports": "NCSC objavljuje smjernice za sigurnost i otpornost softvera."
+        }
+      ],
+      "paragraphs": [
+        "Kad urednički sustav objavljuje tisuće stranica, sigurnosna greška u zajedničkoj komponenti može se proširiti mnogo brže od pogreške u jednom tekstu. Posebno su osjetljive funkcije koje primaju korisničke podatke, učitavaju udaljene slike, obrađuju vanjske feedove ili mogu pokrenuti objavu bez dodatne provjere. Brzina generiranja sadržaja zato mora ostati odvojena od ovlasti za njegovo javno isporučivanje.",
+        "OWASP Top 10 upozorava na temeljne kategorije rizika u web aplikacijama. Za urednički portal praktičan zaključak je da svaki vanjski podatak treba tretirati kao nepouzdan dok ne prođe odgovarajuću provjeru. To uključuje URL-ove slika, HTML sadržaj iz feedova, predloške metapodataka i administratorske zahtjeve. Samo činjenica da podatak dolazi iz poznatog medija ne znači da je siguran za izravno umetanje u stranicu.",
+        "U razvojnom procesu vrijedi primijeniti najmanja potrebna dopuštenja, kontrolu verzija, izolirane testove, eksplicitnu listu dozvoljenih izvora i zapis o tome koji je commit stvarno objavljen. Neuspješan sigurnosni test nije administrativna smetnja koju treba preskočiti. To je nalaz koji zahtijeva ispravak, ponavljanje provjera i pregled učinka na povezane dijelove sustava.",
+        "Najbolje ubrzanje često donose mali reverzibilni popravci: svaki mijenja jednu jasno definiranu površinu i ima mjerljiv test. Tim brže razumije gdje je nastala pogreška i može odustati bez gubitka drugih poboljšanja. Sigurnost nije suprotnost brzom razvoju; dobro uređena kontrola izdanja preduvjet je da veliki portal može rasti bez gomilanja nevidljivih rizika."
+      ],
+      "articleBody": "Kad urednički sustav objavljuje tisuće stranica, sigurnosna greška u zajedničkoj komponenti može se proširiti mnogo brže od pogreške u jednom tekstu. Posebno su osjetljive funkcije koje primaju korisničke podatke, učitavaju udaljene slike, obrađuju vanjske feedove ili mogu pokrenuti objavu bez dodatne provjere. Brzina generiranja sadržaja zato mora ostati odvojena od ovlasti za njegovo javno isporučivanje.\n\nOWASP Top 10 upozorava na temeljne kategorije rizika u web aplikacijama. Za urednički portal praktičan zaključak je da svaki vanjski podatak treba tretirati kao nepouzdan dok ne prođe odgovarajuću provjeru. To uključuje URL-ove slika, HTML sadržaj iz feedova, predloške metapodataka i administratorske zahtjeve. Samo činjenica da podatak dolazi iz poznatog medija ne znači da je siguran za izravno umetanje u stranicu.\n\nU razvojnom procesu vrijedi primijeniti najmanja potrebna dopuštenja, kontrolu verzija, izolirane testove, eksplicitnu listu dozvoljenih izvora i zapis o tome koji je commit stvarno objavljen. Neuspješan sigurnosni test nije administrativna smetnja koju treba preskočiti. To je nalaz koji zahtijeva ispravak, ponavljanje provjera i pregled učinka na povezane dijelove sustava.\n\nNajbolje ubrzanje često donose mali reverzibilni popravci: svaki mijenja jednu jasno definiranu površinu i ima mjerljiv test. Tim brže razumije gdje je nastala pogreška i može odustati bez gubitka drugih poboljšanja. Sigurnost nije suprotnost brzom razvoju; dobro uređena kontrola izdanja preduvjet je da veliki portal može rasti bez gomilanja nevidljivih rizika.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null
+    },
+    {
+      "id": "aktual-tech-20261123-06",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "cloudflare-exact-sha-javna-verifikacija",
+      "category": "Infrastruktura",
+      "title": "Deploy nije objava dok se ne provjeri stvarna javna adresa",
+      "description": "Razlika između commita, uspješne izgradnje, Cloudflare verzije i provjerene produkcije na vlastitoj domeni.",
+      "tags": [
+        "#Cloudflare",
+        "#Deploy",
+        "#DevOps"
+      ],
+      "sources": [
+        {
+          "name": "Cloudflare Workers — Versions and Deployments",
+          "url": "https://developers.cloudflare.com/workers/versions-and-deployments/",
+          "supports": "Cloudflare razlikuje verzije koda i njihove aktivne deploymente."
+        },
+        {
+          "name": "Google Search Central — Troubleshooting Crawling Errors",
+          "url": "https://developers.google.com/search/docs/crawling-indexing/troubleshoot-crawling-errors",
+          "supports": "Google dokumentira probleme dostupnosti i indeksiranja URL-ova."
+        }
+      ],
+      "paragraphs": [
+        "U digitalnom izdavaštvu često se miješaju četiri pojma: tekst je napisan, commit postoji, izgradnja je prošla i javna stranica prikazuje promjenu. To nisu sinonimi. GitHub može sadržavati novi članak koji produkcija još nije preuzela. Uspješna tehnička izgradnja može završiti na razvojnoj okolini, dok stvarna domena poslužuje stariju verziju.",
+        "Cloudflareova dokumentacija razlikuje verziju Workera od deploymenta kojim se određuje koja verzija prima promet. Za dokaz produkcije zato treba povezati konkretan commit sa stvarno aktivnim izdanjem, a zatim neovisno očitati javnu HTTPS adresu. Takav zapis treba sadržavati vrijeme provjere, kanonski URL, očekivanu verziju i rezultat — ne samo zeleno svjetlo neke nepovezane provjere.",
+        "Postupak brzog, ali kontroliranog izdanja izgleda ovako: mali pregledani PR, potrebni testovi, spajanje u glavnu granu, provjera točnog SHA-a, autorizirani produkcijski release i javni HTTP test. Ako provjera odgovora ili predviđenog sadržaja ne uspije, nije odgovorno označiti izdanje kao potvrđeno. Ranija stabilna verzija i mogućnost povrata trebaju ostati poznate.",
+        "Operativni zaključak posebno je važan za višejezične medijske mreže. Broj generiranih datoteka pokazuje obujam pripreme; broj javno provjerenih URL-ova pokazuje stvarnu dostupnost. Izvješće koje jasno razdvaja ta dva broja pomaže upravi da ubrza izdavanje bez stvaranja lažne slike o opsegu objavljenog proizvoda."
+      ],
+      "articleBody": "U digitalnom izdavaštvu često se miješaju četiri pojma: tekst je napisan, commit postoji, izgradnja je prošla i javna stranica prikazuje promjenu. To nisu sinonimi. GitHub može sadržavati novi članak koji produkcija još nije preuzela. Uspješna tehnička izgradnja može završiti na razvojnoj okolini, dok stvarna domena poslužuje stariju verziju.\n\nCloudflareova dokumentacija razlikuje verziju Workera od deploymenta kojim se određuje koja verzija prima promet. Za dokaz produkcije zato treba povezati konkretan commit sa stvarno aktivnim izdanjem, a zatim neovisno očitati javnu HTTPS adresu. Takav zapis treba sadržavati vrijeme provjere, kanonski URL, očekivanu verziju i rezultat — ne samo zeleno svjetlo neke nepovezane provjere.\n\nPostupak brzog, ali kontroliranog izdanja izgleda ovako: mali pregledani PR, potrebni testovi, spajanje u glavnu granu, provjera točnog SHA-a, autorizirani produkcijski release i javni HTTP test. Ako provjera odgovora ili predviđenog sadržaja ne uspije, nije odgovorno označiti izdanje kao potvrđeno. Ranija stabilna verzija i mogućnost povrata trebaju ostati poznate.\n\nOperativni zaključak posebno je važan za višejezične medijske mreže. Broj generiranih datoteka pokazuje obujam pripreme; broj javno provjerenih URL-ova pokazuje stvarnu dostupnost. Izvješće koje jasno razdvaja ta dva broja pomaže upravi da ubrza izdavanje bez stvaranja lažne slike o opsegu objavljenog proizvoda.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null
+    }
+  ]
+}
