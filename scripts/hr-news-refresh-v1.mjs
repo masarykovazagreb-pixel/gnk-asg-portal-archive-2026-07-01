@@ -11,7 +11,7 @@ import { safeUrl, fetchFeedXml } from './lib/aktual-world-feed-http-v1.mjs';
 const ROOT='apps/portal/data/';
 const REG=JSON.parse(fs.readFileSync(ROOT+'hr-news-sources-v1.json','utf8'));
 const OUT=process.env.HR_NEWS_OUT||ROOT+'hr-news-feed-v1.json';
-const QUEUE=process.env.HR_NEWS_QUEUE_OUT||ROOT+'hr-news-editorial-queue-v1.json';
+const QUEUE=process.env.HR_NEWS_QUEUE_OUT||'artifacts/hr-news-editorial-queue-v1.json';
 const MAX=200, PITCHES=20, now=Date.now(), MAX_AGE=(REG.maxAgeHours||168)*3600000;
 const enabled=REG.sources.filter(s=>s.enabled);
 const publisher=hostname=>enabled.find(s=>hostname===s.domain||hostname.endsWith('.'+s.domain));
@@ -100,5 +100,6 @@ const publication={version:1,scope:'HR NEWS',policy:'external publisher title an
 const pitches=rows.slice(0,PITCHES).map((x,i)=>({pitchId:'hr-'+x.id,source:x.source,sourceUrl:x.url,sourcePublishedAt:x.publishedAt,topicPrompt:x.title,originalArticleBody:null,independentFactCheck:false,editorApproved:false,imageRightsVerified:false,publicationStatus:'research_queue_only',agentLane:(i%10)+1}));
 const queue={version:1,day:new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zagreb',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(now)),targetOriginalReports:20,actualApprovedReports:0,totalPitches:pitches.length,releaseGate:'human_edit_and_source_verification_required',pitches};
 fs.writeFileSync(OUT,JSON.stringify(publication,null,2)+'\n');
+fs.mkdirSync('artifacts',{recursive:true});
 fs.writeFileSync(QUEUE,JSON.stringify(queue,null,2)+'\n');
 console.log(JSON.stringify({...stats,pitches:pitches.length}));
