@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-22T23:34:59.471Z",
+  "updatedAt": "2026-11-23T08:59:47.061Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-22T23:34:54.658Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-23T08:59:41.716Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T23:34:55.127Z"
+      "checkedAt": "2026-11-23T08:59:41.934Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T23:34:55.691Z"
+      "checkedAt": "2026-11-23T08:59:42.330Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T23:34:56.450Z"
+      "checkedAt": "2026-11-23T08:59:43.184Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-22T23:34:58.381Z"
+      "checkedAt": "2026-11-23T08:59:45.938Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T23:34:58.629Z"
+      "checkedAt": "2026-11-23T08:59:46.127Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,434 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-22T23:34:59.470Z"
+      "checkedAt": "2026-11-23T08:59:47.060Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-23-hvg-fekete-hetfo-helyett-felpattanassal-kezdtek-63079b",
+      "title": "Fekete hétfő helyett felpattanással kezdték a hetet az európai tőzsdék",
+      "summary": "Nem folytatódott a részvények pénteki zuhanása.",
+      "date": "2026-11-23T08:57:35.000Z",
+      "url": "https://hvg.hu/kkv/20261123_bux-tozsde-otp-4ig-telekom-mol-richter-cac-dax",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Vállalkozás",
+        "gazdaság",
+        "tőzsde",
+        "BÉT"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/057438c2-eb80-4b4a-b0e1-f87641bdf06e.jpg",
+      "imageAlt": "Fekete hétfő helyett felpattanással kezdték a hetet az európai tőzsdék",
+      "addedAt": "2026-11-23T08:59:42.331Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-portfolio-erosodik-a-forint-6390a8",
+      "title": "Erősödik a forint",
+      "summary": "Gyengüléssel kezdte a hetet az amerikai dollár, mivel a múlt heti eladási hullám után javult a piaci hangulat, és mérséklődtek a Fed decemberi kamatemelésével kapcsolatos várakozások. A határidős piacok már 93,5 százalékos valószínűséggel 25 bázispontos lépést áraznak a december 8–9-i ülésre, az 50 bázispontos szigorítás lehetősége pedig teljesen kiárazódott. A dollár gyengülése a forintnak is kedvezett, hiszen az euró árfolyama mintegy két forinttal, 372 forint környékére csökkent. A dollárral szemben még nagyobb, 2,7 forintos erősödést mutat a hazai fizetőeszköz, így az amerikai deviza 338 forint felett mozog. Hétfőn több fontos külföldi beszerzésimenedzser-index is érkezik, szerdán pedig…",
+      "date": "2026-11-23T08:55:00.000Z",
+      "url": "https://www.portfolio.hu/deviza/20261123/erosodik-a-forint-878376",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Deviza"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://pcdn.hu/articles/images-xl/d/o/l/dollar-deviza-arfolyam-604338.jpg",
+      "imageAlt": "Erősödik a forint",
+      "addedAt": "2026-11-23T08:59:43.184Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-portfolio-2022-tavasza-ota-nem-jott-ilyen-jo-hir-bbccd2",
+      "title": "2022 tavasza óta nem jött ilyen jó hír Németországból",
+      "summary": "Látványosan felgyorsult a német magánszektor növekedése novemberben a feldolgozóipar és a szolgáltatások egyaránt javuló teljesítményének köszönhetően. Az S&P Global előzetes adatai szerint a beszerzésimenedzser-index (BMI) 2022 márciusa óta nem látott csúcsra ugrott, ami a gazdasági fellendülés kiszélesedésére utal, jóllehet a munkaerőpiacon még vegyes a kép - közölte a Reuters .",
+      "date": "2026-11-23T08:55:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261123/2022-tavasza-ota-nem-jott-ilyen-jo-hir-nemetorszagbol-878426",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://pcdn.hu/articles/images-xl/g/e/t/gettyimages-germany-rfolyam-befektets-eurpa-eurpai-uni-font-gazdasg-nmetorszg-pnz-735229.jpg",
+      "imageAlt": "2022 tavasza óta nem jött ilyen jó hír Németországból",
+      "addedAt": "2026-11-23T08:59:43.184Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-24hu-kezdodik-a-budai-fonodo-villamos-42fa68",
+      "title": "Kezdődik a budai fonódó villamos fejlesztése, fennakadásokra kell készülni a közlekedésben",
+      "summary": "„Sok évnyi lemaradást kell behoznunk a főváros közlekedésének fejlesztésében\" – fogalmazott Vitézy Dávid. The post Kezdődik a budai fonódó villamos fejlesztése, fennakadásokra kell készülni a közlekedésben first appeared on 24.hu .",
+      "date": "2026-11-23T08:53:13.000Z",
+      "url": "https://24.hu/kozelet/2026/11/23/budapest-villamos-fejlesztes-vitezy/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Közélet",
+        "budai fonódó villamos",
+        "villamos",
+        "budapest"
+      ],
+      "author": "Dienes Gábriel",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1140980750-1024x575.jpg",
+      "imageAlt": "Kezdődik a budai fonódó villamos fejlesztése, fennakadásokra kell készülni a közlekedésben",
+      "addedAt": "2026-11-23T08:59:46.127Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-hvg-ismeretlen-anyag-kerult-egy-manchesteri-05cc89",
+      "title": "Ismeretlen anyag került egy manchesteri koncerten a levegőbe, több mint tízezer embert evakuáltak",
+      "summary": "Az amerikai rapper, Don Toliver koncertjén kezdtek köhögni az emberek. A rendőrség először azt hitte, könnygáz miatt, végül azonban nem nevezték meg a panaszt okozó anyagot.",
+      "date": "2026-11-23T08:44:20.000Z",
+      "url": "https://hvg.hu/kultura/20261123_ismeretlen-anyag-manchesteri-koncerten-tizezer-embert-evakualtak",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Kult",
+        "kultúra",
+        "koncert",
+        "Manchester"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/fe7606f8-b8d3-41da-8be0-de12baa54c13.jpg",
+      "imageAlt": "Ismeretlen anyag került egy manchesteri koncerten a levegőbe, több mint tízezer embert evakuáltak",
+      "addedAt": "2026-11-23T08:59:42.331Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-portfolio-hamarosan-veget-erhetnek-a-lezarasok-a-bd5988",
+      "title": "Hamarosan véget érhetnek a lezárások a legforgalmasabb autópályákon: itt az utolsó hét menetrendje",
+      "summary": "Ezen a héten, november 27-ig befejeződnek a burkolatjavítási munkálatok az M0-s autóúton és az M7-es autópályán. Budaörs és Törökbálint térségében több mint 9 ezer négyzetméteren újul meg az aszfalt, emiatt a következő napokban még sávlezárásokra és torlódásokra kell számítani - írta a Magyar Közút közleményében.",
+      "date": "2026-11-23T08:41:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261123/hamarosan-veget-erhetnek-a-lezarasok-a-legforgalmasabb-autopalyakon-itt-az-utolso-het-menetrendje-878424",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/d/u/g/dugo-magyarorszag-autopalya-stock-torlodas-616791.jpg",
+      "imageAlt": "Hamarosan véget érhetnek a lezárások a legforgalmasabb autópályákon: itt az utolsó hét menetrendje",
+      "addedAt": "2026-11-23T08:59:43.185Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-24hu-puskas-dallos-peti-szerintem-egy-muvesz-6904b4",
+      "title": "Puskás-Dallos Peti: Szerintem egy művész nyugodtan politizáljon",
+      "summary": "Szerinte a művészeknek bátran vállalniuk kell az értékrendjüket, de élesen kritizálta azokat, akik csak akkor politizálnak, amikor abból egyéni hasznuk vagy népszerűségük származik. The post Puskás-Dallos Peti: Szerintem egy művész nyugodtan politizáljon first appeared on 24.hu .",
+      "date": "2026-11-23T08:33:56.000Z",
+      "url": "https://24.hu/elet-stilus/2026/11/23/puskas-dallos-peti-muveszek-politika/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Kikapcs",
+        "puskás peti",
+        "puskás-dallos peti",
+        "dér heni"
+      ],
+      "author": "Csontos Kata",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1140719517-e1795422811696-1024x578.jpg",
+      "imageAlt": "Puskás-Dallos Peti: Szerintem egy művész nyugodtan politizáljon",
+      "addedAt": "2026-11-23T08:59:46.128Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-hvg-bujdoso-andrea-azt-kertem-hogy-ne-nyuljanak-faa443",
+      "title": "Bujdosó Andrea: Azt kértem, hogy ne nyúljanak át a fejem fölött",
+      "summary": "A szüleim generációját okoltam, miért hagyták, hogy idáig jusson az a rendszer – emlékszik vissza temesvári egyetemi éveire Bujdosó Andrea, aki 19 évesen élte át a romániai forradalmat. Azóta több nagy váltás is volt az életében, ebből csak az egyik volt, amikor egyik napról a másikra belevágott a politikába. Milyen feltételekkel vállalta el a Tisza frakcióvezetését? Vannak-e viták a színfalak mögött, és beszélget-e ellenzéki képviselőkkel? HVG-portré.",
+      "date": "2026-11-23T08:33:25.000Z",
+      "url": "https://hvg.hu/360/20261123_bujdoso-andrea-tisza-frakciovezeto-portreinterju",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "hvg360",
+        "itthon",
+        "belpolitika",
+        "Bujdosó Andrea"
+      ],
+      "author": "szerzo@hvg.hu (Serdült Viktória)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/b951fad8-14a1-4583-90b6-c7749185a200.jpg",
+      "imageAlt": "Bujdosó Andrea: Azt kértem, hogy ne nyúljanak át a fejem fölött",
+      "addedAt": "2026-11-23T08:59:42.331Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-portfolio-sulyos-adossagok-es-nemzetkozi-perek-6bbb54",
+      "title": "Súlyos adósságok és nemzetközi perek: egyelőre nem kezdődik a híres fővárosi műemlék felújítása",
+      "summary": "Továbbra is bizonytalan a budapesti Tőzsdepalota sorsa és jövőbeli funkciója, miután az épületet birtokló magántőkealap körül egyre sokasodnak a jogi és pénzügyi bonyodalmak. A tulajdonosi körnek nemcsak az Európai Bizottság 2026 elején indult vizsgálatával, hanem a Vatikáni Bankkal szemben zajló, több tízmillió eurós nemzetközi pereskedéssel is szembe kell néznie - írta meg a HVG .",
+      "date": "2026-11-23T08:28:00.000Z",
+      "url": "https://www.portfolio.hu/ingatlan/20261123/sulyos-adossagok-es-nemzetkozi-perek-egyelore-nem-kezdodik-a-hires-fovarosi-muemlek-felujitasa-878406",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Ingatlan"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/5/4/a/54a0de33-6ab3-4ae5-9a96-cb2b497634f7-871830.jpg",
+      "imageAlt": "Súlyos adósságok és nemzetközi perek: egyelőre nem kezdődik a híres fővárosi műemlék felújítása",
+      "addedAt": "2026-11-23T08:59:43.185Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-portfolio-elsullyedt-egy-orosz-hadihajo-a-fekete-8a38c5",
+      "title": "Elsüllyedt egy orosz hadihajó a Fekete-tengeren, orosz rakéták roncsait találták Lengyelországban – Háborús híreink hétfőn",
+      "summary": "Elsüllyedt a Bengázi haditengerészeti támaszpontjánál korábban dróntámadással megrongált orosz hadihajó, miközben vasárnap este egy második, máltai zászló alatt közlekedő kereskedelmi hajót is támadás ért a kelet-líbiai partoknál. A pénteken Lengyelországban lezuhant orosz katonai eszközök H-101-es cirkálórakéták voltak – közölte vasárnap a lengyel ügyészség. Cikkünk folyamatosan frissül az ukrajnai háború eseményeivel.",
+      "date": "2026-11-23T08:26:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261123/elsullyedt-egy-orosz-hadihajo-a-fekete-tengeren-orosz-raketak-roncsait-talaltak-lengyelorszagban-haborus-hireink-hetfon-878352",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://pcdn.hu/articles/images-xl/o/r/o/orosz-tamadas-871800.jpg",
+      "imageAlt": "Elsüllyedt egy orosz hadihajó a Fekete-tengeren, orosz rakéták roncsait találták Lengyelországban – Háborús híreink hétfőn",
+      "addedAt": "2026-11-23T08:59:43.185Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-hvg-rendorauto-es-villamos-utkozott-budapesten-e27193",
+      "title": "Rendőrautó és villamos ütközött Budapesten",
+      "summary": "A rendőrség vizsgálja a baleset körülményeit.",
+      "date": "2026-11-23T08:24:52.000Z",
+      "url": "https://hvg.hu/cegauto/20261123_budapest-4-6-os-17-es-villamos-baleset-utkozes-rendorauto",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Autó",
+        "baleset",
+        "Budapest",
+        "4-6-os villamos"
+      ],
+      "author": "szerzo@hvg.hu (MTI)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/8f3824b9-2992-43a1-bafe-f195e0648998.jpg",
+      "imageAlt": "Rendőrautó és villamos ütközött Budapesten",
+      "addedAt": "2026-11-23T08:59:42.331Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-444-zelenszkij-bejelentette-hogy-ukranok-7f7810",
+      "title": "Zelenszkij bejelentette, hogy ukránok támadták a hajókat Líbia partjainál",
+      "summary": "Az ukrán elnök szerint példaértékű művelet ment végbe válaszul Oroszország háborújára.",
+      "date": "2026-11-23T08:16:22.000Z",
+      "url": "https://444.hu/2026/11/23/zelenszkij-bejelentette-hogy-ukranok-tamadtak-a-hajokat-libia-partjainal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "támadás",
+        "bengázi",
+        "orosz-ukrán háború",
+        "líbia"
+      ],
+      "author": "Székely Sarolta",
+      "theme": "rat",
+      "image": "https://assets.4cdn.hu/kraken/8Q41xMty0H3dSyGAs.jpeg",
+      "imageAlt": "Zelenszkij bejelentette, hogy ukránok támadták a hajókat Líbia partjainál",
+      "addedAt": "2026-11-23T08:59:41.935Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-24hu-zuhannak-a-beruhazasok-karman-andras-438e1d",
+      "title": "Zuhannak a beruházások, Kármán András szerint ez egy átalakuló gazdaság pillanatképe",
+      "summary": "A pénzügyminiszter szerint a mostani adat az előző kormány döntéseit és a vállalatok választások előtti kivárását is tükrözi. The post Zuhannak a beruházások, Kármán András szerint ez egy átalakuló gazdaság pillanatképe first appeared on 24.hu .",
+      "date": "2026-11-23T08:15:38.000Z",
+      "url": "https://24.hu/fn/gazdasag/2026/11/23/beruhazasok-zuhanas-karman-andras-reakcio/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Gazdaság",
+        "ksh",
+        "beruházások",
+        "kármán andrás"
+      ],
+      "author": "Vaskor Máté",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1098292012-2-e1795421674877-1024x577.jpg",
+      "imageAlt": "Zuhannak a beruházások, Kármán András szerint ez egy átalakuló gazdaság pillanatképe",
+      "addedAt": "2026-11-23T08:59:46.128Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-24hu-nepszeru-edesitoszer-novelheti-a-stroke-93bda6",
+      "title": "Népszerű édesítőszer növelheti a stroke kockázatát",
+      "summary": "A fehérjeszeletektől az üdítőkön át az energiaitalokig rengeteg termékben megtalálható már az a népszerű édesítőszer, ami kifejezetten káros lehet. The post Népszerű édesítőszer növelheti a stroke kockázatát first appeared on 24.hu .",
+      "date": "2026-11-23T08:12:06.000Z",
+      "url": "https://24.hu/tudomany/2026/11/23/eritrit-edesitioszer-veszelyek-stroke-szivinfarktus/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Tudomány",
+        "eritrit",
+        "édesítőszer",
+        "kutatás"
+      ],
+      "author": "Lányi Örs",
+      "theme": "energija",
+      "image": "https://s.24.hu/app/uploads/2026/11/gettyimages-681755100-e1795421507223-1024x577.jpg",
+      "imageAlt": "Népszerű édesítőszer növelheti a stroke kockázatát",
+      "addedAt": "2026-11-23T08:59:46.128Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-hvg-a-felcsuti-akademia-megerositette-bezar-a-858e5a",
+      "title": "A felcsúti akadémia megerősítette, bezár a tao-milliárdokból épült Hotel Pancho",
+      "summary": "A szálláshely eseti igényekhez igazodva szolgál majd ifjúsági szálláshelyként és a sportolók rehabilitációját segítő helyszínként.",
+      "date": "2026-11-23T08:10:22.000Z",
+      "url": "https://hvg.hu/gazdasag/20261123_felcsut-puskas-akademia-hotel-pancho-bezaras-csoportos-letszamleepites",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "itthon",
+        "Felcsút",
+        "Hotel Pancho"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "sport",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/56c0fa79-c2eb-4278-b627-141b19c5450a.jpg",
+      "imageAlt": "A felcsúti akadémia megerősítette, bezár a tao-milliárdokból épült Hotel Pancho",
+      "addedAt": "2026-11-23T08:59:42.331Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-24hu-tuz-utott-ki-egy-berlini-korhazban-1560e5",
+      "title": "Tűz ütött ki egy berlini kórházban, életveszélyes sérült is van",
+      "summary": "A rendőrség gyanúja szerint a tüzet az okozhatta, hogy egy beteg meggyújtotta a saját ágyát. The post Tűz ütött ki egy berlini kórházban, életveszélyes sérült is van first appeared on 24.hu .",
+      "date": "2026-11-23T08:09:29.000Z",
+      "url": "https://24.hu/kulfold/2026/11/23/tuz-berlin-korhaz-serultek/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Nagyvilág",
+        "berlin",
+        "tűz",
+        "kórház"
+      ],
+      "author": "Dienes Gábriel",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/043_dpa-pa_261009-99-901760_dpai-1024x576.jpg",
+      "imageAlt": "Tűz ütött ki egy berlini kórházban, életveszélyes sérült is van",
+      "addedAt": "2026-11-23T08:59:46.128Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-hvg-a-ner-es-visszaelesek-felszamolasaval-f3de39",
+      "title": "A NER-es visszaélések felszámolásával magyarázza a Pénzügyminisztérium a gyászos beruházási adatokat",
+      "summary": "Kármán András pénzügyminiszter szerint az előző rendszerből megmaradt, túlárazott projektek leállítása rövid távon kevesebb beruházást jelent, de hosszú távon a tisztességes verseny és a fenntartható növekedés csak így biztosítható.",
+      "date": "2026-11-23T08:06:39.000Z",
+      "url": "https://hvg.hu/gazdasag/20261123_karman-andras-penzugyminiszterium-beruhazasok-visszaeses-ksh-kommentar-ner-felszamolasa-tularazott-kozbeszerzesek",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "vállalkozás",
+        "Pénzügyminisztérium",
+        "Kármán András"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/ed2c62d5-e8bb-467f-8c7e-5a45b06bebf1.jpg",
+      "imageAlt": "A NER-es visszaélések felszámolásával magyarázza a Pénzügyminisztérium a gyászos beruházási adatokat",
+      "addedAt": "2026-11-23T08:59:42.331Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-24hu-47-evesen-is-orszagos-csuccsal-nyert-a-4a0ee6",
+      "title": "47 évesen is országos csúccsal nyert a magyar súlyemelő",
+      "summary": "Gyurkovics Ferenc immáron 18-szoros magyar bajnok. The post 47 évesen is országos csúccsal nyert a magyar súlyemelő first appeared on 24.hu .",
+      "date": "2026-11-23T08:02:45.000Z",
+      "url": "https://24.hu/sport/2026/11/23/sulyemelo-ob-gyurkovics-ferenc-47-evesen-nyert/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Sport",
+        "súlyemelés",
+        "gyurkovics ferenc"
+      ],
+      "author": "24.hu",
+      "theme": "sigurnost",
+      "image": "https://s.24.hu/app/uploads/2026/11/gyurkovics-ferenc-1024x576.png",
+      "imageAlt": "47 évesen is országos csúccsal nyert a magyar súlyemelő",
+      "addedAt": "2026-11-23T08:59:46.128Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-444-ishowspeed-10-35-masodperc-alatt-futotta-a-ae7141",
+      "title": "IShowSpeed 10,35 másodperc alatt futotta a 100 métert, eredményével az elmúlt 20 évben 19-szer magyar bajnok lett volna",
+      "summary": "Az őrjöngő, ugató amerikai influenszer ki akar jutni a 2028-as olimpiára.",
+      "date": "2026-11-23T08:00:39.000Z",
+      "url": "https://444.hu/2026/11/23/ishowspeed-1035-masodperc-alatt-futotta-a-100-metert-eredmenyevel-az-elmult-20-evben-19-szer-magyar-bajnok-lett-volna?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "atlétika",
+        "usain bolt",
+        "síkfutás",
+        "ishowspeed"
+      ],
+      "author": "Molnár Kristóf",
+      "theme": "sport",
+      "image": "https://assets.4cdn.hu/kraken/8Q40WtZA321uLQBrs.jpeg",
+      "imageAlt": "IShowSpeed 10,35 másodperc alatt futotta a 100 métert, eredményével az elmúlt 20 évben 19-szer magyar bajnok lett volna",
+      "addedAt": "2026-11-23T08:59:41.935Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-444-pocsek-adat-erkezett-a-hazai-beruhazasokrol-a1976b",
+      "title": "Pocsék adat érkezett a hazai beruházásokról, 2,5 éves mélyponton a teljesítmény",
+      "summary": "Masszív lejtmenetben van a terület 2026-ban.",
+      "date": "2026-11-23T07:58:30.000Z",
+      "url": "https://444.hu/2026/11/23/pocsek-adat-erkezett-a-hazai-beruhazasokrol-25-eves-melyponton-a-teljesitmeny?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "központi statisztikai hivatal",
+        "beruházások",
+        "statisztika",
+        "ksh"
+      ],
+      "author": "Székely Sarolta",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/86eB8DmdNRW229A1Qms.jpeg",
+      "imageAlt": "Pocsék adat érkezett a hazai beruházásokról, 2,5 éves mélyponton a teljesítmény",
+      "addedAt": "2026-11-23T08:59:41.935Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-444-a-kinaiak-tovabbra-sem-engedik-hogy-a-89b8f4",
+      "title": "A kínaiak továbbra sem engedik, hogy a kormány közzétegye a Budapest-Belgrád vasútvonal szerződését",
+      "summary": "Vitézy Dávidék folytatják az egyeztetéseket, hogy feloldhassák a szerződés titkosítását.",
+      "date": "2026-11-23T07:09:54.000Z",
+      "url": "https://444.hu/2026/11/23/a-kinaiak-tovabbra-sem-engedik-hogy-a-kormany-kozzetegye-a-budapest-belgrad-vasutvonal-szerzodeset?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "budapest-belgrád vasút",
+        "engedély",
+        "titkosítás",
+        "kína"
+      ],
+      "author": "Székely Sarolta",
+      "theme": "sigurnost",
+      "image": "https://assets.4cdn.hu/kraken/85CAIARbqlUXmOWGs.jpeg",
+      "imageAlt": "A kínaiak továbbra sem engedik, hogy a kormány közzétegye a Budapest-Belgrád vasútvonal szerződését",
+      "addedAt": "2026-11-23T08:59:41.935Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-23-444-carlos-alcaraz-nyerte-a-tenisz-2e72f1",
+      "title": "Carlos Alcaraz nyerte a tenisz-világbajnokságot",
+      "summary": "Két szettben győzte le a világelső Alexander Zverevet.",
+      "date": "2026-11-23T06:31:11.000Z",
+      "url": "https://444.hu/2026/11/23/carlos-alcaraz-nyerte-a-tenisz-vilagbajnoksagot?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Alexander Zverev",
+        "tenisz",
+        "carlos alcaraz",
+        "olaszország"
+      ],
+      "author": "Molnár Kristóf",
+      "theme": "sport",
+      "image": "https://assets.4cdn.hu/kraken/8Q3u39y2ekbs1Oyvws.jpeg",
+      "imageAlt": "Carlos Alcaraz nyerte a tenisz-világbajnokságot",
+      "addedAt": "2026-11-23T08:59:41.935Z"
+    },
     {
       "slug": "budimpesta-2026-11-22-24hu-karacsonyi-varazslat-lengyel-modra-3248f9",
       "title": "Karácsonyi varázslat lengyel módra",
