@@ -20,6 +20,7 @@ assert.match(bootstrap,/aktual-world-choices-v1\.js/);
 assert.match(bootstrap,/aktual-world-live-brief-v1\.js/);
 const topics=fs.readFileSync(assets[1],'utf8');
 assert.match(topics,/20 izbora vijesti/);
+assert.match(topics,/poslovna-mreza/,'World201 editions should link to relevant corporate context');
 assert.match(topics,/news\.google\.com\/search/);
 const shelf=fs.readFileSync(assets[2],'utf8');
 assert.match(shelf,/\/api\/public-news-feed/);
