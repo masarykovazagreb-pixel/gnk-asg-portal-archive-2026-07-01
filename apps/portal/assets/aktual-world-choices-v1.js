@@ -45,6 +45,14 @@
       a.appendChild(num);a.appendChild(name);grid.appendChild(a);
     });
     section.appendChild(eyebrow);section.appendChild(h2);section.appendChild(desc);section.appendChild(grid);
+    var about=document.createElement('p');
+    about.className='am-world-choices-corp';
+    var aboutLink=document.createElement('a');
+    aboutLink.href='/poslovna-mreza/';
+    aboutLink.textContent=en?'About the GNK ASG / AKTUAL MEDIA business network':'O poslovnoj mreži GNK ASG i AKTUAL MEDIA';
+    aboutLink.setAttribute('aria-label',aboutLink.textContent);
+    about.appendChild(aboutLink);
+    section.appendChild(about);
     var style=document.createElement('style');
     style.textContent='.am-world-choices{margin:24px auto;padding:clamp(18px,3vw,30px);background:linear-gradient(140deg,#0b1e30,#102b3a);color:#eff6ff;border:1px solid #27455c;border-radius:16px;box-shadow:0 18px 34px #020b1540}.am-world-choices-kicker{font:700 11px/1.4 system-ui;letter-spacing:.12em;color:#f0c977;text-transform:uppercase}.am-world-choices h2{font:700 clamp(24px,3vw,34px)/1.2 Georgia,serif;margin:6px 0 10px;color:#fff}.am-world-choices>p:not(.am-world-choices-kicker){color:#c6d8e9;max-width:80ch;line-height:1.6;margin:0 0 20px}.am-world-choices-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:9px}.am-world-choices-grid a{display:flex;gap:10px;align-items:center;min-height:52px;padding:11px 12px;background:#152e43;border:1px solid #36546b;border-radius:9px;color:#eef6ff;font:600 13px/1.3 system-ui;text-decoration:none}.am-world-choices-grid a:hover,.am-world-choices-grid a:focus-visible{background:#25455e;border-color:#e4c177;outline-offset:2px}.am-world-choices-num{color:#e4c177;font:700 11px/1.3 system-ui;flex:0 0 auto}@media (max-width:560px){.am-world-choices-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.am-world-choices-grid a{font-size:12px;min-height:62px;padding:9px}}';
     document.head.appendChild(style);
