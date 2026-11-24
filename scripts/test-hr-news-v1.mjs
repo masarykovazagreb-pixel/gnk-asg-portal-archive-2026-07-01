@@ -50,6 +50,7 @@ try {
  const svg=load(path.join(tmp,'out/assets/editorial/hr-news/'+sample.slug+'.svg'));
  const generated=JSON.parse(load(path.join(tmp,'out/data/hr-news-original-v1.json')));
  assert.match(html,/NewsArticle/);assert.match(html,/Provjerljivi izvori/);
+ assert.equal((html.match(/\"@type\":\"WebSite\"/g)||[]).length,1,'Original article must have exactly one WebSite JSON-LD node');
  assert.match(html,/data-am-design="v1"/,'Every published article must load shared design tokens');
  assert.match(svg,/<svg/);assert.match(svg,/Izvorna konceptualna ilustracija/);
  assert.equal(generated.items.length,1);
@@ -68,6 +69,7 @@ assert.match(load('apps/portal/sitemap-index.xml'),/https:\/\/gnk-asg\.hr\/news\
 assert.match(load('apps/portal/sitemap-index.xml'),/https:\/\/gnk-asg\.hr\/en\/gnk-aktual\/media\/sitemap\.xml/,'English media sitemap must be registered');
 assert.match(load('apps/portal/news/index.html'),/data-am-design="v1"/);
 assert.match(load('apps/portal/poslovna-mreza/index.html'),/data-am-design="v1"/);
+for(const p of ['apps/portal/news/index.html','apps/portal/poslovna-mreza/index.html']) assert.equal((load(p).match(/\"@type\":\"WebSite\"/g)||[]).length,1,p+': one canonical WebSite node required');
 assert.doesNotMatch(networkHtml,/\"parentOrganization\"|\"subOrganization\"/);
 const tags=JSON.parse(load('apps/portal/data/corporate-seo-taxonomy-v1.json'));
 assert.equal(tags.topicHashtags.length,20);
