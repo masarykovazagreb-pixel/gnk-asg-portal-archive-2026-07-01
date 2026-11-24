@@ -1,0 +1,68 @@
+name: Release blockers diagnostic evidence (read-only)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-blockers-diagnostics-v1.yml'
+      - 'docs/factory/INVENTAR-MREZE-V1.md'
+      - 'apps/portal/mreza/izvori/**'
+      - 'apps/portal/en/mreza/izvori/**'
+      - 'workers/gnk-asg-direct-operator/src/image-proxy-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/image-hosts-v1.js'
+      - 'scripts/ensure-website-jsonld-v1.mjs'
+      - 'scripts/apply-refresh-v1.mjs'
+      - 'apps/sites/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-blockers-diagnostics-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reproduce all seven unresolved release checks with full logs
+        shell: bash
+        run: |
+          # Run all checks even if an early one fails; preserve each exit status.
+          set +e
+          set -u -o pipefail
+          mkdir -p artifacts/release-blockers-diagnostics
+          failed=0
+          run_check() {
+            label="$1"; shift
+            echo "::group::${label}"
+            echo "Command: $*" | tee "artifacts/release-blockers-diagnostics/${label}.log"
+            timeout 420s "$@" 2>&1 | tee -a "artifacts/release-blockers-diagnostics/${label}.log"
+            rc=${PIPESTATUS[0]}
+            printf '%s %s\n' "$label" "$rc" | tee -a artifacts/release-blockers-diagnostics/status.txt
+            if [ "$rc" -ne 0 ]; then failed=1; fi
+            echo "::endgroup::"
+          }
+          run_check network-inventory node --test tests/test-network-inventory-v1.mjs
+          run_check public-network-inventory node --test tests/test-public-network-inventory-v1.mjs
+          run_check website-jsonld node scripts/test-website-jsonld-v1.mjs
+          run_check image-proxy node tests/test-image-proxy-v1.mjs
+          run_check sites-network node tests/test-sites-network-v1.mjs
+          run_check refresh-layer node tests/test-refresh-layer-v1.mjs
+          run_check web-standard node tests/test-web-standard-v1.mjs
+          cat artifacts/release-blockers-diagnostics/status.txt >> "$GITHUB_STEP_SUMMARY"
+          exit "$failed"
+      - name: Save complete diagnostics (no deploy, no push)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-blockers-${{ github.sha }}
+          path: artifacts/release-blockers-diagnostics/
+          if-no-files-found: warn
+          retention-days: 7

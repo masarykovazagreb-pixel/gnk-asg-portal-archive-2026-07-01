@@ -1,0 +1,79 @@
+name: Repair generated public site contracts (feature branch only)
+
+on:
+  push:
+    branches:
+      - fix/portal-en-favicon-release-gate-20261122
+    paths:
+      - .github/workflows/repair-generated-site-contracts-once-v1.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/repair-generated-site-contracts-once-v1.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gnk-asg-feature-repair-once
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    if: >-
+      vars.GNK_ASG_RELEASE_FENCE != 'true' && (
+      (github.event_name == 'push' && github.ref == 'refs/heads/fix/portal-en-favicon-release-gate-20261122') ||
+      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'fix/portal-en-favicon-release-gate-20261122')
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/portal-en-favicon-release-gate-20261122
+          fetch-depth: 1
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Restore generated sites and current data-day metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git branch --show-current)" = "fix/portal-en-favicon-release-gate-20261122"
+          node --check apps/sites/build.mjs
+          node --check scripts/apply-refresh-v1.mjs
+          node --check scripts/apply-impressum-v1.mjs
+          node --check scripts/ensure-website-jsonld-v1.mjs
+          node apps/sites/build.mjs
+          node apps/world/build.mjs
+          node apps/arhiva/engine/build.mjs
+          node apps/dnevnik/engine/build.mjs
+          node scripts/apply-refresh-v1.mjs
+          node scripts/apply-impressum-v1.mjs --root apps/portal --icon
+          node scripts/ensure-website-jsonld-v1.mjs --write
+          # Read-only checks before committing generated outputs.
+          node scripts/test-website-jsonld-v1.mjs
+          node tests/test-refresh-layer-v1.mjs
+          node tests/test-sites-network-v1.mjs
+          node tests/test-web-standard-v1.mjs
+          python3 scripts/validate-release-race-hygiene-v1.py
+      - name: Commit generated public files to this feature branch only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          # Stage only tracked sources and tracked generated files. World/archive/
+          # diary outputs are intentionally ignored and absent from Git's index.
+          git add -u -- apps/portal apps/sites/site apps/kanal/site
+          # Do not force-add ignored generated outputs into the repository.
+          if git diff --cached --quiet; then
+            echo "Generated files already match canonical builders."
+            exit 0
+          fi
+          git diff --cached --stat | tail -n 20
+          git commit -m "build(release): sync generated sites and refresh metadata after source updates"
+          # Non-force push, fails closed if another writer advanced this branch.
+          git push origin HEAD:refs/heads/fix/portal-en-favicon-release-gate-20261122
+          echo "Feature branch updated; NO main merge or production deploy."

@@ -70,6 +70,10 @@ export const REGION_IMAGE_HOSTS = [
   ['www.kbc.co.ke', 'KBC', 'KE'],
   ['www.madamasr.com', 'Mada Masr', 'EG'],
   ['images.dailynewsegypt.com', 'Daily News Egypt', 'EG'],
+  // Izvori potvrđeni u regionalnom feedu (2026-11-22); host nije licenca za ponovno korištenje slike.
+  ['amayei.nyc3.digitaloceanspaces.com', 'Amayei media storage', 'KE'],
+  ['img.rtvcdn.si', 'RTV Slovenija', 'SI'],
+  ['cdn.standardmedia.co.ke', 'The Standard', 'KE'],
   // Azija i Pacifik
   ['img.antaranews.com', 'ANTARA', 'ID'],
   ['akcdn.detik.net.id', 'detikcom', 'ID'],
