@@ -1,0 +1,28 @@
+name: Priority brand SEO indexability gate
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/index.html'
+      - 'apps/portal/gnk-aktual/index.html'
+      - 'apps/portal/nermin-sefic/index.html'
+      - 'apps/portal/robots.txt'
+      - 'apps/portal/sitemap.xml'
+      - 'scripts/test-brand-search-identity-v1.mjs'
+      - '.github/workflows/brand-search-identity-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: brand-search-seo-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  brand-seo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate crawlers, canonicals, visible brand identity and discoverable links
+        run: node scripts/test-brand-search-identity-v1.mjs
