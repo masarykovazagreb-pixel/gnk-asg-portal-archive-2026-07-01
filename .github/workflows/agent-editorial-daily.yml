@@ -73,6 +73,14 @@ jobs:
           node --check scripts/agents/aktual-worker-fleet-v1.mjs
           node --test tests/test-aktual-worker-fleet-v1.mjs
 
+      - name: Bounded offline fleet audit on PR (no publishing or model calls)
+        if: github.event_name == 'pull_request'
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          mkdir -p "$AGENT_OUT"
+          node scripts/agents/aktual-worker-fleet-v1.mjs --write-private
+
       - name: Prekidač uredničkog tijeka
         if: github.event_name != 'pull_request'
         id: editorial_switch
