@@ -40,7 +40,7 @@ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'hr-news-contract-'));
 try {
  const paras=Array.from({length:4},(_,i)=>'Izvorni autorski pregled '+(i+1)+': dvije javno dostupne službene stranice daju provjerljive primjere sustava distribuiranja informacija i prava izdavača. Urednička analiza razlikuje činjenice od preporuka te poziva na čitanje izvornika.');
  const sample={slug:'primjer-urednicke-provjere',title:'Kako odgovorno povezivati izvore i provjeravati javne informacije',description:'Primjer uredničkog članka o provjeri izvora i pravilnom povezivanju prema izvornim izdavačima bez preuzimanja njihovih zaštićenih fotografija.',paragraphs:paras,
- approvedForPublication:true,originalWork:true,editorialEvidenceReviewed:true,publishedAt:new Date().toISOString(),hashtags:['#AktualMedia','#HRNews'],
+ approvedForPublication:true,originalWork:true,editorialEvidenceReviewed:true,independentFactCheck:true,imageRightsVerified:true,imageOrigin:'AKTUAL_ORIGINAL_SVG',publishedAt:new Date().toISOString(),hashtags:['#AktualMedia','#HRNews'],
  sources:[{name:'Zakonodavstvo RH',url:'https://zakonodavstvo.gov.hr/rss/394',checkedAt:new Date().toISOString(),factSupported:'Javni službeni izvor objavljuje RSS stranicu.'},{name:'24sata RSS',url:'https://www.24sata.hr/flatpages/rss/',checkedAt:new Date().toISOString(),factSupported:'Izdavač javno navodi RSS kanale za vijesti.'}]};
  const fixture=path.join(tmp,'reviewed.json');fs.writeFileSync(fixture,JSON.stringify(sample));
  const env={...process.env,HR_NEWS_BUILD_ROOT:path.join(tmp,'out')};
@@ -67,6 +67,16 @@ try {
  sample.approvedForPublication=false;fs.writeFileSync(fixture,JSON.stringify(sample));
  const invalid=spawnSync(process.execPath,['scripts/hr-news-one-command-v1.mjs',fixture],{encoding:'utf8',env});
  assert.notEqual(invalid.status,0,'Unapproved report unexpectedly published');
+ sample.approvedForPublication=true;
+ sample.independentFactCheck=false;
+ fs.writeFileSync(fixture,JSON.stringify(sample));
+ const notFactChecked=spawnSync(process.execPath,['scripts/hr-news-one-command-v1.mjs',fixture],{encoding:'utf8',env});
+ assert.notEqual(notFactChecked.status,0,'Report without independent fact check unexpectedly built');
+ sample.independentFactCheck=true;
+ sample.imageRightsVerified=false;
+ fs.writeFileSync(fixture,JSON.stringify(sample));
+ const noRights=spawnSync(process.execPath,['scripts/hr-news-one-command-v1.mjs',fixture],{encoding:'utf8',env});
+ assert.notEqual(noRights.status,0,'Report without image rights unexpectedly built');
 } finally {fs.rmSync(tmp,{recursive:true,force:true});}
 console.log(JSON.stringify({ok:true,hrNews:true,publishers:sources.sources.length,maxExternalLinks:200,operationalProcessors:10,targetOriginalReportsPerDay:30,publishRequiresReviewedOriginal:true,isolatedBuildTest:true}));
 
