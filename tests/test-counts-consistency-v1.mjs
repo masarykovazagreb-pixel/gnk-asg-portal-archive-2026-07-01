@@ -32,26 +32,39 @@ if (!counts) { console.log(JSON.stringify({ ok: false, failures: fails.length })
 
 /* --- 1. zapis odgovara podacima --- */
 const regionDir = join(ROOT, 'apps/region/data');
-// Count only registered city archives. Privacy/withdrawal and status JSON
-// are metadata, NOT a city edition. Match scripts/build-network-counts-v1.mjs.
+// Broj kanala određuje isti registar koji koristi build-network-counts-v1.mjs.
+// Dodatne JSON datoteke nisu automatski nova gradska izdanja.
 const registry = readJSON(join(ROOT, 'apps/region/channels.json'), { channels: [] });
-const configured = registry.channels || [];
-const channelIds = new Set(configured.map(({ id }) => id));
-check(channelIds.size === configured.length, 'registar gradova sadrži ponovljen id');
-const permittedMetadata = new Set(['withdrawn-content-v1.json']);
-for (const name of readdirSync(regionDir)) {
-  if (!name.endsWith('.json') || name.startsWith('_')) continue;
-  if (!channelIds.has(name.slice(0, -5)) && !permittedMetadata.has(name)) {
-    check(false, `nepoznati regionalni JSON koji nije grad ni registrirana metadatoteka: ${name}`);
-  }
-}
+const declaredChannels = Array.isArray(registry.channels) ? registry.channels : [];
+check(declaredChannels.length > 0, 'registar gradskih kanala je prazan');
+const registeredIds = new Set();
 let realTexts = 0;
-for (const { id } of configured) {
-  const data = readJSON(join(regionDir, id + '.json'));
-  check(Boolean(data && Array.isArray(data.items)), `nedostaje valjana arhiva grada ${id}`);
-  realTexts += Array.isArray(data?.items) ? data.items.length : 0;
+for (const channel of declaredChannels) {
+  const id = String(channel.id || '');
+  if (!/^[a-z0-9-]+$/.test(id) || registeredIds.has(id)) {
+    fails.push(`nevaljan ili dvostruk ID kanala: ${id}`);
+    continue;
+  }
+  registeredIds.add(id);
+  const data = readJSON(join(regionDir, `${id}.json`));
+  if (!data || !Array.isArray(data.items)) {
+    fails.push(`${id}: nema valjane datoteke registriranog kanala`);
+    continue;
+  }
+  realTexts += data.items.length;
+  const savedChannel = (counts.channels || []).find((entry) => entry.id === id);
+  check(Boolean(savedChannel), `${id}: nedostaje u generiranom inventaru kanala`);
+  if (savedChannel) check(savedChannel.count === data.items.length, `${id}: zbroj tekstova ne odgovara arhivi`);
 }
-const channels = configured.length;
+// Ne prešutjeti stvarni novi kanal s objavama koji nije u registru.
+for (const name of readdirSync(regionDir)) {
+  if (!name.endsWith('.json') || name.startsWith('_') || name === 'seed.json') continue;
+  if (registeredIds.has(name.slice(0, -5))) continue;
+  const extra = readJSON(join(regionDir, name));
+  if (Array.isArray(extra?.items) && extra.items.length > 0)
+    fails.push(`${name}: ima objave, ali nije registriran kao gradski kanal`);
+}
+const channels = registeredIds.size;
 check(counts.texts === realTexts, `zapis kaže ${counts.texts} tekstova, podaci ${realTexts}`);
 check(counts.cities === channels, `zapis kaže ${counts.cities} gradova, podaci ${channels}`);
 check(Array.isArray(counts.channels) && counts.channels.length === channels, 'po kanalu nema svih zapisa');
