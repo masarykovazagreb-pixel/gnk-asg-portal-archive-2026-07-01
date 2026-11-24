@@ -35,6 +35,7 @@ export const REGION_IMAGE_HOSTS = [
   ['static.klix.ba', 'Klix.ba', 'BA'],
   ['n1info.ba', 'N1 BiH', 'BA'],
   ['avaz.ba', 'Avaz', 'BA'],
+  ['cdn.avaz.ba', 'Avaz image CDN', 'BA'],
   ['storage.radiosarajevo.ba', 'Radio Sarajevo', 'BA'],
   ['gale-s3-bucket.s3.eu-central-1.amazonaws.com', 'N1 BiH (S3)', 'BA'],
   // Slovenija
@@ -70,8 +71,6 @@ export const REGION_IMAGE_HOSTS = [
   ['images.dailynewsegypt.com', 'Daily News Egypt', 'EG'],
   // Izvori potvrđeni u regionalnom feedu (2026-11-22); host nije licenca za ponovno korištenje slike.
   ['amayei.nyc3.digitaloceanspaces.com', 'Amayei media storage', 'KE'],
-  ['img.rtvcdn.si', 'RTV Slovenija', 'SI'],
-  ['cdn.standardmedia.co.ke', 'The Standard', 'KE'],
   // Azija i Pacifik
   ['img.antaranews.com', 'ANTARA', 'ID'],
   ['akcdn.detik.net.id', 'detikcom', 'ID'],
