@@ -13,9 +13,15 @@ const valid=items.filter(x=>{
  if(x.url!=='https://gnk-asg.hr/news/clanci/'+x.slug+'/')return false;
  return fs.existsSync(path.join(root,'news/clanci',x.slug,'index.html'));
 });
-const rows=['https://gnk-asg.hr/news/',...valid.map(x=>x.url)].map(url=>{
- const date=valid.find(x=>x.url===url)?.publishedAt||'2026-11-23';
- return '  <url><loc>'+esc(url)+'</loc><lastmod>'+new Date(date).toISOString().slice(0,10)+'</lastmod></url>';
+const staticRoutes=['https://gnk-asg.hr/news/'];
+// HRT is a source-only AKTUAL desk (not a syndicated HRT mirror). Only index an existing page.
+if(fs.existsSync(path.join(root,'news/izvori/hrt/index.html')))staticRoutes.push('https://gnk-asg.hr/news/izvori/hrt/');
+const rows=[...staticRoutes,...valid.map(x=>x.url)].map(url=>{
+ const actual=valid.find(x=>x.url===url);
+ // A true publication timestamp is known only for reviewed original articles.
+ const modified=actual && Number.isFinite(Date.parse(actual.publishedAt))
+   ? '<lastmod>'+new Date(actual.publishedAt).toISOString().slice(0,10)+'</lastmod>' : '';
+ return '  <url><loc>'+esc(url)+'</loc>'+modified+'</url>';
 });
 const xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+rows.join('\n')+'\n</urlset>\n';
 const out=path.join(root,'news/sitemap.xml');fs.mkdirSync(path.dirname(out),{recursive:true});fs.writeFileSync(out,xml);
