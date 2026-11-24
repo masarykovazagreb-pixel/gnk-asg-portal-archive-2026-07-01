@@ -266,6 +266,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           SHA: ${{ steps.publication.outputs.sha }}
           NOTIFY: ${{ inputs.notify_search_engines }}
+          SLUGS: ${{ steps.article.outputs.slugs }}
+          APPROVED_AT: ${{ steps.article.outputs.approved_at }}
         run: |
           set -euo pipefail
           git fetch origin main --no-tags
@@ -279,6 +281,12 @@ jobs:
             -f approved_sha="$SHA" \
             -f notify_search_engines="$NOTIFY"
           echo "Deployment requested for exact $SHA; NOT LIVE until protected deploy and public HTTPS verification succeed."
+          gh workflow run hr-news-10m-approved-fastlane-v1.yml \
+            --repo "$GITHUB_REPOSITORY" --ref main \
+            -f verify_approved_sha="$SHA" \
+            -f verify_slugs="$SLUGS" \
+            -f verify_approved_at="$APPROVED_AT" \
+            -f verify_dispatched_at="$sent_at"
           echo "sent_at=$sent_at" >> "$GITHUB_OUTPUT"
           {
             echo '## HR NEWS fast lane'
