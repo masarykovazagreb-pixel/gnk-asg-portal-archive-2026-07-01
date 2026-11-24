@@ -35,6 +35,7 @@ export const REGION_IMAGE_HOSTS = [
   ['static.klix.ba', 'Klix.ba', 'BA'],
   ['n1info.ba', 'N1 BiH', 'BA'],
   ['avaz.ba', 'Avaz', 'BA'],
+  ['cdn.avaz.ba', 'Avaz image CDN', 'BA'],
   ['storage.radiosarajevo.ba', 'Radio Sarajevo', 'BA'],
   ['gale-s3-bucket.s3.eu-central-1.amazonaws.com', 'N1 BiH (S3)', 'BA'],
   // Slovenija
