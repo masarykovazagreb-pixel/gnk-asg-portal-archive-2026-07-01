@@ -87,6 +87,12 @@ for (const c of critiques) {
 const TODAY = dayKey();
 const CURRENT_WEEK = weekKey(`${TODAY}T12:00:00Z`);
 const CURRENT_DAY = byDate.has(TODAY) ? TODAY : (byDate.keys().next().value || TODAY);
+// A build or a feed poll is not new news. Report the latest actual critique date.
+const LATEST_CRITIQUE_AT = critiques.map((c) => c.date)
+  .filter((day) => /^\d{4}-\d{2}-\d{2}$/.test(day) && !Number.isNaN(Date.parse(day)))
+  .sort().pop();
+const LATEST_CRITIQUE_ISO = LATEST_CRITIQUE_AT ? LATEST_CRITIQUE_AT + 'T12:00:00Z' : '';
+
 
 const statsFor = (list) => {
   const perSource = {};
@@ -168,11 +174,12 @@ const header = (active, root) => `<header class="masthead">
     <div class="mast-right">
       <span class="mast-note">Kritika izvještavanja, ne prepisivanje</span>
       <time class="mast-date" datetime="${TODAY}">${hrDate(TODAY)}</time>
+      <time class="tjednik-clock" data-tjednik-clock="Europe/Zagreb" aria-label="Lokalno vrijeme u Zagrebu">Zagreb · --:--</time>
     </div>
   </div>
   <nav class="nav" aria-label="Glavna navigacija"><div class="wrap"><ul>${nav(active, root)}</ul></div></nav>
 </header>
-<div class="status-strip"><div class="wrap"><span class="badge"><span class="dot"></span>Automatski sastavljeni kritički osvrti</span><span>Izvornik je uvijek povezan · tvrdnje izvornika nisu naše tvrdnje</span></div></div>`;
+<div class="status-strip"><div class="wrap"><span class="badge"><span class="dot"></span>Automatski sastavljeni kritički osvrti</span><span class="tjednik-fresh" data-tjednik-fresh="${esc(LATEST_CRITIQUE_ISO)}" title="Starost najnovijeg objavljenog osvrta, ne generatora">Svježina nepoznata</span><span>Izvornik je uvijek povezan · tvrdnje izvornika nisu naše tvrdnje</span></div></div>`;
 
 const footer = (root) => `<footer>
   <div class="wrap foot">
@@ -199,11 +206,13 @@ const footer = (root) => `<footer>
 const layout = ({ title, description, canonical, active = '', root = '', content, type, published, modified, section, tags, graph }) =>
   `${head({ title, description, canonical, type, published, modified, section, tags, graph, root })}
 <body>
+<div id="tjednik-read-progress" aria-hidden="true"></div>
 ${header(active, root)}
 <main id="sadrzaj">
 ${content}
 </main>
 ${footer(root)}
+<script src="${root}assets/tjednik.js" defer></script>
 ${authorBand('hr')}
 ${impressumBlock('hr')}
 ${refreshTag('/')}
@@ -264,7 +273,9 @@ page('', layout({
   description: DESCRIPTION,
   canonical: '',
   active: '',
-  content: `<section class="hero wrap">
+  content: `<section class="hero wrap tjednik-cinematic-hero">
+    <figure class="tjednik-hero-visual"><img src="assets/og/tjednik.png" alt="Autorska grafička naslovnica BUSINESS TJEDNIKA" width="1200" height="630" fetchpriority="high" decoding="async"><figcaption>BUSINESS TJEDNIK · grafička naslovnica</figcaption></figure>
+    <div class="tjednik-hero-glass">
     <p class="kicker">Tjednik · kritika izvještavanja</p>
     <h1>Poslovne vijesti ne stižu s izvorom. Mi ga tražimo.</h1>
     <p class="lead">Čitamo Lider, Jutarnji list, Poslovni dnevnik i Forbes. Za svaki pronađeni poslovni tekst pišemo kritički osvrt: što naslov tvrdi, što sažetak otkriva i što treba provjeriti prije zaključka. Izvornik je uvijek povezan.</p>
@@ -272,7 +283,7 @@ page('', layout({
       <a class="btn" href="tjednik/${CURRENT_WEEK}/">Tjedna promjena · ${esc(CURRENT_WEEK)}</a>
       <a class="btn btn--ghost" href="dodaci/${latestDay}/">Dnevni dodatak · ${hrDate(`${latestDay}T12:00:00Z`)}</a>
       <a class="btn btn--ghost" href="metodologija/">Kako radimo</a>
-    </div>
+    </div></div>
   </section>
 
   <section class="wrap section">
@@ -381,7 +392,7 @@ for (const c of critiques) {
         <div><span>Tema</span><a href="${root}kritike/">${esc(c.themeLabel)}</a></div>
       </div>
 
-      <div class="share">Podijeli: <a href="https://x.com/intent/tweet?text=${encodeURIComponent(`Kritički osvrt: ${c.title}`)}&url=${encodeURIComponent(abs(`kritike/${c.slug}/`))}" target="_blank" rel="noopener">X</a> · <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(abs(`kritike/${c.slug}/`))}" target="_blank" rel="noopener">LinkedIn</a></div>
+      <div class="share tjednik-share"><span class="tjednik-hashtags">#AktualMedia #BusinessTjednik #GNKASG</span> Podijeli: <a href="https://x.com/intent/tweet?text=${encodeURIComponent(`Kritički osvrt: ${c.title}`)}&url=${encodeURIComponent(abs(`kritike/${c.slug}/`))}" target="_blank" rel="noopener">X</a> · <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(abs(`kritike/${c.slug}/`))}" target="_blank" rel="noopener">LinkedIn</a> <button type="button" data-tjednik-copy="${esc(abs(`kritike/${c.slug}/`))}">Kopiraj poveznicu</button></div>
     </article>`,
     graph: {
       '@context': 'https://schema.org',
@@ -743,9 +754,14 @@ ensureRefreshModule(OUT);
 for (const f of existsSync(ASSETS) ? readdirSync(ASSETS) : []) {
   const from = join(ASSETS, f);
   const to = join(OUT_ASSETS, f);
-  if (f.endsWith('.png') || f.endsWith('.svg') || f.endsWith('.css') || f.endsWith('.webp') || f.endsWith('.jpg')) copyFileSync(from, to);
+  if (f.endsWith('.png') || f.endsWith('.svg') || f.endsWith('.css') || f.endsWith('.js') || f.endsWith('.webp') || f.endsWith('.jpg')) copyFileSync(from, to);
 
 }
+// The visual hero and existing OpenGraph image are nested under assets/og/.
+// Copy explicitly: the flat asset loop above intentionally ignores directories.
+mkdirSync(join(OUT_ASSETS, 'og'), { recursive: true });
+copyFileSync(join(ASSETS, 'og', 'tjednik.png'), join(OUT_ASSETS, 'og', 'tjednik.png'));
+
 // Override any legacy source favicon with the network-wide canonical mark.
 copyFileSync(join(HERE, '..', 'shared', 'brand', 'favicon.svg'), join(OUT_ASSETS, 'favicon.svg'));
 

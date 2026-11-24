@@ -1,0 +1,8 @@
+{
+  "schema_version": "AKTUAL_REGION_IMAGE_RIGHTS_V1",
+  "approved_images": [],
+  "policy": "Do not show third-party RSS photographs by default. Add exact HTTPS image URL only after documented rights/licence evidence and editorial approval.",
+  "required_fields": ["url", "basis", "credit", "evidence_url"],
+  "basis_allowed": ["owned", "licensed", "public-domain"],
+  "notes": "This is an internal licensing allowlist, NOT a technical image proxy host allowlist. Permission and attribution must be actually verified. Until then use in-house thematic art."
+}
