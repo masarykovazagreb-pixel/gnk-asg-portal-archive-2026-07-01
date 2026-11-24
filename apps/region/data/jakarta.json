@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-11-24T11:40:24.134Z",
+  "updatedAt": "2026-11-24T12:26:56.712Z",
   "sources": [
     {
       "id": "antara",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T11:39:58.117Z"
+      "checkedAt": "2026-11-24T12:26:39.133Z"
     },
     {
       "id": "kompas",
@@ -24,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: empty response",
-        "https://nasional.kompas.com/rss: empty response"
+        "https://www.kompas.com/rss: HTTP 404",
+        "https://nasional.kompas.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-24T11:39:59.659Z"
+      "checkedAt": "2026-11-24T12:26:41.879Z"
     },
     {
       "id": "detik",
@@ -39,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-11-24T11:40:21.344Z"
+      "checkedAt": "2026-11-24T12:26:53.556Z"
     },
     {
       "id": "tempo",
@@ -51,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-24T11:40:22.140Z"
+      "checkedAt": "2026-11-24T12:26:54.349Z"
     },
     {
       "id": "cnnindonesia",
@@ -61,7 +61,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T11:40:22.209Z"
+      "checkedAt": "2026-11-24T12:26:54.758Z"
     },
     {
       "id": "republika",
@@ -71,7 +71,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T11:40:22.703Z"
+      "checkedAt": "2026-11-24T12:26:55.323Z"
     },
     {
       "id": "cnbcindonesia",
@@ -81,7 +81,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T11:40:23.070Z"
+      "checkedAt": "2026-11-24T12:26:55.669Z"
     },
     {
       "id": "kumparan",
@@ -93,10 +93,335 @@
       "errors": [
         "https://kumparan.com/feed: nije feed"
       ],
-      "checkedAt": "2026-11-24T11:40:24.134Z"
+      "checkedAt": "2026-11-24T12:26:56.712Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-11-24-cnbcindonesia-sijitu-ungkap-potensi-kejahatan-di-sektor-03e439",
+      "title": "SIJITU Ungkap Potensi Kejahatan di Sektor Keuangan, Ini Solusinya!",
+      "summary": "Direktur PT Sijitu Regtech Asia, Ricky, menekankan pentingnya teknologi dalam mempercepat proses onboarding jasa keuangan dan meminimalisir risiko human error.",
+      "date": "2026-11-24T12:24:04.000Z",
+      "url": "https://www.cnbcindonesia.com/market/20261124192011-17-788081/sijitu-ungkap-potensi-kejahatan-di-sektor-keuangan-ini-solusinya",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/24/direktur-sijitu-cornelius-ricky-adryanus-s-saat-menyampaikan-pemaparan-dalam-road-to-cnbc-indonesia-awards-2026-best-financial-1795501587354_169.jpeg?w=1200&q=90",
+      "imageAlt": "SIJITU Ungkap Potensi Kejahatan di Sektor Keuangan, Ini Solusinya!",
+      "addedAt": "2026-11-24T12:26:55.670Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-antara-menko-polkam-minta-aph-putus-jaringan-5ff4a1",
+      "title": "Menko Polkam minta APH putus jaringan penipuan daring",
+      "summary": "Menteri Koordinator Bidang Politik dan Keamanan (Menko Polkam) Dudung Abdurachman meminta agar jajaran aparat penegak ...",
+      "date": "2026-11-24T12:23:30.000Z",
+      "url": "https://www.antaranews.com/berita/5875531/menko-polkam-minta-aph-putus-jaringan-penipuan-daring",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/24/1000615814.jpg",
+      "imageAlt": "Menko Polkam minta APH putus jaringan penipuan daring",
+      "addedAt": "2026-11-24T12:26:39.133Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-antara-danantara-yakin-bisa-kejar-produksi-mobil-36e352",
+      "title": "Danantara yakin bisa kejar produksi mobil nasional berbasis listrik",
+      "summary": "Direktur Utama atau CEO PT Danantara Development Management Fund (DDMF) Sigit Puji Santosa yakin bisa memproduksi mobil ...",
+      "date": "2026-11-24T12:23:26.000Z",
+      "url": "https://www.antaranews.com/berita/5875527/danantara-yakin-bisa-kejar-produksi-mobil-nasional-berbasis-listrik",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/24/IMG_20261124_191446.jpg",
+      "imageAlt": "Danantara yakin bisa kejar produksi mobil nasional berbasis listrik",
+      "addedAt": "2026-11-24T12:26:39.133Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-antara-kpk-jadwalkan-ulang-pemanggilan-istri-dan-974015",
+      "title": "KPK jadwalkan ulang pemanggilan istri dan anak mantan Kepala BNPB",
+      "summary": "Komisi Pemberantasan Korupsi (KPK) menjadwalkan ulang pemanggilan terhadap istri dan anak mantan Kepala Badan Nasional ...",
+      "date": "2026-11-24T12:22:44.000Z",
+      "url": "https://www.antaranews.com/berita/5875519/kpk-jadwalkan-ulang-pemanggilan-istri-dan-anak-mantan-kepala-bnpb",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/17/IMG_9931.jpg",
+      "imageAlt": "KPK jadwalkan ulang pemanggilan istri dan anak mantan Kepala BNPB",
+      "addedAt": "2026-11-24T12:26:39.133Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-antara-pakar-nilai-kerja-sama-ri-korsel-percepat-eeba19",
+      "title": "Pakar nilai kerja sama RI-Korsel percepat ekosistem industri baterai",
+      "summary": "Direktur Eksekutif Pusat Studi Hukum Energi dan Pertambangan (PUSHEP) Bisman Bhaktiar menilai kerja sama mineral kritis ...",
+      "date": "2026-11-24T12:22:03.000Z",
+      "url": "https://www.antaranews.com/berita/5875515/pakar-nilai-kerja-sama-ri-korsel-percepat-ekosistem-industri-baterai",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/30/WhatsApp-Image-2026-10-30-at-19.09.19_1.jpeg",
+      "imageAlt": "Pakar nilai kerja sama RI-Korsel percepat ekosistem industri baterai",
+      "addedAt": "2026-11-24T12:26:39.133Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-republika-pemkab-karawang-terima-piagam-apresiasi-c59f66",
+      "title": "Pemkab Karawang Terima Piagam Apresiasi Survei Kesiapan Sistem Merit 2026",
+      "summary": "KARAWANG – Pemerintah Kabupaten Karawang menerima piagam apresiasi atas partisipasi dan kerja sama dalam Survei Kesiapan Sistem Merit Tahun 2026. Penghargaan tersebut diserahkan dalam acara penyampaian hasil survei di...",
+      "date": "2026-11-24T12:21:53.000Z",
+      "url": "https://rejabar.republika.co.id/berita/tp0ach416/pemkab-karawang-terima-piagam-apresiasi-survei-kesiapan-sistem-merit-2026",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "News Rejabar"
+      ],
+      "author": "Satria K Yudha",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/sekda-karawang-asep-aang-rahmatullah-menerima-piagam-apresiasi-survei_261124192122-708.jpeg",
+      "imageAlt": "Pemkab Karawang Terima Piagam Apresiasi Survei Kesiapan Sistem Merit 2026",
+      "addedAt": "2026-11-24T12:26:55.324Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-antara-bbksda-dan-wwf-lepasliarkan-37-satwa-f5ff7e",
+      "title": "BBKSDA dan WWF lepasliarkan 37 satwa endemik Papua di Manokwari",
+      "summary": "Balai Besar Konservasi Sumber Daya Alam (BBKSDA) Papua Barat Daya bersama Yayasan WWF Indonesia melepasliarkan 37 satwa ...",
+      "date": "2026-11-24T12:21:39.000Z",
+      "url": "https://www.antaranews.com/berita/5875511/bbksda-dan-wwf-lepasliarkan-37-satwa-endemik-papua-di-manokwari",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/24/FotoJet-7.jpg",
+      "imageAlt": "BBKSDA dan WWF lepasliarkan 37 satwa endemik Papua di Manokwari",
+      "addedAt": "2026-11-24T12:26:39.133Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-antara-menkomdigi-ajak-belanda-lindungi-anak-dari-9f80cd",
+      "title": "Menkomdigi ajak Belanda lindungi anak dari risiko kecerdasan buatan",
+      "summary": "Pelindungan anak dari risiko kecerdasan buatan (AI) menjadi salah satu agenda yang dibahas Indonesia dan Belanda dalam ...",
+      "date": "2026-11-24T12:21:32.000Z",
+      "url": "https://www.antaranews.com/berita/5875507/menkomdigi-ajak-belanda-lindungi-anak-dari-risiko-kecerdasan-buatan",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/24/1000173114.jpg",
+      "imageAlt": "Menkomdigi ajak Belanda lindungi anak dari risiko kecerdasan buatan",
+      "addedAt": "2026-11-24T12:26:39.134Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnbcindonesia-penipu-catut-nama-djp-lewat-whatsapp-begini-9dd11c",
+      "title": "Penipu Catut Nama DJP Lewat WhatsApp, Begini Cara Mengenalinya",
+      "summary": "DJP Kementerian Keuangan ingatkan masyarakat waspadai pesan WhatsApp palsu terkait tagihan pajak. Pastikan pesan dari nomor resmi terverifikasi 0822-3000-9880.",
+      "date": "2026-11-24T12:20:46.000Z",
+      "url": "https://www.cnbcindonesia.com/tech/20261124180444-37-788072/penipu-catut-nama-djp-lewat-whatsapp-begini-cara-mengenalinya",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://awsimages.detik.net.id/visual/2026/02/03/whatsapp-reutersdado-ruvicillustrationfile-photo-1770118007754_169.jpeg?w=1200&q=90",
+      "imageAlt": "Penipu Catut Nama DJP Lewat WhatsApp, Begini Cara Mengenalinya",
+      "addedAt": "2026-11-24T12:26:55.670Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-republika-indonesia-estonia-jajaki-kerja-sama-250277",
+      "title": "Indonesia-Estonia Jajaki Kerja Sama Teknologi Maritim dan Keamanan Siber",
+      "summary": "JAKARTA -- Indonesia dan Estonia menjajaki peluang penguatan kerja sama di bidang teknologi maritim, transformasi digital, dan keamanan siber. Penjajakan tersebut berlangsung melalui agenda 'Estonia eGov Solutions & Maritime...",
+      "date": "2026-11-24T12:20:26.000Z",
+      "url": "https://ekonomi.republika.co.id/berita/tp0aa2349/indonesiaestonia-jajaki-kerja-sama-teknologi-maritim-dan-keamanan-siber",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Finansial"
+      ],
+      "author": "Ichsan Emrald Alamsyah",
+      "theme": "sigurnost",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/indonesia-dan-estonia-menjajaki-peluang-penguatan-kerja-sama-di_261124192001-295.jpeg",
+      "imageAlt": "Indonesia-Estonia Jajaki Kerja Sama Teknologi Maritim dan Keamanan Siber",
+      "addedAt": "2026-11-24T12:26:55.324Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnnindonesia-update-ranking-bwf-dejan-felisha-melesat-38-242479",
+      "title": "Update Ranking BWF: Dejan/Felisha Melesat 38 Peringkat",
+      "summary": "Ganda campuran Indonesia, Dejan/Felisha, naik pesat di ranking BWF setelah juara Hylo Open 2026.",
+      "date": "2026-11-24T12:20:05.000Z",
+      "url": "https://www.cnnindonesia.com/olahraga/20261124180620-170-1430973/update-ranking-bwf-dejan-felisha-melesat-38-peringkat",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/18/pebulutangkis-ganda-campuran-indonesia-dejan-ferdinansyahfelisha-alberta-nathaniel-pasaribu-sedang-beraksi-di-hong-kong-open-2-1795000642216_169.jpeg?w=360&q=90",
+      "imageAlt": "Update Ranking BWF: Dejan/Felisha Melesat 38 Peringkat",
+      "addedAt": "2026-11-24T12:26:54.758Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnnindonesia-foto-menyusuri-jiayu-pass-sepanjang-jalur-b5531f",
+      "title": "FOTO: Menyusuri Jiayu Pass Sepanjang Jalur Sutra Kuno di China",
+      "summary": "Jiayu Pass, benteng bersejarah di ujung paling barat Tembok Besar China pada masa Dinasti Ming, yang memiliki sistem pertahanan berlapis.",
+      "date": "2026-11-24T12:15:08.000Z",
+      "url": "https://www.cnnindonesia.com/gaya-hidup/20261124133624-272-1430798/foto-menyusuri-jiayu-pass-sepanjang-jalur-sutra-kuno-di-china",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/24/menyusuri-jiayu-pass-di-sepanjang-jalur-sutra-kuno-1795502165837_169.jpeg?w=360&q=90",
+      "imageAlt": "FOTO: Menyusuri Jiayu Pass Sepanjang Jalur Sutra Kuno di China",
+      "addedAt": "2026-11-24T12:26:54.758Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnnindonesia-bagaimana-super-el-nino-menyebabkan-krisis-d3b30e",
+      "title": "Bagaimana Super El Nino Menyebabkan Krisis Energi?",
+      "summary": "Fenomena Super El Nino mengancam ketersediaan energi di Indonesia dan Asia Tenggara, memicu kekeringan, krisis pangan, dan gangguan kelistrikan.",
+      "date": "2026-11-24T12:15:03.000Z",
+      "url": "https://www.cnnindonesia.com/teknologi/20261124105448-641-1430722/bagaimana-super-el-nino-menyebabkan-krisis-energi",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://akcdn.detik.net.id/visual/2020/11/01/pemadaman-listrik-di-bekasi-9_169.jpeg?w=360&q=90",
+      "imageAlt": "Bagaimana Super El Nino Menyebabkan Krisis Energi?",
+      "addedAt": "2026-11-24T12:26:54.759Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnbcindonesia-top-wika-jadi-satu-satunya-bumn-karya-a48f47",
+      "title": "Top! WIKA Jadi Satu-Satunya BUMN Karya Peraih Penghargaan ARA 2025",
+      "summary": "PT Wijaya Karya (WIKA) meraih Juara 2 dalam kategori BUMN Go Publik Non Keuangan Klaster 3 di Annual Report Award 2025.",
+      "date": "2026-11-24T12:13:31.000Z",
+      "url": "https://www.cnbcindonesia.com/market/20261124190834-17-788080/top-wika-jadi-satu-satunya-bumn-karya-peraih-penghargaan-ara-2025",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/24/wika-1795522378456_169.jpeg?w=1200&q=90",
+      "imageAlt": "Top! WIKA Jadi Satu-Satunya BUMN Karya Peraih Penghargaan ARA 2025",
+      "addedAt": "2026-11-24T12:26:55.670Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnnindonesia-foto-atm-beras-gratis-untuk-warga-di-masjid-ec8f62",
+      "title": "FOTO: ATM Beras Gratis untuk Warga di Masjid Pondok Indah Jaksel",
+      "summary": "Pengelola isi ulang mesin dengan seratus liter beras saban Rabu dan Kamis. Pengelola bagi jadwal pengambilan jadi dua kelompok, yakni setiap Selasa dan Jumat.",
+      "date": "2026-11-24T12:13:30.000Z",
+      "url": "https://www.cnnindonesia.com/nasional/20261124153649-22-1430897/foto-atm-beras-gratis-untuk-warga-di-masjid-pondok-indah-jaksel",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/24/atm-beras-gratis-untuk-warga-1795507976480_169.jpeg?w=360&q=90",
+      "imageAlt": "FOTO: ATM Beras Gratis untuk Warga di Masjid Pondok Indah Jaksel",
+      "addedAt": "2026-11-24T12:26:54.759Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnnindonesia-tur-50-tahun-toto-konser-di-jakarta-april-71d3d2",
+      "title": "Tur 50 Tahun, TOTO Konser di Jakarta April 2027",
+      "summary": "Band legendaris TOTO akan menggelar konser di Jakarta pada 2 April 2027 di Beach City International Stadium, Ancol.",
+      "date": "2026-11-24T12:13:10.000Z",
+      "url": "https://www.cnnindonesia.com/hiburan/20261124191050-227-1430998/tur-50-tahun-toto-konser-di-jakarta-april-2027",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/24/band-toto-1795522237580_169.jpeg?w=360&q=90",
+      "imageAlt": "Tur 50 Tahun, TOTO Konser di Jakarta April 2027",
+      "addedAt": "2026-11-24T12:26:54.759Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-republika-viral-penumpang-disabilitas-ditolak-duduk-e51653",
+      "title": "Viral Penumpang Disabilitas Ditolak Duduk di Kursi Prioritas Mikrotrans, Kadishub DKI Minta Maaf",
+      "summary": "JAKARTA -- Kepala Dinas Perhubungan (Dishub) Provinsi DKI Jakarta Budi Awaluddin menyampaikan permohonan maaf yang sebesar-besarnya kepada penumpang disabilitas yang mengalami penolakan duduk di kursi prioritas oleh sopir Mikrotrans...",
+      "date": "2026-11-24T12:12:26.000Z",
+      "url": "https://news.republika.co.id/berita/tp09wq409/viral-penumpang-disabilitas-ditolak-duduk-di-kursi-prioritas-mikrotrans-kadishub-dki-minta-maaf",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional News"
+      ],
+      "author": "Andri Saubani",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/015551100-1709125562-830-556.jpg",
+      "imageAlt": "Viral Penumpang Disabilitas Ditolak Duduk di Kursi Prioritas Mikrotrans, Kadishub DKI Minta Maaf",
+      "addedAt": "2026-11-24T12:26:55.324Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnbcindonesia-video-imigrasi-cegah-2-wni-menjadi-tentara-b04833",
+      "title": "Video: Imigrasi Cegah 2 WNI Menjadi Tentara Bayaran Rusia",
+      "summary": "Imigrasi Cegah 2 WNI Menjadi Tentara Bayaran Rusia",
+      "date": "2026-11-24T12:10:39.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261124163103-8-788024/video-imigrasi-cegah-2-wni-menjadi-tentara-bayaran-rusia",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/24/imigrasi-cegah-2-wni-menjadi-tentara-bayaran-rusia-1795520998780_169.png?w=1200&q=90",
+      "imageAlt": "Video: Imigrasi Cegah 2 WNI Menjadi Tentara Bayaran Rusia",
+      "addedAt": "2026-11-24T12:26:55.670Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnbcindonesia-skk-migas-minta-pt-mga-utama-energi-cari-cf9325",
+      "title": "SKK Migas Minta PT MGA Utama Energi Cari Investor atau Kontrak Diputus",
+      "summary": "SKK Migas meminta PT MGA Utama Energi untuk mencari investor baru yang berminat mengakuisisi 80% sahamnya.",
+      "date": "2026-11-24T12:10:05.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261124175656-4-788069/skk-migas-minta-pt-mga-utama-energi-cari-investor-atau-kontrak-diputus",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/24/kepala-skk-migas-djoko-siswanto-saat-mengikuti-rapat-dengar-pendapat-rdp-dengan-komisi-xii-dpr-ri-di-jakarta-selasa-24112026-1795497747429_169.png?w=1200&q=90",
+      "imageAlt": "SKK Migas Minta PT MGA Utama Energi Cari Investor atau Kontrak Diputus",
+      "addedAt": "2026-11-24T12:26:55.670Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-republika-usung-visi-2038-unm-perkuat-ekosistem-c823e3",
+      "title": "Usung Visi 2038, UNM Perkuat Ekosistem Kampus Digital Bisnis",
+      "summary": "JAKARTA -- Universitas Nusa Mandiri (UNM) sebagai Kampus Digital Bisnis, menegaskan komitmen jangka panjangnya dalam menjawab tantangan transformasi ekonomi dan teknologi melalui visi menjadi perguruan tinggi yang unggul, mandiri,...",
+      "date": "2026-11-24T12:08:00.000Z",
+      "url": "https://news.republika.co.id/berita/tp01js423/usung-visi-2038-unm-perkuat-ekosistem-kampus-digital-bisnis",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Pendidikan"
+      ],
+      "author": "Gita Amanda",
+      "theme": "ekonomija",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261124161131-398.png",
+      "imageAlt": "Usung Visi 2038, UNM Perkuat Ekosistem Kampus Digital Bisnis",
+      "addedAt": "2026-11-24T12:26:55.324Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-republika-panitia-ad-hoc-mpr-tolak-usulan-undang-78d52d",
+      "title": "Panitia Ad Hoc MPR Tolak Usulan Undang Gibran dalam Pembahasan Cawapres",
+      "summary": "JAKARTA — Panitia Ad Hoc MPR menolak usulan untuk mengundang mantan Wakil Presiden Gibran Rakabuming Raka dalam pembahasan mekanisme pengisian jabatan wakil presiden. Penolakan tersebut dilakukan untuk menghindari munculnya...",
+      "date": "2026-11-24T12:07:59.000Z",
+      "url": "https://news.republika.co.id/berita/tp09pb377/panitia-ad-hoc-mpr-tolak-usulan-undang-gibran-dalam-pembahasan-cawapres",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional News"
+      ],
+      "author": "Teguh Firmansyah",
+      "theme": "politika",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/033078900-1688541471-830-556.jpg",
+      "imageAlt": "Panitia Ad Hoc MPR Tolak Usulan Undang Gibran dalam Pembahasan Cawapres",
+      "addedAt": "2026-11-24T12:26:55.324Z"
+    },
     {
       "slug": "jakarta-2026-11-24-republika-petani-mulai-masa-tanam-rendeng-curah-hujan-404606",
       "title": "Petani Mulai Masa Tanam Rendeng, Curah Hujan Tinggi Jadi Ancaman",
