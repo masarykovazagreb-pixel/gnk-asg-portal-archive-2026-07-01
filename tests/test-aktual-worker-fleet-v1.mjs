@@ -83,3 +83,22 @@ test('SEO audit accepts semantically equivalent attributes regardless of their o
  const report=evaluateChannel(channels[0],reordered,{index,robots});
  assert.equal(report.findings.length,0);
 });
+
+test('dated edition dateline counts as a verifiable signal, not proof of live sources',()=>{
+ const freshTime=new Date().toISOString();
+ const page=html.replace('<div data-freshness></div>',
+  '<p class="dateline">Ažurirano <time datetime="'+freshTime+'">recent</time></p>');
+ const scan=evaluateChannel(channels[0],page,{index,robots});
+ assert.ok(!scan.findings.some(x=>x.workerId==='freshness'));
+});
+test('old, future or invalid edition datelines remain flagged',()=>{
+ const age=(ms)=>new Date(Date.now()+ms).toISOString();
+ const page=(value)=>html.replace('<div data-freshness></div>',
+  '<p class="dateline">Updated <time datetime="'+value+'">reported date</time></p>');
+ for(const value of [age(-96*3600_000),age(3600_000),'not-a-date']){
+  const scan=evaluateChannel(channels[0],page(value),{index,robots});
+  assert.ok(scan.findings.some(x=>x.workerId==='freshness'),'must flag '+value);
+ }
+ const missing=html.replace('<div data-freshness></div>','');
+ assert.ok(evaluateChannel(channels[0],missing,{index,robots}).findings.some(x=>x.workerId==='freshness'));
+});
