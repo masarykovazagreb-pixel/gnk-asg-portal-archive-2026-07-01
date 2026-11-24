@@ -65,6 +65,7 @@ for(const name of ['GNK ASG','GNK DINAMO Ltd.','AKTUAL MEDIA','Sports Performanc
 assert.match(load('apps/portal/index.html'),/href="\/poslovna-mreza\/"/);
 assert.match(load('apps/portal/sitemap.xml'),/https:\/\/gnk-asg\.hr\/poslovna-mreza\//);
 assert.match(load('apps/portal/sitemap-index.xml'),/https:\/\/gnk-asg\.hr\/news\/sitemap\.xml/,'HR News sitemap must be registered');
+assert.match(load('apps/portal/sitemap-index.xml'),/https:\/\/gnk-asg\.hr\/en\/gnk-aktual\/media\/sitemap\.xml/,'English media sitemap must be registered');
 assert.match(load('apps/portal/news/index.html'),/data-am-design="v1"/);
 assert.match(load('apps/portal/poslovna-mreza/index.html'),/data-am-design="v1"/);
 assert.doesNotMatch(networkHtml,/\"parentOrganization\"|\"subOrganization\"/);
