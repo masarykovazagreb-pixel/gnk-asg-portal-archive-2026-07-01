@@ -62,8 +62,8 @@ for (const [lang, file] of Object.entries(PAGES)) {
 for (const word of CROATIAN_UI) {
   check(!blocks.en.includes(word), `English static block contains Croatian UI text: ${word}`);
 }
-check(blocks.en.includes('Latest right now'), 'English static block is missing its heading');
-check(blocks.hr.includes('Najnovije u ovom trenutku'), 'Croatian static block is missing its heading');
+check(blocks.en.includes('Headlines from the last saved snapshot') && blocks.en.includes('may be outdated'), 'English snapshot must not claim live freshness');
+check(blocks.hr.includes('Naslovi iz posljednje spremljene snimke') && blocks.hr.includes('može biti zastarjela'), 'Croatian snapshot must not claim live freshness');
 
 /* ---------- ulaz u asistenta s kontekstom stranice ---------- */
 

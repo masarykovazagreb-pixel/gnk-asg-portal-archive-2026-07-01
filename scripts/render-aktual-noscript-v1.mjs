@@ -95,8 +95,8 @@ ${CSS_END}`;
 const COPY = {
   hr: {
     kicker: 'AKTUAL MEDIA',
-    heading: 'Najnovije u ovom trenutku',
-    note: 'Statična verzija feeda za čitatelje bez JavaScripta — isti izvori i iste poveznice kao u interaktivnoj verziji.',
+    heading: 'Naslovi iz posljednje spremljene snimke',
+    note: 'Statična snimka feeda; može biti zastarjela. Za vrijeme i sadržaj provjerite izvor.',
     moreLabel: 'Više iz AKTUAL MEDIA',
     askLabel: 'Pitaj asistenta o AKTUAL MEDIA',
     askHint: 'Odgovor dolazi iz baze znanja portala, s poveznicom na izvor.',
@@ -111,8 +111,8 @@ const COPY = {
   },
   en: {
     kicker: 'AKTUAL MEDIA',
-    heading: 'Latest right now',
-    note: 'Static version of the feed for readers without JavaScript — the same sources and the same links as the interactive view.',
+    heading: 'Headlines from the last saved snapshot',
+    note: 'This static feed snapshot may be outdated. Check the source for the date and content.',
     moreLabel: 'More from AKTUAL MEDIA',
     askLabel: 'Ask the assistant about AKTUAL MEDIA',
     askHint: 'The answer comes from the portal knowledge base, with a link to the source.',
@@ -195,9 +195,8 @@ export function renderPage(page, news, lang) {
   // Redoslijed: ulaz u asistenta (vidi se uvijek), pa statični feed
   // (vidi se bez JavaScripta), pa interaktivni lead.
   let next = upsert(page, renderNoscript(news, lang), MARK_START, MARK_END, '<section class="am-breaking"');
-  // Stari blok se uklanja prije umetanja, da mjesto bude stalno isto
-  // neovisno o tome gdje je bio u prethodnoj verziji stranice.
-  next = next.replace(new RegExp(`${ASK_START.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[\\s\\S]*?${ASK_END.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\n?`), '');
+  // Zamijeni postojeći blok na mjestu: uklanjanje i ponovno umetanje je pri
+  // svakom ciklusu ostavljalo dodatni novi red i rušilo idempotentnost.
   next = upsert(next, renderAskAgent(lang), ASK_START, ASK_END, MARK_START);
   next = upsert(next, CSS, CSS_START, CSS_END, '</head>');
   return next;
