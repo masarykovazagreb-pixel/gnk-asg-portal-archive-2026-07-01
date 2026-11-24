@@ -66,38 +66,45 @@ test('Approved path rejects traversal, unapproved submissions and symlinks',()=>
  }finally{fs.rmSync(root,{recursive:true,force:true});}
 });
 
-test('Fast lane is narrowly enabled; other portal publication remains disabled',()=>{
+test('Fast lane delegates main mutations to the existing canonical content queue writer',()=>{
  const policy=JSON.parse(fs.readFileSync('ops/automation-kill-switches.json','utf8'));
  assert.equal(policy.channels?.hrNewsFastlanePublish?.enabled,true);
  assert.equal(policy.channels?.portalPublish?.enabled,false);
  const auto=fs.readFileSync('.github/workflows/hr-news-approved-autoqueue-v1.yml','utf8');
- const release=fs.readFileSync('.github/workflows/hr-news-10m-approved-fastlane-v1.yml','utf8');
+ const intake=fs.readFileSync('.github/workflows/hr-news-10m-approved-fastlane-v1.yml','utf8');
+ const writer=fs.readFileSync('.github/workflows/content-queue-publish.yml','utf8');
+ const fullGate=fs.readFileSync('.github/workflows/all-gates-v1.yml','utf8');
+ const readiness=fs.readFileSync('.github/workflows/site-functional-readiness.yml','utf8');
  assert.match(auto,/push:\s*\n\s*branches: \[main\]/);
  assert.match(auto,/content\/hr-news\/approved\/\*\.json/);
  assert.doesNotMatch(auto,/^\s+schedule:\s*$/m);
  assert.match(auto,/--diff-filter=A/);
  assert.match(auto,/hr-news-fastlane-batch-v1\.mjs/);
- assert.match(release,/channels\?\.hrNewsFastlanePublish\?\.enabled/);
- assert.match(release,/gh workflow run all-gates-v1\.yml/);
- assert.match(release,/gh workflow run site-functional-readiness\.yml/);
- assert.match(release,/for workflow in all-gates-v1\.yml site-functional-readiness\.yml/);
- const fullGate=fs.readFileSync('.github/workflows/all-gates-v1.yml','utf8');
- const readiness=fs.readFileSync('.github/workflows/site-functional-readiness.yml','utf8');
+ assert.match(intake,/gh workflow run content-queue-publish\.yml/);
+ assert.match(intake,/channels\?\.hrNewsFastlanePublish\?\.enabled/);
+ assert.doesNotMatch(intake,/git\s+push[^\n]*HEAD:main/);
+ assert.doesNotMatch(intake,/contents:\s*write/);
+ assert.match(writer,/publish-reviewed-hr-news:/);
+ assert.match(writer,/gh workflow run all-gates-v1\.yml/);
+ assert.match(writer,/gh workflow run site-functional-readiness\.yml/);
+ assert.match(writer,/for workflow in all-gates-v1\.yml site-functional-readiness\.yml/);
+ assert.match(writer,/hr-news-fastlane-batch-v1\.mjs/);
+ assert.match(writer,/approved_sha="\$SHA"/);
  assert.match(fullGate,/workflow_dispatch:/);
  assert.match(readiness,/workflow_dispatch:/);
- assert.match(release,/approved_sha="\$SHA"/);
- assert.doesNotMatch(release,/vercel|--force\b/i);
+ assert.doesNotMatch(intake+writer,/vercel|--force\b/i);
 });
 
-test('Verifier is a separate job so protected deploy cannot deadlock in the main writer queue',()=>{
- const wf=fs.readFileSync('.github/workflows/hr-news-10m-approved-fastlane-v1.yml','utf8');
- assert.match(wf,/prepare-and-dispatch:\s*\n\s*concurrency:\s*\n\s*group: gnk-asg-main-mutation/);
- assert.doesNotMatch(wf,/^concurrency:\s*$/m);
- assert.match(wf,/\n  verify-public-article:\n/);
- assert.match(wf,/needs: prepare-and-dispatch/);
- assert.match(wf,/x-gnk-deploy-revision: \$SHA/);
- assert.match(wf,/VERIFIED_LIVE/);
- assert.match(wf,/tenMinuteGoalAchieved/);
+test('Independent exact-SHA verification is read-only, outside main mutation concurrency',()=>{
+ const intake=fs.readFileSync('.github/workflows/hr-news-10m-approved-fastlane-v1.yml','utf8');
+ const canonical=fs.readFileSync('.github/workflows/content-queue-publish.yml','utf8');
+ assert.match(canonical,/^concurrency:\s*\n\s*group: gnk-asg-main-mutation/m);
+ assert.match(intake,/\n  verify-public-article:\n/);
+ assert.doesNotMatch(intake,/^concurrency:\s*$/m);
+ assert.match(canonical,/verify_approved_sha="\$SHA"/);
+ assert.match(intake,/x-gnk-deploy-revision: \$SHA/);
+ assert.match(intake,/VERIFIED_LIVE/);
+ assert.match(intake,/tenMinuteGoalAchieved/);
 });
 
 test('Approve 1–20 articles as one atomic batch; reject duplicates and missing signoff',()=>{
