@@ -81,6 +81,10 @@ test('Fast lane delegates main mutations to the existing canonical content queue
  assert.match(auto,/--diff-filter=A/);
  assert.match(auto,/hr-news-fastlane-batch-v1\.mjs/);
  assert.match(intake,/gh workflow run content-queue-publish\.yml/);
+ assert.match(auto,/\-f notify_search_engines=true/,'Autoqueue uses an accepted notification input');
+ assert.match(intake,/notify_search_engines:\s*\n\s*description:/,'Intake must declare the autoqueue notification input');
+ assert.match(intake,/NOTIFY: \$\{\{ inputs\.notify_search_engines \}\}/,'Intake forwards the requested notification policy');
+ assert.match(intake,/\-f notify_search_engines="\$NOTIFY"/,'Canonical publisher receives notification policy');
  assert.match(intake,/channels\?\.hrNewsFastlanePublish\?\.enabled/);
  assert.doesNotMatch(intake,/git\s+push[^\n]*HEAD:main/);
  assert.doesNotMatch(intake,/contents:\s*write/);
