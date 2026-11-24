@@ -14,8 +14,8 @@ const valid=items.filter(x=>{
  return fs.existsSync(path.join(root,'news/clanci',x.slug,'index.html'));
 });
 const rows=['https://gnk-asg.hr/news/',...valid.map(x=>x.url)].map(url=>{
- const date=valid.find(x=>x.url===url)?.publishedAt||'2026-11-23';
- return '  <url><loc>'+esc(url)+'</loc><lastmod>'+new Date(date).toISOString().slice(0,10)+'</lastmod></url>';
+ const date=valid.find(x=>x.url===url)?.publishedAt;
+ return '  <url><loc>'+esc(url)+'</loc>'+(date?'<lastmod>'+new Date(date).toISOString().slice(0,10)+'</lastmod>':'')+'</url>';
 });
 const xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+rows.join('\n')+'\n</urlset>\n';
 const out=path.join(root,'news/sitemap.xml');fs.mkdirSync(path.dirname(out),{recursive:true});fs.writeFileSync(out,xml);

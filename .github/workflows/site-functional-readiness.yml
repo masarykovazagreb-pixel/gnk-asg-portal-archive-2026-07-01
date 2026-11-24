@@ -1,6 +1,8 @@
 name: Site Functional Readiness
 
 on:
+  # Read-only explicit SHA validation for GITHUB_TOKEN-authored reviewed article commits.
+  workflow_dispatch:
   push:
     branches:
       - main

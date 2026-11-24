@@ -1,0 +1,178 @@
+name: HR NEWS — on-demand approval intake and independent live verification
+# This workflow is READ-ONLY for repository content. All writes occur in the EXISTING registered content-queue publisher.
+on:
+  workflow_dispatch:
+    inputs:
+      article_path:
+        description: '1–20 already-approved original HR News JSON files, comma-separated'
+        required: false
+        type: string
+      confirm_publication:
+        description: 'Type PUBLISH_APPROVED_HR_NEWS for verified editorial content'
+        required: false
+        type: string
+      notify_search_engines:
+        description: 'Notify search engines only after protected release validation'
+        required: false
+        type: boolean
+        default: true
+      verify_approved_sha:
+        description: 'Verifier only: exact main SHA released by the canonical writer'
+        required: false
+        type: string
+      verify_slugs:
+        description: 'Verifier only: comma-separated original slugs'
+        required: false
+        type: string
+      verify_approved_at:
+        description: 'Verifier only: first approved-at timestamp'
+        required: false
+        type: string
+      verify_dispatched_at:
+        description: 'Verifier only: release dispatch UTC timestamp'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  dispatch-canonical-publisher:
+    if: github.ref == 'refs/heads/main' && inputs.confirm_publication == 'PUBLISH_APPROVED_HR_NEWS' && inputs.article_path != '' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check the narrow HR News publishing authorization and reviewed batch
+        env:
+          ARTICLE_PATH: ${{ inputs.article_path }}
+        run: |
+          set -euo pipefail
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const policy=JSON.parse(fs.readFileSync('ops/automation-kill-switches.json','utf8'));
+          if(policy.releaseFence?.enabled!==false)throw Error('Release fence is active');
+          if(policy.channels?.hrNewsFastlanePublish?.enabled!==true)throw Error('HR News fast-lane disabled');
+          if(policy.releaseRules?.requireGreenPremiumContract!==true)throw Error('Quality gate disabled');
+          NODE
+          node scripts/hr-news-fastlane-batch-v1.mjs "$ARTICLE_PATH"
+      - name: Enqueue registered canonical content publisher (not a new main writer)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTICLE_PATH: ${{ inputs.article_path }}
+          NOTIFY: ${{ inputs.notify_search_engines }}
+        run: |
+          set -euo pipefail
+          gh workflow run content-queue-publish.yml \
+            --repo "$GITHUB_REPOSITORY" --ref main \
+            -f approved_hr_news_batch="$ARTICLE_PATH" \
+            -f confirm_approved_hr_news=PUBLISH_APPROVED_HR_NEWS \
+            -f notify_search_engines="$NOTIFY"
+          echo 'Queued the existing single writer; public LIVE not yet verified.'
+
+  verify-public-article:
+    name: Independently verify live article on exact Cloudflare release SHA
+    if: github.ref == 'refs/heads/main' && inputs.verify_approved_sha != '' && inputs.verify_slugs != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 17
+    permissions:
+      contents: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SHA: ${{ inputs.verify_approved_sha }}
+      SLUGS: ${{ inputs.verify_slugs }}
+      APPROVED_AT: ${{ inputs.verify_approved_at }}
+      DISPATCHED_AT: ${{ inputs.verify_dispatched_at }}
+    steps:
+      - name: Require successful protected production deploy for exactly the approved SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$SLUGS" =~ ^[a-z0-9,-]+$ ]]
+          test -n "$DISPATCHED_AT"
+          deadline=$(( $(date +%s) + 840 ))
+          run_id=''
+          deploy_verified=false
+          while [ "$(date +%s)" -lt "$deadline" ]; do
+            runs="$(gh run list --repo "$GITHUB_REPOSITORY" \
+              --workflow deploy-admin-auth-v6.yml --limit 50 \
+              --json databaseId,headSha,createdAt,event,status,conclusion)"
+            run_id="$(printf '%s' "$runs" | jq -r \
+              --arg sha "$SHA" --arg cutoff "$DISPATCHED_AT" \
+              '[.[] | select(.headSha==$sha and .event=="workflow_dispatch" and .createdAt>=$cutoff)] | sort_by(.createdAt) | last | .databaseId // empty')"
+            if [ -n "$run_id" ]; then
+              state="$(printf '%s' "$runs" | jq -r --argjson id "$run_id" \
+                '[.[] | select(.databaseId==$id)] | first | .status // "missing"')"
+              conclusion="$(printf '%s' "$runs" | jq -r --argjson id "$run_id" \
+                '[.[] | select(.databaseId==$id)] | first | .conclusion // "missing"')"
+              if [ "$state" = 'completed' ]; then
+                if [ "$conclusion" = 'success' ]; then
+                  echo "Protected deployment run $run_id succeeded for $SHA."
+                  deploy_verified=true
+                  break
+                fi
+                echo "::error::Protected deployment $run_id completed as $conclusion; NOT LIVE"
+                exit 1
+              fi
+            fi
+            sleep 15
+          done
+          if [ "$deploy_verified" != true ]; then
+            echo '::error::No timely successful protected deployment; NOT LIVE'
+            exit 1
+          fi
+      - name: Verify independent public HTTP, canonical article and exact production SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          headers="$(mktemp)"
+          body="$(mktemp)"
+          trap 'rm -f "$headers" "$body"' EXIT
+          IFS=',' read -r -a slugs <<< "$SLUGS"
+          for slug in "${slugs[@]}"; do
+            page="https://gnk-asg.hr/news/clanci/$slug/"
+            deadline=$(( $(date +%s) + 100 ))
+            verified=false
+            while [ "$(date +%s)" -lt "$deadline" ]; do
+              code="$(curl --silent --show-error --max-time 15 --max-redirs 0 \
+                --dump-header "$headers" --output "$body" --write-out '%{http_code}' \
+                "$page?exact-sha=$SHA" || true)"
+              if [ "$code" = '200' ] &&
+                 grep -Fiq "x-gnk-deploy-revision: $SHA" "$headers" &&
+                 grep -Fq "<link rel=\"canonical\" href=\"$page\">" "$body" &&
+                 grep -Fq '<script type="application/ld+json">' "$body"; then
+                verified=true
+                break
+              fi
+              sleep 8
+            done
+            if [ "$verified" != true ]; then
+              echo "::error::Missing HTTP 200, canonical metadata or exact production SHA for $slug; NOT LIVE"
+              exit 1
+            fi
+            echo "Verified public original: $page at $SHA"
+          done
+          export VERIFIED_AT="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          node --input-type=module - <<'NODE'
+          const from=Date.parse(process.env.APPROVED_AT);
+          const at=Date.parse(process.env.VERIFIED_AT);
+          const elapsed=Number.isFinite(from)&&Number.isFinite(at)?Math.max(0,Math.round((at-from)/1000)):null;
+          console.log(JSON.stringify({verdict:'VERIFIED_LIVE',articles:process.env.SLUGS.split(',').map(x=>'https://gnk-asg.hr/news/clanci/'+x+'/'),sha:process.env.SHA,verifiedAt:process.env.VERIFIED_AT,secondsAfterEarliestApproval:elapsed,tenMinuteGoalAchievedForWholeBatch:elapsed!==null&&elapsed<=600}));
+          NODE
+          {
+            echo '## Verified original HR NEWS article'
+            echo "**Verified article slugs:** $SLUGS"
+            echo "**Production SHA:** $SHA"
+            echo '**Proof:** HTTP 200 + canonical article metadata + exact release header'
+            echo "**Verified UTC:** $VERIFIED_AT"
+          } >> "$GITHUB_STEP_SUMMARY"

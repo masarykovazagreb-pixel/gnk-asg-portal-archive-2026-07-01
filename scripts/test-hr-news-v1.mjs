@@ -54,7 +54,10 @@ try {
  const generated=JSON.parse(load(path.join(tmp,'out/data/hr-news-original-v1.json')));
  assert.match(html,/NewsArticle/);assert.match(html,/Provjerljivi izvori/);
  assert.ok(html.includes('data-am-design="v1"'),'Approved articles must include shared design tokens');
+ assert.match(html,/data-am-impressum="v1"/,'Original article must have real publisher contact');
+ assert.match(html,/am-refresh-v1\.js\?v=\d{4}-\d{2}-\d{2}" data-am-netday="\d{4}-\d{2}-\d{2}"/,'Original article must load canonical data-day refresh layer');
  assert.ok(html.includes('"@type":"WebSite"'),'Approved articles must include canonical WebSite JSON-LD');
+ assert.equal((html.match(/"@type":"WebSite"/g)||[]).length,1,'Original article must have exactly one WebSite JSON-LD');
  assert.match(svg,/<svg/);assert.match(svg,/Izvorna konceptualna ilustracija/);
  assert.equal(generated.items.length,1);
  sample.approvedForPublication=false;fs.writeFileSync(fixture,JSON.stringify(sample));
@@ -69,6 +72,7 @@ for(const name of ['GNK ASG','GNK DINAMO Ltd.','AKTUAL MEDIA','Sports Performanc
 assert.match(load('apps/portal/index.html'),/href="\/poslovna-mreza\/"/);
 assert.match(load('apps/portal/sitemap.xml'),/https:\/\/gnk-asg\.hr\/poslovna-mreza\//);
 assert.match(load('apps/portal/sitemap-index.xml'),/https:\/\/gnk-asg\.hr\/news\/sitemap\.xml/);
+assert.match(load('apps/portal/sitemap-index.xml'),/https:\/\/gnk-asg\.hr\/en\/gnk-aktual\/media\/sitemap\.xml/,'English media sitemap must be indexed');
 assert.match(load('apps/portal/news/index.html'),/data-am-design="v1"/);
 assert.match(load('apps/portal/poslovna-mreza/index.html'),/data-am-design="v1"/);
 for(const page of ['apps/portal/news/index.html','apps/portal/poslovna-mreza/index.html']){
