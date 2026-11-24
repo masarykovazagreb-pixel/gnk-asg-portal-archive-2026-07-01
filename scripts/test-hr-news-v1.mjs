@@ -50,6 +50,7 @@ try {
  const svg=load(path.join(tmp,'out/assets/editorial/hr-news/'+sample.slug+'.svg'));
  const generated=JSON.parse(load(path.join(tmp,'out/data/hr-news-original-v1.json')));
  assert.match(html,/NewsArticle/);assert.match(html,/Provjerljivi izvori/);
+ assert.match(html,/data-am-design="v1"/,'Every published article must load shared design tokens');
  assert.match(svg,/<svg/);assert.match(svg,/Izvorna konceptualna ilustracija/);
  assert.equal(generated.items.length,1);
  sample.approvedForPublication=false;fs.writeFileSync(fixture,JSON.stringify(sample));
@@ -63,6 +64,9 @@ const networkHtml=load('apps/portal/poslovna-mreza/index.html');
 for(const name of ['GNK ASG','GNK DINAMO Ltd.','AKTUAL MEDIA','Sports Performance Tracking','Omega Holding Beograd','Organa','Geotehnika Eko','Nermin Sefić']) assert.ok(networkHtml.includes(name),'Missing entity '+name);
 assert.match(load('apps/portal/index.html'),/href="\/poslovna-mreza\/"/);
 assert.match(load('apps/portal/sitemap.xml'),/https:\/\/gnk-asg\.hr\/poslovna-mreza\//);
+assert.match(load('apps/portal/sitemap-index.xml'),/https:\/\/gnk-asg\.hr\/news\/sitemap\.xml/,'HR News sitemap must be registered');
+assert.match(load('apps/portal/news/index.html'),/data-am-design="v1"/);
+assert.match(load('apps/portal/poslovna-mreza/index.html'),/data-am-design="v1"/);
 assert.doesNotMatch(networkHtml,/\"parentOrganization\"|\"subOrganization\"/);
 const tags=JSON.parse(load('apps/portal/data/corporate-seo-taxonomy-v1.json'));
 assert.equal(tags.topicHashtags.length,20);
