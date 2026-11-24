@@ -4,17 +4,23 @@
   "lang": "hu",
   "city": "Budimpešta",
   "country": "Mađarska",
-  "updatedAt": "2026-11-24T12:24:42.124Z",
+  "updatedAt": "2026-11-24T23:17:44.801Z",
   "sources": [
     {
       "id": "telex",
       "name": "Telex",
       "url": "https://telex.hu/rss",
-      "ok": true,
-      "fetched": 50,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-24T12:24:37.368Z"
+      "errors": [
+        "https://telex.hu/rss: HTTP 403",
+        "https://telex.hu/rss/belfold: HTTP 403",
+        "https://telex.hu/rss/kulfold: HTTP 403",
+        "https://telex.hu/rss/gazdasag: HTTP 403",
+        "https://telex.hu/rss/sport: HTTP 403"
+      ],
+      "checkedAt": "2026-11-24T23:17:40.940Z"
     },
     {
       "id": "444",
@@ -24,7 +30,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T12:24:37.607Z"
+      "checkedAt": "2026-11-24T23:17:40.993Z"
     },
     {
       "id": "hvg",
@@ -34,7 +40,7 @@
       "fetched": 60,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T12:24:37.824Z"
+      "checkedAt": "2026-11-24T23:17:41.268Z"
     },
     {
       "id": "portfolio",
@@ -44,7 +50,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T12:24:38.697Z"
+      "checkedAt": "2026-11-24T23:17:42.021Z"
     },
     {
       "id": "index",
@@ -56,7 +62,7 @@
       "errors": [
         "https://index.hu/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-24T12:24:40.859Z"
+      "checkedAt": "2026-11-24T23:17:43.912Z"
     },
     {
       "id": "24hu",
@@ -66,7 +72,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T12:24:41.064Z"
+      "checkedAt": "2026-11-24T23:17:43.966Z"
     },
     {
       "id": "mandiner",
@@ -76,10 +82,417 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T12:24:42.123Z"
+      "checkedAt": "2026-11-24T23:17:44.800Z"
     }
   ],
   "items": [
+    {
+      "slug": "budimpesta-2026-11-24-portfolio-fontos-valtozas-jon-a-nevadasban-f4879b",
+      "title": "Fontos változás jön a névadásban Magyarországon: kikerül a politikusok kezéből a döntés",
+      "summary": "Törvénymódosító indítvány került az Országgyűlés elé, amelynek értelmében a jövőben újra szakmai szervezetek, és nem politikusok döntenének az anyakönyvezhető magyar utónevekről – közölte Facebook-bejegyzésében Lőrincz Viktória, a Tisza vidék- és településfejlesztési minisztere.",
+      "date": "2026-11-24T22:00:00.000Z",
+      "url": "https://www.portfolio.hu/gazdasag/20261124/fontos-valtozas-jon-a-nevadasban-magyarorszagon-kikerul-a-politikusok-kezebol-a-dontes-878882",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Gazdaság"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/l/o/r/lorincz-viktoria-miniszter-872418.jpg",
+      "imageAlt": "Fontos változás jön a névadásban Magyarországon: kikerül a politikusok kezéből a döntés",
+      "addedAt": "2026-11-24T23:17:42.021Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-24hu-bl-bellingham-dekazas-utan-szerzett-7d10a7",
+      "title": "BL: Bellingham dekázás után szerzett varázslatos gólt, otthon botlott az Arsenal",
+      "summary": "Vitális Milán, Varga Barnabás és Willi Orbán is pályára lépett kedden a Bajnokok Ligájában. The post BL: Bellingham dekázás után szerzett varázslatos gólt, otthon botlott az Arsenal first appeared on 24.hu .",
+      "date": "2026-11-24T21:55:55.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/24/bajnokok-ligaja-real-madrid-manchester-city-arsenal-jude-bellingham/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "labdarúgás",
+        "bajnokok ligája",
+        "arsenal"
+      ],
+      "author": "Futó Csaba",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/jude-bellingham-gettyimages-2306717449-1024x576.jpg",
+      "imageAlt": "BL: Bellingham dekázás után szerzett varázslatos gólt, otthon botlott az Arsenal",
+      "addedAt": "2026-11-24T23:17:43.966Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-hvg-az-ungvaron-bejelentett-zrinyi-ilona-dc0ebd",
+      "title": "Az Ungváron bejelentett Zrínyi Ilona program finanszírozásának részletei már meg is jelentek a Közlönyben",
+      "summary": "A kormány 2026-ban kétmilliárd forintot irányított át a kárpátaljai magyarokat támogató programba.",
+      "date": "2026-11-24T21:08:14.000Z",
+      "url": "https://hvg.hu/gazdasag/20261124_magyar-kozlony-zrinyi-ilona-program-finanszirozas-magyar-kozlony",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Gazdaság",
+        "határon túl",
+        "Kárpátalja",
+        "fejlesztési program"
+      ],
+      "author": "szerzo@hvg.hu (Domány András)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/b45643a9-d3f5-4d95-940d-1dcbbc834dd8.jpg",
+      "imageAlt": "Az Ungváron bejelentett Zrínyi Ilona program finanszírozásának részletei már meg is jelentek a Közlönyben",
+      "addedAt": "2026-11-24T23:17:41.268Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-portfolio-megint-elromlott-a-hangulat-ujra-estek-a-f18c96",
+      "title": "Megint elromlott a hangulat, újra estek a tőzsdék",
+      "summary": "Jensen Huang visszatérésének hírére tegnap közel 7 százalékkal emelkedett a Nasaq, és közel 32 százalékkal az Nvidia. A technológiai papírokat tömörítő index tavaly április óta nem zárt ilyen erős napot. Ezt követően ma reggel Ázsiában felemás, de többnyire pozitív kereskedést láthattunk, Európában viszont esés következett a nyitást követően, és a magyar tőzsdén is elfogyott a lendület. Az USA szintén esik, részben az amerikai kormány újabb vámterveivel kapcsolatos értesülések miatt.",
+      "date": "2026-11-24T21:00:00.000Z",
+      "url": "https://www.portfolio.hu/uzlet/20261124/megint-elromlott-a-hangulat-ujra-estek-a-tozsdek-878616",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Üzlet"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://pcdn.hu/articles/images-xl/m/o/r/morgan-stanley-sp-500-amerikai-reszvenypiac-reszvenypiac-elorejelzes-mesterseges-intelligenc-869922.jpg",
+      "imageAlt": "Megint elromlott a hangulat, újra estek a tőzsdék",
+      "addedAt": "2026-11-24T23:17:42.021Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-portfolio-felhokarcolora-csaptak-le-a-lazadok-az-d90653",
+      "title": "Felhőkarcolóra csaptak le a lázadók az olajnagyhatalom üzleti negyedében: közel tucatnyian megsérültek",
+      "summary": "Az Irán-barát jemeni húszi lázadók követhették el kedden azt a támadást, amelyben találat érte a szaúdi főváros üzleti negyedében található legmagasabb toronyházat, 11 ember sebesülését okozva - közölte a szaúd-arábiai polgári védelem és az állami SPA hírügynökség.",
+      "date": "2026-11-24T20:55:00.000Z",
+      "url": "https://www.portfolio.hu/global/20261124/felhokarcolora-csaptak-le-a-lazadok-az-olajnagyhatalom-uzleti-negyedeben-kozel-tucatnyian-megserultek-878878",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Globál"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://pcdn.hu/articles/images-xl/s/i/i/siita-huszi-lazadok-tuntetnek-jemenben-834340.jpg",
+      "imageAlt": "Felhőkarcolóra csaptak le a lázadók az olajnagyhatalom üzleti negyedében: közel tucatnyian megsérültek",
+      "addedAt": "2026-11-24T23:17:42.022Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-hvg-rijad-legmagasabb-felhokarcolojat-tamadtak-7abe23",
+      "title": "Rijád legmagasabb felhőkarcolóját támadták a húszik, 11-en megsebesültek",
+      "summary": "A terroristák pár napon belül másodjára vették célpontba a PIF-tornyot, ami a szaúdi vagyonkezelői alap központja.",
+      "date": "2026-11-24T20:52:38.000Z",
+      "url": "https://hvg.hu/vilag/20261124_rijad-tamadas-legmagasabb-felhokarcolo-szaud-arabia-huszik-terroristak-terrortamadas",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "háború",
+        "Szaúd-Arábia",
+        "húszik"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/fc5fadde-3354-4c8c-9510-77eced06bcaa.jpg",
+      "imageAlt": "Rijád legmagasabb felhőkarcolóját támadták a húszik, 11-en megsebesültek",
+      "addedAt": "2026-11-24T23:17:41.268Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-444-zelenszkij-a-444-kerdesere-a-magyar-a4cdd5",
+      "title": "Zelenszkij a 444 kérdésére: A magyar miniszterelnök helyében meghívnám magamat Budapestre",
+      "summary": "Magyar meg is hívta az ukrán elnököt ott rögtön.",
+      "date": "2026-11-24T20:51:55.000Z",
+      "url": "https://444.hu/2026/11/24/zelenszkij-a-444-kerdesere-a-magyar-miniszterelnok-helyeben-meghivnam-magamat-budapestre?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Volodimir Zelenszkij",
+        "magyar péter",
+        "Kárpáti Nyolcak",
+        "magyar-ukrán kapcsolat"
+      ],
+      "author": "Haszán Zoltán",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8Q6P7Z1LR8mqLIBts.jpeg",
+      "imageAlt": "Zelenszkij a 444 kérdésére: A magyar miniszterelnök helyében meghívnám magamat Budapestre",
+      "addedAt": "2026-11-24T23:17:40.993Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-portfolio-bemondtak-a-wall-streeten-jon-a-a41ece",
+      "title": "Bemondták a Wall Streeten: jön a szuperciklus, eddig mehet az S&P 500!",
+      "summary": "A J.P. Morgan szerint az S&P 500 amerikai részvényindex 2027 végére elérheti a 8200 pontot, ami mintegy 14 százalékos emelkedést jelentene a mostani szinthez képest. A nagybank elemzői úgy látják, hogy a mesterséges intelligenciához kapcsolódó beruházások olyan szuperciklust indíthatnak, amely a történelmi átlagot meghaladó vállalati profitnövekedést hozhat.",
+      "date": "2026-11-24T20:50:00.000Z",
+      "url": "https://www.portfolio.hu/befektetes/20261124/bemondtak-a-wall-streeten-jon-a-szuperciklus-eddig-mehet-az-sp-500-878876",
+      "source": "portfolio",
+      "sourceName": "Portfolio",
+      "categories": [
+        "Befektetés"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://pcdn.hu/articles/images-xl/w/a/l/wall-street-nyse-472690.jpg",
+      "imageAlt": "Bemondták a Wall Streeten: jön a szuperciklus, eddig mehet az S&P 500!",
+      "addedAt": "2026-11-24T23:17:42.022Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-24hu-megnyilhat-a-magyar-piac-az-ukran-kukorica-cbccd5",
+      "title": "Megnyílhat a magyar piac az ukrán kukorica előtt",
+      "summary": "A magyar miniszterelnök és az ukrán elnök beregszászi közös sajtótájékoztatóján számolt be a lehetséges együttműködésről, amely a hazai kukoricahiányt enyhítené. The post Megnyílhat a magyar piac az ukrán kukorica előtt first appeared on 24.hu .",
+      "date": "2026-11-24T20:47:41.000Z",
+      "url": "https://24.hu/fn/gazdasag/2026/11/24/magyar-peter-volodimir-zelenskij-kukorica-import/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Gazdaság",
+        "ukrajna",
+        "magyarország",
+        "volodimir zelenszkij"
+      ],
+      "author": "Ambrus Zsombor",
+      "theme": "politika",
+      "image": "https://s.24.hu/app/uploads/2026/11/068_aa_26042023_1169513-1-e1795553198612-1024x577.jpg",
+      "imageAlt": "Megnyílhat a magyar piac az ukrán kukorica előtt",
+      "addedAt": "2026-11-24T23:17:43.966Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-hvg-kiesett-egy-utas-az-intercitybol-40f678",
+      "title": "Kiesett egy utas az InterCityből, Mezőkövesdnél leállt a vonatközlekedés",
+      "summary": "A MÁV tisztázatlan körülményekről írt.",
+      "date": "2026-11-24T20:43:01.000Z",
+      "url": "https://hvg.hu/itthon/20261124_intercity-baleset-mezokovesd-mav",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "közlekedés",
+        "intercity",
+        "baleset"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/3120c5fa-6edc-4793-91d4-2a1951ab131f.jpg",
+      "imageAlt": "Kiesett egy utas az InterCityből, Mezőkövesdnél leállt a vonatközlekedés",
+      "addedAt": "2026-11-24T23:17:41.269Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-24hu-tragedia-halalos-baleset-tortent-pest-093531",
+      "title": "Tragédia: halálos baleset történt Pest megyében",
+      "summary": "Három autó rohant egymásba a 405-ös főúton. The post Tragédia: halálos baleset történt Pest megyében first appeared on 24.hu .",
+      "date": "2026-11-24T20:29:47.000Z",
+      "url": "https://24.hu/kozelet/2026/11/24/tragedia-halalos-baleset-auto/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Közélet",
+        "baleset",
+        "autó",
+        "pest megye"
+      ],
+      "author": "24.hu",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/auto.jpg",
+      "imageAlt": "Tragédia: halálos baleset történt Pest megyében",
+      "addedAt": "2026-11-24T23:17:43.966Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-444-tuszdrama-kolumbiaban-egy-felresikerult-8ef036",
+      "title": "Túszdráma Kolumbiában: egy félresikerült rablás után harminc embert ejtettek túszul egy áruházban",
+      "summary": "A fegyveresek kétmillió dollárt és szabad elvonulást követelnek, terrorelhárítók vették körbe az épületet.",
+      "date": "2026-11-24T20:29:37.000Z",
+      "url": "https://444.hu/2026/11/24/tuszdrama-kolumbiaban-egy-felresikerult-rablas-utan-harminc-embert-ejtettek-tuszul-egy-aruhazban?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Éxito",
+        "túszdráma",
+        "cartagena",
+        "kolumbia"
+      ],
+      "author": "Kolozsi Ádám",
+      "theme": "rat",
+      "image": "https://assets.4cdn.hu/kraken/8Q6NjFEBHvRg112g1s.jpeg",
+      "imageAlt": "Túszdráma Kolumbiában: egy félresikerült rablás után harminc embert ejtettek túszul egy áruházban",
+      "addedAt": "2026-11-24T23:17:40.994Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-24hu-a-nap-legfontosabb-hirei-2026-november-24-218d70",
+      "title": "A nap legfontosabb hírei – 2026 november 24.",
+      "summary": "Lelőttek egy nőt Győrben, Zelenszkijjel találkozott Magyar. The post A nap legfontosabb hírei – 2026 november 24. first appeared on 24.hu .",
+      "date": "2026-11-24T20:25:51.000Z",
+      "url": "https://24.hu/belfold/2026/11/24/a-nap-legfontosabb-hirei-2026-november-24/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Belföld",
+        "a nap legfontosabb hírei",
+        "hírösszefoglaló"
+      ],
+      "author": "Papp Atilla",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/000_d8gv4xu-e1795548246452-1024x576.jpg",
+      "imageAlt": "A nap legfontosabb hírei – 2026 november 24.",
+      "addedAt": "2026-11-24T23:17:43.967Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-24hu-vitezy-david-uj-buszjarat-indul-budapest-es-19a5d4",
+      "title": "Vitézy Dávid: új buszjárat indul Budapest és Pécs között",
+      "summary": "Óránkénti összeköttetést biztosítanak a két város között. The post Vitézy Dávid: új buszjárat indul Budapest és Pécs között first appeared on 24.hu .",
+      "date": "2026-11-24T20:18:19.000Z",
+      "url": "https://24.hu/kozelet/2026/11/24/uj-buszjarat-budapest-pecs/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Közélet",
+        "pécs",
+        "budapest",
+        "busz"
+      ],
+      "author": "Ambrus Zsombor",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/central-1124250763-1-e1795551468651-1024x577.jpg",
+      "imageAlt": "Vitézy Dávid: új buszjárat indul Budapest és Pécs között",
+      "addedAt": "2026-11-24T23:17:43.967Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-hvg-pdsz-a-ruff-balint-vezette-8d912e",
+      "title": "PDSZ: A Ruff Bálint vezette Miniszterelnökség döntötte el, kiből lehet tankerületi igazgató",
+      "summary": "Az oktatási minisztérium szerint csupán arról van szó, hogy a tárca egy tagja is részt vett a pályázatok elbírálásában.",
+      "date": "2026-11-24T19:58:39.000Z",
+      "url": "https://hvg.hu/itthon/20261124_tankeruleti-igazgatok-ruff-balint-lannert-judit-kivalasztas",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "oktatás",
+        "Pedagógusok Demokratikus Szakszervezete",
+        "Ruff Bálint"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/b15fd8ed-7a7f-4f88-a718-e67bf5a7f6dc.jpg",
+      "imageAlt": "PDSZ: A Ruff Bálint vezette Miniszterelnökség döntötte el, kiből lehet tankerületi igazgató",
+      "addedAt": "2026-11-24T23:17:41.269Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-24hu-bl-golorom-kozben-tunt-fel-a-jatekosnak-0cbc06",
+      "title": "BL: gólöröm közben tűnt fel a játékosnak, hogy véresre rúgták",
+      "summary": "Deniz Gül egy jó nagy kötéssel tért vissza a pályára. The post BL: gólöröm közben tűnt fel a játékosnak, hogy véresre rúgták first appeared on 24.hu .",
+      "date": "2026-11-24T19:39:42.000Z",
+      "url": "https://24.hu/sport/foci/2026/11/24/bajnokok-ligaja-galatasaray-aston-villa-deniz-gul/",
+      "source": "24hu",
+      "sourceName": "24.hu",
+      "categories": [
+        "Foci",
+        "labdarúgás",
+        "bajnokok ligája",
+        "galatasaray"
+      ],
+      "author": "Futó Csaba",
+      "theme": "drustvo",
+      "image": "https://s.24.hu/app/uploads/2026/11/deniz-gul-000_d8hr7w3-1024x576.jpg",
+      "imageAlt": "BL: gólöröm közben tűnt fel a játékosnak, hogy véresre rúgták",
+      "addedAt": "2026-11-24T23:17:43.967Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-hvg-legiveszelyt-hirdettek-egy-del-koreahoz-d9e04c",
+      "title": "Légiveszélyt hirdettek egy Dél-Koreához tartozó szigeten, miután orosz repülőgépek közelítették meg",
+      "summary": "A lakosságot kedd reggel felszólították, hogy vonuljon óvóhelyekre.",
+      "date": "2026-11-24T19:25:00.000Z",
+      "url": "https://hvg.hu/vilag/20261124_legiveszely-del-korea-sziget-orosz-repulok",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Világ",
+        "nemzetközi konfliktusok",
+        "Oroszország",
+        "Dél-Korea"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "drustvo",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/ddd9abad-e75f-48dd-b0ef-4c330477ce53.jpg",
+      "imageAlt": "Légiveszélyt hirdettek egy Dél-Koreához tartozó szigeten, miután orosz repülőgépek közelítették meg",
+      "addedAt": "2026-11-24T23:17:41.269Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-hvg-vegre-megallitottuk-ezt-a-teljesen-15d531",
+      "title": "Végre megállítottuk ezt a teljesen felesleges politikai eszkalációt – erről volt szó a Magyar–Zelenszkij-sajtótájékoztatón",
+      "summary": "Ukrajna készen áll a konstruktív párbeszédre – mondta Zelenszkij. Élőben követtük az ukrán elnök és Magyar Péter közös sajtótájékoztatóját, ahol a bizalom helyreállításáról, kölcsönösen előnyös megállapodásokról és egy lehetséges magyarországi látogatásról is szó volt.",
+      "date": "2026-11-24T19:24:37.000Z",
+      "url": "https://hvg.hu/itthon/20261124_zelenszkij-magyar-peter-sajtotatekoztato",
+      "source": "hvg",
+      "sourceName": "HVG",
+      "categories": [
+        "Itthon",
+        "gazdaság",
+        "Magyar Péter",
+        "Volodimir Zelenszkij"
+      ],
+      "author": "szerzo@hvg.hu (HVG)",
+      "theme": "politika",
+      "image": "https://img.hvg.hu/Img/64092e40-39ef-4e7c-88f1-4e482711b139/ec5e7ace-f117-419c-9cd0-3fea5b2e0af9.jpg",
+      "imageAlt": "Végre megállítottuk ezt a teljesen felesleges politikai eszkalációt – erről volt szó a Magyar–Zelenszkij-sajtótájékoztatón",
+      "addedAt": "2026-11-24T23:17:41.269Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-444-zelenszkij-szerint-a-korabbi-magyar-4d8962",
+      "title": "Zelenszkij szerint a korábbi magyar politikai elit hergelte ellenük az embereket",
+      "summary": "Beregszászon tartott sajtótájékoztatót a magyar miniszterelnök és az ukrán elnök. Magyar Péter szerint Magyarországnak kulcsszerepe lehet Ukrajna újjáépítésében.",
+      "date": "2026-11-24T19:18:46.000Z",
+      "url": "https://444.hu/2026/11/24/zelenszkij-jo-hangulatu-beszelgetest-folytattunk-magyar-peterrel?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Andrij Szibiha",
+        "Magyarország",
+        "Volodimir Zelenszkij",
+        "magyar péter"
+      ],
+      "author": "Benics Márk",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8Q68UM1o9EeoGWB0s.jpeg",
+      "imageAlt": "Zelenszkij szerint a korábbi magyar politikai elit hergelte ellenük az embereket",
+      "addedAt": "2026-11-24T23:17:40.994Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-444-12-ev-fegyhazat-kapott-a-ferfi-aki-aramot-f33f02",
+      "title": "12 év fegyházat kapott a férfi, aki áramot vezetett a pécsi Zsolnay-mauzóleum kapujába",
+      "summary": "A biztonsági őr csak a vastag talpú cipőjének köszönhetően úszta meg a halálos áramütést.",
+      "date": "2026-11-24T19:18:23.000Z",
+      "url": "https://444.hu/2026/11/24/12-ev-fegyhazat-kapott-a-ferfi-aki-aramot-vezetett-a-pecsi-zsolnay-mauzoleum-kapujaba?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "zsolnay mauzóleum",
+        "lopás",
+        "biztonsági őr",
+        "életveszély"
+      ],
+      "author": "Mohos Máté",
+      "theme": "drustvo",
+      "image": "https://assets.4cdn.hu/kraken/8JdCs6ljny5V9g6Ss.jpeg",
+      "imageAlt": "12 év fegyházat kapott a férfi, aki áramot vezetett a pécsi Zsolnay-mauzóleum kapujába",
+      "addedAt": "2026-11-24T23:17:40.994Z"
+    },
+    {
+      "slug": "budimpesta-2026-11-24-444-bujdosonak-nem-josolnak-nagy-jovot-kapitany-7d213d",
+      "title": "Bujdosónak nem jósolnak nagy jövőt, Kapitány nehezen találja a helyét",
+      "summary": "A Helyzet: van! legújabb adásában Bábel Vilmossal beszéltük át, hogy miket tudtunk meg a kormány és a kormánypárti parlamenti frakció belső viszonyairól.",
+      "date": "2026-11-24T18:49:37.000Z",
+      "url": "https://444.hu/2026/11/24/bujdosonak-nem-josolnak-nagy-jovot-kapitany-nehezen-talalja-a-helyet?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_syndication",
+      "source": "444",
+      "sourceName": "444",
+      "categories": [
+        "Ruff Bálint",
+        "Helyzet: van",
+        "magyar péter",
+        "Tisza Párt"
+      ],
+      "author": "Czinkóczi Sándor",
+      "theme": "politika",
+      "image": "https://assets.4cdn.hu/kraken/8Q6CupKF33VwzwYqs.jpeg",
+      "imageAlt": "Bujdosónak nem jósolnak nagy jövőt, Kapitány nehezen találja a helyét",
+      "addedAt": "2026-11-24T23:17:40.994Z"
+    },
     {
       "slug": "budimpesta-2026-11-24-444-a-hatarok-soha-nem-valhatnak-a-bunozok-vagy-119861",
       "title": "„A határok soha nem válhatnak a bűnözők vagy a bűnözői vagyon védőpajzsává” – rossz hír Matolcsy Ádámnak",
