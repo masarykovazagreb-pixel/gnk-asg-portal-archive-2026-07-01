@@ -12,12 +12,15 @@
   "sources": [
     {
       "name": "HRT Vijesti",
-      "feed": "https://www.hrt.hr/rss/vijesti/",
+      "feed": "https://vijesti.hrt.hr/rss/rss-feed.xml",
       "domain": "hrt.hr",
       "enabled": true,
-      "feedAvailability": "must_verify_on_each_run",
+      "feedAvailability": "registry-listed-candidate-not-verified-through-accessible-rss-tool",
       "rights": "external_title_link_only",
-      "images": "do_not_download_or_republish"
+      "images": "do_not_download_or_republish",
+      "fallbackFeeds": [
+        "https://www.hrt.hr/rss/vijesti/"
+      ]
     },
     {
       "name": "Index.hr",
@@ -33,9 +36,13 @@
       "feed": "https://www.24sata.hr/feeds/najnovije.xml",
       "domain": "24sata.hr",
       "enabled": true,
-      "feedAvailability": "must_verify_on_each_run",
+      "feedAvailability": "verified-publisher-rss-list",
       "rights": "external_title_link_only",
-      "images": "do_not_download_or_republish"
+      "images": "do_not_download_or_republish",
+      "fallbackFeeds": [
+        "https://www.24sata.hr/feeds/news.xml",
+        "https://www.24sata.hr/feeds/aktualno.xml"
+      ]
     },
     {
       "name": "Jutarnji list",
@@ -44,7 +51,10 @@
       "enabled": true,
       "feedAvailability": "must_verify_on_each_run",
       "rights": "external_title_link_only",
-      "images": "do_not_download_or_republish"
+      "images": "do_not_download_or_republish",
+      "fallbackFeeds": [
+        "https://www.jutarnji.hr/rss/vijesti/"
+      ]
     },
     {
       "name": "Večernji list",

@@ -14,6 +14,9 @@ for(const s of sources.sources) {
  domains.add(s.domain);
 }
 assert.ok(!domains.has('hina.hr'),'HINA without a content license must not be scraped');
+assert.equal(sources.sources.find(s=>s.name==='HRT Vijesti')?.feed,'https://vijesti.hrt.hr/rss/rss-feed.xml');
+assert.ok(sources.sources.find(s=>s.name==='24sata')?.fallbackFeeds?.includes('https://www.24sata.hr/feeds/news.xml'));
+assert.ok(sources.sources.every(s=>(s.fallbackFeeds||[]).every(url=>url.startsWith('https://'))));
 assert.equal(sources.sources.find(s=>s.name==='tportal')?.feed,'https://www.tportal.hr/rss-najnovije.xml','Use publisher-supported tportal RSS endpoint');
 const index=load('apps/portal/news/index.html');
 assert.match(index,/<title>HR News/);

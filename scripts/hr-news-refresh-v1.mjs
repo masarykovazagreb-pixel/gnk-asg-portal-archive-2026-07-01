@@ -72,14 +72,25 @@ let pos=0,attempts=[],all=retainedExisting();
 async function worker(){
  while(pos<enabled.length){
   const source=enabled[pos++];
-  try{
-   const xml=await fetchFeedXml(source.feed);
-   const items=parse(xml,source);
-   attempts.push({source:source.name,status:items.length?'ok':'no_recent_items',accepted:items.length});
-   all.push(...items);
-  }catch(e){
-   attempts.push({source:source.name,status:'failed',reason:String(e.message).slice(0,110),accepted:0});
+  const candidates=[source.feed,...(Array.isArray(source.fallbackFeeds)?source.fallbackFeeds:[])];
+  let accepted=[],errors=[];
+  for(const candidate of candidates){
+   try{
+     const xml=await fetchFeedXml(candidate);
+     const items=parse(xml,source);
+     if(items.length){accepted=items;break;}
+     errors.push('no_recent_items');
+   }catch(e){errors.push(String(e.message).slice(0,72));}
   }
+  attempts.push({
+    source:source.name,
+    status:accepted.length?'ok':'failed',
+    accepted:accepted.length,
+    fallbackAvailable:candidates.length>1,
+    failedAttempts:errors.length,
+    reason:accepted.length?undefined:errors.slice(-2).join('; ').slice(0,120)
+  });
+  all.push(...accepted);
  }
 }
 await Promise.all(Array.from({length:Math.min(5,enabled.length)},worker));
