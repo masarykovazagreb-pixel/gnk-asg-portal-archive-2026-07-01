@@ -14,6 +14,9 @@ for(const s of sources.sources) {
  domains.add(s.domain);
 }
 assert.ok(!domains.has('hina.hr'),'HINA without a content license must not be scraped');
+assert.equal(sources.sources.find(s=>s.name==='HRT Vijesti')?.feed,'https://vijesti.hrt.hr/rss/rss-feed.xml');
+assert.ok(sources.sources.find(s=>s.name==='24sata')?.fallbackFeeds?.includes('https://www.24sata.hr/feeds/news.xml'));
+assert.ok(sources.sources.every(s=>(s.fallbackFeeds||[]).every(url=>url.startsWith('https://'))));
 assert.equal(sources.sources.find(s=>s.name==='tportal')?.feed,'https://www.tportal.hr/rss-najnovije.xml','Use publisher-supported tportal RSS endpoint');
 const index=load('apps/portal/news/index.html');
 assert.match(index,/<title>HR News/);
@@ -50,8 +53,9 @@ try {
  const svg=load(path.join(tmp,'out/assets/editorial/hr-news/'+sample.slug+'.svg'));
  const generated=JSON.parse(load(path.join(tmp,'out/data/hr-news-original-v1.json')));
  assert.match(html,/NewsArticle/);assert.match(html,/Provjerljivi izvori/);
- assert.equal((html.match(/\"@type\":\"WebSite\"/g)||[]).length,1,'Original article must have exactly one WebSite JSON-LD node');
- assert.match(html,/data-am-design="v1"/,'Every published article must load shared design tokens');
+ assert.ok(html.includes('data-am-design="v1"'),'Approved articles must include shared design tokens');
+ assert.ok(html.includes('"@type":"WebSite"'),'Approved articles must include canonical WebSite JSON-LD');
+ assert.equal((html.match(/"@type":"WebSite"/g)||[]).length,1,'Original article must have exactly one WebSite JSON-LD');
  assert.match(svg,/<svg/);assert.match(svg,/Izvorna konceptualna ilustracija/);
  assert.equal(generated.items.length,1);
  sample.approvedForPublication=false;fs.writeFileSync(fixture,JSON.stringify(sample));
@@ -65,11 +69,19 @@ const networkHtml=load('apps/portal/poslovna-mreza/index.html');
 for(const name of ['GNK ASG','GNK DINAMO Ltd.','AKTUAL MEDIA','Sports Performance Tracking','Omega Holding Beograd','Organa','Geotehnika Eko','Nermin Sefić']) assert.ok(networkHtml.includes(name),'Missing entity '+name);
 assert.match(load('apps/portal/index.html'),/href="\/poslovna-mreza\/"/);
 assert.match(load('apps/portal/sitemap.xml'),/https:\/\/gnk-asg\.hr\/poslovna-mreza\//);
-assert.match(load('apps/portal/sitemap-index.xml'),/https:\/\/gnk-asg\.hr\/news\/sitemap\.xml/,'HR News sitemap must be registered');
-assert.match(load('apps/portal/sitemap-index.xml'),/https:\/\/gnk-asg\.hr\/en\/gnk-aktual\/media\/sitemap\.xml/,'English media sitemap must be registered');
+assert.match(load('apps/portal/sitemap-index.xml'),/https:\/\/gnk-asg\.hr\/news\/sitemap\.xml/);
+assert.match(load('apps/portal/sitemap-index.xml'),/https:\/\/gnk-asg\.hr\/en\/gnk-aktual\/media\/sitemap\.xml/,'English media sitemap must be indexed');
 assert.match(load('apps/portal/news/index.html'),/data-am-design="v1"/);
 assert.match(load('apps/portal/poslovna-mreza/index.html'),/data-am-design="v1"/);
-for(const p of ['apps/portal/news/index.html','apps/portal/poslovna-mreza/index.html']) assert.equal((load(p).match(/\"@type\":\"WebSite\"/g)||[]).length,1,p+': one canonical WebSite node required');
+for(const page of ['apps/portal/news/index.html','apps/portal/poslovna-mreza/index.html']){
+  const html=load(page);
+  const structured=[...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(x=>JSON.parse(x[1]));
+  const sites=structured.filter(x=>x['@type']==='WebSite');
+  assert.equal(sites.length,1,'New public routes need one WebSite node: '+page);
+  assert.equal(sites[0]['@id'],'https://gnk-asg.hr/#website');
+  assert.equal(sites[0].publisher['@id'],'https://gnk-asg.hr/#gnk-asg');
+}
+
 assert.doesNotMatch(networkHtml,/\"parentOrganization\"|\"subOrganization\"/);
 const tags=JSON.parse(load('apps/portal/data/corporate-seo-taxonomy-v1.json'));
 assert.equal(tags.topicHashtags.length,20);
