@@ -73,7 +73,7 @@ assert.match(load('apps/portal/news/index.html'),/data-am-design="v1"/);
 assert.match(load('apps/portal/poslovna-mreza/index.html'),/data-am-design="v1"/);
 for(const page of ['apps/portal/news/index.html','apps/portal/poslovna-mreza/index.html']){
   const html=load(page);
-  const structured=[...html.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)].map(x=>JSON.parse(x[1]));
+  const structured=[...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(x=>JSON.parse(x[1]));
   const sites=structured.filter(x=>x['@type']==='WebSite');
   assert.equal(sites.length,1,'New public routes need one WebSite node: '+page);
   assert.equal(sites[0]['@id'],'https://gnk-asg.hr/#website');
