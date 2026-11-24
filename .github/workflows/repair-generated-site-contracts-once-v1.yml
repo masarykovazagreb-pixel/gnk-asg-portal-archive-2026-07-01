@@ -64,9 +64,10 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -u -- apps/portal apps/sites/site apps/world/site apps/kanal/site apps/arhiva/site apps/dnevnik/site
-          # New generated pages may be needed by the canonical builder.
-          git add -A -- apps/sites/site
+          # Stage only tracked sources and tracked generated files. World/archive/
+          # diary outputs are intentionally ignored and absent from Git's index.
+          git add -u -- apps/portal apps/sites/site apps/kanal/site
+          # Do not force-add ignored generated outputs into the repository.
           if git diff --cached --quiet; then
             echo "Generated files already match canonical builders."
             exit 0
