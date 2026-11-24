@@ -8,6 +8,9 @@ on:
       - 'apps/portal/robots.txt'
       - 'apps/portal/sitemap.xml'
       - 'scripts/test-brand-search-identity-v1.mjs'
+      - 'scripts/test-operator-canonical-v1.mjs'
+      - 'workers/gnk-asg-direct-operator/src/canonical-host-redirect-v1.js'
+      - 'workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js'
       - '.github/workflows/brand-search-identity-v1.yml'
   workflow_dispatch:
 permissions:
@@ -25,4 +28,6 @@ jobs:
         with:
           node-version: '22'
       - name: Validate crawlers, canonicals, visible brand identity and discoverable links
-        run: node scripts/test-brand-search-identity-v1.mjs
+        run: |
+          node scripts/test-brand-search-identity-v1.mjs
+          node scripts/test-operator-canonical-v1.mjs
