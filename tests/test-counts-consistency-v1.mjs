@@ -32,14 +32,26 @@ if (!counts) { console.log(JSON.stringify({ ok: false, failures: fails.length })
 
 /* --- 1. zapis odgovara podacima --- */
 const regionDir = join(ROOT, 'apps/region/data');
-let realTexts = 0;
-let channels = 0;
+// Count only registered city archives. Privacy/withdrawal and status JSON
+// are metadata, NOT a city edition. Match scripts/build-network-counts-v1.mjs.
+const registry = readJSON(join(ROOT, 'apps/region/channels.json'), { channels: [] });
+const configured = registry.channels || [];
+const channelIds = new Set(configured.map(({ id }) => id));
+check(channelIds.size === configured.length, 'registar gradova sadrži ponovljen id');
+const permittedMetadata = new Set(['withdrawn-content-v1.json']);
 for (const name of readdirSync(regionDir)) {
   if (!name.endsWith('.json') || name.startsWith('_')) continue;
-  const data = readJSON(join(regionDir, name), { items: [] });
-  realTexts += (data.items || []).length;
-  channels += 1;
+  if (!channelIds.has(name.slice(0, -5)) && !permittedMetadata.has(name)) {
+    check(false, `nepoznati regionalni JSON koji nije grad ni registrirana metadatoteka: ${name}`);
+  }
 }
+let realTexts = 0;
+for (const { id } of configured) {
+  const data = readJSON(join(regionDir, id + '.json'));
+  check(Boolean(data && Array.isArray(data.items)), `nedostaje valjana arhiva grada ${id}`);
+  realTexts += Array.isArray(data?.items) ? data.items.length : 0;
+}
+const channels = configured.length;
 check(counts.texts === realTexts, `zapis kaže ${counts.texts} tekstova, podaci ${realTexts}`);
 check(counts.cities === channels, `zapis kaže ${counts.cities} gradova, podaci ${channels}`);
 check(Array.isArray(counts.channels) && counts.channels.length === channels, 'po kanalu nema svih zapisa');
