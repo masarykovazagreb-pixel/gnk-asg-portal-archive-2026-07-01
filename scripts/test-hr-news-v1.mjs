@@ -66,6 +66,15 @@ assert.match(load('apps/portal/sitemap.xml'),/https:\/\/gnk-asg\.hr\/poslovna-mr
 assert.match(load('apps/portal/sitemap-index.xml'),/https:\/\/gnk-asg\.hr\/news\/sitemap\.xml/);
 assert.match(load('apps/portal/news/index.html'),/data-am-design="v1"/);
 assert.match(load('apps/portal/poslovna-mreza/index.html'),/data-am-design="v1"/);
+for(const page of ['apps/portal/news/index.html','apps/portal/poslovna-mreza/index.html']){
+  const html=load(page);
+  const structured=[...html.matchAll(/<script type="application\\/ld\\+json">([\\s\\S]*?)<\\/script>/g)].map(x=>JSON.parse(x[1]));
+  const sites=structured.filter(x=>x['@type']==='WebSite');
+  assert.equal(sites.length,1,'New public routes need one WebSite node: '+page);
+  assert.equal(sites[0]['@id'],'https://gnk-asg.hr/#website');
+  assert.equal(sites[0].publisher['@id'],'https://gnk-asg.hr/#gnk-asg');
+}
+
 assert.doesNotMatch(networkHtml,/\"parentOrganization\"|\"subOrganization\"/);
 const tags=JSON.parse(load('apps/portal/data/corporate-seo-taxonomy-v1.json'));
 assert.equal(tags.topicHashtags.length,20);
