@@ -70,8 +70,10 @@ export function validateQuote(quote, watch, allowedHosts, nowMs = Date.now()) {
   if (watch.last && watch.savedVariant !== variant) return null;
   if (watch.requestedVariant && !variant.toLowerCase().includes(watch.requestedVariant.toLowerCase())) return null;
   if (new URL(offerUrl).hostname !== new URL(watch.url).hostname) return null;
+  const restrictions = typeof quote.restrictions === 'string' && quote.restrictions.trim() ?
+    quote.restrictions.trim().slice(0, 300) : 'Ograničenja ponude nisu potvrđena';
   return { productId, model, variant, condition: 'new', market: 'HR', currency: 'EUR',
-    priceMinor: quote.priceMinor, seller: quote.seller.trim(), offerUrl,
+    priceMinor: quote.priceMinor, seller: quote.seller.trim(), offerUrl, restrictions,
     observedAt: new Date(ts).toISOString() };
 }
 async function signedUnsub(id, env) {
@@ -221,6 +223,7 @@ async function daily(env) {
             const note = 'Potvrđen pad cijene za ' + q.model + (q.variant ? ' (' + q.variant + ')' : '') +
               '\nStara cijena: ' + euro(old.priceMinor) + '\nNova cijena: ' + euro(q.priceMinor) +
               '\nTrgovac: ' + q.seller + '\nStanje: novo\nTržište: Hrvatska / EUR' +
+              '\nOgraničenja: ' + q.restrictions +
               '\nProvjereno: ' + q.observedAt + '\nPonuda: ' + q.offerUrl +
               '\n\nOdjava: ' + unsub;
             if (!await sendMail(env, watch.email, 'Cijena je pala — AKTUAL MEDIA', note)) {
