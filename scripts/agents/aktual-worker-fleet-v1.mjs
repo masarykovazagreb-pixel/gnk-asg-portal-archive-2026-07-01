@@ -26,7 +26,16 @@ const AUDITS=[
   ['robots',(h,_,ctx)=>!tags(h,'meta').some(x=>x.name?.toLowerCase()==='robots'&&/\bnoindex\b/i.test(x.content||''))&&ctx.robots.includes('Sitemap:')?'ok':'robots-review'],
   ['open-graph',(h)=>tags(h,'meta').some(x=>x.property?.toLowerCase()==='og:title')&&tags(h,'meta').some(x=>x.property?.toLowerCase()==='og:url')?'ok':'missing-og-metadata'],
   ['favicon',(h)=>tags(h,'link').some(x=>x.rel?.toLowerCase()==='icon')?'ok':'missing-icon'],
-  ['freshness',(h)=>matches(h,/data-(?:region-)?fresh(?:ness)?/i)?'ok':'missing-source-freshness-signal'],
+  ['freshness',(h)=>{
+    // Either an explicitly marked freshness widget or a visible, dated
+    // edition dateline is acceptable metadata. Neither proves source activity.
+    if(matches(h,/data-(?:region-)?fresh(?:ness)?/i))return 'ok';
+    const dateline=h.match(/<p\b[^>]*class=["'][^"']*\bdateline\b[^"']*["'][^>]*>[\s\S]{0,400}?<time\b[^>]*datetime=["']([^"']+)["']/i)?.[1];
+    if(!dateline)return 'missing-visible-update-datetime';
+    const date=Date.parse(dateline);
+    if(!Number.isFinite(date)||date>Date.now()+300_000)return 'invalid-or-future-update-datetime';
+    return Date.now()-date<=72*3600_000?'ok':'stale-update-datetime-over-72h';
+  }],
   ['accessibility',(h)=>matches(h,/<html\b[^>]*lang=["'][^"']+["']/i)&&matches(h,/<h1\b/i)?'ok':'missing-language-or-h1']
 ];
 export function evaluateChannel(channel,html,context){
