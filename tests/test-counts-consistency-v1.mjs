@@ -32,17 +32,39 @@ if (!counts) { console.log(JSON.stringify({ ok: false, failures: fails.length })
 
 /* --- 1. zapis odgovara podacima --- */
 const regionDir = join(ROOT, 'apps/region/data');
+const registry = readJSON(join(ROOT, 'apps/region/channels.json'), { channels: [] });
+const registered = Array.isArray(registry.channels) ? registry.channels : [];
+const ids = new Set(registered.map(channel => channel.id));
+check(ids.size === registered.length && registered.length > 0, 'kanonski registar kanala mora imati jedinstvene ID-ove');
 let realTexts = 0;
-let channels = 0;
-for (const name of readdirSync(regionDir)) {
-  if (!name.endsWith('.json') || name.startsWith('_')) continue;
-  const data = readJSON(join(regionDir, name), { items: [] });
-  realTexts += (data.items || []).length;
-  channels += 1;
+for (const channel of registered) {
+  const id = String(channel.id || '');
+  check(/^[a-z0-9-]+$/.test(id), `nevaljan ID kanala ${id}`);
+  const data = readJSON(join(regionDir, `${id}.json`));
+  if (!data || !Array.isArray(data.items)) {
+    fails.push(`nedostaje valjana arhiva kanala ${id}`);
+    continue;
+  }
+  realTexts += data.items.length;
 }
+const regionFiles = readdirSync(regionDir).filter(name => name.endsWith('.json') && !name.startsWith('_'));
+const extras = regionFiles.filter(name => !ids.has(name.slice(0, -5)));
+const approvedSidecar = 'withdrawn-content-v1.json';
+check(extras.length === 1 && extras[0] === approvedSidecar,
+  `neprepoznati JSON u arhivi kanala: ${extras.join(', ') || '(nema zaštitne evidencije)'}`);
+const withdrawal = readJSON(join(regionDir, approvedSidecar));
+check(withdrawal?.schema === 'AKTUAL_REGION_WITHDRAWN_V1' &&
+  withdrawal?.publicContentExcluded === true &&
+  ['sourceUrlHashes','slugHashes','titleHashes'].every(key =>
+    Array.isArray(withdrawal[key]) && withdrawal[key].every(value => /^[a-f0-9]{64}$/.test(value))),
+  'evidencija povučenog sadržaja mora ostati valjana i izvan javnog broja kanala');
+const channels = registered.length;
 check(counts.texts === realTexts, `zapis kaže ${counts.texts} tekstova, podaci ${realTexts}`);
 check(counts.cities === channels, `zapis kaže ${counts.cities} gradova, podaci ${channels}`);
-check(Array.isArray(counts.channels) && counts.channels.length === channels, 'po kanalu nema svih zapisa');
+check(Array.isArray(counts.channels) && counts.channels.length === channels &&
+  new Set(counts.channels.map(row => row.id)).size === channels &&
+  counts.channels.every(row => ids.has(row.id)),
+  'po kanalu nema svih jedinstvenih zapisa iz kanonskog registra');
 check(/^\d{4}-\d{2}-\d{2}$/.test(counts.dataDay || ''), 'nema podatkovnog dana');
 
 /* --- 2. javne stranice ne nose stari zbroj --- */
