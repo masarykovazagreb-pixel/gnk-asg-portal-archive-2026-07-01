@@ -6,6 +6,20 @@ name: Content Queue Publish
 
 on:
   workflow_dispatch:
+    inputs:
+      approved_hr_news_batch:
+        description: 'Approved original HR NEWS JSON file paths (comma-separated, 1–20)'
+        required: false
+        type: string
+      confirm_approved_hr_news:
+        description: 'Type PUBLISH_APPROVED_HR_NEWS for the approved HR News batch'
+        required: false
+        type: string
+      notify_search_engines:
+        description: 'Notify search engines after a verified protected release'
+        required: false
+        default: true
+        type: boolean
   # Immediately process newly committed queue items through the same guarded publisher.
   # Generated portal files are deliberately excluded to prevent publication loops.
   push:
@@ -27,7 +41,7 @@ concurrency:
 
 jobs:
   publish:
-    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true' && (github.event_name != 'workflow_dispatch' || inputs.approved_hr_news_batch == '')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -107,3 +121,170 @@ jobs:
         run: |
           echo '## Content Queue' >> "$GITHUB_STEP_SUMMARY"
           sed -n '1,60p' /tmp/queue-out.txt >> "$GITHUB_STEP_SUMMARY" || true
+
+  publish-reviewed-hr-news:
+    name: Scoped HR News original article writer (existing canonical publisher)
+    outputs:
+      approved_sha: ${{ steps.publication.outputs.sha }}
+      slugs: ${{ steps.article.outputs.slugs }}
+      approved_at: ${{ steps.article.outputs.approved_at }}
+      dispatch_utc: ${{ steps.release.outputs.sent_at }}
+    if: github.ref == 'refs/heads/main' && inputs.confirm_approved_hr_news == 'PUBLISH_APPROVED_HR_NEWS' && vars.GNK_ASG_RELEASE_FENCE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: write
+      actions: write
+      checks: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+          fetch-tags: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Fail closed on HR-News-only publication switch, fence, stale main or unsafe event
+        shell: bash
+        env:
+          APPROVAL: ${{ inputs.confirm_approved_hr_news }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = 'refs/heads/main'
+          test "$APPROVAL" = 'PUBLISH_APPROVED_HR_NEWS'
+          git fetch origin main --no-tags
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          test -z "$(git status --porcelain)"
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const state=JSON.parse(fs.readFileSync('ops/automation-kill-switches.json','utf8'));
+          if(state.releaseFence?.enabled!==false)throw Error('Production release fence is active or unknown');
+          if(state.channels?.hrNewsFastlanePublish?.enabled!==true)throw Error('Approved HR News fast-lane switch is OFF; no release');
+          if(state.releaseRules?.requireGreenPremiumContract!==true)throw Error('Required quality gate cannot be disabled');
+          console.log('Publication switch and quality policy authorized.');
+          NODE
+      - name: Run article-only legal/editorial preflight
+        id: article
+        shell: bash
+        env:
+          ARTICLE_PATH: ${{ inputs.approved_hr_news_batch }}
+        run: |
+          set -euo pipefail
+          node scripts/hr-news-fastlane-batch-v1.mjs "$ARTICLE_PATH" > /tmp/hr-fastlane-preflight.json
+          slugs="$(node -p "JSON.parse(require('fs').readFileSync('/tmp/hr-fastlane-preflight.json','utf8')).slugs.join(',')")"
+          echo "slugs=$slugs" >> "$GITHUB_OUTPUT"
+          approved_at="$(node -p "JSON.parse(require('fs').readFileSync('/tmp/hr-fastlane-preflight.json','utf8')).earliestApprovedAt")"
+          echo "approved_at=$approved_at" >> "$GITHUB_OUTPUT"
+          echo 'Source-checked approved originals grouped into ONE controlled release; NOT LIVE.'
+      - name: Build original article, original SVG, metadata and sitemap
+        env:
+          ARTICLE_PATH: ${{ inputs.approved_hr_news_batch }}
+        run: |
+          set -euo pipefail
+          IFS=',' read -r -a files <<< "$ARTICLE_PATH"
+          for file in "${files[@]}"; do
+            node scripts/hr-news-one-command-v1.mjs "$file"
+          done
+          node scripts/hr-news-sitemap-v1.mjs
+          node --test tests/test-hr-news-fastlane-v1.mjs
+          node scripts/test-hr-news-v1.mjs
+      - name: Commit exactly the reviewed article artifacts, without force
+        id: publication
+        shell: bash
+        env:
+          SLUGS: ${{ steps.article.outputs.slugs }}
+        run: |
+          set -euo pipefail
+          git config user.name 'aktual-reviewed-publisher'
+          git config user.email 'actions@github.com'
+          IFS=',' read -r -a slugs <<< "$SLUGS"
+          for slug in "${slugs[@]}"; do
+            git add "apps/portal/news/clanci/$slug/index.html" \
+              "apps/portal/assets/editorial/hr-news/$slug.svg"
+          done
+          git add apps/portal/data/hr-news-original-v1.json \
+            apps/portal/news/sitemap.xml
+          test -n "$(git diff --cached --name-only)"
+          git fetch origin main --no-tags
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" || {
+            echo '::error::main changed during validation: refuse stale push'; exit 1;
+          }
+          git commit -m "Publish reviewed HR NEWS originals: $SLUGS"
+          sha="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "Main writer SHA $sha created; NOT YET LIVE."
+      - name: Explicitly dispatch both read-only required CI workflows on token-authored exact SHA
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ steps.publication.outputs.sha }}
+        run: |
+          set -euo pipefail
+          git fetch origin main --no-tags
+          test "$(git rev-parse origin/main)" = "$SHA" || {
+            echo '::error::Main advanced before CI dispatch: refuse stale release'; exit 1;
+          }
+          # A GITHUB_TOKEN-authored push does not recursively fire other push workflows.
+          # workflow_dispatch is an explicitly supported trigger. Both runs stay read-only.
+          gh workflow run all-gates-v1.yml --repo "$GITHUB_REPOSITORY" --ref main
+          gh workflow run site-functional-readiness.yml --repo "$GITHUB_REPOSITORY" --ref main
+      - name: Wait for required full CI before permitting exact-SHA deploy
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ steps.publication.outputs.sha }}
+        run: |
+          set -euo pipefail
+          deadline=$(( $(date +%s) + 1200 ))
+          for workflow in all-gates-v1.yml site-functional-readiness.yml; do
+            while true; do
+              result="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$workflow" \
+                --commit "$SHA" --limit 2 --json headSha,status,conclusion 2>/dev/null || echo '[]')"
+              conclusion="$(printf '%s' "$result" | jq -r --arg sha "$SHA" '[.[] | select(.headSha==$sha)] | first | .conclusion // "missing"')"
+              status="$(printf '%s' "$result" | jq -r --arg sha "$SHA" '[.[] | select(.headSha==$sha)] | first | .status // "missing"')"
+              if [ "$conclusion" = 'success' ]; then
+                echo "$workflow: success on $SHA"
+                break
+              fi
+              if [ "$status" = 'completed' ]; then
+                echo "::error::$workflow concluded $conclusion; deployment BLOCKED"
+                exit 1
+              fi
+              if [ "$(date +%s)" -ge "$deadline" ]; then
+                echo "::error::$workflow not proven successful before gate deadline; deployment BLOCKED"
+                exit 1
+              fi
+              sleep 15
+            done
+          done
+      - name: Dispatch existing protected Cloudflare exact-SHA deployment only after gates
+        id: release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ steps.publication.outputs.sha }}
+          NOTIFY: ${{ inputs.notify_search_engines }}
+        run: |
+          set -euo pipefail
+          git fetch origin main --no-tags
+          test "$(git rev-parse origin/main)" = "$SHA" || {
+            echo '::error::Main advanced: refuse wrong-SHA production dispatch'; exit 1;
+          }
+          sent_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          gh workflow run deploy-admin-auth-v6.yml \
+            --repo "$GITHUB_REPOSITORY" --ref main \
+            -f confirm_production_deploy=DEPLOY_ADMIN_AUTH_V6 \
+            -f approved_sha="$SHA" \
+            -f notify_search_engines="$NOTIFY"
+          echo "Deployment requested for exact $SHA; NOT LIVE until protected deploy and public HTTPS verification succeed."
+          echo "sent_at=$sent_at" >> "$GITHUB_OUTPUT"
+          {
+            echo '## HR NEWS fast lane'
+            echo "**Articles:** $SLUGS"
+            echo "**Exact SHA:** $SHA"
+            echo '**State:** Cloudflare deploy dispatched, LIVE not yet verified'
+            echo '**Target:** 10 minutes after documented editorial approval; no SLA promise while gates are queued or failing'
+          } >> "$GITHUB_STEP_SUMMARY"
+
