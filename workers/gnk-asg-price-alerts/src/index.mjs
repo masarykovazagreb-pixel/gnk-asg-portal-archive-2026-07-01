@@ -61,11 +61,13 @@ export function validateQuote(quote, watch, allowedHosts, nowMs = Date.now()) {
       typeof quote.seller !== 'string' || !quote.seller.trim() || quote.seller.length > 120) return null;
   const ts = Date.parse(quote.observedAt);
   if (!Number.isFinite(ts) || ts > nowMs + 5 * 60_000 || ts < nowMs - 36 * 3600_000) return null;
-  let offerUrl;
-  try { offerUrl = validateProductUrl(quote.offerUrl, allowedHosts); } catch { return null; }
+  let offerUrl, matchedUrl;
+  try { offerUrl = validateProductUrl(quote.offerUrl, allowedHosts);
+    matchedUrl = validateProductUrl(quote.matchedUrl, allowedHosts); } catch { return null; }
+  if (matchedUrl !== watch.url) return null;
   if (watch.productId && watch.productId !== productId) return null;
   if (watch.model && watch.model !== model) return null;
-  if (watch.savedVariant && watch.savedVariant !== variant) return null;
+  if (watch.last && watch.savedVariant !== variant) return null;
   if (watch.requestedVariant && !variant.toLowerCase().includes(watch.requestedVariant.toLowerCase())) return null;
   if (new URL(offerUrl).hostname !== new URL(watch.url).hostname) return null;
   return { productId, model, variant, condition: 'new', market: 'HR', currency: 'EUR',
