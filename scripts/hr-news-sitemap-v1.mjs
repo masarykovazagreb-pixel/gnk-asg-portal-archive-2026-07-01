@@ -13,7 +13,10 @@ const valid=items.filter(x=>{
  if(x.url!=='https://gnk-asg.hr/news/clanci/'+x.slug+'/')return false;
  return fs.existsSync(path.join(root,'news/clanci',x.slug,'index.html'));
 });
-const rows=['https://gnk-asg.hr/news/',...valid.map(x=>x.url)].map(url=>{
+const staticRoutes=['https://gnk-asg.hr/news/'];
+// HRT is a source-only AKTUAL desk (not a syndicated HRT mirror). Only index an existing page.
+if(fs.existsSync(path.join(root,'news/izvori/hrt/index.html')))staticRoutes.push('https://gnk-asg.hr/news/izvori/hrt/');
+const rows=[...staticRoutes,...valid.map(x=>x.url)].map(url=>{
  const date=valid.find(x=>x.url===url)?.publishedAt||'2026-11-23';
  return '  <url><loc>'+esc(url)+'</loc><lastmod>'+new Date(date).toISOString().slice(0,10)+'</lastmod></url>';
 });
