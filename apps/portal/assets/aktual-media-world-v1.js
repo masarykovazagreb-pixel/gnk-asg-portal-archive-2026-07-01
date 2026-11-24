@@ -63,15 +63,20 @@
   const metaFor = group => groupMeta[group] || {label:labels.other,slug:'ostalo'};
   const timeAgo = iso => {
     const d=new Date(iso); if(Number.isNaN(d.getTime())) return '';
-    const min=Math.max(0,Math.floor((Date.now()-d.getTime())/60000));
+    const min=Math.floor((Date.now()-d.getTime())/60000); if(min<0) return '';
     if(min<60) return lang==='hr' ? min+' min' : min+'m';
     const h=Math.floor(min/60); if(h<24) return lang==='hr' ? h+' h' : h+'h';
     const days=Math.floor(h/24); return lang==='hr' ? days+' d' : days+'d';
   };
   const safeItems = data => {
-    const src=Array.isArray(data)?data:(data.items||[]);
-    return src.filter(x=>x&&x.title&&x.url&&x.image&&x.verified!==false)
-      .map(x=>({...x,_group:normGroup(x),_published:x.published_at||x.publishedAt||''}))
+    const src=Array.isArray(data)?data:(Array.isArray(data?.items)?data.items:[]);
+    return src.filter(x=>{
+      if(!x || !txt(x.title) || !txt(x.source) || x.verified===false) return false;
+      const when=Date.parse(x.published_at||x.publishedAt||'');
+      if(!Number.isFinite(when) || when>Date.now()) return false;
+      try { const u=new URL(String(x.url||'')); return u.protocol==='https:' && !u.username && !u.password; }
+      catch { return false; }
+    }).map(x=>({...x,_group:normGroup(x),_published:x.published_at||x.publishedAt||''}))
       .sort((a,b)=>new Date(b._published)-new Date(a._published));
   };
   const storyLink = item => '<a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(item.title)+'</a>';
@@ -139,7 +144,8 @@
     if(date) date.textContent=new Intl.DateTimeFormat(lang==='hr'?'hr-HR':'en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
     if(status) status.textContent=items.length
       ? items.length+' '+labels.stories+(latest&&!Number.isNaN(latest.getTime())?' · '+labels.updated+' '+timeAgo(latest.toISOString()):'')
-      : (lang==='hr'?'Feed se upravo osvježava…':'Feed is being refreshed…');
+        +(latest && Date.now()-latest.getTime()>48*3600000 ? (lang==='hr'?' · feed je stariji od 48 sati':' · feed is over 48 hours old') : '')
+      : (lang==='hr'?'Trenutačno nema dostupnih naslova s valjanim datumom i izvorom.':'No headlines with a valid date and source are currently available.');
   }
 
   function renderBreaking(items){
@@ -197,6 +203,7 @@
     const fixed=[
       ...(document.getElementById('sve-aktual-media')?central:[]),
       '<a href="#amLead">'+esc(labels.latest)+'</a>',
+      '<a href="https://j1hex9qg03f0-d.space-z.ai/?country=hrvatska" rel="external noopener noreferrer">'+(lang==='hr'?'Hrvatska · vanjsko probno izdanje':'Croatia · external test edition')+'</a>',
       ...required,
       ...extras,
       '<a href="'+(lang==='hr'?'/gnk-aktual/tjedni/':'/en/gnk-aktual/weekly/')+'">'+(lang==='hr'?'Tjednik':'Weekly')+'</a>',
@@ -261,31 +268,39 @@
     renderSources(items);
   }
 
+  function renderUnavailable(){
+    const lead=document.getElementById('amLead');
+    if(!lead) return;
+    lead.innerHTML=lang==='hr'
+      ? '<div class="am-lead-copy"><h2>Naslovi trenutačno nisu dostupni</h2><p>Provjerite izvore i datume na povezanom izdanju. Vanjski portal može sadržavati automatski obrađene ili demonstracijske vijesti.</p><p><a href="/gnk-aktual/media/hrvatska/">Izvori za Hrvatsku</a> · <a href="https://j1hex9qg03f0-d.space-z.ai/?country=hrvatska" rel="external noopener noreferrer">Vanjski pregled Hrvatske ↗</a></p></div>'
+      : '<div class="am-lead-copy"><h2>Headlines are currently unavailable</h2><p>Check sources and dates on the linked edition. The external portal may contain automated or demonstration stories.</p><p><a href="/gnk-aktual/media/hrvatska/">Sources for Croatia</a> · <a href="https://j1hex9qg03f0-d.space-z.ai/?country=hrvatska" rel="external noopener noreferrer">External Croatia edition ↗</a></p></div>';
+  }
   async function boot(){
-    try{
-      // Jedan ponovni pokušaj: tijekom deploya CDN zna vratiti prazan odgovor,
-      // a stranica je tada izgledala kao da nema vijesti.
-      let r=null;
-      for(let attempt=0;attempt<2;attempt+=1){
-        r=await fetch('/data/news.json',{cache:'no-cache'});
-        if(r.ok) break;
-        await new Promise(done=>setTimeout(done,1500));
-      }
-      if(!r||!r.ok) throw new Error('HTTP '+(r?r.status:'0'));
-      let items=safeItems(await r.json());
-      // Prazan odgovor zna doći iz CDN-a tijekom deploya. Jedan svjež upit
-      // zaobilazi keš; ako i tada nema stavki, stranica to pošteno kaže.
-      if(!items.length){
-        await new Promise(done=>setTimeout(done,1200));
-        const fresh=await fetch('/data/news.json?v='+Date.now(),{cache:'no-store'});
-        if(fresh.ok) items=safeItems(await fresh.json());
-      }
-      setEdition(items);
+    let items=[];
+    // Retry HTTP, network, invalid JSON and empty results once, not only HTTP errors.
+    for(let attempt=0;attempt<2;attempt+=1){
+      try {
+        const controller=new AbortController();
+        const timer=setTimeout(()=>controller.abort(),8000);
+        try {
+          const response=attempt
+            ? await fetch('/data/news.json?v='+Date.now(),{cache:'no-store',signal:controller.signal})
+            : await fetch('/data/news.json',{cache:'no-cache',signal:controller.signal});
+          if(response.ok) items=safeItems(await response.json());
+        } finally { clearTimeout(timer); }
+        if(items.length) break;
+      } catch(err) { console.warn('[aktual-world] feed attempt failed',err); }
+      if(attempt===0) await new Promise(done=>setTimeout(done,1200));
+    }
+    setEdition(items);
+    if(!items.length){renderUnavailable();return;}
+    try {
       if(view==='topics'){renderTopics(items);return}
       renderBreaking(items);renderLead(items);renderLatest(items);renderGroups(items);renderSources(items);setupSearch(items);renderEditorial();
-    }catch(err){
+    } catch(err) {
       const status=document.getElementById('amFeedStatus');
-      if(status) status.textContent=lang==='hr'?'Feed trenutačno nije dostupan.':'Feed is currently unavailable.';
+      if(status) status.textContent=lang==='hr'?'Prikaz feeda trenutačno nije dostupan.':'The feed display is currently unavailable.';
+      renderUnavailable();
       console.error('[aktual-world]',err);
     }
   }
