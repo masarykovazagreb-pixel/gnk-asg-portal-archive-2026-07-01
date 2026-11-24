@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-11-24T05:01:01.089Z",
+  "updatedAt": "2026-11-24T11:40:24.134Z",
   "sources": [
     {
       "id": "antara",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T05:00:54.379Z"
+      "checkedAt": "2026-11-24T11:39:58.117Z"
     },
     {
       "id": "kompas",
@@ -24,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: HTTP 404",
-        "https://nasional.kompas.com/rss: HTTP 404"
+        "https://www.kompas.com/rss: empty response",
+        "https://nasional.kompas.com/rss: empty response"
       ],
-      "checkedAt": "2026-11-24T05:00:56.312Z"
+      "checkedAt": "2026-11-24T11:39:59.659Z"
     },
     {
       "id": "detik",
@@ -39,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-11-24T05:00:58.553Z"
+      "checkedAt": "2026-11-24T11:40:21.344Z"
     },
     {
       "id": "tempo",
@@ -51,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-24T05:00:59.295Z"
+      "checkedAt": "2026-11-24T11:40:22.140Z"
     },
     {
       "id": "cnnindonesia",
@@ -61,7 +61,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T05:00:59.579Z"
+      "checkedAt": "2026-11-24T11:40:22.209Z"
     },
     {
       "id": "republika",
@@ -71,7 +71,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T05:00:59.873Z"
+      "checkedAt": "2026-11-24T11:40:22.703Z"
     },
     {
       "id": "cnbcindonesia",
@@ -81,7 +81,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T05:00:59.920Z"
+      "checkedAt": "2026-11-24T11:40:23.070Z"
     },
     {
       "id": "kumparan",
@@ -93,10 +93,335 @@
       "errors": [
         "https://kumparan.com/feed: nije feed"
       ],
-      "checkedAt": "2026-11-24T05:01:01.089Z"
+      "checkedAt": "2026-11-24T11:40:24.134Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-11-24-republika-petani-mulai-masa-tanam-rendeng-curah-hujan-404606",
+      "title": "Petani Mulai Masa Tanam Rendeng, Curah Hujan Tinggi Jadi Ancaman",
+      "summary": "INDRAMAYU -- Para petani di Kabupaten Indramayu sudah mulai bersiap melakukan tanam di musim rendeng 2026/2027. Curah hujan tinggi menjadi ancaman yang berpotensi mengganggu tanam. Wakil Ketua Kontak Tani Nelayan...",
+      "date": "2026-11-24T11:39:50.000Z",
+      "url": "https://rejabar.republika.co.id/berita/tp08ee282/petani-mulai-masa-tanam-rendeng-curah-hujan-tinggi-jadi-ancaman",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Kabar Jabar Rejabar"
+      ],
+      "author": "Karta Raharja Ucu",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/017830400-1781098583-830-556.jpg",
+      "imageAlt": "Petani Mulai Masa Tanam Rendeng, Curah Hujan Tinggi Jadi Ancaman",
+      "addedAt": "2026-11-24T11:40:22.703Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-antara-kalsel-siapkan-dua-bus-listrik-tambahan-77155b",
+      "title": "Kalsel siapkan dua bus listrik tambahan, tarif Papadaan Rp5.000",
+      "summary": "ANTARA - Pemerintah Provinsi Kalimantan Selatan menyiapkan penambahan dua unit bus listrik Trans Banjarbakula pada ...",
+      "date": "2026-11-24T11:38:15.000Z",
+      "url": "https://www.antaranews.com/video/5875315/kalsel-siapkan-dua-bus-listrik-tambahan-tarif-papadaan-rp5000",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/KALSEL-SIAPKAN-DUA-BUS-LISTRIK-TAMBAHAN-TARIF-PAPADAAN-RP5.000.jpg",
+      "imageAlt": "Kalsel siapkan dua bus listrik tambahan, tarif Papadaan Rp5.000",
+      "addedAt": "2026-11-24T11:39:58.117Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-antara-byd-mulai-menindak-penyalahgunaan-fasilitas-6a8232",
+      "title": "BYD mulai menindak penyalahgunaan fasilitas Flash Charging",
+      "summary": "BYD mulai menindak penyalahgunaan fasilitas Flash Charging dalam jaringan stasiun pengisian daya cepat yang sedang ...",
+      "date": "2026-11-24T11:38:09.000Z",
+      "url": "https://otomotif.antaranews.com/berita/5875347/byd-mulai-menindak-penyalahgunaan-fasilitas-flash-charging",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/14/IMG_4004.JPG.jpeg",
+      "imageAlt": "BYD mulai menindak penyalahgunaan fasilitas Flash Charging",
+      "addedAt": "2026-11-24T11:39:58.117Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-republika-kprk-mui-siapkan-pelatihan-pelatih-dan-5d8c52",
+      "title": "KPRK MUI Siapkan Pelatihan Pelatih dan Modul Panduan Tindak Lanjuti Tiga Pilar Rekomendasi KMI 2026",
+      "summary": "JAKARTA -- Ketua Pelaksana Konferensi Muslimah Indonesia (KMI) 2026 sekaligus Wakil Ketua Komisi Perempuan, Remaja, dan Keluarga (KPRK) Majelis Ulama Indonesia (MUI) Pusat Prof. Fadhilah Suralaga menyatakan seluruh rekomendasi...",
+      "date": "2026-11-24T11:38:00.000Z",
+      "url": "https://khazanah.republika.co.id/berita/tp07um430/kprk-mui-siapkan-pelatihan-pelatih-dan-modul-panduan-tindak-lanjuti-tiga-pilar-rekomendasi-kmi-2026",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Islam Digest"
+      ],
+      "author": "Muhammad Hafil",
+      "theme": "sport",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/prof-fadhilah_261124182638-386.jpg",
+      "imageAlt": "KPRK MUI Siapkan Pelatihan Pelatih dan Modul Panduan Tindak Lanjuti Tiga Pilar Rekomendasi KMI 2026",
+      "addedAt": "2026-11-24T11:40:22.703Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-antara-bahlil-implementasi-mou-investasi-ktt-apec-5ccfa7",
+      "title": "Bahlil: Implementasi MoU investasi KTT APEC akan dilakukan pada 2027",
+      "summary": "Menteri Koordinator Bidang Hilirisasi dan Transisi Energi Bahlil Lahadalia mengatakan implementasi komitmen investasi ...",
+      "date": "2026-11-24T11:37:49.000Z",
+      "url": "https://www.antaranews.com/berita/5875343/bahlil-implementasi-mou-investasi-ktt-apec-akan-dilakukan-pada-2027",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/24/22dd5b13-5d89-4f14-b0fe-4226644d0d63.jpeg",
+      "imageAlt": "Bahlil: Implementasi MoU investasi KTT APEC akan dilakukan pada 2027",
+      "addedAt": "2026-11-24T11:39:58.117Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-republika-kemenhaj-mediasi-pengembalian-uang-53-e8b0a7",
+      "title": "Kemenhaj Mediasi Pengembalian Uang 53 Jamaah Umrah yang Telantar di Bangkok",
+      "summary": "JAKARTA -- Kantor Wilayah Kementerian Haji dan Umrah (Kemenhaj) Provinsi Jawa Tengah mengawal penyelesaian kasus dugaan penipuan terhadap 53 calon jamaah umrah asal Kabupaten Boyolali yang telantar di Bangkok,...",
+      "date": "2026-11-24T11:36:59.000Z",
+      "url": "https://khazanah.republika.co.id/berita/tp089n430/kemenhaj-mediasi-pengembalian-uang-53-jamaah-umrah-yang-telantar-di-bangkok",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Ihram"
+      ],
+      "author": "Muhammad Hafil",
+      "theme": "ekonomija",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/kabah-ilustrasi-_180530210639-733.jpg",
+      "imageAlt": "Kemenhaj Mediasi Pengembalian Uang 53 Jamaah Umrah yang Telantar di Bangkok",
+      "addedAt": "2026-11-24T11:40:22.703Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-antara-persija-pesta-tujuh-gol-eksel-cetak-4f975f",
+      "title": "Persija pesta tujuh gol, Eksel cetak hattrick lawan Sumsel",
+      "summary": "Persija Jakarta menghajar Sumsel United dengan skor telak 7-0 pada pertandingan Grup A I.League Cup di Stadion Sultan ...",
+      "date": "2026-11-24T11:36:04.000Z",
+      "url": "https://www.antaranews.com/berita/5875339/persija-pesta-tujuh-gol-eksel-cetak-hattrick-lawan-sumsel",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/21/psm-makassar-imbang-lawan-persija-jakarta-2911567.jpg",
+      "imageAlt": "Persija pesta tujuh gol, Eksel cetak hattrick lawan Sumsel",
+      "addedAt": "2026-11-24T11:39:58.117Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-antara-bi-kembangkan-rumah-potong-hewan-halal-27e274",
+      "title": "BI kembangkan rumah potong hewan halal berbasis pesantren di Malang",
+      "summary": "ANTARA - &lrm;&lrm;&lrm;Bank Indonesia meresmikan rumah potong hewan (RPH) halal berbasis pesantren di Pondok Pesantren ...",
+      "date": "2026-11-24T11:35:28.000Z",
+      "url": "https://www.antaranews.com/video/5875303/bi-kembangkan-rumah-potong-hewan-halal-berbasis-pesantren-di-malang",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/BI-KEMBANGKAN-RUMAH-POTONG-HEWAN-HALAL-BERBASIS-PESANTREN-DI-MALANG.jpg",
+      "imageAlt": "BI kembangkan rumah potong hewan halal berbasis pesantren di Malang",
+      "addedAt": "2026-11-24T11:39:58.118Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-antara-bareskrim-jelaskan-temuan-rancangan-kaus-01677a",
+      "title": "Bareskrim jelaskan temuan rancangan kaus ACAB dalam kasus makar",
+      "summary": "ANTARA - Bareskrim Polri mengungkap temuan foto rancangan kaus bertuliskan ACAB, bergambar senjata, dan memuat tulisan ...",
+      "date": "2026-11-24T11:34:46.000Z",
+      "url": "https://www.antaranews.com/video/5875275/bareskrim-jelaskan-temuan-rancangan-kaus-acab-dalam-kasus-makar",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/Screenshot-2026-11-24-180647.jpg",
+      "imageAlt": "Bareskrim jelaskan temuan rancangan kaus ACAB dalam kasus makar",
+      "addedAt": "2026-11-24T11:39:58.118Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-republika-26-tahun-uu-pengadilan-ham-13-kasus-24a739",
+      "title": "26 Tahun UU Pengadilan HAM, 13 Kasus Pelanggaran Berat Masih Terkatung-katung",
+      "summary": "JAKARTA — Dua puluh enam tahun berlakunya Undang-Undang Nomor 26 Tahun 2000 tentang Pengadilan Hak Asasi Manusia (HAM) belum mampu menghadirkan keadilan bagi korban pelanggaran HAM berat. Belasan kasus...",
+      "date": "2026-11-24T11:30:54.000Z",
+      "url": "https://news.republika.co.id/berita/tp07zi393/26-tahun-uu-pengadilan-ham-13-kasus-pelanggaran-berat-masih-terkatungkatung",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Nasional News"
+      ],
+      "author": "Fitriyan Zamzami",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261124183341-918.png",
+      "imageAlt": "26 Tahun UU Pengadilan HAM, 13 Kasus Pelanggaran Berat Masih Terkatung-katung",
+      "addedAt": "2026-11-24T11:40:22.704Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnnindonesia-video-sosok-amran-dan-sugiono-yang-dipilih-92048e",
+      "title": "VIDEO: Sosok Amran dan Sugiono yang Dipilih Prabowo",
+      "summary": "Tanda tanya soal siapa yang dipilih Presiden Prabowo untuk dicalonkan sebagai wapres melalui pemilihan di MPR, akhirnya terjawab.",
+      "date": "2026-11-24T11:30:45.000Z",
+      "url": "https://www.cnnindonesia.com/tv/20261124163525-400-1430942/video-sosok-amran-dan-sugiono-yang-dipilih-prabowo",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/24/sosok-amran-dan-sugiono-yang-dipilih-prabowo-1795513407895_169.png?w=360&q=90",
+      "imageAlt": "VIDEO: Sosok Amran dan Sugiono yang Dipilih Prabowo",
+      "addedAt": "2026-11-24T11:40:22.209Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnnindonesia-ada-me-time-yang-sulit-ditawar-kaum-urban-af6eee",
+      "title": "Ada 'Me Time' yang Sulit Ditawar, Kaum Urban Alami Krisis Tidur?",
+      "summary": "Kehilangan waktu tidur tak cuma soal begadang. Ada banyak faktor lain yang membuat seseorang kekurangan tidur, terutama pada kaum pekerja urban.",
+      "date": "2026-11-24T11:30:45.000Z",
+      "url": "https://www.cnnindonesia.com/gaya-hidup/20261116130446-255-1427625/ada-me-time-yang-sulit-ditawar-kaum-urban-alami-krisis-tidur",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2024/12/12/ump-dki-jakarta-2025-naik-65-persen-3_169.jpeg?w=360&q=90",
+      "imageAlt": "Ada 'Me Time' yang Sulit Ditawar, Kaum Urban Alami Krisis Tidur?",
+      "addedAt": "2026-11-24T11:40:22.210Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnnindonesia-eks-bos-mossad-klaim-pernah-gagalkan-teror-912d85",
+      "title": "Eks Bos Mossad Klaim Pernah Gagalkan Teror ISIS di Konser Taylor Swift",
+      "summary": "Mantan Kepala Badan Intelijen Israel Mossad, David Barnea, mengeklaim pernah menggagalkan rencana serangan teror kelompok ISIS di konser Taylor Swift di Wina.",
+      "date": "2026-11-24T11:30:30.000Z",
+      "url": "https://www.cnnindonesia.com/internasional/20261124175441-134-1430971/eks-bos-mossad-klaim-pernah-gagalkan-teror-isis-di-konser-taylor-swift",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://akcdn.detik.net.id/visual/2024/07/29/israel-politics-intelligence-summit_169.jpeg?w=360&q=90",
+      "imageAlt": "Eks Bos Mossad Klaim Pernah Gagalkan Teror ISIS di Konser Taylor Swift",
+      "addedAt": "2026-11-24T11:40:22.210Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnbcindonesia-sah-pemerintah-setujui-pengembangan-6b25c5",
+      "title": "Sah! Pemerintah Setujui Pengembangan Lapangan Gas Jumbo di Kaltim",
+      "summary": "Pemerintah Indonesia telah menyetujui Rencana Pengembangan (POD) Lapangan Geliga di Wilayah Kerja (WK) Ganal PSC, Kaltim.",
+      "date": "2026-11-24T11:30:05.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261124173743-4-788055/sah-pemerintah-setujui-pengembangan-lapangan-gas-jumbo-di-kaltim",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://awsimages.detik.net.id/visual/2026/04/20/perusahaan-minyak-dan-gas-bumi-migas-asal-italia-eni-berhasil-menemukan-cadangan-gas-raksasa-baru-di-indonesia-temuan-ini-bera-1776689257937_169.jpeg?w=1200&q=90",
+      "imageAlt": "Sah! Pemerintah Setujui Pengembangan Lapangan Gas Jumbo di Kaltim",
+      "addedAt": "2026-11-24T11:40:23.071Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-republika-ratusan-pasangan-ikuti-nikah-massal-gratis-313201",
+      "title": "Ratusan Pasangan Ikuti Nikah Massal Gratis di Makassar",
+      "summary": "MAKASSAR -- Sejumlah pasangan pengantin mengikuti prosesi nikah massal gratis di Makassar, Sulawesi Selatan, Selasa (24/11/2026). Pemerintah Kota Makassar memfasilitasi pernikahan 210 pasangan dari keluarga kurang mampu yang berasal dari...",
+      "date": "2026-11-24T11:30:00.000Z",
+      "url": "https://visual.republika.co.id/berita/tp058o375/ratusan-pasangan-ikuti-nikah-massal-gratis-di-makassar",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Inpicture"
+      ],
+      "author": "Edwin Dwi Putranto",
+      "theme": "rat",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/036556100-1795515805-830-556.jpg",
+      "imageAlt": "Ratusan Pasangan Ikuti Nikah Massal Gratis di Makassar",
+      "addedAt": "2026-11-24T11:40:22.704Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnnindonesia-ieu-cepa-berlaku-mendag-targetkan-ekspor-ri-2387cd",
+      "title": "IEU CEPA Berlaku, Mendag Targetkan Ekspor RI ke Eropa Tumbuh 50 Persen",
+      "summary": "Budi mengatakan usai IEU CEPA diteken, lebih dari 90 persen produk RI nantinya dapat memperoleh fasilitas tarif nol persen masuk ke Eropa.",
+      "date": "2026-11-24T11:25:17.000Z",
+      "url": "https://www.cnnindonesia.com/ekonomi/20261124124244-92-1430771/ieu-cepa-berlaku-mendag-targetkan-ekspor-ri-ke-eropa-tumbuh-50-persen",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2026/10/14/mendag-bidik-transaksi-rp3134-t-di-trade-expo-indonesia-2026-1791972728012_169.jpeg?w=360&q=90",
+      "imageAlt": "IEU CEPA Berlaku, Mendag Targetkan Ekspor RI ke Eropa Tumbuh 50 Persen",
+      "addedAt": "2026-11-24T11:40:22.210Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnnindonesia-netizen-sambut-bojan-hodak-latih-malaysia-162c18",
+      "title": "Netizen Sambut Bojan Hodak Latih Malaysia, Bobotoh Persib Kirim Doa",
+      "summary": "Penunjukan Bojan Hodak sebagai pelatih baru timnas Malaysia mendapat sambutan positif dari sejumlah netizen termasuk bobotoh, suporter Persib Bandung.",
+      "date": "2026-11-24T11:22:45.000Z",
+      "url": "https://www.cnnindonesia.com/olahraga/20261124175318-142-1430970/netizen-sambut-bojan-hodak-latih-malaysia-bobotoh-persib-kirim-doa",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://akcdn.detik.net.id/visual/2023/09/02/jelang-persija-jakarta-vs-persib-bandung_169.jpeg?w=360&q=90",
+      "imageAlt": "Netizen Sambut Bojan Hodak Latih Malaysia, Bobotoh Persib Kirim Doa",
+      "addedAt": "2026-11-24T11:40:22.210Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnbcindonesia-bedah-ipo-anda-laba-melonjak-tapi-utang-dan-d47904",
+      "title": "Bedah IPO Anda: Laba Melonjak Tapi Utang dan Arus Kas Jadi Sorotan",
+      "summary": "Bedah IPO Anda: Laba Melonjak Tapi Utang dan Arus Kas Jadi Sorotan",
+      "date": "2026-11-24T11:20:09.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261124165427-8-788039/bedah-ipo-anda-laba-melonjak-tapi-utang-arus-kas-jadi-sorotan",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/24/bedah-ipo-anda-laba-melonjak-tapi-utang-arus-kas-jadi-sorotan-1795517178089_169.png?w=1200&q=90",
+      "imageAlt": "Bedah IPO Anda: Laba Melonjak Tapi Utang dan Arus Kas Jadi Sorotan",
+      "addedAt": "2026-11-24T11:40:23.071Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnbcindonesia-10-perangkat-elektronik-rumah-tetap-sedot-18f036",
+      "title": "10 Perangkat Elektronik Rumah Tetap Sedot Listrik Dalam Keadaan Mati",
+      "summary": "Perangkat elektronik tetap menyedot listrik meski dimatikan. Temukan cara menanggulanginya!",
+      "date": "2026-11-24T11:20:00.000Z",
+      "url": "https://www.cnbcindonesia.com/tech/20261124112712-37-787909/10-perangkat-elektronik-rumah-tetap-sedot-listrik-dalam-keadaan-mati",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://awsimages.detik.net.id/visual/2022/08/16/1-tahun-taliban-di-afghanistan_169.jpeg?w=1200&q=90",
+      "imageAlt": "10 Perangkat Elektronik Rumah Tetap Sedot Listrik Dalam Keadaan Mati",
+      "addedAt": "2026-11-24T11:40:23.071Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnbcindonesia-iu-umumkan-world-tour-2027-jakarta-kebagian-ba80b5",
+      "title": "IU Umumkan World Tour 2027, Jakarta Kebagian 2 Hari Konser di JIS!",
+      "summary": "Penyanyi K-Pop IU akan menggelar \"2027 IU WORLD TOUR CONCERT\" di Jakarta pada 8-9 Mei 2027. Konser ini menandai kembalinya IU setelah tiga tahun.",
+      "date": "2026-11-24T11:10:31.000Z",
+      "url": "https://www.cnbcindonesia.com/lifestyle/20261124171831-33-788045/iu-umumkan-world-tour-2027-jakarta-kebagian-2-hari-konser-di-jis",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2021/04/21/fashion-iu-di-drama-hotel-del-luna-hancinemanet_169.jpeg?w=1200&q=90",
+      "imageAlt": "IU Umumkan World Tour 2027, Jakarta Kebagian 2 Hari Konser di JIS!",
+      "addedAt": "2026-11-24T11:40:23.071Z"
+    },
+    {
+      "slug": "jakarta-2026-11-24-cnbcindonesia-kabar-prabowo-dan-bos-msci-bicara-di-abc901",
+      "title": "Kabar Prabowo dan Bos MSCI Bicara di Telepon, Rosan Bilang Begini",
+      "summary": "CEO BPI Rosan Roeslani membahas komunikasi antara Prabowo dan MSCI. Ia menekankan pentingnya perbaikan sistem pasar modal oleh OJK.",
+      "date": "2026-11-24T11:01:50.000Z",
+      "url": "https://www.cnbcindonesia.com/market/20261124175947-17-788068/kabar-prabowo-dan-bos-msci-bicara-di-telepon-rosan-bilang-begini",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://awsimages.detik.net.id/visual/2026/10/19/ceo-danantara-rosan-roeslani-1792412326898_169.png?w=1200&q=90",
+      "imageAlt": "Kabar Prabowo dan Bos MSCI Bicara di Telepon, Rosan Bilang Begini",
+      "addedAt": "2026-11-24T11:40:23.071Z"
+    },
     {
       "slug": "jakarta-2026-11-24-antara-mendag-targetkan-ekspor-ri-naik-3-8-miliar-5c6d78",
       "title": "Mendag targetkan ekspor RI naik 3,8 miliar dolar AS per tahun ke UE",
