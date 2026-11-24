@@ -2,32 +2,24 @@
   "city": "Zagreb",
   "lat": 45.815,
   "lon": 15.9819,
-  "updated_at": "2026-11-24T05:58:43.724Z",
+  "updated_at": "2026-11-24T23:27:12.647Z",
   "source": "open-meteo.com",
-  "state": "stale",
+  "state": "live",
   "current": {
-    "temperature_c": 0.1,
-    "feels_like_c": -2.6,
-    "humidity_pct": 82,
-    "wind_kmh": 1.1,
+    "temperature_c": 2.6,
+    "feels_like_c": 0.2,
+    "humidity_pct": 85,
+    "wind_kmh": 2.2,
     "is_day": false,
-    "weather_code": 1,
-    "condition_hr": "Pretežno vedro",
-    "condition_en": "Mainly clear"
+    "weather_code": 3,
+    "condition_hr": "Oblačno",
+    "condition_en": "Overcast"
   },
   "forecast": [
     {
-      "date": "2026-11-24",
-      "max_c": 5.5,
-      "min_c": -0.7,
-      "weather_code": 3,
-      "condition_hr": "Oblačno",
-      "condition_en": "Overcast"
-    },
-    {
       "date": "2026-11-25",
-      "max_c": 5,
-      "min_c": 2,
+      "max_c": 4.6,
+      "min_c": 2.1,
       "weather_code": 61,
       "condition_hr": "Slaba kiša",
       "condition_en": "Slight rain"
@@ -35,12 +27,18 @@
     {
       "date": "2026-11-26",
       "max_c": 3.8,
-      "min_c": 1.4,
-      "weather_code": 63,
-      "condition_hr": "Umjerena kiša",
-      "condition_en": "Moderate rain"
+      "min_c": 0.2,
+      "weather_code": 73,
+      "condition_hr": "Umjeren snijeg",
+      "condition_en": "Moderate snow fall"
+    },
+    {
+      "date": "2026-11-27",
+      "max_c": 2,
+      "min_c": 0.8,
+      "weather_code": 71,
+      "condition_hr": "Slab snijeg",
+      "condition_en": "Slight snow fall"
     }
-  ],
-  "stale_since": "2026-11-24T05:58:43.724Z",
-  "checked_at": "2026-11-24T12:22:13.762Z"
+  ]
 }
