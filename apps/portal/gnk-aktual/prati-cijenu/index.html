@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07121f">
+<title>Prati cijenu proizvoda — AKTUAL MEDIA</title>
+<meta name="description" content="Unesite poveznicu na proizvod i primite e-mail samo kada ovlašteni izvor potvrdi pad cijene na hrvatskom tržištu.">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://gnk-asg.hr/gnk-aktual/prati-cijenu/">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/aktual-price-alerts-v1.css?v=20261124">
+<script src="/assets/aktual-price-alerts-v1.js?v=20261124" defer></script>
+</head>
+<body>
+<a class="skip" href="#sadrzaj">Preskoči na sadržaj</a>
+<header class="header">
+  <a href="/gnk-aktual/" class="brand"><img src="/assets/brand/aktual-media-hr.svg" alt="AKTUAL MEDIA" width="160" height="44"></a>
+  <nav aria-label="Primarna navigacija"><a href="/gnk-aktual/">Vijesti</a><a href="/aktual-media/proizvodi/">Proizvodi portala</a></nav>
+</header>
+<main id="sadrzaj" class="wrap">
+  <div class="eyebrow">AKTUAL MEDIA · PAMETNA KUPOVINA</div>
+  <h1>Prati cijenu. Kupi kada pojeftini.</h1>
+  <p class="lead">Pošaljite poveznicu na određeni proizvod, potvrdite e-mail adresu i primite obavijest tek kada se provjeri niža cijena za <strong>isti model, varijantu i stanje</strong>.</p>
+  <div class="summary" aria-label="Pravila praćenja"><span>Jedna provjera dnevno</span><span>Hrvatska · EUR</span><span>Bez obavijesti za nepromijenjenu cijenu</span></div>
+  <div class="layout">
+    <section class="panel" aria-labelledby="form-title">
+      <h2 id="form-title">Dodajte proizvod</h2>
+      <div id="service-status" class="service" role="status" aria-live="polite">Provjeravamo dostupnost usluge…</div>
+      <form id="watch-form" novalidate>
+        <fieldset id="watch-fields" disabled>
+          <label for="product-url">Poveznica na točan proizvod <span aria-hidden="true">*</span></label>
+          <input type="url" id="product-url" name="url" placeholder="https://trgovina.hr/proizvod/model" autocomplete="url" required maxlength="2048">
+          <div class="hint" id="supported-shops">Podržane trgovine prikazat će se nakon provjere sustava.</div>
+
+          <label for="product-variant">Varijanta, boja ili kapacitet (neobvezno)</label>
+          <input type="text" id="product-variant" name="variant" placeholder="Primjer: 256 GB, crna" maxlength="80">
+
+          <label for="target-price">Obavijesti me kada cijena padne ispod ili na (EUR; neobvezno)</label>
+          <input type="text" id="target-price" name="targetPrice" placeholder="Primjer: 199,99" inputmode="decimal" maxlength="10">
+          <div class="hint">Ako ostavite prazno, vrijedi bilo koji potvrđeni pad cijene.</div>
+
+          <label for="email">Vaša e-mail adresa <span aria-hidden="true">*</span></label>
+          <input type="email" id="email" name="email" placeholder="ime@domena.hr" autocomplete="email" required maxlength="254">
+          <label class="consent"><input type="checkbox" id="consent" name="consent" required> <span>Pristajem na obradu adrese e-pošte i poveznice proizvoda samo za slanje potvrde i obavijesti o cijeni. Mogu se odjaviti u svakoj obavijesti.</span></label>
+          <div class="trap" aria-hidden="true"><label for="website">Web stranica</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+          <div id="price-turnstile" aria-label="Sigurnosna provjera"></div>
+          <button id="submit-watch" type="submit">Uključi praćenje cijene</button>
+        </fieldset>
+      </form>
+      <p id="form-response" class="response" role="status" aria-live="polite"></p>
+    </section>
+    <aside class="panel secondary" aria-labelledby="how-title">
+      <h2 id="how-title">Kako funkcionira?</h2>
+      <ol>
+        <li><strong>Odaberite proizvod.</strong> Točna poveznica, varijanta i stanje važniji su od privlačne naslovne cijene.</li>
+        <li><strong>Potvrdite e-mail.</strong> Bez potvrde nema aktivnog praćenja.</li>
+        <li><strong>Uspoređujemo svaki dan.</strong> Prvo pouzdano očitanje postaje početna cijena.</li>
+        <li><strong>Šaljemo samo potvrđeni pad.</strong> U poruci su stara i nova cijena, trgovac, valuta, stanje, tržište i izravna ponuda.</li>
+      </ol>
+      <p class="important">Nije moguće jamčiti da će svaka trgovina i svaka varijanta biti dostupne. Cijene se mogu promijeniti između provjere i kupnje. Ne izmišljamo ponude niti koristimo neprovjerene izvore.</p>
+    </aside>
+  </div>
+  <section class="privacy" aria-labelledby="privacy-title">
+    <h2 id="privacy-title">Privatnost i odjava</h2>
+    <p>Za prijavu koristimo e-mail adresu, poveznicu na proizvod, eventualnu ciljanu cijenu i potvrdu privole. Podatci su namijenjeni isključivo praćenju cijene, ne javnoj objavi. Svaka obavijest sadržava odjavu; zahtjev za pristup ili brisanje možete poslati na <a href="mailto:info@gnk-asg.hr">info@gnk-asg.hr</a>. Prijave nisu dostupne dok sigurnosni i podatkovni preduvjeti nisu ispunjeni.</p>
+  </section>
+</main>
+<footer><a href="/gnk-aktual/">AKTUAL MEDIA</a> · Informativna usluga; bez jamstva dostupnosti ponude.</footer>
+</body>
+</html>
