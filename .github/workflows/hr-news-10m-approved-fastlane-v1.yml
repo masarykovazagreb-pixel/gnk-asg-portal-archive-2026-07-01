@@ -11,6 +11,11 @@ on:
         description: 'Type PUBLISH_APPROVED_HR_NEWS for verified editorial content'
         required: false
         type: string
+      notify_search_engines:
+        description: 'Notify search engines only after protected release validation'
+        required: false
+        type: boolean
+        default: true
       verify_approved_sha:
         description: 'Verifier only: exact main SHA released by the canonical writer'
         required: false
@@ -63,13 +68,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           ARTICLE_PATH: ${{ inputs.article_path }}
+          NOTIFY: ${{ inputs.notify_search_engines }}
         run: |
           set -euo pipefail
           gh workflow run content-queue-publish.yml \
             --repo "$GITHUB_REPOSITORY" --ref main \
             -f approved_hr_news_batch="$ARTICLE_PATH" \
             -f confirm_approved_hr_news=PUBLISH_APPROVED_HR_NEWS \
-            -f notify_search_engines=true
+            -f notify_search_engines="$NOTIFY"
           echo 'Queued the existing single writer; public LIVE not yet verified.'
 
   verify-public-article:
