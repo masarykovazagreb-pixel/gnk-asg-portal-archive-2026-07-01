@@ -53,6 +53,8 @@ try {
  const svg=load(path.join(tmp,'out/assets/editorial/hr-news/'+sample.slug+'.svg'));
  const generated=JSON.parse(load(path.join(tmp,'out/data/hr-news-original-v1.json')));
  assert.match(html,/NewsArticle/);assert.match(html,/Provjerljivi izvori/);
+ assert.ok(html.includes('data-am-design="v1"'),'Approved articles must include shared design tokens');
+ assert.ok(html.includes('"@type":"WebSite"'),'Approved articles must include canonical WebSite JSON-LD');
  assert.match(svg,/<svg/);assert.match(svg,/Izvorna konceptualna ilustracija/);
  assert.equal(generated.items.length,1);
  sample.approvedForPublication=false;fs.writeFileSync(fixture,JSON.stringify(sample));
