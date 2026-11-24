@@ -1,0 +1,32 @@
+# NOT LIVE until reviewed, KV namespace bound and verified adapters configured.
+# No Vercel dependency. Do not run this deployment without release approval.
+name = "gnk-asg-price-alerts"
+main = "src/index.mjs"
+compatibility_date = "2026-11-24"
+
+[[routes]]
+pattern = "gnk-asg.hr/api/price-alerts/*"
+zone_name = "gnk-asg.hr"
+
+[triggers]
+crons = ["15 7 * * *"]
+
+# Before deploying, provision a private Cloudflare KV namespace and add:
+# [[kv_namespaces]]
+# binding = "PRICE_ALERTS_KV"
+# id = "<ID OF PRIVATE KV NAMESPACE>"
+#
+# Configuration (Worker vars):
+# PRICE_ALERTS_ENABLED = "true" ONLY after all audits pass.
+# PRICE_ALERT_FEED_CONTRACT_VERIFIED = "true"
+# PRICE_ALERT_REUSE_APPROVED = "true"
+# PRICE_ALERT_MAIL_CONTRACT_VERIFIED = "true"
+# PRICE_ALERT_RETAILER_HOSTS = "approved-shop.hr,second-approved-shop.hr"
+# PRICE_ALERT_FEED_API_URL = "https://verified-provider.example/quote"
+# PRICE_ALERT_MAIL_API_URL = "https://approved-mail-adapter.example/send"
+# PRICE_ALERT_MAIL_FROM = "Aktual Media <verified-alert-sender@your-domain.example>"
+#
+# Secrets, never in Git: PRICE_ALERT_FEED_BEARER_TOKEN,
+# PRICE_ALERT_MAIL_BEARER_TOKEN, TURNSTILE_SECRET,
+# TURNSTILE_SITE_KEY (site key may be publicly displayed),
+# PRICE_ALERT_TOKEN_SECRET (random 32+ bytes).
