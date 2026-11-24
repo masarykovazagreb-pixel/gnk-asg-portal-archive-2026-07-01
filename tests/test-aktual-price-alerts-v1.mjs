@@ -7,7 +7,7 @@ const url = 'https://trgovina.hr/artikl/telefon-256';
 const now = Date.parse('2026-11-24T09:00:00Z');
 const quote = { productId: 'sku-100', model: 'Telefon X', variant: '256 GB crna',
   condition: 'new', market: 'HR', currency: 'EUR', priceMinor: 21999,
-  seller: 'Trgovina', offerUrl: url, observedAt: '2026-11-24T08:50:00Z' };
+  seller: 'Trgovina', offerUrl: url, matchedUrl: url, observedAt: '2026-11-24T08:50:00Z' };
 const watch = { url, productId: null, model: null, savedVariant: null, requestedVariant: '256 GB' };
 
 test('ciljana cijena se računa u centima bez usporedbe float vrijednosti', () => {
@@ -33,6 +33,7 @@ test('ponuda se verificira po tržištu, valuti, stanju, identitetu i vremenu', 
   assert.equal(validateQuote({ ...quote, currency: 'USD' }, watch, hosts, now), null);
   assert.equal(validateQuote({ ...quote, market: 'SI' }, watch, hosts, now), null);
   assert.equal(validateQuote({ ...quote, condition: 'used' }, watch, hosts, now), null);
+  assert.equal(validateQuote({ ...quote, matchedUrl: 'https://trgovina.hr/artikl/drugi-proizvod' }, watch, hosts, now), null);
   assert.equal(validateQuote({ ...quote, offerUrl: 'https://evil.test/x' }, watch, hosts, now), null);
   assert.equal(validateQuote({ ...quote, observedAt: '2026-11-20T08:50:00Z' }, watch, hosts, now), null);
   assert.equal(validateQuote({ ...quote, productId: 'sku-other' }, { ...watch, productId: 'sku-100' }, hosts, now), null);
