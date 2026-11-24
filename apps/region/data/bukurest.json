@@ -4,20 +4,19 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-24T23:19:16.242Z",
+  "updatedAt": "2026-11-24T23:40:32.664Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://www.agerpres.ro/rss/",
+      "ok": true,
+      "fetched": 20,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: This operation was aborted",
-        "https://www.agerpres.ro/rss/: HTTP 520"
+        "https://www.agerpres.ro/rss: HTTP 500"
       ],
-      "checkedAt": "2026-11-24T23:19:11.188Z"
+      "checkedAt": "2026-11-24T23:40:25.591Z"
     },
     {
       "id": "hotnews",
@@ -27,7 +26,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T23:19:11.226Z"
+      "checkedAt": "2026-11-24T23:40:25.735Z"
     },
     {
       "id": "zf",
@@ -37,7 +36,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T23:19:12.761Z"
+      "checkedAt": "2026-11-24T23:40:27.522Z"
     },
     {
       "id": "profit",
@@ -47,7 +46,7 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T23:19:13.034Z"
+      "checkedAt": "2026-11-24T23:40:27.613Z"
     },
     {
       "id": "digi24",
@@ -57,7 +56,7 @@
       "fetched": 263,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T23:19:14.692Z"
+      "checkedAt": "2026-11-24T23:40:30.065Z"
     },
     {
       "id": "g4media",
@@ -67,7 +66,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T23:19:15.968Z"
+      "checkedAt": "2026-11-24T23:40:31.709Z"
     },
     {
       "id": "newsro",
@@ -77,10 +76,100 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-24T23:19:16.240Z"
+      "checkedAt": "2026-11-24T23:40:32.662Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-24-agerpres-sua-atac-cibernetic-asupra-cia-si-a-c0b698",
+      "title": "SUA: Atac cibernetic asupra CIA și a Direcției Naționale de Informații (presă)",
+      "summary": "",
+      "date": "2026-11-24T23:40:25.592Z",
+      "url": "https://agerpres.ro/politic-extern/2026/11/25/sua-atac-cibernetic-asupra-cia-si-a-directiei-nationale-de-informatii-presa--1616538",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "SUA: Atac cibernetic asupra CIA și a Direcției Naționale de Informații (presă)",
+      "addedAt": "2026-11-24T23:40:25.592Z"
+    },
+    {
+      "slug": "bukurest-2026-11-24-agerpres-handbal-masculin-csm-bucuresti-a-pierdut-in-765a92",
+      "title": "Handbal masculin: CSM București a pierdut în Bosnia, în EHF European League",
+      "summary": "",
+      "date": "2026-11-24T23:40:25.592Z",
+      "url": "https://agerpres.ro/sport-extern/2026/11/25/handbal-masculin-csm-bucuresti-a-pierdut-in-bosnia-in-ehf-european-league--1616534",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "Handbal masculin: CSM București a pierdut în Bosnia, în EHF European League",
+      "addedAt": "2026-11-24T23:40:25.592Z"
+    },
+    {
+      "slug": "bukurest-2026-11-24-agerpres-israel-partidul-de-stanga-suspenda-cad976",
+      "title": "Israel: Partidul de stânga suspendă discuțiile cu Eisenkot",
+      "summary": "",
+      "date": "2026-11-24T23:40:25.592Z",
+      "url": "https://agerpres.ro/politic-extern/2026/11/25/israel-partidul-de-stanga-suspenda-discutiile-cu-eisenkot--1616533",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Israel: Partidul de stânga suspendă discuțiile cu Eisenkot",
+      "addedAt": "2026-11-24T23:40:25.592Z"
+    },
+    {
+      "slug": "bukurest-2026-11-24-agerpres-video-fotbal-victorie-clara-pentru-real-074a49",
+      "title": "VIDEO Fotbal: Victorie clară pentru Real Madrid în Liga Campionilor, 5-1 cu PSV; Remiză pentru Arsenal",
+      "summary": "",
+      "date": "2026-11-24T23:40:25.592Z",
+      "url": "https://agerpres.ro/sport-extern/2026/11/25/video-fotbal-victorie-clara-pentru-real-madrid-in-liga-campionilor-5-1-cu-psv-remiza-pentru-arsenal--1616532",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "VIDEO Fotbal: Victorie clară pentru Real Madrid în Liga Campionilor, 5-1 cu PSV; Remiză pentru Arsenal",
+      "addedAt": "2026-11-24T23:40:25.592Z"
+    },
+    {
+      "slug": "bukurest-2026-11-24-agerpres-negocieri-lukasenko-vrea-sa-il-insoteasca-9f437e",
+      "title": "Negocieri: Lukașenko vrea să îl însoțească pe Zelenski la Moscova",
+      "summary": "",
+      "date": "2026-11-24T23:40:25.592Z",
+      "url": "https://agerpres.ro/politic-extern/2026/11/24/negocieri-lukasenko-vrea-sa-il-insoteasca-pe-zelenski-la-moscova--1616531",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Negocieri: Lukașenko vrea să îl însoțească pe Zelenski la Moscova",
+      "addedAt": "2026-11-24T23:40:25.592Z"
+    },
+    {
+      "slug": "bukurest-2026-11-24-agerpres-hochei-succese-pentru-acsh-gheorgheni-si-83d1f9",
+      "title": "Hochei: Succese pentru ACSH Gheorgheni și Corona Brașov, în Campionatul Național",
+      "summary": "",
+      "date": "2026-11-24T23:40:25.592Z",
+      "url": "https://agerpres.ro/sport/2026/11/24/hochei-succese-pentru-acsh-gheorgheni-si-corona-brasov-in-campionatul-national--1616530",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Hochei: Succese pentru ACSH Gheorgheni și Corona Brașov, în Campionatul Național",
+      "addedAt": "2026-11-24T23:40:25.592Z"
+    },
     {
       "slug": "bukurest-2026-11-24-newsro-mos-craciuni-si-un-urs-polar-au-iesit-dintr-db4a71",
       "title": "Moş Crăciuni şi un urs polar au ieşit dintr-un container eşuat pe o plajă din Bulgaria. Decoraţiunile ar aparţine unei firme din România şi ar proveni de pe o navă scufundată în…",
