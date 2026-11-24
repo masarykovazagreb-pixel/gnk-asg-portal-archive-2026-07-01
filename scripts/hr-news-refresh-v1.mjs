@@ -53,7 +53,7 @@ function parse(xml,source) {
 }
 function retainedExisting(){
  const result=[];
- for(const path of [ROOT+'news.json',ROOT+'news_archive.json']){
+ for(const path of [ROOT+'hr-news-feed-v1.json',ROOT+'news.json',ROOT+'news_archive.json']){
   if(!fs.existsSync(path))continue;
   let body;try{body=JSON.parse(fs.readFileSync(path,'utf8'));}catch{continue;}
   const rows=Array.isArray(body)?body:body.items||[];
