@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "description": "HR News uses up to 200 real external Croatian-publisher headline LINKS; publisher owns full text and images",
+  "goalExternalLinks": 200,
+  "goalOriginalApprovedReportsPerDay": 20,
+  "actualOriginalReportsPublishedByThisManifest": 0,
+  "sourceAccess": "fetch limited to registry feeds and approved domains",
+  "noHinaWithoutLicense": true,
+  "editorialPolicy": "do not present source metadata as independently verified original reporting",
+  "maxAgeHours": 168,
+  "sourcePerEditionLimit": 65,
+  "sources": [
+    {
+      "name": "HRT Vijesti",
+      "feed": "https://vijesti.hrt.hr/rss/rss-feed.xml",
+      "domain": "hrt.hr",
+      "enabled": true,
+      "feedAvailability": "registry-listed-candidate-not-verified-through-accessible-rss-tool",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish",
+      "fallbackFeeds": [
+        "https://www.hrt.hr/rss/vijesti/"
+      ]
+    },
+    {
+      "name": "Index.hr",
+      "feed": "https://www.index.hr/rss/vijesti",
+      "domain": "index.hr",
+      "enabled": true,
+      "feedAvailability": "must_verify_on_each_run",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish"
+    },
+    {
+      "name": "24sata",
+      "feed": "https://www.24sata.hr/feeds/najnovije.xml",
+      "domain": "24sata.hr",
+      "enabled": true,
+      "feedAvailability": "verified-publisher-rss-list",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish",
+      "fallbackFeeds": [
+        "https://www.24sata.hr/feeds/news.xml",
+        "https://www.24sata.hr/feeds/aktualno.xml"
+      ]
+    },
+    {
+      "name": "Jutarnji list",
+      "feed": "https://www.jutarnji.hr/feed",
+      "domain": "jutarnji.hr",
+      "enabled": true,
+      "feedAvailability": "must_verify_on_each_run",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish",
+      "fallbackFeeds": [
+        "https://www.jutarnji.hr/rss/vijesti/"
+      ]
+    },
+    {
+      "name": "Večernji list",
+      "feed": "https://www.vecernji.hr/rss/vijesti/",
+      "domain": "vecernji.hr",
+      "enabled": true,
+      "feedAvailability": "must_verify_on_each_run",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish"
+    },
+    {
+      "name": "N1 Hrvatska",
+      "feed": "https://n1info.hr/feed/",
+      "domain": "n1info.hr",
+      "enabled": true,
+      "feedAvailability": "must_verify_on_each_run",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish"
+    },
+    {
+      "name": "tportal",
+      "feed": "https://www.tportal.hr/rss-najnovije.xml",
+      "domain": "tportal.hr",
+      "enabled": true,
+      "feedAvailability": "externally-confirmed-publisher-feed-2026-11-23",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish"
+    },
+    {
+      "name": "Net.hr",
+      "feed": "https://net.hr/feed/",
+      "domain": "net.hr",
+      "enabled": true,
+      "feedAvailability": "must_verify_on_each_run",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish"
+    },
+    {
+      "name": "Dnevnik.hr",
+      "feed": "https://www.dnevnik.hr/rss",
+      "domain": "dnevnik.hr",
+      "enabled": true,
+      "feedAvailability": "must_verify_on_each_run",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish"
+    },
+    {
+      "name": "Poslovni dnevnik",
+      "feed": "https://www.poslovni.hr/feed/",
+      "domain": "poslovni.hr",
+      "enabled": true,
+      "feedAvailability": "must_verify_on_each_run",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish"
+    },
+    {
+      "name": "Lider",
+      "feed": "https://lidermedia.hr/rss",
+      "domain": "lidermedia.hr",
+      "enabled": true,
+      "feedAvailability": "must_verify_on_each_run",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish"
+    },
+    {
+      "name": "Dalmacija Danas",
+      "feed": "https://www.dalmacijadanas.hr/feed/",
+      "domain": "dalmacijadanas.hr",
+      "enabled": true,
+      "feedAvailability": "must_verify_on_each_run",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish"
+    },
+    {
+      "name": "Zagreb.info",
+      "feed": "https://www.zagreb.info/feed/",
+      "domain": "zagreb.info",
+      "enabled": true,
+      "feedAvailability": "must_verify_on_each_run",
+      "rights": "external_title_link_only",
+      "images": "do_not_download_or_republish"
+    }
+  ]
+}

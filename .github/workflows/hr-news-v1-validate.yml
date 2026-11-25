@@ -1,0 +1,31 @@
+name: HR NEWS — source, original article and one-command release tests
+on:
+  pull_request:
+    paths:
+      - 'apps/portal/news/**'
+      - 'apps/portal/assets/hr-news-live-v1.js'
+      - 'apps/portal/data/hr-news-sources-v1.json'
+      - 'scripts/hr-news-*.mjs'
+      - 'scripts/test-hr-news-v1.mjs'
+      - '.github/workflows/gnk-news-refresh-v2.yml'
+      - '.github/workflows/hr-news-v1-validate.yml'
+  workflow_dispatch:
+concurrency:
+  group: hr-news-quality-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  hr-news-contract:
+    name: Source-only news and gated original publisher
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify HR News provenance, 200-link UI, ten processors and one-command publication
+        run: node scripts/test-hr-news-v1.mjs
+      - name: Confirm no competing production news writer
+        run: node scripts/test-aktual-news-single-writer-v1.mjs

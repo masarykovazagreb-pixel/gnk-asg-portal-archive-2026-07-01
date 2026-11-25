@@ -45,6 +45,7 @@ jobs:
           node scripts/build-aktual-world-en-v1.mjs --check
       - name: Commit deterministic build output ONLY to preapproved feature branch
         if: >
+          vars.GNK_ASG_RELEASE_FENCE != 'true' &&
           github.event_name == 'pull_request' &&
           github.event.pull_request.head.repo.full_name == github.repository &&
           github.event.pull_request.head.ref == 'feature/aktual-world-premium-radio-20261118'

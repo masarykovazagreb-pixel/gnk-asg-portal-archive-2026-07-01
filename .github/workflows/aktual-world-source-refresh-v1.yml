@@ -23,10 +23,21 @@ jobs:
         run: node --test tests/test-aktual-world-v1.mjs
       - name: Fetch external headlines as links only
         env:
-          AKTUAL_FEEDS_PER_COUNTRY: '2'
+          AKTUAL_FEEDS_PER_COUNTRY: '12'
           AKTUAL_FETCH_CONCURRENCY: '8'
-          AKTUAL_ITEMS_PER_COUNTRY: '10'
+          AKTUAL_ITEMS_PER_COUNTRY: '100'
         run: node scripts/refresh-aktual-world-headlines-v1.mjs
+      - name: Assign one source-research desk per 201 countries and Zagreb priority
+        run: |
+          node scripts/test-world201-edition-agent-plan-v1.mjs
+          node scripts/world201-edition-agent-plan-v1.mjs
+      - name: Save private source-research assignments for editorial verification
+        uses: actions/upload-artifact@v4
+        with:
+          name: world201-source-research-${{ github.run_id }}
+          path: artifacts/world201-agent-assignments-v1.json
+          if-no-files-found: error
+          retention-days: 3
       - name: Regenerate static pages and RSS without copying article bodies
         env:
           AKTUAL_WORLD_OUT: apps/portal/gnk-aktual
