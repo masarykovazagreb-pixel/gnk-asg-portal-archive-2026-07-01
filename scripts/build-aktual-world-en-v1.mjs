@@ -2,7 +2,10 @@
 /** Canonical deterministic English country-directory generator.
  * Research source links only. NEVER claims RSS leads are our articles.
  * HTML paths match apps/portal/en/gnk-aktual/media/<country>/index.html.
- * Usage: node scripts/build-aktual-world-en-v1.mjs [--check].
+ * Existing pages: update only source catalogue, edition facts and directory list;
+ * preserve editorial layers, metadata, robots and hashtags. A missing page is
+ * generated in full. All pages are validated before any write.
+ * --check checks these managed blocks and the sitemap, not whole-page equality.
  * Optional isolated output: AKTUAL_EN_OUT=<directory>.
  */
 import {readFileSync,writeFileSync,mkdirSync,existsSync} from 'node:fs';
@@ -36,12 +39,13 @@ function renderCountry(c){
  const hr=ROOT+"/gnk-aktual/media/"+c.slug+"/";
  const p=providers(c);
  const real=p.filter(x=>!x.aggregator);
+ const directHosts=new Set(real.map(s=>new URL(s.url).hostname.replace(/^www\./,''))).size;
  const index=indexEligible(c);
  const title="AKTUAL MEDIA "+c.nameEn+" | Independent sources, news & radio";
  const desc="Explore independent news sources for "+c.nameEn+". Discover local publishers, current RSS sources and AKTUAL MEDIA global radio. External reports remain with their publishers.";
  const metaDesc=countryDirectoryDescription(c.nameEn);
  const pairs='<link rel="alternate" hreflang="en" href="'+url+'"><link rel="alternate" hreflang="hr" href="'+hr+'"><link rel="alternate" hreflang="x-default" href="'+url+'">';
- const cards=p.map((s,i)=>'<li class="am-source-card"><span class="am-source-kind">'+(s.aggregator?"News aggregator":"Independent external publisher")+'</span><h3><a href="'+esc(s.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(s.name)+'</a></h3><p>Source for '+esc(c.nameEn)+' · '+esc(s.category)+'. Content and media rights remain with the source.</p>'+(s.rss?'<a class="am-small-link" href="'+esc(s.rss)+'" target="_blank" rel="noopener noreferrer nofollow">RSS source ↗</a>':"")+'</li>').join("\n");
+ const cards=p.map(s=>'<li class="am-source-card"><span class="am-source-kind">'+(s.aggregator?"News aggregator":"External publisher")+'</span><h3><a href="'+esc(s.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(s.name)+'</a></h3><p>Source for '+esc(c.nameEn)+' · '+esc(s.category)+'. Content and media rights remain with the source.</p>'+(s.rss?'<a class="am-small-link" href="'+esc(s.rss)+'" target="_blank" rel="noopener noreferrer nofollow">RSS source ↗</a>':"")+'</li>').join("\n");
  const schema=JSON.stringify({"@context":"https://schema.org","@type":"CollectionPage","@id":url+"#page",url,name:title,description:desc,inLanguage:"en",isPartOf:{"@id":ROOT+"/#website"},publisher:{"@id":ROOT+"/gnk-aktual/#news-organization"},editor:{"@type":"Person","@id":ROOT+"/#nermin-sefic",name:"Nermin Sefić"},about:{"@type":"Place",name:c.nameEn,alternateName:c.nameLocal,address:{"@type":"PostalAddress",addressCountry:c.code}}}).replace(/</g,"\\u003c");
  return `<!doctype html>
 <html lang="en"><head>
@@ -68,8 +72,8 @@ function renderCountry(c){
 <h1><span aria-hidden="true">${esc(c.flag||"🌍")}</span> ${esc(c.nameEn)}<br><span class="am-light">News &amp; sources</span></h1>
 <p class="am-lead">A focused gateway to news sources serving ${esc(c.nameEn)}. Follow original publishers, explore relevant RSS feeds and discover independent AKTUAL MEDIA coverage as it becomes verified and published.</p>
 <div class="am-cta"><a class="am-button" href="/en/gnk-aktual/">Explore the newsroom ↗</a><a class="am-button am-ghost" href="${hr}" hreflang="hr">Croatian directory</a></div></div>
-<aside class="am-hero-panel" aria-label="Edition facts"><p class="am-kicker">EDITION PROFILE</p><strong>${esc(c.code)}</strong><dl><div><dt>Registered sources</dt><dd>${p.length}</dd></div><div><dt>Direct publishers</dt><dd>${real.length}</dd></div><div><dt>Edition language</dt><dd>English</dd></div><div><dt>Regional research</dt><dd>${esc(c.language||"—").toUpperCase()}</dd></div></dl><span class="am-dot">●</span> Source catalogue — not a live article feed</aside></div>
-<section class="am-section"><div class="am-section-head"><div><p class="am-kicker">RESEARCH / VERIFIED SOURCE DIRECTORY</p><h2>Where to follow the story</h2></div><span class="am-counter">${p.length} listed sources</span></div>
+<aside class="am-hero-panel" aria-label="Edition facts"><p class="am-kicker">EDITION PROFILE</p><strong>${esc(c.code)}</strong><dl><div><dt>Registered sources</dt><dd>${p.length}</dd></div><div><dt>Direct publisher hosts</dt><dd>${directHosts}</dd></div><div><dt>Edition language</dt><dd>English</dd></div><div><dt>Regional research</dt><dd>${esc(c.language||"—").toUpperCase()}</dd></div></dl><span class="am-dot">●</span> Source catalogue — not a live article feed</aside></div>
+<section class="am-section"><div class="am-section-head"><div><p class="am-kicker">RESEARCH / SOURCE DIRECTORY</p><h2>Where to follow the story</h2></div><span class="am-counter">${p.length} listed sources</span></div>
 <p class="am-explainer">These external publishers are research leads, not AKTUAL MEDIA partners. We do not reproduce their articles or photographs. A news report appears on AKTUAL MEDIA only after independent verification and original editorial writing.</p>
 <ul class="am-source-grid">${cards||'<li class="am-source-card"><h3>Sources being assessed</h3><p>No suitable registered source is currently available for this edition.</p></li>'}</ul></section>
 <section class="am-section am-radio"><div><p class="am-kicker">LISTEN / GLOBAL RADIO</p><h2>AKTUAL MEDIA Radio</h2><p>Open the radio player and browse stations. Some audio streams are operated by independent third parties; playback is user-initiated, never automatic.</p></div><a class="am-button am-radio-button" href="/en/radio/">◉ Open radio player ↗</a></section>
@@ -100,21 +104,53 @@ function renderDirectory(registry){
 </body></html>`;
 }
 
-function renderSitemap(registry){
- const urls=[ROOT+"/en/gnk-aktual/media/",...registry.countries.filter(indexEligible).map(c=>ROOT+"/en/gnk-aktual/media/"+c.slug+"/")];
+function renderSitemap(registry, isIndexable=indexEligible){
+ const urls=[ROOT+"/en/gnk-aktual/media/",...registry.countries.filter(isIndexable).map(c=>ROOT+"/en/gnk-aktual/media/"+c.slug+"/")];
  return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+urls.map(url=>'  <url><loc>'+url+'</loc></url>').join("\n")+'\n</urlset>\n';
 }
 
 const registry=JSON.parse(readFileSync('apps/portal/data/world-countries-v1.json','utf8'));
-if(registry.countries.length!==201 || new Set(registry.countries.map(c=>c.slug)).size!==201)throw Error('201 canonical country slugs required');
+if(!Array.isArray(registry.countries)||registry.countries.length!==201 || new Set(registry.countries.map(c=>c.slug)).size!==201 || registry.countries.some(c=>!c||typeof c.slug!=='string'||!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(c.slug)))throw Error('201 canonical country slugs required');
 const out=resolve(process.env.AKTUAL_EN_OUT||'apps/portal/en/gnk-aktual/media');
-const expected=[...registry.countries.map(c=>[join(out,c.slug,'index.html'),renderCountry(c)]),[join(out,'index.html'),renderDirectory(registry)],[join(out,'sitemap.xml'),renderSitemap(registry)]];
 const check=process.argv.includes('--check');
+// Do not rebuild existing pages wholesale: later layers include attribution,
+// accessibility, hashtags, legal notices and reviewed metadata.
+const factsPattern=/<aside class="am-hero-panel" aria-label="Edition facts">[\s\S]*?<\/aside>/g;
+const sourcesPattern=/<section class="am-section"><div class="am-section-head"><div><p class="am-kicker">RESEARCH \/ (?:VERIFIED )?SOURCE DIRECTORY<\/p>[\s\S]*?<\/ul><\/section>/g;
+const directoryPattern=/<ul class="am-directory-grid" id="amCountryList">[\s\S]*?<\/ul>/g;
+function replaceOne(existing,generated,pattern,file){
+ const old=[...existing.matchAll(pattern)], fresh=[...generated.matchAll(pattern)];
+ if(old.length!==1||fresh.length!==1)throw Error(`Unexpected managed block in ${file}; no files written`);
+ return existing.slice(0,old[0].index)+fresh[0][0]+existing.slice(old[0].index+old[0][0].length);
+}
+function pageIndexable(html,file){
+ const matches=[...html.matchAll(/<meta name="robots" content="([^"]*)"\s*\/?\s*>/g)];
+ if(matches.length!==1)throw Error(`Unexpected robots metadata in ${file}; no files written`);
+ const tokens=matches[0][1].toLowerCase().split(',').map(x=>x.trim());
+ const disabled=tokens.includes('noindex')||tokens.includes('none');
+ if((disabled&&tokens.includes('index'))||(!disabled&&!tokens.includes('index')))throw Error(`Ambiguous robots metadata in ${file}; no files written`);
+ return !disabled;
+}
+// Construct and validate all outputs before touching any file.
+const indexed=new Set(),expected=[];
+for(const c of registry.countries){
+ const file=join(out,c.slug,'index.html'),generated=renderCountry(c);
+ let content=generated;
+ if(existsSync(file)){
+  const old=readFileSync(file,'utf8');
+  content=replaceOne(old,generated,factsPattern,file);
+  content=replaceOne(content,generated,sourcesPattern,file);
+ }
+ if(pageIndexable(content,file))indexed.add(c.slug);
+ expected.push([file,content]);
+}
+const dirFile=join(out,'index.html'),dirGenerated=renderDirectory(registry);
+expected.push([dirFile,existsSync(dirFile)?replaceOne(readFileSync(dirFile,'utf8'),dirGenerated,directoryPattern,dirFile):dirGenerated]);
+expected.push([join(out,'sitemap.xml'),renderSitemap(registry,c=>indexed.has(c.slug))]);
 let differences=0;
 for(const [file,content] of expected){
  if(check){if(!existsSync(file)||readFileSync(file,'utf8')!==content){differences++;console.error('DRIFT '+file)}}
- else{mkdirSync(dirname(file),{recursive:true});writeFileSync(file,content);}
+ else if(!existsSync(file)||readFileSync(file,'utf8')!==content){mkdirSync(dirname(file),{recursive:true});writeFileSync(file,content);}
 }
-const indexable=registry.countries.filter(indexEligible).length;
-console.log(JSON.stringify({countryPages:201,directory:1,indexableCountryPages:indexable,sitemapUrls:indexable+1,mode:check?'check':'build',drift:differences}));
+console.log(JSON.stringify({countryPages:201,directory:1,indexableCountryPages:indexed.size,sitemapUrls:indexed.size+1,mode:check?'check':'build',checkScope:'managed source blocks, country list and sitemap; other existing content preserved',drift:differences}));
 if(differences)process.exitCode=1;
