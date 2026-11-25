@@ -30,6 +30,13 @@ try {
  assert.equal(j.realOriginalArticlesPublishedByThisPlanner,0);
  assert.equal(j.agents.find(x=>x.edition==='hrvatska').candidateCount,2);
  assert.equal(j.zagreb.candidateCount,1);
+ assert.ok(j.agents.every(x=>x.editorialProfile.primaryLanguage&&x.editorialProfile.originalLanguageRequired&&x.editorialProfile.publishPolicy==='central_authenticated_writer_only'));
+ assert.equal(j.agents.find(x=>x.edition==='hrvatska').editorialProfile.primaryLanguage,'hr');
+ assert.equal(j.agents.find(x=>x.edition==='japan').editorialProfile.primaryLanguage,'ja');
+ assert.equal(j.agents.find(x=>x.edition==='njemacka').editorialProfile.primaryLanguage,'de');
+ assert.equal(new Set(j.agents.map(x=>x.editorialProfile.editionPath)).size,201);
+ assert.ok(j.agents.every(x=>x.tasks.every(y=>y.targetLanguage===x.editorialProfile.primaryLanguage&&y.publicationRequest===null&&y.verifiedFacts===null)));
+ assert.ok(j.agents.every(x=>x.editorialProfile.forbiddenOperations.includes('direct-main-write')));
  assert.ok(j.agents.every(x=>x.approvedOriginalArticles===0&&x.dailyOriginalArticleTarget===5));
  assert.ok(j.agents.every(x=>x.tasks.every(t=>t.originalBody===null&&t.approved===false&&t.publish===false)));
  console.log(JSON.stringify({ok:true,editions:201,virtualAgents:201,zagrebMultiplier:5,publishedArticles:0,sourceOnly:true}));
