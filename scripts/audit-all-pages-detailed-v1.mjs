@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {NEWSROOM_PUBLIC_LINKS} from '../workers/gnk-asg-direct-operator/src/newsroom100-cms-v1.js';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 
@@ -21,7 +22,8 @@ const routeFor=file=>{const r=rel(file);if(r==='index.html')return'/';if(r.endsW
 const isProtected=route=>PROTECTED.some(prefix=>route===prefix||route.startsWith(`${prefix}/`));
 const normalize=raw=>{try{return decodeURI(String(raw||'').trim().split('#')[0].split('?')[0])}catch{return String(raw||'').trim().split('#')[0].split('?')[0]}};
 const external=ref=>!ref||ref.startsWith('#')||/^(?:https?:|mailto:|tel:|data:|javascript:|blob:)/i.test(ref)||ref.startsWith('//');
-const dynamic=ref=>DYNAMIC_PREFIXES.some(prefix=>ref.startsWith(prefix));
+// Only the two explicitly implemented CMS public endpoints, not arbitrary paths.
+const dynamic=ref=>NEWSROOM_PUBLIC_LINKS.includes(ref)||DYNAMIC_PREFIXES.some(prefix=>ref.startsWith(prefix));
 const legacyLogoRef=ref=>/(?:^|\/)(?:logo[-_][^/]+|gnk[-_]gold[-_]logo|GNK_ASG_logo_gold_transparent)\.(?:svg|png|jpe?g)(?:[?#]|$)/i.test(String(ref||''))&&!/logo-gnk-asg-canonical\.svg|logo-gnk-asg-email\.png/i.test(String(ref||''));
 const routeExists=route=>{if(route==='/')return fs.existsSync(path.join(ROOT,'index.html'));const direct=path.join(ROOT,route.replace(/^\//,''));return fs.existsSync(direct)||fs.existsSync(path.join(direct,'index.html'))||fs.existsSync(`${direct}.html`)};
 const targetExists=(ref,file)=>{const clean=normalize(ref);if(external(clean)||dynamic(clean))return true;if(clean.startsWith('/')){const direct=path.join(ROOT,clean.slice(1));return fs.existsSync(direct)||fs.existsSync(path.join(direct,'index.html'))||fs.existsSync(`${direct}.html`)}const direct=path.resolve(path.dirname(file),clean);return fs.existsSync(direct)||fs.existsSync(path.join(direct,'index.html'))||fs.existsSync(`${direct}.html`)};
