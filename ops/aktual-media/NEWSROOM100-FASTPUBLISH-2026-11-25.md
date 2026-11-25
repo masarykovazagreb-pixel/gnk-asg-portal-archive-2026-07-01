@@ -6,21 +6,33 @@ Datum: 2026-11-25. Kanonski repo: Masarykova, `main`; Cloudflare; bez Vercela.
 - PR #490, #496 i #506 bili su otvoreni i NISU LIVE u trenutku izrade.
 - `apps/portal/data/news.json` sadrži linkove drugih izdavača. `verified:true` u feedu potvrđuje samo doseg/feed-link i eventualno sliku; **nije neovisna provjera navoda**.
 - Cilj = 100 korisnih ORIGINALNIH tekstova dnevno; ovaj paket **ne tvrdi da AI agenti generiraju ili objavljuju 100 članaka na dan**. Potrebni su AI writing runtime, sadržajna revizija, kvote i stvarni mjerni podaci.
-- Nova workflow/manual fast path dopušta jedan urednički nalog za jednu objavu i koristi postojeći sigurni `Content Queue Publish` + exact-SHA deploy. Nije browser CMS s izravnim uploadom.
+- Dva stvarna puta za objavu u ovom PR-u: (A) novi privatni web-CMS `/admin/newsroom100/` koji koristi postojeću GNK ASG admin sesiju i Cloudflare D1/R2 za **objavu bez redeploya pojedinog članka**, i (B) postojeći kanonski `Content Queue Publish` proširen ručnim uredničkim unosom i zaštićenim exact-SHA deployem.
 - PR nije produkcijski deploy. Objavu smatrati LIVE tek poslije izvršenog Cloudflare releasea i HTTP 200 za točan URL.
 
 ## Što je već pripremljeno na ovoj razvojnoj grani
 1. `scripts/aktual-fast-intake-v1.mjs` — naslov, tekst, izvori, fotografija; izvodi HTML/NewsArticle/OG/canonical, queue upis, legalni SVG fallback i štiti od duplikata.
-2. `.github/workflows/aktual-fast-publish-v1.yml` — jedan Run workflow nalog (10 polja), kontrolira pravo na sliku i uredničku potvrdu, automatski pokreće zaštitni publication + exact-SHA deploy.
+2. `.github/workflows/content-queue-publish.yml` — postojeći jedini kanonski writer proširen opcionalnim FAST PUBLISH unosom (jedna urednička checkbox potvrda). **Ne uvodi se novi direct-main writer**.
 3. `scripts/aktual-newsroom100-radar-v1.mjs` — iz postojećeg feeda bira do 100 svježih različitih **istraživačkih zadataka**; ne objavljuje kopije i ne glumi AI.
-4. `tests/test-aktual-fast-intake-v1.mjs`, `tests/test-aktual-newsroom100-radar-v1.mjs`.
+4. `workers/gnk-asg-direct-operator/src/newsroom100-cms-v1.js` + integracija u `index-digital-workforce-v1.js`: autorizirani Cloudflare D1/R2 CMS, AI nacrt na Cloudflare AI, upload slike, originalni vizual kada nema slike, javni dinamički članci, Google News sitemap (48h) i sitemap index integracija.
+5. `apps/portal/admin/newsroom100/index.html` — stvarni urednički ekran s uploadom fotografija, AI nacrtom, izvornim tekstom, izvorima i gumbom OBJAVI SADA.
+6. `tests/test-aktual-fast-intake-v1.mjs`, `tests/test-aktual-newsroom100-radar-v1.mjs`, `tests/test-aktual-newsroom100-cms-v1.mjs`.
+7. `scripts/check-published-weekly-integrity-v1.mjs` i prilagodba release provjere: provjera zadnjeg objavljenog tjednika, bez prisilnog izmišljanja novog.
 
-## FAST PUBLISH — operativni tijek nakon mergea i verifikacije
-1. Otvori GitHub Actions / `AKTUAL MEDIA - Fast Publish v1` na kanonskom repozitoriju.
-2. Unesi naslov, slug, izvorni tekst i najmanje 2 neovisne HTTPS adrese izvora.
-3. Ako imaš fotografiju, upload u `apps/portal/assets/editorial/` i u formu unesi `/assets/editorial/...webp`, tip prava, atribuciju i dokaz licence. Ako nemaš legalno dostupnu fotografiju, automatski se izradi ORIGINALNI SVG vizual.
-4. Označi jednu objedinjenu potvrdu da su činjenice i originalnost provjerene. Upiši `OBJAVI`. Klikni `Run workflow` — nema pet uzastopnih uredničkih odobrenja.
-5. Automatika: queue → preflight → materijalizacija → registry/sitemap/AKTUAL links → compare-and-swap push → `Deploy Admin Auth V6` exact-SHA → javna provjera HTTP 200. Ne tvrditi objavljeno dok posljednja točka nije dokazana.
+## FAST PUBLISH — operativni tijek nakon mergea i produkcijskog dokaza
+
+**Put A, primarni (web CMS):**
+1. Otvori `https://gnk-asg.hr/admin/newsroom100/` i prijavi se postojećim GNK ASG administratorskim tokenom. Nije implementiran novi login/token niti Cloudflare Access pravilo.
+2. Upiši originalan naslov i tekst te najmanje 2 HTTPS adrese neovisnih izvora. Za pomoć modela unesi zasebno konkretne provjerene bilješke, klikni 'AI izradi nacrt', provjeri i uredi nacrt.
+3. Odaberi fotografiju s vlastitom ili dokazivom dozvolom, te autora, licencu; ili koristi originalnu grafičku ilustraciju.
+4. Jednim objedinjenim checkboxom potvrdi činjenice, originalnost i prava. Klikni 'OBJAVI SADA'. Worker zapisuje članak u D1, fotografiju u R2, i odmah poslužuje javni canonical URL `/gnk-aktual/novosti/<slug>/`. Ne postoji novi GitHub build niti pet uzastopnih uredničkih odobrenja.
+5. Preglednik provjerava javni HTTP odgovor. News sitemap `/gnk-aktual/news-sitemap.xml` uključuje samo objave zadnja 2 dana, a dinamički sitemap-index pokazuje na News sitemap. Indeksiranje Googlea nije zajamčeno.
+
+**Put B, rezervni (GitHub Actions):**
+1. U kanonskom repo otvori `Actions` → `Content Queue Publish` → `Run workflow` nakon što je ažurirani workflow na main.
+2. Izborno ispuni naslov, slug, tekst, dva HTTPS izvora i podatke o legalnoj fotografiji, te označi jednu uredničku potvrdu. Ako su polja prazna, zadržava se stara ručna queue obrada.
+3. Kanonski queue → preflight → materijalizacija → registry/sitemap → single-writer compare-and-swap → zaštićeni Cloudflare exact-SHA release. Zbog punog deploya ovo nije primarni realtime CMS.
+
+**Status:** KOD U DRAFT PR-u; nijedan novi CMS URL niti automatizirana objava ne smiju se zvati LIVE prije zelenog CI, kontroliranog mergea, Cloudflare releasea i neovisne javne provjere. Dnevni cilj 100 originalnih AI tekstova **nije ostvaren** ovim paketom: moguće je napraviti do 100 AI nacrta dnevno na zahtjev, ali bez neovisno provjerenih činjenica ne postoji sigurna automatska masovna objava.
 
 ### Nezaobilazne zaštite (brzo, ali ne naslijepo)
 - Autentičan izvor i drugi neovisni izvor, provjereni datumi i sadržaj, ne samo RSS polje `verified:true`.
@@ -28,7 +40,7 @@ Datum: 2026-11-25. Kanonski repo: Masarykova, `main`; Cloudflare; bez Vercela.
 - Vijest i tekst moraju biti originalno sastavljeni; istinitost provjerava urednik ili dokazani fact-check sustav.
 - Čuvati zaštitu od duplikata, scheduled/held sadržaja, nenamjenskih pisaca, racea i promjene main SHA-a.
 - Nema lozinki, tokena, privatnih pravnih/istražnih dokumenata niti osobnih podataka u javnom outputu.
-- Maksimalna potrošnja prema arhiviranom operativnom pravilu: 1000 GitHub Actions minuta mjesečno; 100 zasebnih Actions publikacija na dan može premašiti budžet. Prednost dati batch releaseu i budućem izravnom autoriziranom Worker/R2 CMS-u.
+- Maksimalna potrošnja prema arhiviranom operativnom pravilu: 1000 GitHub Actions minuta mjesečno; web CMS s D1/R2 izbjegava GitHub Actions po članku. Trošak Cloudflare AI/D1/R2 zasebno mjeriti.
 
 ## Arhitektura ciljne proizvodnje 100 originalnih tekstova/dan
 RSS/licencirani API → normalizacija → tematsko grupiranje i 2-source crosscheck → ranking → research factsheet → AI writer → fact verification → prava na sliku → READY → publikacija u jednoj transakciji → sitemap, NewsArticle, interna poveznica → javni HTTP 200 → metrike Search Console.
@@ -100,7 +112,7 @@ Količina je kapacitet, ne obveza da se 100 slabih vijesti mora na silu objaviti
 ## P0 – P1 odluke
 P0: test/merge FAST PUBLISH grane, provjera PR #506 sadržaja i prava na slike, završetak točnog Cloudflare deploya i javni URL dokaz.
 
-P1: Cloudflare Access + R2 + D1 web editor (upload → piši → objavi) s direktnim runtimeom, batch AI pipeline, izvori, licensing desk, News sitemap, Search Console.
+P1: dokaz autorizacije i produkcijskog D1/R2/AI bindinga, poboljšanje Cloudflare Access zaštite (još nije uvedena), batch AI pipeline samo uz provjerene činjenice, licensing desk, Search Console i podaci o stvarnom indeksiranju. Kod web editora, Google News sitemapa i dinamičkih članaka nalazi se u draft PR-u, nije LIVE.
 
 ## Izričito NE uključivati
 - Vercel deploy, ukidanje exact-SHA zaštite, kopiranje cjelovitih tekstova drugih izdavača, izmišljene AI agente, neprovjerene političke/pravne tvrdnje ili SEO keyword stuffing.
