@@ -16,6 +16,14 @@ on:
     # 05:52 UTC = 07:52 Zagreb: nakon jutarnjeg osvježavanja izvora, prije dnevnog izdanja.
     - cron: '52 5 * * *'
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/agents/aktual-worker-fleet-v1.mjs'
+      - 'tests/test-aktual-worker-fleet-v1.mjs'
+      - 'ops/aktual-worker-fleet-v1.json'
+      - 'content/editorial/aktual-ideas-2026-11-23.json'
+      - 'content/editorial/aktual-original-drafts-2026-11-23.json'
+      - '.github/workflows/agent-editorial-daily.yml'
   push:
     paths:
       - 'apps/agents/**'
@@ -24,6 +32,10 @@ on:
       - 'tests/test-agent-editorial-pipeline-v1.mjs'
       - 'tests/test-agent-publish-v1.mjs'
       - 'tests/test-agent-review-packet-v1.mjs'
+      - 'scripts/agents/aktual-worker-fleet-v1.mjs'
+      - 'tests/test-aktual-worker-fleet-v1.mjs'
+      - 'ops/aktual-worker-fleet-v1.json'
+      - 'content/editorial/aktual-ideas-2026-11-23.json'
       - '.github/workflows/agent-editorial-daily.yml'
 
 permissions:
@@ -58,11 +70,28 @@ jobs:
           node tests/test-agent-editorial-pipeline-v1.mjs
           node tests/test-agent-publish-v1.mjs
           node --test tests/test-agent-review-packet-v1.mjs
+          node --check scripts/agents/aktual-worker-fleet-v1.mjs
+          node --test tests/test-aktual-worker-fleet-v1.mjs
+
+      - name: Bounded offline fleet audit on PR (no publishing or model calls)
+        if: github.event_name == 'pull_request'
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          mkdir -p "$AGENT_OUT"
+          node scripts/agents/aktual-worker-fleet-v1.mjs --write-private
 
       - name: Prekidač uredničkog tijeka
+        if: github.event_name != 'pull_request'
         id: editorial_switch
         run: |
           node --input-type=module -e 'import {killSwitchState} from "./apps/agents/lib/policy-v1.mjs"; import {appendFileSync} from "node:fs"; const s=killSwitchState(); appendFileSync(process.env.GITHUB_OUTPUT, `enabled=${s.enabled ? "true" : "false"}\n`); console.log(s.enabled ? "Urednički tijek omogućen" : "Urednički tijek zaustavljen: " + s.reason);'
+
+      - name: Read-only SEO audit and editorial fleet plan (no deploy, no extra cron)
+        if: ${{ steps.editorial_switch.outputs.enabled == 'true' }}
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+        run: node scripts/agents/aktual-worker-fleet-v1.mjs --write-private
 
       - name: Pisac — sastavi preglede iz svježih izvora
         if: ${{ steps.editorial_switch.outputs.enabled == 'true' }}
