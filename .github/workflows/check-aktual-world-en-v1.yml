@@ -20,6 +20,8 @@ concurrency:
   cancel-in-progress: false
 jobs:
   country-parity:
+    # Feature-branch writer must not run while the approved production release fence is active.
+    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
