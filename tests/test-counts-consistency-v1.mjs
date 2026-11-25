@@ -36,7 +36,16 @@ let realTexts = 0;
 let channels = 0;
 for (const name of readdirSync(regionDir)) {
   if (!name.endsWith('.json') || name.startsWith('_')) continue;
-  const data = readJSON(join(regionDir, name), { items: [] });
+  // Privacy withdrawal manifest is a denylist, not a city archive.
+  // Exclude only this exact schema; fail if it ever contains article items.
+  if (name === 'withdrawn-content-v1.json') {
+    const manifest = readJSON(join(regionDir, name));
+    check(manifest?.schema === "AKTUAL_REGION_WITHDRAWN_V1" && manifest.publicContentExcluded === true && !Object.hasOwn(manifest, 'items'), 'Nevaljan manifest povučenog sadržaja');
+    continue;
+  }
+  const data = readJSON(join(regionDir, name));
+  check(Array.isArray(data?.items), `Nevaljana arhiva kanala: ${name}`);
+  if (!Array.isArray(data?.items)) continue;
   realTexts += (data.items || []).length;
   channels += 1;
 }

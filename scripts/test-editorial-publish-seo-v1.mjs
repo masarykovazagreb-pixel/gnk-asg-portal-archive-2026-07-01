@@ -48,6 +48,8 @@ assert.match(oct9Html,/alt="Urednička ilustracija za tekst: Sastanak bez odluke
 assert.ok((oct9Html.match(/<h2>Zaključak<\/h2>/g)||[]).length<=1,'published Oct 9 page must not repeat Zaključak headings');
 
 const publisher=fs.readFileSync('scripts/editorial-publish-scheduled-v1.mjs','utf8');
+assert.ok(publisher.includes('<link rel="icon" href="/assets/favicon.svg">'),'scheduled pages must use canonical house favicon');
+assert.ok(publisher.includes("limitSeoDescription(item.description || item.summary || '', 160)"),'scheduled pages must cap SEO descriptions at 160 characters');
 
 for(const marker of ['GNK_ASG_EDITORIAL_SCHEDULED_PUBLISH_V4_ATTRIBUTION','OpinionNewsArticle','application/ld+json','rel="canonical"','property="og:title"','name="twitter:card"','name="editor"','Urednička odgovornost','EDITORIAL_NOW','deployApproved','writeIfChanged','summary.publicChanged || summary.stateChanged','publication-holds.json','publicationHeld','summary.held','articleAuthorFor(item)','isProtectedEditorialRoute(route)','isVerifiedNerminAuthor(item)','const cardImage = articleImage(item).path','headings[index - 1]'])assert.ok(publisher.includes(marker),marker);
 assert.doesNotMatch(publisher,/hashtagsFor|article-hashtags|AUTHOR_TAGS|GROUP_ENTITY/,'scheduled articles must not inject social hashtags or author/group keywords');
