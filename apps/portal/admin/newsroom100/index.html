@@ -47,6 +47,7 @@
  <h2>SEO automatski</h2><p class="minor">Canonical, NewsArticle JSON-LD, title, description, Open Graph, Twitter Card, alt tekst, izvorne poveznice i Google News sitemap.</p>
  <p><a href="/gnk-aktual/novosti/" target="_blank" rel="noopener">Javni popis vijesti</a></p>
  <p><a href="/gnk-aktual/news-sitemap.xml" target="_blank" rel="noopener">Google News sitemap</a></p>
+ <hr style="border:0;border-top:1px solid var(--line);margin:26px 0"><h2>Radar važnih tema</h2><p class="minor">Iz feeda prikazujemo poveznice na tuđe objave. To nisu provjerene činjenice ni automatsko odobrenje.</p><ol id="research-radar" class="minor"><li>Učitaj nakon prijave...</li></ol>
 </aside>
 </div></div>
 </main>
@@ -57,8 +58,26 @@
  const wordCount=()=>{const v=el('body').value.trim();return v?v.split(/\s+/).length:0};
  el('body').addEventListener('input',()=>el('word-count').textContent=wordCount()+' riječi — potrebno najmanje 90.');
  el('photo').addEventListener('change',()=>{const f=el('photo').files[0];if(!f)return;if(f.size>5000000){status.textContent='Fotografija je veća od 5 MB.';status.className='status error';el('photo').value='';return;}const u=URL.createObjectURL(f);el('photo-preview').src=u;el('photo-preview').onload=()=>URL.revokeObjectURL(u);});
+ async function loadRadar(){
+ const target=el('research-radar');target.textContent='Učitavanje tema...';
+ try{
+  const r=await fetch('/data/news.json',{cache:'no-store'});if(!r.ok)throw Error('Izvori nedostupni');
+  const data=await r.json(),items=(Array.isArray(data)?data:Array.isArray(data.items)?data.items:[]).filter(x=>x&&x.title&&x.url);
+  const seen=new Set();const subset=items.filter(x=>{try{const u=new URL(x.url);if(u.protocol!=='https:')return false;const key=u.href;if(seen.has(key))return false;seen.add(key);return true;}catch{return false}}).slice(0,15);
+  target.textContent='';
+  if(!subset.length){target.textContent='Nema trenutno dostupnih istraživačkih tema.';return;}
+  for(const item of subset){
+   const li=document.createElement('li');li.style.margin='13px 0';
+   const link=document.createElement('a');link.href=item.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=item.title;
+   const meta=document.createElement('div');meta.textContent=String(item.source||'Izvor')+' · samo prijedlog teme';
+   const pick=document.createElement('button');pick.type='button';pick.className='button secondary';pick.style.padding='5px 10px';pick.style.margin='5px 0';pick.textContent='Istraži temu';
+   pick.addEventListener('click',()=>{const x=el('sources');const urls=x.value.split(/[;\\n]+/).map(z=>z.trim());if(!urls.includes(item.url))x.value+=(x.value.trim()?'\\n':'')+item.url;el('facts').focus();status.className='status';status.textContent='Izvor je dodan. Pribavi drugi neovisni izvor i provjeri činjenice. Tuđi naslov/tekst nisu preuzeti.';});
+   li.append(link,meta,pick);target.append(li);
+  }
+ }catch(err){target.textContent='Radar nije dostupan: '+err.message;}
+ }
  async function refresh(){const r=await fetch('/api/newsroom100/status',{credentials:'same-origin',cache:'no-store'});if(!r.ok)throw Error('Nema ovlasti za pregled CMS-a.');const x=await r.json();el('env-status').textContent='D1 '+(x.d1?'dostupan':'nije dostupan')+' · R2 '+(x.r2?'dostupan':'nije dostupan')+' · AI '+(x.ai?'dostupan':'nije dostupan');el('published-count').textContent=x.publishedLast48Hours??'—';}
- el('login').addEventListener('submit',async e=>{e.preventDefault();el('login-result').textContent='Provjera...';try{const r=await fetch('/api/operator-session-login',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'content-type':'application/json'},body:JSON.stringify({token:el('admin-token').value})});el('admin-token').value='';if(!r.ok)throw Error('Prijava nije uspjela.');await refresh();el('login').hidden=true;editor.hidden=false;el('login-result').textContent='';}catch(err){el('login-result').textContent=err.message;}});
+ el('login').addEventListener('submit',async e=>{e.preventDefault();el('login-result').textContent='Provjera...';try{const r=await fetch('/api/operator-session-login',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'content-type':'application/json'},body:JSON.stringify({token:el('admin-token').value})});el('admin-token').value='';if(!r.ok)throw Error('Prijava nije uspjela.');await refresh();await loadRadar();el('login').hidden=true;editor.hidden=false;el('login-result').textContent='';}catch(err){el('login-result').textContent=err.message;}});
  el('ai-draft').addEventListener('click',async()=>{status.className='status';status.textContent='AI izrađuje NACRT (neće ga objaviti)...';try{const r=await fetch('/api/newsroom100/ai-draft',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'content-type':'application/json'},body:JSON.stringify({title:el('title').value,facts:el('facts').value,sources:el('sources').value})});const data=await r.json();if(!r.ok)throw Error(data.error||'Greška AI modela');el('body').value=data.body;el('body').dispatchEvent(new Event('input'));status.textContent='AI nacrt spreman. Provjeri sve činjenice i izvorne tvrdnje prije klika OBJAVI SADA.';}catch(err){status.className='status error';status.textContent=err.message;}});
  el('publish-form').addEventListener('submit',async e=>{e.preventDefault();if(!el('approved').checked){status.textContent='Potrebna je urednička potvrda.';return;}const b=el('publish-button');b.disabled=true;status.className='status';status.textContent='Upisujem originalni tekst u Cloudflare D1...';try{const form=new FormData(el('publish-form'));form.set('editorial_verified','yes');const r=await fetch('/api/newsroom100/publish',{method:'POST',credentials:'same-origin',cache:'no-store',body:form});const data=await r.json();if(!r.ok)throw Error(data.error||'Objava nije uspjela.');status.textContent='Upis završen. Provjeravam javni URL...';const publicR=await fetch(data.publicUrl,{cache:'no-store'});if(!publicR.ok||publicR.headers.get('x-aktual-newsroom100-public')!=='published-in-d1')throw Error('Javna objava nije neovisno potvrđena. '+data.publicUrl);status.className='status success';status.textContent='JAVNO OBJAVLJENO: HTTP '+publicR.status+'.';el('public-link').textContent='';const a=document.createElement('a');a.href=data.publicUrl;a.target='_blank';a.rel='noopener';a.textContent='Otvori objavljeni članak';el('public-link').append(a);await refresh();}catch(err){status.className='status error';status.textContent='Objava nije potvrđena: '+err.message;}finally{b.disabled=false;}});
 })();
