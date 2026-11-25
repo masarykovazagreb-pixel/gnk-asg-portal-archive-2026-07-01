@@ -4,7 +4,7 @@ const now=new Date("2026-11-25T09:00:00Z");
 const data=[];
 for(let i=0;i<140;i++){
   data.push({
-    title:"Economic policy briefing topic number "+i+" has independent coverage",
+    title:"Economic policy briefing on sector"+i+" market"+i+" outlook"+i+" has independent coverage",
     url:"https://source"+(i%20)+".example.net/report-"+i,
     publishedAt:"2026-11-25T05:00:00Z",source:"Outlet "+(i%20)
   });
