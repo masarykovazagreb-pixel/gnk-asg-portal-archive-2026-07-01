@@ -145,6 +145,6 @@ export async function handleNewsroom100(req,env,ctx,app){
   return new Response(m==="HEAD"?null:asset.body,{status:200,headers:h});
  }
  const match=p.match(/^\/gnk-aktual\/novosti\/([a-z0-9-]+)\/?$/);
- if(match){const article=await findArticle(env,match[1]);if(!article)return null;return response(m==="HEAD"?null:article.html,200);}
+ if(match){const article=await findArticle(env,match[1]);if(!article)return null;const live=response(m==="HEAD"?null:article.html,200);live.headers.set("x-aktual-newsroom100-public","published-in-d1");return live;}
  return null;
 }
