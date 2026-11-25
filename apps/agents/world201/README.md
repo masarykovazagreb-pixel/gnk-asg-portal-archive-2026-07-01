@@ -41,3 +41,15 @@ node --test tests/test-world210-fleet-v1.mjs tests/test-world-rss-expansion-v1.m
 ```
 
 Rezultat sadrži strukturirane leadove s naslovom, atribucijom i poveznicom, bez kopiranja tijela i bez izmišljenih detalja. To nisu napisani puni članci ni uredničko odobrenje. Postojeći workflow nakon uspješnog dohvata sprema izvještaj kao interni artefakt; nije proces koji je uvijek uključen, nije instant objava, ne objavljuje članke i ne preskače zaštitu. U slučaju djelomičnog neuspjeha dohvata bez novih naslova izdanje zadržava prethodni cache i izvornu vremensku oznaku; zastarjeli se naslovi i dalje ne prikazuju kao svježi. Konfiguracija ili lokalni testovi ne dokazuju da je raspored radio, da je deploy uspio ili da je izvor dostupan i licenciran.
+
+## Pisac povezanih pregleda (interni nacrt)
+
+`writer-run-v1.mjs` po zemlji sa svježim prihvatljivim leadovima automatski priprema hrvatski i engleski uvod te popis izvornih naslova, izdavača, datuma i poveznica. Izvorni naslov nije preveden, nije tekst punog članka, a konfigurirani jezik nije dokazan jezik izvora. Pisac ne izmišlja događaje, ne preuzima tijelo članka i ne označava tekst kao pregledan ili odobren. Bez svježih leadova nema nacrta. Podržan je opseg svih zemalja ili jedne zemlje; rezultat ide samo na stdout. Pisac odbija rad kad je urednički kill switch isključen, ne postoji ili nije čitljiv.
+
+```sh
+node apps/agents/world201/writer-run-v1.mjs --country hrvatska
+node apps/agents/world201/writer-run-v1.mjs --format html > /tmp/world-drafts.html
+node --test tests/test-world201-writer-v1.mjs tests/test-world-rss-expansion-v1.mjs
+```
+
+Workflow nakon uspješnog RSS dohvata i uz uključen kill switch sprema JSON nacrte i `noindex` HTML kao privremeni artefakt za pregled, ne javne stranice. Prije PR koraka dodatno čuva patch pripremljenih promjena kao artefakt i u slučaju kasnijeg neuspjeha koraka otvaranja PR-a. Patch nije objava ni dokaz ispravnosti i mora proći postojeći postupak provjere i objave. Raspored je i dalje svaka tri sata, ne instant; ne znamo je li workflow uspio u stvarnom okruženju. Za pun izvorni članak i potpuno automatsku objavu i dalje nedostaju pouzdani dostupni izvori, prava, provjera činjenica i odobren način objave/deploya.

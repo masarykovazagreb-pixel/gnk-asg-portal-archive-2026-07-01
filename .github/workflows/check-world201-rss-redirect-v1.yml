@@ -8,6 +8,7 @@ on:
       - 'apps/agents/world201/**'
       - 'tests/test-world201-agents-v1.mjs'
       - 'tests/test-world210-fleet-v1.mjs'
+      - 'tests/test-world201-writer-v1.mjs'
       - 'scripts/build-aktual-world-v1.mjs'
       - 'tests/test-world-rss-expansion-v1.mjs'
       - 'tests/test-world-source-checks-v1.mjs'
@@ -25,4 +26,4 @@ jobs:
         with:
           node-version: '22'
       - run: node --check scripts/refresh-aktual-world-headlines-v1.mjs
-      - run: node --test tests/test-world201-rss-redirect-v1.mjs tests/test-world-rss-expansion-v1.mjs tests/test-world-source-checks-v1.mjs tests/test-world-preservation-v1.mjs tests/test-world201-agents-v1.mjs tests/test-world210-fleet-v1.mjs
+      - run: node --test tests/test-world201-rss-redirect-v1.mjs tests/test-world-rss-expansion-v1.mjs tests/test-world-source-checks-v1.mjs tests/test-world-preservation-v1.mjs tests/test-world201-agents-v1.mjs tests/test-world210-fleet-v1.mjs tests/test-world201-writer-v1.mjs
