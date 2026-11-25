@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {NEWSROOM_PUBLIC_LINKS} from '../workers/gnk-asg-direct-operator/src/newsroom100-cms-v1.js';
 import path from 'node:path';
 
 const ROOT=path.resolve('apps/portal');
@@ -24,7 +25,7 @@ const routeFor=file=>{const value=rel(file);if(value==='index.html')return'/';if
 const isProtected=route=>PROTECTED.some(prefix=>route===prefix||route.startsWith(`${prefix}/`));
 const normalizeRef=raw=>{try{return decodeURI(String(raw||'').trim().split('#')[0].split('?')[0])}catch{return String(raw||'').trim().split('#')[0].split('?')[0]}};
 const external=ref=>!ref||ref.startsWith('#')||/^(?:https?:|mailto:|tel:|data:|javascript:|blob:)/i.test(ref)||ref.startsWith('//');
-const dynamic=ref=>DYNAMIC_PREFIXES.some(prefix=>ref.startsWith(prefix));
+const dynamic=ref=>NEWSROOM_PUBLIC_LINKS.includes(ref)||DYNAMIC_PREFIXES.some(prefix=>ref.startsWith(prefix));
 const extract=(html,attr)=>[...html.matchAll(new RegExp(`\\b${attr}\\s*=\\s*["']([^"']+)["']`,'gi'))].map(match=>match[1]);
 const canonical=html=>html.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["'][^>]*>/i)?.[1]||html.match(/<link\b[^>]*href=["']([^"']+)["'][^>]*rel=["']canonical["'][^>]*>/i)?.[1]||'';
 const baseHref=html=>html.match(/<base\b[^>]*href=["']([^"']+)["'][^>]*>/i)?.[1]||'';
