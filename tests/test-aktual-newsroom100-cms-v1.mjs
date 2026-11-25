@@ -68,3 +68,11 @@ assert.match(metaPage,/property="article:tag" content="AKTUALMEDIA"/);
 assert.match(metaPage,/#Gospodarstvo/);
 assert.match(metaPage,/"keywords":\["AKTUALMEDIA","Gospodarstvo","Hrvatska"\]/);
 console.log("NEWSROOM100: deterministic SEO metadata and relevant topic tag assertions completed.");
+
+// Network/editor identity is separate from topical keywords and article authorship.
+assert.match(metaPage, /name="editor" content="Nermin Sefić"/);
+assert.match(metaPage, /"editor":\{"@type":"Person","@id":"https:\/\/gnk-asg\.hr\/#nermin-sefic"/);
+assert.match(metaPage, /"author":\{"@type":"Organization","name":"Redakcija AKTUAL MEDIA"\}/);
+assert.match(metaPage, /"publisher":\{"@type":"Organization","@id":"https:\/\/gnk-asg\.hr\/#gnk-asg","name":"GNK ASG d\.o\.o\."/);
+for(const tag of ['#NerminSefić','#NerminSefic','#AktualMedia','#GNKASG','#GNKDinamoLtd']) assert.ok(metaPage.includes(tag), tag);
+assert.ok(metaPage.includes('GNK DINAMO Ltd.'));
