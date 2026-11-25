@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {validateArticle,handleNewsroom100,VERSION,NEWSROOM_PUBLIC_LINKS} from "../workers/gnk-asg-direct-operator/src/newsroom100-cms-v1.js";
+import {validateArticle,handleNewsroom100,VERSION,NEWSROOM_PUBLIC_LINKS,articleMetadata,renderArticle} from "../workers/gnk-asg-direct-operator/src/newsroom100-cms-v1.js";
 const sample={
  title:"Provjereni gospodarski pokazatelji i analiza lokalnog tržišta",
  slug:"provjereni-gospodarski-pokazatelji",
@@ -54,3 +54,17 @@ assert.equal(missing,null);
 const freshMap=await handleNewsroom100(new Request("https://gnk-asg.hr/gnk-aktual/news-sitemap.xml"),environment,null,app);
 assert.match(await freshMap.text(),/https:\/\/gnk-asg\.hr\/gnk-aktual\/novosti\/test-vijest\//);
 console.log("NEWSROOM100: public route contract, premium news cards, canonical URLs and D1-backed response proof tested with fixture data.");
+
+const seo=articleMetadata("Gospodarstvo i investicije u Hrvatskoj",sample.body);
+assert.ok(seo.description.length<=160);
+assert.equal(seo.section,"Gospodarstvo");
+assert.deepEqual(seo.tags,["AKTUALMEDIA","Gospodarstvo","Hrvatska"]);
+assert.deepEqual(articleMetadata("Novi raspored događaja",sample.body).tags,["AKTUALMEDIA"]);
+const metaPage=renderArticle({...normalized,title:"Gospodarstvo i investicije u Hrvatskoj"}, "/media/aktual100/test-vijest.svg","Originalna ilustracija","",published.published_at);
+assert.match(metaPage,/property="og:description"/);
+assert.match(metaPage,/name="twitter:image"/);
+assert.match(metaPage,/property="article:section" content="Gospodarstvo"/);
+assert.match(metaPage,/property="article:tag" content="AKTUALMEDIA"/);
+assert.match(metaPage,/#Gospodarstvo/);
+assert.match(metaPage,/"keywords":\["AKTUALMEDIA","Gospodarstvo","Hrvatska"\]/);
+console.log("NEWSROOM100: deterministic SEO metadata and relevant topic tag assertions completed.");
