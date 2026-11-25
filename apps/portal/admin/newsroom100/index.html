@@ -71,7 +71,7 @@
    const link=document.createElement('a');link.href=item.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=item.title;
    const meta=document.createElement('div');meta.textContent=String(item.source||'Izvor')+' · samo prijedlog teme';
    const pick=document.createElement('button');pick.type='button';pick.className='button secondary';pick.style.padding='5px 10px';pick.style.margin='5px 0';pick.textContent='Istraži temu';
-   pick.addEventListener('click',()=>{const x=el('sources');const urls=x.value.split(/[;\\n]+/).map(z=>z.trim());if(!urls.includes(item.url))x.value+=(x.value.trim()?'\\n':'')+item.url;el('facts').focus();status.className='status';status.textContent='Izvor je dodan. Pribavi drugi neovisni izvor i provjeri činjenice. Tuđi naslov/tekst nisu preuzeti.';});
+   pick.addEventListener('click',()=>{const x=el('sources');const urls=x.value.split(/[\r\n;]+/).map(z=>z.trim());if(!urls.includes(item.url))x.value+=(x.value.trim()?'\n':'')+item.url;el('facts').focus();status.className='status';status.textContent='Izvor je dodan. Pribavi drugi neovisni izvor i provjeri činjenice. Tuđi naslov/tekst nisu preuzeti.';});
    li.append(link,meta,pick);target.append(li);
   }
  }catch(err){target.textContent='Radar nije dostupan: '+err.message;}
