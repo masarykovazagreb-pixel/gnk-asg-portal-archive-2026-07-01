@@ -18,8 +18,9 @@ test('source gap audit counts distinct local-language publisher hosts, not Googl
 
 test('prioritises configured local-language direct feeds and never invents sources',()=>{
  const chosen=selectCountryFeeds(croatia,10);assert.equal(chosen.length,10);
- assert.ok(chosen.slice(0,9).every(s=>new URL(s.rss).hostname!=='news.google.com'&&s.language==='hr'));
- assert.equal(new URL(chosen[9].rss).hostname,'news.google.com');
+ assert.ok(chosen.every(s=>new URL(s.rss).hostname!=='news.google.com'&&s.language==='hr'));
+ assert.ok(chosen.some(s=>s.name==='Novi list'));
+ assert.equal(selectCountryFeeds(croatia,30).length,14);
  const india=registry.countries.find(c=>c.slug==='indija');assert.ok(selectCountryFeeds(india,10).every(s=>s.language===india.language));
  for(const c of registry.countries)assert.ok(selectCountryFeeds(c,10).every(s=>c.sourcesList.includes(s)));
 });
@@ -118,4 +119,18 @@ test('Atom selects article alternate link rather than self or enclosure',()=>{
   const run=spawnSync(process.execPath,['--import',mock,'scripts/refresh-aktual-world-headlines-v1.mjs','--country','slovenija'],{env:{...process.env,AKTUAL_WORLD_CACHE_OUT:out,AKTUAL_FEEDS_PER_COUNTRY:'1'},encoding:'utf8'});
   assert.equal(run.status,0,run.stderr);const row=JSON.parse(fs.readFileSync(out)).countries.slovenija[0];assert.equal(row.url,'https://example.org/article?a=1&b=2');
  }finally{fs.rmSync(tmp,{recursive:true,force:true});}
+});
+
+test('Croatian source catalogue, public directories and generator stay aligned',()=>{
+ const ids=['novilist','tportal','nacional'];
+ const local=fs.readFileSync('apps/portal/gnk-aktual/media/hrvatska/index.html','utf8');
+ const en=fs.readFileSync('apps/portal/en/gnk-aktual/media/hrvatska/index.html','utf8');
+ const directory=fs.readFileSync('apps/portal/en/gnk-aktual/media/index.html','utf8');
+ const generator=fs.readFileSync('scripts/generate-world-countries-v1.mjs','utf8');
+ for(const id of ids){
+  const source=croatia.sourcesList.find(x=>x.id===id);assert.ok(source,`${id} missing`);assert.ok(generator.includes(source.rss));
+  assert.ok(local.includes(`>${source.name}</a>`));assert.ok(en.includes(`href="${source.rss}"`));
+ }
+ assert.equal(croatia.sources,14);assert.match(local,/14 konfiguriranih izvora/);assert.match(en,/14 listed sources/);assert.match(en,/Direct publisher hosts<\/dt><dd>12/);assert.match(directory,/HR · 14 sources/);
+ assert.match(fs.readFileSync('apps/portal/gnk-aktual/media/index.html','utf8'),/438 konfiguriranih izvora/);
 });

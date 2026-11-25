@@ -56,6 +56,9 @@ const COUNTRY_DEFS = [
     src("poslovni", "Poslovni dnevnik", "https://www.poslovni.hr", "https://www.poslovni.hr/feed/", "biznis", "high", "hr"),
     src("dnevnikhr", "Dnevnik.hr", "https://www.dnevnik.hr", "https://www.dnevnik.hr/rss", "vijesti", "high", "hr"),
     src("net.hr", "Net.hr", "https://net.hr", "https://net.hr/feed/", "vijesti", "medium", "hr"),
+    src("novilist", "Novi list", "https://www.novilist.hr", "https://www.novilist.hr/feed/", "vijesti", "medium", "hr"),
+    src("tportal", "tportal", "https://www.tportal.hr", "https://www.tportal.hr/rss-najnovije.xml", "vijesti", "medium", "hr"),
+    src("nacional", "Nacional", "https://www.nacional.hr", "https://www.nacional.hr/feed/", "vijesti", "medium", "hr"),
   ]],
   ["BA", "bih", "Bosna i Hercegovina", "Bosnia & Herzegovina", "bs", "🇧🇦", "Balkan", [
     src("klix", "Klix.ba", "https://www.klix.ba", "https://www.klix.ba/rss", "vijesti", "high", "bs"),

@@ -223,7 +223,7 @@
       "language": "hr",
       "flag": "🇭🇷",
       "region": "Balkan",
-      "sources": 11,
+      "sources": 14,
       "sourcesList": [
         {
           "id": "gnews-hr",
@@ -320,6 +320,33 @@
           "name": "Net.hr",
           "url": "https://net.hr",
           "rss": "https://net.hr/feed/",
+          "category": "vijesti",
+          "reliability": "medium",
+          "language": "hr"
+        },
+        {
+          "id": "novilist",
+          "name": "Novi list",
+          "url": "https://www.novilist.hr",
+          "rss": "https://www.novilist.hr/feed/",
+          "category": "vijesti",
+          "reliability": "medium",
+          "language": "hr"
+        },
+        {
+          "id": "tportal",
+          "name": "tportal",
+          "url": "https://www.tportal.hr",
+          "rss": "https://www.tportal.hr/rss-najnovije.xml",
+          "category": "vijesti",
+          "reliability": "medium",
+          "language": "hr"
+        },
+        {
+          "id": "nacional",
+          "name": "Nacional",
+          "url": "https://www.nacional.hr",
+          "rss": "https://www.nacional.hr/feed/",
           "category": "vijesti",
           "reliability": "medium",
           "language": "hr"
