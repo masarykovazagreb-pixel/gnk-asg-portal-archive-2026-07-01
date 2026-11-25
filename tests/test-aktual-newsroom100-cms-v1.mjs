@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {validateArticle,handleNewsroom100,VERSION} from "../workers/gnk-asg-direct-operator/src/newsroom100-cms-v1.js";
+import {validateArticle,handleNewsroom100,VERSION,NEWSROOM_PUBLIC_LINKS} from "../workers/gnk-asg-direct-operator/src/newsroom100-cms-v1.js";
 const sample={
  title:"Provjereni gospodarski pokazatelji i analiza lokalnog tržišta",
  slug:"provjereni-gospodarski-pokazatelji",
@@ -33,3 +33,24 @@ assert.equal(modified.status,200);
 assert.match(await modified.text(),/\/gnk-aktual\/news-sitemap.xml/);
 assert.match(VERSION,/NEWSROOM100/);
 console.log("NEWSROOM100 CMS: 13 essential read-only and input validation assertions passed.");
+
+assert.deepEqual(NEWSROOM_PUBLIC_LINKS,["/gnk-aktual/novosti/","/gnk-aktual/news-sitemap.xml"]);
+const published={slug:"test-vijest",title:"Test uredničke vijesti & sigurnog prikaza",image_url:"/media/aktual100/test-vijest.svg",published_at:new Date().toISOString(),html:"<!doctype html><title>Test vijest</title>"};
+const fakeDB={prepare(sql){return {bind(...params){return {all:async()=>({results:[published]}),first:async()=>params[0]===published.slug?published:null}}}}};
+const environment={GNK_ASG_D1:fakeDB};
+const front=await handleNewsroom100(new Request("https://gnk-asg.hr/gnk-aktual/novosti/"),environment,null,app);
+assert.equal(front.status,200);
+const frontHTML=await front.text();
+assert.match(frontHTML,/class="stories"/);
+assert.match(frontHTML,/class="story lead"/);
+assert.match(frontHTML,/Test uredničke vijesti &amp; sigurnog prikaza/);
+assert.match(frontHTML,/\/gnk-aktual\/novosti\/test-vijest\//);
+assert.match(frontHTML,/loading="eager"/);
+const live=await handleNewsroom100(new Request("https://gnk-asg.hr/gnk-aktual/novosti/test-vijest/"),environment,null,app);
+assert.equal(live.headers.get("x-aktual-newsroom100-public"),"published-in-d1");
+assert.match(await live.text(),/Test vijest/);
+const missing=await handleNewsroom100(new Request("https://gnk-asg.hr/gnk-aktual/novosti/nepostojeca/"),environment,null,app);
+assert.equal(missing,null);
+const freshMap=await handleNewsroom100(new Request("https://gnk-asg.hr/gnk-aktual/news-sitemap.xml"),environment,null,app);
+assert.match(await freshMap.text(),/https:\/\/gnk-asg\.hr\/gnk-aktual\/novosti\/test-vijest\//);
+console.log("NEWSROOM100: public route contract, premium news cards, canonical URLs and D1-backed response proof tested with fixture data.");
