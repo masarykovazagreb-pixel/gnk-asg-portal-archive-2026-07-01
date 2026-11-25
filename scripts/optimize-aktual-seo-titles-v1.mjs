@@ -13,7 +13,7 @@ const TITLES = new Map([
   ['en/gnk-aktual/kolumne/01-ai-za-male-tvrtke/index.html', 'AI for Small Businesses: Cost of Waiting | AKTUAL MEDIA'],
   ['en/gnk-aktual/kolumne/07-cibona-kutak-dodig/index.html', "Cibona Corner: Victor Dodig's New Era | AKTUAL MEDIA"],
   ['en/gnk-aktual/kolumne/08-cibona-prvak/index.html', "Cibona Wins Its 21st Croatian Title | AKTUAL MEDIA"],
-  ['gnk-aktual/index.html', 'AKTUAL MEDIA — Vijesti, biznis i tehnologija'],
+  ['gnk-aktual/index.html', 'AKTUAL MEDIA — Vijesti iz Hrvatske i svijeta'],
   ['gnk-aktual/kolumne/08-cibona-prvak/index.html', 'Cibona prvak 2026: 21. naslov'],
   ['gnk-aktual/kolumne/godina-kad-sam-prestao-obecavati/index.html', 'Godina kad sam prestao obećavati ishode'],
   ['gnk-aktual/kolumne/koncar-gnk-asg-504-milijuna-ai-radna-snaga-izvoz/index.html', 'KONČAR i GNK ASG: digitalni izvoz | AKTUAL MEDIA'],
