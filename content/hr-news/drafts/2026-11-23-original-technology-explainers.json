@@ -1,0 +1,1144 @@
+{
+  "version": 1,
+  "collection": "AKTUAL_MEDIA_ORIGINAL_EXPLAINERS",
+  "created": "2026-11-23",
+  "status": "DRAFT_ONLY_NOT_LIVE",
+  "draftCount": 22,
+  "policy": "Original article drafts with sourced premises, NOT independently fact-checked or approved; editorial approval, actual author assignment, image licensing and release checks mandatory. No auto-publication.",
+  "articles": [
+    {
+      "id": "aktual-tech-20261123-01",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "ai-agenti-odgovornost-nist-2026",
+      "category": "Tehnologija",
+      "title": "AI agenti trebaju trag odluka, a ne samo brzinu odgovora",
+      "description": "Kako NIST-ov okvir upravljanja AI rizicima pretvoriti u konkretne kontrole autonomnih digitalnih agenata.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#UmjetnaInteligencija",
+        "#AIRizici",
+        "#DigitalWorkforce"
+      ],
+      "sources": [
+        {
+          "name": "NIST AI Risk Management Framework",
+          "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+          "supports": "NIST objavljuje dobrovoljni okvir za upravljanje rizicima AI sustava."
+        },
+        {
+          "name": "OECD — AI Principles",
+          "url": "https://oecd.ai/en/ai-principles",
+          "supports": "OECD AI načela usmjerena su na pouzdanu i odgovornu uporabu umjetne inteligencije."
+        }
+      ],
+      "paragraphs": [
+        "Autonomni softverski agent može u minuti obaviti desetke radnji, ali taj podatak sam po sebi ne govori radi li pouzdano. Za poslovnu upotrebu važnije je tko mu je odobrio zadatak, koje podatke smije koristiti, može li se njegov rezultat ponoviti i tko zaustavlja pogrešnu odluku. Povećanje broja agenata bez takvih odgovora povećava opseg mogućih pogrešaka jednako brzo kao i kapacitet sustava.",
+        "NIST-ov AI Risk Management Framework namijenjen je dobrovoljnom upravljanju rizicima umjetne inteligencije. Njegove četiri povezane funkcije — Govern, Map, Measure i Manage — nude razumljiv operativni jezik. Urednička interpretacija tog okvira za digitalnu radnu snagu znači postaviti vlasnika svakog procesa, opisati dopuštene radnje, mjeriti pogreške i definirati reakciju kad kontrola zakaže.",
+        "Praktična primjena može početi bez skupih platformi: svaki agent dobiva identifikator zadatka, verziju ulaznih podataka, zapis izvora, razinu dopuštenja i razdvojene oznake 'predloženo', 'provjereno' i 'izvršeno'. Akcije koje objavljuju tekst, šalju poštu ili mijenjaju produkciju trebaju dodatnu provjeru. Sustav treba moći dokazati i negativan rezultat — da se određena radnja nije dogodila — umjesto naknadnog zaključivanja iz nepotpunih logova.",
+        "Ovdje nije riječ o tvrdnji da bilo koji konkretan sustav već zadovoljava te uvjete. Riječ je o kontrolnom popisu kojim se može provjeriti takva tvrdnja. Brzina automatizacije postaje poslovna prednost tek kada organizacija može razlikovati izvršenje od simulacije, test od javne produkcije i obradenu informaciju od potvrđene činjenice."
+      ],
+      "articleBody": "Autonomni softverski agent može u minuti obaviti desetke radnji, ali taj podatak sam po sebi ne govori radi li pouzdano. Za poslovnu upotrebu važnije je tko mu je odobrio zadatak, koje podatke smije koristiti, može li se njegov rezultat ponoviti i tko zaustavlja pogrešnu odluku. Povećanje broja agenata bez takvih odgovora povećava opseg mogućih pogrešaka jednako brzo kao i kapacitet sustava.\n\nNIST-ov AI Risk Management Framework namijenjen je dobrovoljnom upravljanju rizicima umjetne inteligencije. Njegove četiri povezane funkcije — Govern, Map, Measure i Manage — nude razumljiv operativni jezik. Urednička interpretacija tog okvira za digitalnu radnu snagu znači postaviti vlasnika svakog procesa, opisati dopuštene radnje, mjeriti pogreške i definirati reakciju kad kontrola zakaže.\n\nPraktična primjena može početi bez skupih platformi: svaki agent dobiva identifikator zadatka, verziju ulaznih podataka, zapis izvora, razinu dopuštenja i razdvojene oznake 'predloženo', 'provjereno' i 'izvršeno'. Akcije koje objavljuju tekst, šalju poštu ili mijenjaju produkciju trebaju dodatnu provjeru. Sustav treba moći dokazati i negativan rezultat — da se određena radnja nije dogodila — umjesto naknadnog zaključivanja iz nepotpunih logova.\n\nOvdje nije riječ o tvrdnji da bilo koji konkretan sustav već zadovoljava te uvjete. Riječ je o kontrolnom popisu kojim se može provjeriti takva tvrdnja. Brzina automatizacije postaje poslovna prednost tek kada organizacija može razlikovati izvršenje od simulacije, test od javne produkcije i obradenu informaciju od potvrđene činjenice.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "AI agenti trebaju trag odluka, a ne samo brzinu odgovora",
+        "metaDescription": "Kako NIST-ov okvir upravljanja AI rizicima pretvoriti u konkretne kontrole autonomnih digitalnih agenata.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-02",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "sitemap-lastmod-stvarni-datum-izmjene",
+      "category": "SEO",
+      "title": "Sitemap nije brojač URL-ova: zašto lažni datumi štete pouzdanosti",
+      "description": "Googleova preporuka za sitemap i lastmod pokazuje zašto se promjena stvarnog sadržaja mora razlikovati od tehničkog builda.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#SEO",
+        "#Sitemap",
+        "#SearchConsole"
+      ],
+      "sources": [
+        {
+          "name": "Google Search Central — Build and Submit a Sitemap",
+          "url": "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap",
+          "supports": "Google upotrebljava lastmod ako je dosljedno i provjerljivo točan."
+        },
+        {
+          "name": "Sitemaps.org — XML Sitemap protocol",
+          "url": "https://www.sitemaps.org/protocol.html",
+          "supports": "Lastmod opisuje stvarnu posljednju izmjenu povezane stranice, ne dan generiranja sitemapa."
+        }
+      ],
+      "paragraphs": [
+        "Kada portal ima više jezika, gradova i tematskih rubrika, sitemap se lako pretvori u dugu tablicu adresa koja izgleda impresivno. No broj zapisa nije dokaz kvalitete ni indeksiranja. Sitemap prvenstveno pomaže tražilici otkrivati stranice, a smislen signal daje tek kada URL vodi na stvarnu, dostupnu i kanonski određenu stranicu.",
+        "Google Search Central navodi da se oznaka lastmod koristi kada je dosljedno i provjerljivo točna. Datum dnevne izgradnje projekta nije automatski datum značajne izmjene svakog članka. Ako se deset tisuća starih članaka regenerira zbog promjene zaglavlja, njihove stvarne uredničke izmjene i dalje treba razlikovati od tehničkog objavljivanja. Bez te razlike tražilici se šalje signal čiju vjerodostojnost nije moguće potvrditi.",
+        "Dobar postupak ima tri sloja: registar izvornog sadržaja s datumima, generator koji reproducira URL-ove i validaciju koja provjerava da nijedan zapis ne vodi na nepostojeću datoteku. Za veće mreže sitemap indeks može okupiti pojedinačna izdanja. Svaki jezični URL treba imati logičan canonical i jezične poveznice, dok promjene statusa iz nacrta u javnu objavu moraju biti jasno evidentirane.",
+        "Najbrži put do vidljivosti zato nije masovno dodavanje datuma i hashtagova. Prioritet imaju dostupna stranica, izvorni sadržaj, točan naslov, jasna informacija o izdavaču te provjerljiv datum izmjene. Ako podaci o promjeni ne postoje, poštenije je izostaviti neobaveznu oznaku nego je izmišljati."
+      ],
+      "articleBody": "Kada portal ima više jezika, gradova i tematskih rubrika, sitemap se lako pretvori u dugu tablicu adresa koja izgleda impresivno. No broj zapisa nije dokaz kvalitete ni indeksiranja. Sitemap prvenstveno pomaže tražilici otkrivati stranice, a smislen signal daje tek kada URL vodi na stvarnu, dostupnu i kanonski određenu stranicu.\n\nGoogle Search Central navodi da se oznaka lastmod koristi kada je dosljedno i provjerljivo točna. Datum dnevne izgradnje projekta nije automatski datum značajne izmjene svakog članka. Ako se deset tisuća starih članaka regenerira zbog promjene zaglavlja, njihove stvarne uredničke izmjene i dalje treba razlikovati od tehničkog objavljivanja. Bez te razlike tražilici se šalje signal čiju vjerodostojnost nije moguće potvrditi.\n\nDobar postupak ima tri sloja: registar izvornog sadržaja s datumima, generator koji reproducira URL-ove i validaciju koja provjerava da nijedan zapis ne vodi na nepostojeću datoteku. Za veće mreže sitemap indeks može okupiti pojedinačna izdanja. Svaki jezični URL treba imati logičan canonical i jezične poveznice, dok promjene statusa iz nacrta u javnu objavu moraju biti jasno evidentirane.\n\nNajbrži put do vidljivosti zato nije masovno dodavanje datuma i hashtagova. Prioritet imaju dostupna stranica, izvorni sadržaj, točan naslov, jasna informacija o izdavaču te provjerljiv datum izmjene. Ako podaci o promjeni ne postoje, poštenije je izostaviti neobaveznu oznaku nego je izmišljati.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Sitemap nije brojač URL-ova: zašto lažni datumi štete pouzdanosti",
+        "metaDescription": "Googleova preporuka za sitemap i lastmod pokazuje zašto se promjena stvarnog sadržaja mora razlikovati od tehničkog builda.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-03",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "ai-urednistvo-izvori-dokazi-objava",
+      "category": "Mediji",
+      "title": "AI redakcija nije isto što i automatski objavljena vijest",
+      "description": "Zašto naslov iz RSS-a, urednički nacrt i objavljen autorski tekst moraju imati različit status.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#Urednistvo",
+        "#ProvjeraCinjenica"
+      ],
+      "sources": [
+        {
+          "name": "Google Search Central — Helpful, Reliable Content",
+          "url": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+          "supports": "Google preporučuje korisne, pouzdane sadržaje napisane prvenstveno za ljude."
+        },
+        {
+          "name": "Schema.org — NewsArticle",
+          "url": "https://schema.org/NewsArticle",
+          "supports": "Shema NewsArticle odnosi se na vijesti i tekstove koji pružaju kontekst za njihovo razumijevanje."
+        }
+      ],
+      "paragraphs": [
+        "Digitalna redakcija može svakog sata prikupiti velik broj poveznica na objavljene naslove drugih medija. To je korisno za pregled događaja, ali nije isto što i proizvodnja vlastitih reportaža. RSS naslov otkriva da je izdavač objavio određenu informaciju; ne potvrđuje automatski sve tvrdnje, pravo na fotografiju ili postojanje samostalnog istraživačkog rada.",
+        "Prva granica mora biti vidljiva čitatelju: vanjski naslov i poveznica označavaju se kao preuzeti podatak o izvoru, dok izvorna analiza sadrži vlastito objašnjenje, zaključivanje i provjerljive reference. Druga granica postoji unutar sustava: prijedlog teme, nacrt, provjera i odobrena objava zasebni su koraci. Automatska obrada ne smije sama sebi dodijeliti uredničko odobrenje.",
+        "Googleova dokumentacija o korisnom sadržaju naglašava korisnost i pouzdanost za čitatelja. Dokumentacija o člancima opisuje strukturirane podatke kojima se može navesti pravi autor i vrijeme objave. Ni oznaka NewsArticle ni tehnički valjan JSON-LD nisu zamjena za istinit sadržaj. Ne treba navoditi pojedinu osobu kao autora samo zato što je ona izdavač ili glavni urednik portala.",
+        "Radno pravilo za veliku medijsku mrežu može biti jednostavno: svaki zapis mora imati izvor, datum, status prava na sliku, provjeru glavnih tvrdnji i dokaz stvarne objave. Ako ijedna ključna stavka nedostaje, tekst ostaje u pripremi. Sustav time možda objavi manje naslova u jednoj minuti, ali dugoročno proizvodi arhivu koju je moguće razumjeti, ispraviti i odgovorno koristiti."
+      ],
+      "articleBody": "Digitalna redakcija može svakog sata prikupiti velik broj poveznica na objavljene naslove drugih medija. To je korisno za pregled događaja, ali nije isto što i proizvodnja vlastitih reportaža. RSS naslov otkriva da je izdavač objavio određenu informaciju; ne potvrđuje automatski sve tvrdnje, pravo na fotografiju ili postojanje samostalnog istraživačkog rada.\n\nPrva granica mora biti vidljiva čitatelju: vanjski naslov i poveznica označavaju se kao preuzeti podatak o izvoru, dok izvorna analiza sadrži vlastito objašnjenje, zaključivanje i provjerljive reference. Druga granica postoji unutar sustava: prijedlog teme, nacrt, provjera i odobrena objava zasebni su koraci. Automatska obrada ne smije sama sebi dodijeliti uredničko odobrenje.\n\nGoogleova dokumentacija o korisnom sadržaju naglašava korisnost i pouzdanost za čitatelja. Dokumentacija o člancima opisuje strukturirane podatke kojima se može navesti pravi autor i vrijeme objave. Ni oznaka NewsArticle ni tehnički valjan JSON-LD nisu zamjena za istinit sadržaj. Ne treba navoditi pojedinu osobu kao autora samo zato što je ona izdavač ili glavni urednik portala.\n\nRadno pravilo za veliku medijsku mrežu može biti jednostavno: svaki zapis mora imati izvor, datum, status prava na sliku, provjeru glavnih tvrdnji i dokaz stvarne objave. Ako ijedna ključna stavka nedostaje, tekst ostaje u pripremi. Sustav time možda objavi manje naslova u jednoj minuti, ali dugoročno proizvodi arhivu koju je moguće razumjeti, ispraviti i odgovorno koristiti.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "AI redakcija nije isto što i automatski objavljena vijest",
+        "metaDescription": "Zašto naslov iz RSS-a, urednički nacrt i objavljen autorski tekst moraju imati različit status.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-04",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "wcag22-pristupacnost-nije-ukras",
+      "category": "Web",
+      "title": "Pristupačnost portala nije ukras: što donosi WCAG 2.2",
+      "description": "Kako standard pristupačnosti povezati s navigacijom, fokusom, čitljivošću i testiranjem web izdanja.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#Pristupacnost",
+        "#WCAG22",
+        "#WebStandardi"
+      ],
+      "sources": [
+        {
+          "name": "W3C — WCAG 2.2",
+          "url": "https://www.w3.org/TR/WCAG22/",
+          "supports": "W3C objavljuje normativne smjernice WCAG 2.2."
+        },
+        {
+          "name": "ISO — ISO/IEC 40500:2025",
+          "url": "https://www.iso.org/standard/91029.html",
+          "supports": "WCAG 2.2 objavljen je kao ISO/IEC 40500:2025 međunarodni standard."
+        }
+      ],
+      "paragraphs": [
+        "Web može biti vizualno atraktivan, a istodobno težak za korištenje ljudima koji se oslanjaju na tipkovnicu, čitač zaslona ili povećani prikaz. Na medijskom portalu problem postaje ozbiljniji kada ista pogreška postoji na stotinama jezičnih i gradskih izdanja. Jedan neispravno označen gumb ili slabo vidljiv fokus ponavlja se kroz cijelu mrežu.",
+        "W3C-ove smjernice WCAG 2.2 pružaju mjerila pristupačnosti sadržaja. Iz njih slijedi praktična urednička i razvojna obveza: naslovna hijerarhija treba biti razumljiva, poveznice moraju imati smislen tekst, slike odgovarajući alternativni opis, a radnje trebaju biti dostupne bez miša. Nije dovoljno provjeriti samo izgled naslovnice na jednom zaslonu.",
+        "Za velike portale preporučljiv je niz ponovljivih kontrola. Komponenta koja prolazi kroz test tipkovnice i kontrasta zatim se primjenjuje na sva izdanja, umjesto da se pojedinačno popravlja svaka stranica. Automatizirani test može otkriti dio problema, ali razumljivost teksta, redoslijed čitanja i stvarnu uporabljivost treba provjeriti i ljudskim pregledom.",
+        "Pristupačnost zato nije projekt koji dolazi nakon SEO-a i dizajna. Ona utječe na to može li čitatelj uopće doći do informacije, prepoznati izvor i dovršiti radnju. Uredništvo i razvojni tim trebaju dijeliti jedinstven popis pogrešaka i evidenciju njihovih ispravaka, umjesto da dostupnost proglašavaju na temelju izgleda ili samog postojanja certifikacijske oznake."
+      ],
+      "articleBody": "Web može biti vizualno atraktivan, a istodobno težak za korištenje ljudima koji se oslanjaju na tipkovnicu, čitač zaslona ili povećani prikaz. Na medijskom portalu problem postaje ozbiljniji kada ista pogreška postoji na stotinama jezičnih i gradskih izdanja. Jedan neispravno označen gumb ili slabo vidljiv fokus ponavlja se kroz cijelu mrežu.\n\nW3C-ove smjernice WCAG 2.2 pružaju mjerila pristupačnosti sadržaja. Iz njih slijedi praktična urednička i razvojna obveza: naslovna hijerarhija treba biti razumljiva, poveznice moraju imati smislen tekst, slike odgovarajući alternativni opis, a radnje trebaju biti dostupne bez miša. Nije dovoljno provjeriti samo izgled naslovnice na jednom zaslonu.\n\nZa velike portale preporučljiv je niz ponovljivih kontrola. Komponenta koja prolazi kroz test tipkovnice i kontrasta zatim se primjenjuje na sva izdanja, umjesto da se pojedinačno popravlja svaka stranica. Automatizirani test može otkriti dio problema, ali razumljivost teksta, redoslijed čitanja i stvarnu uporabljivost treba provjeriti i ljudskim pregledom.\n\nPristupačnost zato nije projekt koji dolazi nakon SEO-a i dizajna. Ona utječe na to može li čitatelj uopće doći do informacije, prepoznati izvor i dovršiti radnju. Uredništvo i razvojni tim trebaju dijeliti jedinstven popis pogrešaka i evidenciju njihovih ispravaka, umjesto da dostupnost proglašavaju na temelju izgleda ili samog postojanja certifikacijske oznake.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Pristupačnost portala nije ukras: što donosi WCAG 2.2",
+        "metaDescription": "Kako standard pristupačnosti povezati s navigacijom, fokusom, čitljivošću i testiranjem web izdanja.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-05",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "owasp2025-sigurnost-prije-objave",
+      "category": "Sigurnost",
+      "title": "Sigurnost prije objave: što urednici mogu naučiti iz OWASP Top 10",
+      "description": "Kako zaštititi javni portal i automatizirane objave bez skrivanja pogrešaka i zaobilaženja CI provjera.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#KibernetickaSigurnost",
+        "#OWASP",
+        "#ReleaseGate"
+      ],
+      "sources": [
+        {
+          "name": "OWASP — Top 10",
+          "url": "https://owasp.org/projects/Top-Ten",
+          "supports": "OWASP održava projekt Top 10 web sigurnosnih rizika, s izdanjem za 2025."
+        },
+        {
+          "name": "UK NCSC — Software Security Code of Practice",
+          "url": "https://www.ncsc.gov.uk/collection/software-security-code-of-practice-implementation-guidance/about",
+          "supports": "NCSC objavljuje smjernice za sigurnost i otpornost softvera."
+        }
+      ],
+      "paragraphs": [
+        "Kad urednički sustav objavljuje tisuće stranica, sigurnosna greška u zajedničkoj komponenti može se proširiti mnogo brže od pogreške u jednom tekstu. Posebno su osjetljive funkcije koje primaju korisničke podatke, učitavaju udaljene slike, obrađuju vanjske feedove ili mogu pokrenuti objavu bez dodatne provjere. Brzina generiranja sadržaja zato mora ostati odvojena od ovlasti za njegovo javno isporučivanje.",
+        "OWASP Top 10 upozorava na temeljne kategorije rizika u web aplikacijama. Za urednički portal praktičan zaključak je da svaki vanjski podatak treba tretirati kao nepouzdan dok ne prođe odgovarajuću provjeru. To uključuje URL-ove slika, HTML sadržaj iz feedova, predloške metapodataka i administratorske zahtjeve. Samo činjenica da podatak dolazi iz poznatog medija ne znači da je siguran za izravno umetanje u stranicu.",
+        "U razvojnom procesu vrijedi primijeniti najmanja potrebna dopuštenja, kontrolu verzija, izolirane testove, eksplicitnu listu dozvoljenih izvora i zapis o tome koji je commit stvarno objavljen. Neuspješan sigurnosni test nije administrativna smetnja koju treba preskočiti. To je nalaz koji zahtijeva ispravak, ponavljanje provjera i pregled učinka na povezane dijelove sustava.",
+        "Najbolje ubrzanje često donose mali reverzibilni popravci: svaki mijenja jednu jasno definiranu površinu i ima mjerljiv test. Tim brže razumije gdje je nastala pogreška i može odustati bez gubitka drugih poboljšanja. Sigurnost nije suprotnost brzom razvoju; dobro uređena kontrola izdanja preduvjet je da veliki portal može rasti bez gomilanja nevidljivih rizika."
+      ],
+      "articleBody": "Kad urednički sustav objavljuje tisuće stranica, sigurnosna greška u zajedničkoj komponenti može se proširiti mnogo brže od pogreške u jednom tekstu. Posebno su osjetljive funkcije koje primaju korisničke podatke, učitavaju udaljene slike, obrađuju vanjske feedove ili mogu pokrenuti objavu bez dodatne provjere. Brzina generiranja sadržaja zato mora ostati odvojena od ovlasti za njegovo javno isporučivanje.\n\nOWASP Top 10 upozorava na temeljne kategorije rizika u web aplikacijama. Za urednički portal praktičan zaključak je da svaki vanjski podatak treba tretirati kao nepouzdan dok ne prođe odgovarajuću provjeru. To uključuje URL-ove slika, HTML sadržaj iz feedova, predloške metapodataka i administratorske zahtjeve. Samo činjenica da podatak dolazi iz poznatog medija ne znači da je siguran za izravno umetanje u stranicu.\n\nU razvojnom procesu vrijedi primijeniti najmanja potrebna dopuštenja, kontrolu verzija, izolirane testove, eksplicitnu listu dozvoljenih izvora i zapis o tome koji je commit stvarno objavljen. Neuspješan sigurnosni test nije administrativna smetnja koju treba preskočiti. To je nalaz koji zahtijeva ispravak, ponavljanje provjera i pregled učinka na povezane dijelove sustava.\n\nNajbolje ubrzanje često donose mali reverzibilni popravci: svaki mijenja jednu jasno definiranu površinu i ima mjerljiv test. Tim brže razumije gdje je nastala pogreška i može odustati bez gubitka drugih poboljšanja. Sigurnost nije suprotnost brzom razvoju; dobro uređena kontrola izdanja preduvjet je da veliki portal može rasti bez gomilanja nevidljivih rizika.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Sigurnost prije objave: što urednici mogu naučiti iz OWASP Top 10",
+        "metaDescription": "Kako zaštititi javni portal i automatizirane objave bez skrivanja pogrešaka i zaobilaženja CI provjera.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-06",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "cloudflare-exact-sha-javna-verifikacija",
+      "category": "Infrastruktura",
+      "title": "Deploy nije objava dok se ne provjeri stvarna javna adresa",
+      "description": "Razlika između commita, uspješne izgradnje, Cloudflare verzije i provjerene produkcije na vlastitoj domeni.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#Cloudflare",
+        "#Deploy",
+        "#DevOps"
+      ],
+      "sources": [
+        {
+          "name": "Cloudflare Workers — Versions and Deployments",
+          "url": "https://developers.cloudflare.com/workers/versions-and-deployments/",
+          "supports": "Cloudflare razlikuje verzije koda i njihove aktivne deploymente."
+        },
+        {
+          "name": "Google Search Central — Troubleshooting Crawling Errors",
+          "url": "https://developers.google.com/search/docs/crawling-indexing/troubleshoot-crawling-errors",
+          "supports": "Google dokumentira probleme dostupnosti i indeksiranja URL-ova."
+        }
+      ],
+      "paragraphs": [
+        "U digitalnom izdavaštvu često se miješaju četiri pojma: tekst je napisan, commit postoji, izgradnja je prošla i javna stranica prikazuje promjenu. To nisu sinonimi. GitHub može sadržavati novi članak koji produkcija još nije preuzela. Uspješna tehnička izgradnja može završiti na razvojnoj okolini, dok stvarna domena poslužuje stariju verziju.",
+        "Cloudflareova dokumentacija razlikuje verziju Workera od deploymenta kojim se određuje koja verzija prima promet. Za dokaz produkcije zato treba povezati konkretan commit sa stvarno aktivnim izdanjem, a zatim neovisno očitati javnu HTTPS adresu. Takav zapis treba sadržavati vrijeme provjere, kanonski URL, očekivanu verziju i rezultat — ne samo zeleno svjetlo neke nepovezane provjere.",
+        "Postupak brzog, ali kontroliranog izdanja izgleda ovako: mali pregledani PR, potrebni testovi, spajanje u glavnu granu, provjera točnog SHA-a, autorizirani produkcijski release i javni HTTP test. Ako provjera odgovora ili predviđenog sadržaja ne uspije, nije odgovorno označiti izdanje kao potvrđeno. Ranija stabilna verzija i mogućnost povrata trebaju ostati poznate.",
+        "Operativni zaključak posebno je važan za višejezične medijske mreže. Broj generiranih datoteka pokazuje obujam pripreme; broj javno provjerenih URL-ova pokazuje stvarnu dostupnost. Izvješće koje jasno razdvaja ta dva broja pomaže upravi da ubrza izdavanje bez stvaranja lažne slike o opsegu objavljenog proizvoda."
+      ],
+      "articleBody": "U digitalnom izdavaštvu često se miješaju četiri pojma: tekst je napisan, commit postoji, izgradnja je prošla i javna stranica prikazuje promjenu. To nisu sinonimi. GitHub može sadržavati novi članak koji produkcija još nije preuzela. Uspješna tehnička izgradnja može završiti na razvojnoj okolini, dok stvarna domena poslužuje stariju verziju.\n\nCloudflareova dokumentacija razlikuje verziju Workera od deploymenta kojim se određuje koja verzija prima promet. Za dokaz produkcije zato treba povezati konkretan commit sa stvarno aktivnim izdanjem, a zatim neovisno očitati javnu HTTPS adresu. Takav zapis treba sadržavati vrijeme provjere, kanonski URL, očekivanu verziju i rezultat — ne samo zeleno svjetlo neke nepovezane provjere.\n\nPostupak brzog, ali kontroliranog izdanja izgleda ovako: mali pregledani PR, potrebni testovi, spajanje u glavnu granu, provjera točnog SHA-a, autorizirani produkcijski release i javni HTTP test. Ako provjera odgovora ili predviđenog sadržaja ne uspije, nije odgovorno označiti izdanje kao potvrđeno. Ranija stabilna verzija i mogućnost povrata trebaju ostati poznate.\n\nOperativni zaključak posebno je važan za višejezične medijske mreže. Broj generiranih datoteka pokazuje obujam pripreme; broj javno provjerenih URL-ova pokazuje stvarnu dostupnost. Izvješće koje jasno razdvaja ta dva broja pomaže upravi da ubrza izdavanje bez stvaranja lažne slike o opsegu objavljenog proizvoda.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Deploy nije objava dok se ne provjeri stvarna javna adresa",
+        "metaDescription": "Razlika između commita, uspješne izgradnje, Cloudflare verzije i provjerene produkcije na vlastitoj domeni.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-07",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "visejezicni-portal-hreflang-kanonicki-jezik",
+      "category": "SEO",
+      "title": "Višejezični portal treba jasne jezične adrese, ne automatsko množenje kopija",
+      "description": "Kako ispravno povezati jezična izdanja pomoću hreflanga, deklaracije jezika i stvarno lokaliziranog sadržaja.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#Hreflang",
+        "#VisejezicniWeb",
+        "#SEO"
+      ],
+      "sources": [
+        {
+          "name": "Google Search Central — Localized Versions",
+          "url": "https://developers.google.com/search/docs/specialty/international/localized-versions",
+          "supports": "Google opisuje uzajamne hreflang veze između stvarnih jezičnih varijanti stranice."
+        },
+        {
+          "name": "W3C — Declaring Language in HTML",
+          "url": "https://www.w3.org/International/questions/qa-html-language-declarations.en",
+          "supports": "W3C preporučuje deklaraciju stvarnog jezika sadržaja kroz HTML lang atribut."
+        }
+      ],
+      "paragraphs": [
+        "Širenje medijske mreže na više država ne postiže se samo izradom novih mapa s nazivima država. Ako stranica nosi oznaku engleskog izdanja, a glavnina teksta je na hrvatskom, čitatelj dobiva pogrešno očekivanje. Pretraživač dobiva nejasan signal, a uredništvo gubi pregled nad time koja je inačica doista prevedena, a koja je tek tehnička kopija.",
+        "Googleova dokumentacija o lokaliziranim verzijama opisuje upotrebu hreflang oznaka za povezivanje ekvivalentnih stranica. W3C naglašava da HTML element treba deklarirati stvarni jezik sadržaja. Ta dva mehanizma rješavaju različite probleme: jedan pomaže pronaći odgovarajuću jezičnu varijantu, a drugi opisuje jezik kojim je tekst napisan i važan je za alate pristupačnosti.",
+        "Praktična arhitektura traži zasebne kanonske URL-ove za odobrene prijevode, uzajamne jezične poveznice, jedinstvene uredničke identifikatore i status prijevoda. Rubrike bez dovršenog prijevoda mogu voditi na izvorno izdanje uz jasnu oznaku jezika, ali ne bi smjele tvrditi da predstavljaju potpuno prevedeni članak. Lokalizacija uključuje i pravilnu terminologiju, datume, izvore i razumljiv naslov, a ne samo promjenu prefiksa adrese.",
+        "U velikoj mreži vrijedi automatski provjeravati postoje li sve ciljne adrese i vraćaju li očekivani sadržaj. Ne treba obećavati broj aktivnih izdanja prema broju kreiranih direktorija. Objavljenim treba smatrati samo ono izdanje čiji se jezik, sadržaj i javna dostupnost mogu provjeriti."
+      ],
+      "articleBody": "Širenje medijske mreže na više država ne postiže se samo izradom novih mapa s nazivima država. Ako stranica nosi oznaku engleskog izdanja, a glavnina teksta je na hrvatskom, čitatelj dobiva pogrešno očekivanje. Pretraživač dobiva nejasan signal, a uredništvo gubi pregled nad time koja je inačica doista prevedena, a koja je tek tehnička kopija.\n\nGoogleova dokumentacija o lokaliziranim verzijama opisuje upotrebu hreflang oznaka za povezivanje ekvivalentnih stranica. W3C naglašava da HTML element treba deklarirati stvarni jezik sadržaja. Ta dva mehanizma rješavaju različite probleme: jedan pomaže pronaći odgovarajuću jezičnu varijantu, a drugi opisuje jezik kojim je tekst napisan i važan je za alate pristupačnosti.\n\nPraktična arhitektura traži zasebne kanonske URL-ove za odobrene prijevode, uzajamne jezične poveznice, jedinstvene uredničke identifikatore i status prijevoda. Rubrike bez dovršenog prijevoda mogu voditi na izvorno izdanje uz jasnu oznaku jezika, ali ne bi smjele tvrditi da predstavljaju potpuno prevedeni članak. Lokalizacija uključuje i pravilnu terminologiju, datume, izvore i razumljiv naslov, a ne samo promjenu prefiksa adrese.\n\nU velikoj mreži vrijedi automatski provjeravati postoje li sve ciljne adrese i vraćaju li očekivani sadržaj. Ne treba obećavati broj aktivnih izdanja prema broju kreiranih direktorija. Objavljenim treba smatrati samo ono izdanje čiji se jezik, sadržaj i javna dostupnost mogu provjeriti.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Višejezični portal treba jasne jezične adrese, ne automatsko množenje kopija",
+        "metaDescription": "Kako ispravno povezati jezična izdanja pomoću hreflanga, deklaracije jezika i stvarno lokaliziranog sadržaja.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-08",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "fotografije-u-medijima-poveznica-nije-licencija",
+      "category": "Mediji",
+      "title": "Fotografija na internetu nije automatski slobodna za ponovnu objavu",
+      "description": "Razlika između povezivanja izvora, dozvole za reprodukciju fotografije i pravila Creative Commons licenci.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#AutorskoPravo",
+        "#Fotografije",
+        "#Mediji"
+      ],
+      "sources": [
+        {
+          "name": "WIPO — Copyright FAQ",
+          "url": "https://www.wipo.int/en/web/copyright/faq-copyright",
+          "supports": "WIPO objašnjava da fotografije mogu biti zaštićena autorska djela i da objava nije nužno oslobađanje prava."
+        },
+        {
+          "name": "Creative Commons — CC Licenses",
+          "url": "https://creativecommons.org/share-your-work/use-remix/cc-licenses/",
+          "supports": "Creative Commons navodi različite vrste licenci i posebne uvjete atribucije, prerade i komercijalne uporabe."
+        }
+      ],
+      "paragraphs": [
+        "Regionalni portal koji preuzima samo naslov i poveznicu na izvor radi nešto bitno drugačije od portala koji na vlastitom poslužitelju prikazuje tuđu fotografiju. Tehnička mogućnost dohvaćanja slike ne govori ništa o tome dopušta li autor njezino umnažanje. Dopuštena domena u mrežnoj konfiguraciji rješava sigurnost pristupa, ali ne dokazuje postojanje licence.",
+        "WIPO u svojim informacijama o autorskom pravu navodi fotografije među djelima koja mogu uživati zaštitu. Creative Commons opisuje više licenci s različitim uvjetima, uključujući atribuciju i ograničenja prerade ili komercijalne upotrebe. To znači da oznaka izvora fotografije jest važna, ali sama po sebi nije isto što i pravo na objavljivanje.",
+        "Operativni sustav trebao bi za svaku sliku čuvati autora, izdavača, točan izvor, vrstu licence, dokaz pribavljene dozvole ako je potrebna i tekst atribucije. U nedostatku provjerljivih prava uredništvo može prikazati vlastitu ilustraciju ili objaviti tekstualnu poveznicu na članak izvornog izdavača. Takvo rješenje ne zahtijeva prikrivanje identiteta izvora niti improvizirano kopiranje tuđih fotografija.",
+        "Ovo je informativni urednički pregled, ne individualni pravni savjet o određenoj fotografiji ili licenci. Za svaki konkretan slučaj treba provjeriti uvjete korištenja i moguće iznimke prema primjenjivom pravu. Brzo širenje kanala održivo je samo ako evidencija prava raste zajedno s evidencijom sadržaja."
+      ],
+      "articleBody": "Regionalni portal koji preuzima samo naslov i poveznicu na izvor radi nešto bitno drugačije od portala koji na vlastitom poslužitelju prikazuje tuđu fotografiju. Tehnička mogućnost dohvaćanja slike ne govori ništa o tome dopušta li autor njezino umnažanje. Dopuštena domena u mrežnoj konfiguraciji rješava sigurnost pristupa, ali ne dokazuje postojanje licence.\n\nWIPO u svojim informacijama o autorskom pravu navodi fotografije među djelima koja mogu uživati zaštitu. Creative Commons opisuje više licenci s različitim uvjetima, uključujući atribuciju i ograničenja prerade ili komercijalne upotrebe. To znači da oznaka izvora fotografije jest važna, ali sama po sebi nije isto što i pravo na objavljivanje.\n\nOperativni sustav trebao bi za svaku sliku čuvati autora, izdavača, točan izvor, vrstu licence, dokaz pribavljene dozvole ako je potrebna i tekst atribucije. U nedostatku provjerljivih prava uredništvo može prikazati vlastitu ilustraciju ili objaviti tekstualnu poveznicu na članak izvornog izdavača. Takvo rješenje ne zahtijeva prikrivanje identiteta izvora niti improvizirano kopiranje tuđih fotografija.\n\nOvo je informativni urednički pregled, ne individualni pravni savjet o određenoj fotografiji ili licenci. Za svaki konkretan slučaj treba provjeriti uvjete korištenja i moguće iznimke prema primjenjivom pravu. Brzo širenje kanala održivo je samo ako evidencija prava raste zajedno s evidencijom sadržaja.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Fotografija na internetu nije automatski slobodna za ponovnu objavu",
+        "metaDescription": "Razlika između povezivanja izvora, dozvole za reprodukciju fotografije i pravila Creative Commons licenci.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-09",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "softverski-lanac-dokaz-izrade-i-podrijetla",
+      "category": "Sigurnost",
+      "title": "Zašto kod, paket i deploy trebaju poveziv dokaz podrijetla",
+      "description": "SLSA i OpenSSF Scorecard nude pristupe boljem praćenju softverskih isporuka i sigurnosti otvorenog koda.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#DevSecOps",
+        "#SLSA",
+        "#OpenSSF"
+      ],
+      "sources": [
+        {
+          "name": "SLSA — Provenance Specification",
+          "url": "https://slsa.dev/spec/v1.0/provenance",
+          "supports": "SLSA definira dokumentiranje podrijetla softverskog artefakta i procesa njegove izgradnje."
+        },
+        {
+          "name": "OpenSSF Scorecard — Project Repository",
+          "url": "https://github.com/ossf/scorecard",
+          "supports": "Projekt OpenSSF Scorecard objavljuje provjere sigurnosne prakse repozitorija otvorenog koda."
+        }
+      ],
+      "paragraphs": [
+        "U distribuciji web portala često se zna koji je tekst posljednji promijenjen, ali ne i od kojih je točno datoteka nastao javni paket. Time se otvara prostor za pogreške: testira se jedna verzija, spaja druga, a javni poslužitelj može koristiti treću. Problem nije samo brzina objave nego i pitanje može li se rezultat vjerodostojno rekonstruirati.",
+        "SLSA specifikacija opisuje provenance — podatke kojima se artefakt povezuje s izvorom i procesom izgradnje. Projekt OpenSSF Scorecard pomaže ocjenjivati sigurnosne prakse u projektima otvorenog koda. Ta dva pristupa nisu zamjena jedan za drugi. Jedan naglašava sljedivost isporuke, drugi pridonosi procjeni sigurnosnih navika i postavki projekta.",
+        "Za razvojnu ekipu korisna je jednostavna evidencija: izvorni commit, rezultati obveznih testova, identifikator izgradnje, sažetak promijenjenih datoteka, ciljna okolina i rezultat javne provjere. Za svaki korak treba postojati dokaz koji se može provjeriti bez pozivanja na nečije sjećanje. Ako je dio lanca nepoznat, izdanje treba označiti nepotvrđenim umjesto da se praznina popuni pretpostavkom.",
+        "Takva disciplina skraćuje vrijeme analize kvarova i olakšava povrat na prethodnu stabilnu inačicu. Ona također štiti uredništvo od pogrešnog zaključka da je članak objavljen samo zato što je promijenjen u repozitoriju. Mreža može rasti brzo, ali svaki javni rezultat mora ostati povezan s točno određenim izvorom i odobrenim postupkom."
+      ],
+      "articleBody": "U distribuciji web portala često se zna koji je tekst posljednji promijenjen, ali ne i od kojih je točno datoteka nastao javni paket. Time se otvara prostor za pogreške: testira se jedna verzija, spaja druga, a javni poslužitelj može koristiti treću. Problem nije samo brzina objave nego i pitanje može li se rezultat vjerodostojno rekonstruirati.\n\nSLSA specifikacija opisuje provenance — podatke kojima se artefakt povezuje s izvorom i procesom izgradnje. Projekt OpenSSF Scorecard pomaže ocjenjivati sigurnosne prakse u projektima otvorenog koda. Ta dva pristupa nisu zamjena jedan za drugi. Jedan naglašava sljedivost isporuke, drugi pridonosi procjeni sigurnosnih navika i postavki projekta.\n\nZa razvojnu ekipu korisna je jednostavna evidencija: izvorni commit, rezultati obveznih testova, identifikator izgradnje, sažetak promijenjenih datoteka, ciljna okolina i rezultat javne provjere. Za svaki korak treba postojati dokaz koji se može provjeriti bez pozivanja na nečije sjećanje. Ako je dio lanca nepoznat, izdanje treba označiti nepotvrđenim umjesto da se praznina popuni pretpostavkom.\n\nTakva disciplina skraćuje vrijeme analize kvarova i olakšava povrat na prethodnu stabilnu inačicu. Ona također štiti uredništvo od pogrešnog zaključka da je članak objavljen samo zato što je promijenjen u repozitoriju. Mreža može rasti brzo, ali svaki javni rezultat mora ostati povezan s točno određenim izvorom i odobrenim postupkom.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Zašto kod, paket i deploy trebaju poveziv dokaz podrijetla",
+        "metaDescription": "SLSA i OpenSSF Scorecard nude pristupe boljem praćenju softverskih isporuka i sigurnosti otvorenog koda.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-10",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "seo-vidljivost-ne-znaci-javni-dokaz",
+      "category": "SEO",
+      "title": "Dobra SEO oznaka ne jamči vidljivost: što zapravo treba mjeriti",
+      "description": "Zašto broj članaka, meta oznaka i hashtagova treba odvojiti od dostupnosti, indeksiranja i koristi za čitatelja.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#SEO",
+        "#Analitika",
+        "#KvalitetaSadrzaja"
+      ],
+      "sources": [
+        {
+          "name": "Google Search Central — SEO Starter Guide",
+          "url": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+          "supports": "Google naglašava koristan sadržaj, jasne URL-ove i osnovne postupke za lakše pronalaženje stranica."
+        },
+        {
+          "name": "W3C — Web Content Accessibility Guidelines 2.2",
+          "url": "https://www.w3.org/TR/WCAG22/",
+          "supports": "W3C navodi mjerljive kriterije koji pomažu korisnicima pristupati web sadržaju."
+        }
+      ],
+      "paragraphs": [
+        "Na velikom portalu lako je mjeriti ono što se najjednostavnije broji: broj naslova, broj jezičnih mapa, broj hashtagova i količinu generiranih meta podataka. No te metrike same ne dokazuju da čitatelj može otvoriti stranicu, da je tražilica indeksira ili da tekst donosi novu vrijednost. U izvještavanju treba odvojiti količinu proizvedenih datoteka od stvarne dostupnosti i korisnosti.",
+        "Googleov SEO vodič daje prednost sadržaju koji je relevantan i razumljiv ljudima. W3C-ovi kriteriji pristupačnosti pomažu prepoznati prepreke pri korištenju. Iz te dvije perspektive proizlazi praktična lekcija: naslov nije uspješan ako vodi na nepostojeću adresu, a napredni dizajn ne pomaže ako korisnik ne može doći do teksta pomoću tipkovnice ili čitača zaslona.",
+        "Za realno upravljanje preporučljivo je pratiti nekoliko razdvojenih skupova pokazatelja: pripremljeni tekstovi, urednički odobreni tekstovi, javno dostupni URL-ovi, kanonski ispravne stranice, indeksirane stranice i stvarne interakcije. Uz svaki broj treba zapisati način mjerenja i vrijeme provjere. Posebno je važno ne prikazivati podatak o generiranoj stranici kao dokaz da je već objavljena.",
+        "Brz razvoj nije u sukobu s točnim mjerenjem. Naprotiv, kada se jasno vidi gdje sadržaj zapinje — kod izvora, autorizacije, izgradnje, dostave ili indeksiranja — tim može rješavati konkretan problem. To je kvalitetniji oblik ubrzanja od dodavanja još stotina neprovjerenih stranica u evidenciju."
+      ],
+      "articleBody": "Na velikom portalu lako je mjeriti ono što se najjednostavnije broji: broj naslova, broj jezičnih mapa, broj hashtagova i količinu generiranih meta podataka. No te metrike same ne dokazuju da čitatelj može otvoriti stranicu, da je tražilica indeksira ili da tekst donosi novu vrijednost. U izvještavanju treba odvojiti količinu proizvedenih datoteka od stvarne dostupnosti i korisnosti.\n\nGoogleov SEO vodič daje prednost sadržaju koji je relevantan i razumljiv ljudima. W3C-ovi kriteriji pristupačnosti pomažu prepoznati prepreke pri korištenju. Iz te dvije perspektive proizlazi praktična lekcija: naslov nije uspješan ako vodi na nepostojeću adresu, a napredni dizajn ne pomaže ako korisnik ne može doći do teksta pomoću tipkovnice ili čitača zaslona.\n\nZa realno upravljanje preporučljivo je pratiti nekoliko razdvojenih skupova pokazatelja: pripremljeni tekstovi, urednički odobreni tekstovi, javno dostupni URL-ovi, kanonski ispravne stranice, indeksirane stranice i stvarne interakcije. Uz svaki broj treba zapisati način mjerenja i vrijeme provjere. Posebno je važno ne prikazivati podatak o generiranoj stranici kao dokaz da je već objavljena.\n\nBrz razvoj nije u sukobu s točnim mjerenjem. Naprotiv, kada se jasno vidi gdje sadržaj zapinje — kod izvora, autorizacije, izgradnje, dostave ili indeksiranja — tim može rješavati konkretan problem. To je kvalitetniji oblik ubrzanja od dodavanja još stotina neprovjerenih stranica u evidenciju.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Dobra SEO oznaka ne jamči vidljivost: što zapravo treba mjeriti",
+        "metaDescription": "Zašto broj članaka, meta oznaka i hashtagova treba odvojiti od dostupnosti, indeksiranja i koristi za čitatelja.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-11",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "mmf-tri-izvora-financijskog-rizika-2026",
+      "category": "Financije",
+      "title": "Tri izvora rizika financijskih tržišta 2026.: AI, obveznice i digitalni prekidi",
+      "description": "MMF u izvješću za listopad 2026. povezuje tržišna očekivanja, cijenu kapitala i kibernetičku otpornost financijskog sektora.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#MMF",
+        "#FinancijskaStabilnost",
+        "#Investicije"
+      ],
+      "sources": [
+        {
+          "name": "MMF — Global Financial Stability Report 2026",
+          "url": "https://www.imf.org/en/publications/gfsr/issues/2026/10/13/global-financial-stability-report-october-2026",
+          "supports": "MMF-ov izvještaj iz listopada 2026. analizira povišene rizike financijske stabilnosti i tržišne ranjivosti."
+        },
+        {
+          "name": "ESB — Monetary Policy Transmission",
+          "url": "https://www.ecb.europa.eu/mopo/intro/transmission/html/index.en.html",
+          "supports": "ESB opisuje prijenos monetarne politike na kamate, očekivanja, financiranje i inflaciju."
+        }
+      ],
+      "paragraphs": [
+        "Financijska tržišta mogu istodobno bilježiti visoke cijene imovine i rastuću izloženost neugodnim iznenađenjima. MMF u listopadskom izvještaju za 2026. opisuje otpornost tržišta, ali upozorava da povišene ranjivosti mogu snažno pojačati negativne šokove. To je važnije od jednostavne tvrdnje da je tržište sigurno zato što još raste.",
+        "U središtu pažnje su očekivanja od ulaganja povezanih s umjetnom inteligencijom, promjene prinosa državnih obveznica i kibernetičke prijetnje. Ne radi se o tri odvojena svijeta: pad povjerenja može promijeniti cijenu financiranja, dok digitalni prekid može otežati pristup ključnim tržišnim uslugama baš u trenutku povećane nestabilnosti.",
+        "Europska središnja banka objašnjava da monetarna politika djeluje kroz više kanala, uključujući tržišne stope i očekivanja. Stoga promjene u cijeni kapitala ne nastaju jednim potezom niti se prenose jednako na sve dužnike. Važni su struktura duga, dospijeća i dostupnost likvidnosti.",
+        "Odgovorno investicijsko izvještavanje mora razlikovati sistemski rizik od rizika konkretne tvrtke. Iz globalnog izvješća nije moguće bez dodatne analize izvesti ciljanu cijenu dionice ili prognozu zarade. Analitičar bi trebao prikazati barem osnovni, povoljan i nepovoljan scenarij.",
+        "Uz svaki prikazani rizik korisno je pratiti dokaz: uvjete refinanciranja, stvarne obveze, raspoloživa sredstva i ovisnost o pružateljima digitalnih usluga. Bez tih podataka upozorenje može ostati snažan naslov, ali neće pomoći pri odluci."
+      ],
+      "articleBody": "Financijska tržišta mogu istodobno bilježiti visoke cijene imovine i rastuću izloženost neugodnim iznenađenjima. MMF u listopadskom izvještaju za 2026. opisuje otpornost tržišta, ali upozorava da povišene ranjivosti mogu snažno pojačati negativne šokove. To je važnije od jednostavne tvrdnje da je tržište sigurno zato što još raste.\n\nU središtu pažnje su očekivanja od ulaganja povezanih s umjetnom inteligencijom, promjene prinosa državnih obveznica i kibernetičke prijetnje. Ne radi se o tri odvojena svijeta: pad povjerenja može promijeniti cijenu financiranja, dok digitalni prekid može otežati pristup ključnim tržišnim uslugama baš u trenutku povećane nestabilnosti.\n\nEuropska središnja banka objašnjava da monetarna politika djeluje kroz više kanala, uključujući tržišne stope i očekivanja. Stoga promjene u cijeni kapitala ne nastaju jednim potezom niti se prenose jednako na sve dužnike. Važni su struktura duga, dospijeća i dostupnost likvidnosti.\n\nOdgovorno investicijsko izvještavanje mora razlikovati sistemski rizik od rizika konkretne tvrtke. Iz globalnog izvješća nije moguće bez dodatne analize izvesti ciljanu cijenu dionice ili prognozu zarade. Analitičar bi trebao prikazati barem osnovni, povoljan i nepovoljan scenarij.\n\nUz svaki prikazani rizik korisno je pratiti dokaz: uvjete refinanciranja, stvarne obveze, raspoloživa sredstva i ovisnost o pružateljima digitalnih usluga. Bez tih podataka upozorenje može ostati snažan naslov, ali neće pomoći pri odluci.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Tri izvora rizika financijskih tržišta 2026.: AI, obveznice i digitalni prekidi",
+        "metaDescription": "MMF u izvješću za listopad 2026. povezuje tržišna očekivanja, cijenu kapitala i kibernetičku otpornost financijskog sektora.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-12",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "rast-potrosnje-ai-podatkovnih-centara",
+      "category": "Energija",
+      "title": "Električna energija postaje ograničenje širenja AI podatkovnih centara",
+      "description": "IEA prati rast potražnje podatkovnih centara za električnom energijom te praktične prepreke opskrbi i planiranju.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#IEA",
+        "#Energija",
+        "#AI"
+      ],
+      "sources": [
+        {
+          "name": "IEA — Key Questions on Energy and AI",
+          "url": "https://www.iea.org/reports/key-questions-on-energy-and-ai",
+          "supports": "IEA analizira rast potrošnje električne energije podatkovnih centara i ograničenja energetske infrastrukture."
+        },
+        {
+          "name": "OECD — Empowering SMEs in the Age of AI",
+          "url": "https://www.oecd.org/en/publications/empowering-smes-in-the-age-of-ai_bf5a9816-en.html",
+          "supports": "OECD istražuje poslovne koristi, digitalne vještine i sigurnosne izazove primjene AI-a u malim poduzećima."
+        }
+      ],
+      "paragraphs": [
+        "Razvoj umjetne inteligencije obično se opisuje brojem novih modela, čipova ili korisnika. No stvarni sustavi ovise o električnoj energiji, hlađenju i lokalnoj mrežnoj infrastrukturi. IEA u svojim analizama za 2026. posebno razmatra koliko brzo potražnja podatkovnih centara raste i može li se opskrba dovoljno brzo prilagoditi.",
+        "IEA navodi da je globalna potrošnja električne energije podatkovnih centara tijekom 2025. porasla približno 17 posto. Taj podatak nije prognoza za svaku zemlju i ne znači da svi centri imaju jednaku učinkovitost. Konačna cijena projekta ovisi o lokaciji, mrežnom priključku, načinu hlađenja i potrebnoj raspoloživosti energije.",
+        "OECD istodobno pokazuje da se mala poduzeća susreću s posebnim izazovima uvođenja AI-a. Ona možda ne grade vlastite podatkovne centre, ali plaćaju kapacitet dobavljača koji o infrastrukturi ovise. Zato trošak uporabe modela treba uspoređivati s kvalitetom rezultata, a ne samo s nominalnom cijenom upita.",
+        "Ekonomičniji sustav može izbjegavati nepotrebna ponavljanja, ponovno koristiti sigurno spremljene rezultate i raspodjeljivati zahtjeve prema složenosti. Pritom treba mjeriti uspješno dovršen zadatak, a ne samo broj izvršenih zahtjeva prema modelu.",
+        "Za male medijske i poslovne sustave praktičan je pokazatelj trošak po provjerenoj i korisnoj radnji. Veći broj agenata nije automatski veći kapacitet ako svaki agent ponavlja isti posao i troši resurse bez mjerljive vrijednosti."
+      ],
+      "articleBody": "Razvoj umjetne inteligencije obično se opisuje brojem novih modela, čipova ili korisnika. No stvarni sustavi ovise o električnoj energiji, hlađenju i lokalnoj mrežnoj infrastrukturi. IEA u svojim analizama za 2026. posebno razmatra koliko brzo potražnja podatkovnih centara raste i može li se opskrba dovoljno brzo prilagoditi.\n\nIEA navodi da je globalna potrošnja električne energije podatkovnih centara tijekom 2025. porasla približno 17 posto. Taj podatak nije prognoza za svaku zemlju i ne znači da svi centri imaju jednaku učinkovitost. Konačna cijena projekta ovisi o lokaciji, mrežnom priključku, načinu hlađenja i potrebnoj raspoloživosti energije.\n\nOECD istodobno pokazuje da se mala poduzeća susreću s posebnim izazovima uvođenja AI-a. Ona možda ne grade vlastite podatkovne centre, ali plaćaju kapacitet dobavljača koji o infrastrukturi ovise. Zato trošak uporabe modela treba uspoređivati s kvalitetom rezultata, a ne samo s nominalnom cijenom upita.\n\nEkonomičniji sustav može izbjegavati nepotrebna ponavljanja, ponovno koristiti sigurno spremljene rezultate i raspodjeljivati zahtjeve prema složenosti. Pritom treba mjeriti uspješno dovršen zadatak, a ne samo broj izvršenih zahtjeva prema modelu.\n\nZa male medijske i poslovne sustave praktičan je pokazatelj trošak po provjerenoj i korisnoj radnji. Veći broj agenata nije automatski veći kapacitet ako svaki agent ponavlja isti posao i troši resurse bez mjerljive vrijednosti.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Električna energija postaje ograničenje širenja AI podatkovnih centara",
+        "metaDescription": "IEA prati rast potražnje podatkovnih centara za električnom energijom te praktične prepreke opskrbi i planiranju.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-13",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "msp-digitalizacija-ne-smije-zaobici-sigurnost",
+      "category": "Poduzetništvo",
+      "title": "Mala poduzeća trebaju sigurnost prije masovnog uvođenja AI automatizacije",
+      "description": "OECD i ILO nude razloge za postupno uvođenje AI alata uz provjeru podataka, ljudskih zadataka i poslovnih rizika.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#MSP",
+        "#AI",
+        "#Digitalizacija"
+      ],
+      "sources": [
+        {
+          "name": "OECD — Empowering SMEs in the Age of AI",
+          "url": "https://www.oecd.org/en/publications/empowering-smes-in-the-age-of-ai_bf5a9816-en.html",
+          "supports": "OECD istražuje poslovne koristi, digitalne vještine i sigurnosne izazove primjene AI-a u malim poduzećima."
+        },
+        {
+          "name": "ILO — GenAI and Jobs Evidence Review 2026",
+          "url": "https://www.ilo.org/publications/impact-genai-jobs-productivity-and-work-organization-review-empirical",
+          "supports": "ILO-ov pregled empirijskih istraživanja iz 2026. analizira AI, produktivnost, zaposlenost i organizaciju rada."
+        }
+      ],
+      "paragraphs": [
+        "Malo poduzeće može u jednom danu uvesti sustav koji razvrstava upite, piše radne dopise i pretražuje dokumentaciju. No brz početak nije isto što i uređen proces. Ako zaposlenik bez provjere pošalje osjetljive dokumente vanjskom alatu, eventualna ušteda vremena može biti manja od kasnijeg troška pogreške.",
+        "OECD-ovo istraživanje digitalizacije malih i srednjih poduzeća iz 2026. naglašava važnost kibernetičke sigurnosti, vještina i dostupnosti podrške. To nisu sporedni administrativni zahtjevi. Oni određuju hoće li automatizacija ostati pouzdana nakon prvog tjedna korištenja i tijekom promjene zaposlenika ili dobavljača.",
+        "ILO-ov pregled empirijskih istraživanja generativnog AI-a pokazuje da učinci na produktivnost i radnu organizaciju ovise o prirodi zadataka. Jedan zaposlenik može dobiti koristan alat za pripremu, ali se odgovornost za točnost, zakonitost i kvalitetu konačne poslovne odluke ne može jednostavno prebaciti na algoritam.",
+        "Dobar početni postupak uključuje popis dopuštenih podataka, ograničenja pristupa, provjeru izlaza i evidenciju pogrešaka. Tek zatim se primjena širi na zahtjevnije procese. Ako postoji mogućnost velike štete, odluka zahtijeva dodatnu ljudsku provjeru prije izvršenja.",
+        "Uprava bi trebala redovito pregledavati koje su radnje automatizirane, koliko je provjera odbilo pogrešan rezultat i postoje li jasni dokazi o odobrenju. Najveći rizik nije spor agent, nego brz agent kojem nitko nije odredio granice."
+      ],
+      "articleBody": "Malo poduzeće može u jednom danu uvesti sustav koji razvrstava upite, piše radne dopise i pretražuje dokumentaciju. No brz početak nije isto što i uređen proces. Ako zaposlenik bez provjere pošalje osjetljive dokumente vanjskom alatu, eventualna ušteda vremena može biti manja od kasnijeg troška pogreške.\n\nOECD-ovo istraživanje digitalizacije malih i srednjih poduzeća iz 2026. naglašava važnost kibernetičke sigurnosti, vještina i dostupnosti podrške. To nisu sporedni administrativni zahtjevi. Oni određuju hoće li automatizacija ostati pouzdana nakon prvog tjedna korištenja i tijekom promjene zaposlenika ili dobavljača.\n\nILO-ov pregled empirijskih istraživanja generativnog AI-a pokazuje da učinci na produktivnost i radnu organizaciju ovise o prirodi zadataka. Jedan zaposlenik može dobiti koristan alat za pripremu, ali se odgovornost za točnost, zakonitost i kvalitetu konačne poslovne odluke ne može jednostavno prebaciti na algoritam.\n\nDobar početni postupak uključuje popis dopuštenih podataka, ograničenja pristupa, provjeru izlaza i evidenciju pogrešaka. Tek zatim se primjena širi na zahtjevnije procese. Ako postoji mogućnost velike štete, odluka zahtijeva dodatnu ljudsku provjeru prije izvršenja.\n\nUprava bi trebala redovito pregledavati koje su radnje automatizirane, koliko je provjera odbilo pogrešan rezultat i postoje li jasni dokazi o odobrenju. Najveći rizik nije spor agent, nego brz agent kojem nitko nije odredio granice.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Mala poduzeća trebaju sigurnost prije masovnog uvođenja AI automatizacije",
+        "metaDescription": "OECD i ILO nude razloge za postupno uvođenje AI alata uz provjeru podataka, ljudskih zadataka i poslovnih rizika.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-14",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "esb-prijenos-kamata-na-financiranje",
+      "category": "Financije",
+      "title": "Kako odluke središnje banke stižu do poduzetnika i građana",
+      "description": "ESB objašnjava zašto promjena ključnih kamatnih stopa ne mijenja automatski svaki postojeći kredit i depozit.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#Kamate",
+        "#ESB",
+        "#Krediti"
+      ],
+      "sources": [
+        {
+          "name": "ESB — Monetary Policy Transmission",
+          "url": "https://www.ecb.europa.eu/mopo/intro/transmission/html/index.en.html",
+          "supports": "ESB opisuje prijenos monetarne politike na kamate, očekivanja, financiranje i inflaciju."
+        },
+        {
+          "name": "MMF — Global Financial Stability Report 2026",
+          "url": "https://www.imf.org/en/publications/gfsr/issues/2026/10/13/global-financial-stability-report-october-2026",
+          "supports": "MMF-ov izvještaj iz listopada 2026. analizira povišene rizike financijske stabilnosti i tržišne ranjivosti."
+        }
+      ],
+      "paragraphs": [
+        "Jedan naslov o kamatama često se pretvara u očekivanje da će već sljedećega dana svaki dužnik plaćati drukčiji iznos. Stvarni prijenos monetarne politike složeniji je. Europska središnja banka opisuje nekoliko povezanih kanala kojima promjene službenih stopa djeluju na uvjete financiranja, očekivanja, gospodarsku aktivnost i cijene.",
+        "Poslovni kredit može imati fiksnu ili promjenjivu kamatnu stopu, različite rokove usklađivanja te posebna ugovorna ograničenja. Nova tržišna stopa zbog toga ne mijenja sve ranije ugovore na isti način. Pojedino poduzeće može biti posebno izloženo ako mu uskoro dospijeva veći iznos duga koji mora refinancirati.",
+        "MMF u izvješću o financijskoj stabilnosti za 2026. upozorava na povezane ranjivosti financijskog sustava. Kada se tržišna očekivanja brzo promijene, trošak prikupljanja kapitala može se kretati drukčije od iznosa koji je netko zaključio samo promatrajući službenu odluku središnje banke.",
+        "Za razumijevanje vlastitog položaja potrebno je pročitati ugovor, pregledati plan otplate i usporediti više mogućih scenarija. Načelni ekonomski pregled ne može zamijeniti individualnu analizu dužničkih obveza ili davanje personalizirane financijske preporuke.",
+        "Važno je razlikovati nominalnu kamatu, ukupni trošak financiranja i likvidnost tijekom razdoblja promjene stope. Korisna odluka počinje izračunom vlastitih obveza, a ne pretpostavkom da svi dužnici reagiraju jednako."
+      ],
+      "articleBody": "Jedan naslov o kamatama često se pretvara u očekivanje da će već sljedećega dana svaki dužnik plaćati drukčiji iznos. Stvarni prijenos monetarne politike složeniji je. Europska središnja banka opisuje nekoliko povezanih kanala kojima promjene službenih stopa djeluju na uvjete financiranja, očekivanja, gospodarsku aktivnost i cijene.\n\nPoslovni kredit može imati fiksnu ili promjenjivu kamatnu stopu, različite rokove usklađivanja te posebna ugovorna ograničenja. Nova tržišna stopa zbog toga ne mijenja sve ranije ugovore na isti način. Pojedino poduzeće može biti posebno izloženo ako mu uskoro dospijeva veći iznos duga koji mora refinancirati.\n\nMMF u izvješću o financijskoj stabilnosti za 2026. upozorava na povezane ranjivosti financijskog sustava. Kada se tržišna očekivanja brzo promijene, trošak prikupljanja kapitala može se kretati drukčije od iznosa koji je netko zaključio samo promatrajući službenu odluku središnje banke.\n\nZa razumijevanje vlastitog položaja potrebno je pročitati ugovor, pregledati plan otplate i usporediti više mogućih scenarija. Načelni ekonomski pregled ne može zamijeniti individualnu analizu dužničkih obveza ili davanje personalizirane financijske preporuke.\n\nVažno je razlikovati nominalnu kamatu, ukupni trošak financiranja i likvidnost tijekom razdoblja promjene stope. Korisna odluka počinje izračunom vlastitih obveza, a ne pretpostavkom da svi dužnici reagiraju jednako.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Kako odluke središnje banke stižu do poduzetnika i građana",
+        "metaDescription": "ESB objašnjava zašto promjena ključnih kamatnih stopa ne mijenja automatski svaki postojeći kredit i depozit.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-15",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "svjetska-banka-statistika-bez-pogresnih-usporedbi",
+      "category": "Ekonomija",
+      "title": "Kako uspoređivati zemlje bez pogrešnog čitanja ekonomskih podataka",
+      "description": "Otvoreni podaci Svjetske banke zahtijevaju provjeru definicije pokazatelja, godine, valute i razlike između projekcije i ostvarenja.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#SvjetskaBanka",
+        "#Podaci",
+        "#Ekonomija"
+      ],
+      "sources": [
+        {
+          "name": "Svjetska banka — World Development Indicators",
+          "url": "https://datatopics.worldbank.org/world-development-indicators/",
+          "supports": "Svjetska banka omogućuje pristup međunarodnim pokazateljima, metodologijama i vremenskim serijama."
+        },
+        {
+          "name": "Svjetska banka — Global Economic Prospects June 2026",
+          "url": "https://www.worldbank.org/en/news/press-release/2026/06/11/global-economic-prospects-june-2026-press-release",
+          "supports": "Svjetska banka analizira usporavanje gospodarstva i rizike globalnih gospodarskih šokova u lipnju 2026."
+        }
+      ],
+      "paragraphs": [
+        "Gospodarske tablice mogu izgledati precizno čak i kada uspoređuju pokazatelje koji nisu usporedivi. Rast BDP-a, nominalni iznos i kupovna moć nisu ista stvar. Bez jasne definicije podatka čitatelj teško može zaključiti predstavlja li objavljena brojka stvarnu promjenu aktivnosti ili jednostavno promjenu cijena.",
+        "World Development Indicators Svjetske banke omogućuje pristup velikom broju međunarodnih podataka. No i uz otvoren pristup potrebno je provjeriti jedinicu mjere, referentnu godinu, izvorni opis serije i eventualna ograničenja obuhvata. Ponekad nedostaju podaci za istu godinu u svim zemljama, što mijenja značenje usporedbe.",
+        "U izvještaju Global Economic Prospects iz lipnja 2026. Svjetska banka razmatra gospodarske scenarije pod utjecajem međunarodnih rizika. Predviđena stopa rasta nije ostvareni rezultat. Uredništvo treba jasno razlikovati procjenu institucije, službenu statistiku i vlastiti komentar o tome što bi se moglo dogoditi.",
+        "Ista disciplina vrijedi za podatke o financijskim rezultatima poduzeća. Prihod, dobit, novčani tok i knjigovodstvena vrijednost nisu zamjenjivi pokazatelji. Dobra analiza kaže odakle svaki broj dolazi, koje je razdoblje obuhvaćeno i koji dio zaključka ostaje neizvjestan.",
+        "Najkorisnija ekonomska vijest nije ona s najvećom brojkom, nego ona koja čitatelju daje dovoljno podataka da može ponoviti usporedbu i pronaći izvor. Transparentna metodologija smanjuje rizik naknadnog ispravljanja senzacionalnih tvrdnji."
+      ],
+      "articleBody": "Gospodarske tablice mogu izgledati precizno čak i kada uspoređuju pokazatelje koji nisu usporedivi. Rast BDP-a, nominalni iznos i kupovna moć nisu ista stvar. Bez jasne definicije podatka čitatelj teško može zaključiti predstavlja li objavljena brojka stvarnu promjenu aktivnosti ili jednostavno promjenu cijena.\n\nWorld Development Indicators Svjetske banke omogućuje pristup velikom broju međunarodnih podataka. No i uz otvoren pristup potrebno je provjeriti jedinicu mjere, referentnu godinu, izvorni opis serije i eventualna ograničenja obuhvata. Ponekad nedostaju podaci za istu godinu u svim zemljama, što mijenja značenje usporedbe.\n\nU izvještaju Global Economic Prospects iz lipnja 2026. Svjetska banka razmatra gospodarske scenarije pod utjecajem međunarodnih rizika. Predviđena stopa rasta nije ostvareni rezultat. Uredništvo treba jasno razlikovati procjenu institucije, službenu statistiku i vlastiti komentar o tome što bi se moglo dogoditi.\n\nIsta disciplina vrijedi za podatke o financijskim rezultatima poduzeća. Prihod, dobit, novčani tok i knjigovodstvena vrijednost nisu zamjenjivi pokazatelji. Dobra analiza kaže odakle svaki broj dolazi, koje je razdoblje obuhvaćeno i koji dio zaključka ostaje neizvjestan.\n\nNajkorisnija ekonomska vijest nije ona s najvećom brojkom, nego ona koja čitatelju daje dovoljno podataka da može ponoviti usporedbu i pronaći izvor. Transparentna metodologija smanjuje rizik naknadnog ispravljanja senzacionalnih tvrdnji.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Kako uspoređivati zemlje bez pogrešnog čitanja ekonomskih podataka",
+        "metaDescription": "Otvoreni podaci Svjetske banke zahtijevaju provjeru definicije pokazatelja, godine, valute i razlike između projekcije i ostvarenja.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-16",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "unesco-ai-odgovor-vs-provjerena-informacija",
+      "category": "Društvo",
+      "title": "UNESCO-ov novi vodič podsjeća da AI odgovor nije provjerena informacija",
+      "description": "UNESCO u studenome 2026. objavljuje materijale za medijsku pismenost u svijetu u kojem umjetna inteligencija oblikuje pristup informacijama.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#UNESCO",
+        "#MedijskaPismenost",
+        "#AI"
+      ],
+      "sources": [
+        {
+          "name": "UNESCO — AI Answers, You Decide 2026",
+          "url": "https://www.unesco.org/en/articles/ai-answers-you-decide",
+          "supports": "UNESCO-ov vodič iz studenoga 2026. naglašava medijsku i informacijsku pismenost u doba umjetne inteligencije."
+        },
+        {
+          "name": "Europska komisija — AI Act Transparency Guidance",
+          "url": "https://digital-strategy.ec.europa.eu/en/policies/guidelines-ai-transparency-obligations",
+          "supports": "Europska komisija objašnjava obveze transparentnosti prema članku 50. AI akta koje se primjenjuju od kolovoza 2026."
+        }
+      ],
+      "paragraphs": [
+        "Čitatelj koji dobije gotov odgovor od umjetne inteligencije može steći dojam da je potraga za informacijama završena. Ipak, model može pogrešno sažeti složen dokument, izostaviti važan uvjet ili navesti stariji podatak bez upozorenja. Tečan tekst nije dokaz istinitosti, a sigurnost izražavanja nije isto što i kvaliteta izvora.",
+        "UNESCO je u studenome 2026. predstavio vodič 'AI Answers, You Decide', usmjeren na medijsku i informacijsku pismenost. Njegova važnost nije samo u poznavanju tehnologije, nego u sposobnosti građana da procijene porijeklo informacije i samostalno odluče kojem izvoru vjeruju.",
+        "Europska komisija zasebno objašnjava obveze transparentnosti određenih AI sustava prema europskom AI aktu. Opseg pravnih obveza ovisi o primjeni i vrsti sustava. Medij može i izvan minimalnih zahtjeva jasno napisati kada je AI služio kao alat za istraživanje, a kada su činjenice pregledane i odobrene urednički.",
+        "Praktičan postupak čitatelja jednostavan je: pronaći primarni dokument, provjeriti datum, usporediti ključnu tvrdnju s barem jednim neovisnim izvorom i odvojiti podatak od interpretacije. Odgovorna redakcija treba ista pravila primjenjivati prije nego što automatizirani nacrt postane javna objava.",
+        "Kvaliteta informacijskog sustava zato se ne mjeri samo brzinom pružanja odgovora. Važno je može li korisnik otvoriti izvore i razumjeti razliku između potvrđenih činjenica, procjena i mišljenja."
+      ],
+      "articleBody": "Čitatelj koji dobije gotov odgovor od umjetne inteligencije može steći dojam da je potraga za informacijama završena. Ipak, model može pogrešno sažeti složen dokument, izostaviti važan uvjet ili navesti stariji podatak bez upozorenja. Tečan tekst nije dokaz istinitosti, a sigurnost izražavanja nije isto što i kvaliteta izvora.\n\nUNESCO je u studenome 2026. predstavio vodič 'AI Answers, You Decide', usmjeren na medijsku i informacijsku pismenost. Njegova važnost nije samo u poznavanju tehnologije, nego u sposobnosti građana da procijene porijeklo informacije i samostalno odluče kojem izvoru vjeruju.\n\nEuropska komisija zasebno objašnjava obveze transparentnosti određenih AI sustava prema europskom AI aktu. Opseg pravnih obveza ovisi o primjeni i vrsti sustava. Medij može i izvan minimalnih zahtjeva jasno napisati kada je AI služio kao alat za istraživanje, a kada su činjenice pregledane i odobrene urednički.\n\nPraktičan postupak čitatelja jednostavan je: pronaći primarni dokument, provjeriti datum, usporediti ključnu tvrdnju s barem jednim neovisnim izvorom i odvojiti podatak od interpretacije. Odgovorna redakcija treba ista pravila primjenjivati prije nego što automatizirani nacrt postane javna objava.\n\nKvaliteta informacijskog sustava zato se ne mjeri samo brzinom pružanja odgovora. Važno je može li korisnik otvoriti izvore i razumjeti razliku između potvrđenih činjenica, procjena i mišljenja.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "UNESCO-ov novi vodič podsjeća da AI odgovor nije provjerena informacija",
+        "metaDescription": "UNESCO u studenome 2026. objavljuje materijale za medijsku pismenost u svijetu u kojem umjetna inteligencija oblikuje pristup informacijama.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-17",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "ai-act-transparentnost-obveze-2026",
+      "category": "Pravo i tehnologija",
+      "title": "AI Act: nova pravila transparentnosti nisu dozvola za automatsku objavu",
+      "description": "Od kolovoza 2026. određene obveze transparentnosti europskog AI akta primjenjuju se uz posebne iznimke i uvjete.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#AIAct",
+        "#EU",
+        "#Transparentnost"
+      ],
+      "sources": [
+        {
+          "name": "Europska komisija — AI Act Transparency Guidance",
+          "url": "https://digital-strategy.ec.europa.eu/en/policies/guidelines-ai-transparency-obligations",
+          "supports": "Europska komisija objašnjava obveze transparentnosti prema članku 50. AI akta koje se primjenjuju od kolovoza 2026."
+        },
+        {
+          "name": "UNESCO — How Can Journalism Reinvent Itself?",
+          "url": "https://www.unesco.org/en/articles/how-can-journalism-reinvent-itself",
+          "supports": "UNESCO u 2026. raspravlja o povjerenju, održivosti novinarstva i promjenama koje donose AI i platforme."
+        }
+      ],
+      "paragraphs": [
+        "Automatizirani sustavi mogu stvarati slike, tekstove i audiozapise koji izgledaju poput stvarnih snimki ili novinarskog rada. Problem nastaje kada publika ne zna na koji je način sadržaj nastao. Takva situacija može narušiti povjerenje i kada pojedina objava ne sadrži očitu neistinu.",
+        "Europska komisija objašnjava da su određene obveze transparentnosti iz članka 50. AI akta počele s primjenom 2. kolovoza 2026. Nije točno reći da se svako pravilo na isti način odnosi na svaki sustav ili svaku uporabu. Za ocjenu obveza važni su uloga subjekta, konkretna tehnologija i relevantne iznimke.",
+        "UNESCO upozorava na promjene novinarstva pod utjecajem generativne umjetne inteligencije i platformi. Uredništvo koje koristi automatizaciju treba sačuvati evidenciju izvora, načina nastanka sadržaja, prava na korištene materijale i identiteta osobe koja je odobrila objavu.",
+        "Pravno odgovorna medijska praksa može uvesti jasne oznake i za radnje za koje se minimalne zakonske obveze razlikuju. Takva transparentnost treba biti čitljiva publici, a ne skrivena u tehničkim datotekama koje prosječan čitatelj nikada neće otvoriti.",
+        "Ovaj tekst predstavlja informativni pregled pravila. Za primjenu na pojedini proizvod treba provjeriti detalje trenutačno važećeg prava, službene smjernice i konkretan način uporabe AI sustava."
+      ],
+      "articleBody": "Automatizirani sustavi mogu stvarati slike, tekstove i audiozapise koji izgledaju poput stvarnih snimki ili novinarskog rada. Problem nastaje kada publika ne zna na koji je način sadržaj nastao. Takva situacija može narušiti povjerenje i kada pojedina objava ne sadrži očitu neistinu.\n\nEuropska komisija objašnjava da su određene obveze transparentnosti iz članka 50. AI akta počele s primjenom 2. kolovoza 2026. Nije točno reći da se svako pravilo na isti način odnosi na svaki sustav ili svaku uporabu. Za ocjenu obveza važni su uloga subjekta, konkretna tehnologija i relevantne iznimke.\n\nUNESCO upozorava na promjene novinarstva pod utjecajem generativne umjetne inteligencije i platformi. Uredništvo koje koristi automatizaciju treba sačuvati evidenciju izvora, načina nastanka sadržaja, prava na korištene materijale i identiteta osobe koja je odobrila objavu.\n\nPravno odgovorna medijska praksa može uvesti jasne oznake i za radnje za koje se minimalne zakonske obveze razlikuju. Takva transparentnost treba biti čitljiva publici, a ne skrivena u tehničkim datotekama koje prosječan čitatelj nikada neće otvoriti.\n\nOvaj tekst predstavlja informativni pregled pravila. Za primjenu na pojedini proizvod treba provjeriti detalje trenutačno važećeg prava, službene smjernice i konkretan način uporabe AI sustava.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "AI Act: nova pravila transparentnosti nisu dozvola za automatsku objavu",
+        "metaDescription": "Od kolovoza 2026. određene obveze transparentnosti europskog AI akta primjenjuju se uz posebne iznimke i uvjete.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-18",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "who-kretanje-rad-sport-zdravlje",
+      "category": "Sport i zdravlje",
+      "title": "Tjelesna aktivnost nije samo trening: što WHO preporučuje odraslima",
+      "description": "WHO opisuje korist svakodnevnog kretanja i preporučuje tjedne raspona aktivnosti, uz prilagodbu zdravstvenim mogućnostima.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#WHO",
+        "#TjelesnaAktivnost",
+        "#Sport"
+      ],
+      "sources": [
+        {
+          "name": "WHO Europe — Physical Activity",
+          "url": "https://www.who.int/europe/news-room/fact-sheets/item/physical-activity",
+          "supports": "WHO daje opće smjernice tjelesne aktivnosti i preporučuje 150–300 minuta umjerene aktivnosti tjedno odraslima."
+        },
+        {
+          "name": "ILO — GenAI and Jobs Evidence Review 2026",
+          "url": "https://www.ilo.org/publications/impact-genai-jobs-productivity-and-work-organization-review-empirical",
+          "supports": "ILO-ov pregled empirijskih istraživanja iz 2026. analizira AI, produktivnost, zaposlenost i organizaciju rada."
+        }
+      ],
+      "paragraphs": [
+        "Riječ sport često podsjeća na natjecanje, dvoranu i složen plan treninga. Za zdravlje je korisno promatrati širu sliku: tjelesna aktivnost uključuje hodanje, vožnju bicikla, rekreaciju i druge oblike kretanja. Takve aktivnosti mogu biti dostupnije ljudima koji nemaju vremena ili interesa za organizirani sport.",
+        "Svjetska zdravstvena organizacija za odrasle općenito preporučuje najmanje 150 do 300 minuta umjerene aerobne aktivnosti tjedno ili 75 do 150 minuta intenzivne aktivnosti. To su javnozdravstvene smjernice, a ne individualni program. Osobe s određenim zdravstvenim ograničenjima trebaju prilagoditi aktivnosti svojim mogućnostima.",
+        "U međuvremenu se sve više poslovnih zadataka obavlja digitalno. ILO-ov pregled generativne umjetne inteligencije bavi se promjenama radne organizacije, ali sam po sebi ne dokazuje da AI uzrokuje određenu razinu tjelesne neaktivnosti. Razumno je ipak planirati radni dan tako da ostane prostora za redovito sigurno kretanje.",
+        "Najvažnija je dosljednost umjesto naglog povećanja napora. Čovjek može početi aktivnostima koje već poznaje, a složeniji plan razvijati u skladu s općim zdravljem i mogućnostima. Kod simptoma, ozljede ili specifične bolesti potreban je stručni medicinski savjet.",
+        "Urednički tekst o zdravlju treba jasno razlikovati populacijske preporuke od individualnog liječenja. Univerzalni brojevi nisu zamjena za procjenu osobnog rizika, a uspoređivanje s tuđim sportskim rezultatom nije koristan zdravstveni kriterij."
+      ],
+      "articleBody": "Riječ sport često podsjeća na natjecanje, dvoranu i složen plan treninga. Za zdravlje je korisno promatrati širu sliku: tjelesna aktivnost uključuje hodanje, vožnju bicikla, rekreaciju i druge oblike kretanja. Takve aktivnosti mogu biti dostupnije ljudima koji nemaju vremena ili interesa za organizirani sport.\n\nSvjetska zdravstvena organizacija za odrasle općenito preporučuje najmanje 150 do 300 minuta umjerene aerobne aktivnosti tjedno ili 75 do 150 minuta intenzivne aktivnosti. To su javnozdravstvene smjernice, a ne individualni program. Osobe s određenim zdravstvenim ograničenjima trebaju prilagoditi aktivnosti svojim mogućnostima.\n\nU međuvremenu se sve više poslovnih zadataka obavlja digitalno. ILO-ov pregled generativne umjetne inteligencije bavi se promjenama radne organizacije, ali sam po sebi ne dokazuje da AI uzrokuje određenu razinu tjelesne neaktivnosti. Razumno je ipak planirati radni dan tako da ostane prostora za redovito sigurno kretanje.\n\nNajvažnija je dosljednost umjesto naglog povećanja napora. Čovjek može početi aktivnostima koje već poznaje, a složeniji plan razvijati u skladu s općim zdravljem i mogućnostima. Kod simptoma, ozljede ili specifične bolesti potreban je stručni medicinski savjet.\n\nUrednički tekst o zdravlju treba jasno razlikovati populacijske preporuke od individualnog liječenja. Univerzalni brojevi nisu zamjena za procjenu osobnog rizika, a uspoređivanje s tuđim sportskim rezultatom nije koristan zdravstveni kriterij.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Tjelesna aktivnost nije samo trening: što WHO preporučuje odraslima",
+        "metaDescription": "WHO opisuje korist svakodnevnog kretanja i preporučuje tjedne raspona aktivnosti, uz prilagodbu zdravstvenim mogućnostima.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-19",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "fao-2026-pristup-zdravoj-prehrani",
+      "category": "Svijet i hrana",
+      "title": "FAO 2026.: najveće pitanje nije samo proizvodnja hrane nego njezina dostupnost",
+      "description": "FAO i partnerske institucije upozoravaju na trošak zdrave prehrane i velike razlike među regijama.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#FAO",
+        "#Hrana",
+        "#GlobalniRazvoj"
+      ],
+      "sources": [
+        {
+          "name": "FAO — The State of Food Security and Nutrition in the World 2026",
+          "url": "https://www.fao.org/publications/fao-flagship-publications/the-state-of-food-security-and-nutrition-in-the-world/en",
+          "supports": "FAO-ovo izvješće za 2026. razmatra dostupnost zdrave prehrane, cijene hrane i regionalne razlike u gladi."
+        },
+        {
+          "name": "Svjetska banka — Global Economic Prospects June 2026",
+          "url": "https://www.worldbank.org/en/news/press-release/2026/06/11/global-economic-prospects-june-2026-press-release",
+          "supports": "Svjetska banka analizira usporavanje gospodarstva i rizike globalnih gospodarskih šokova u lipnju 2026."
+        }
+      ],
+      "paragraphs": [
+        "Rasprava o prehrambenoj sigurnosti često se zaustavi na ukupnoj svjetskoj proizvodnji. No kućanstvu nije dovoljno da hrana fizički postoji ako je ne može redovito kupiti. Pristupačnost zdrave prehrane povezuje cijene, prihode, prometnu povezanost i stabilnost lokalne opskrbe.",
+        "FAO-ovo izvješće za 2026. posebno se bavi strukturnim razlozima visoke cijene zdrave prehrane. U određenim regijama napredak u smanjenju gladi ne znači da je problem riješen svugdje. Razlike se moraju prikazivati prema stvarnoj metodologiji i godini, a ne pretpostaviti da isti globalni trend vrijedi za svaku državu.",
+        "Svjetska banka u izvještaju o ekonomskim izgledima za lipanj 2026. razmatra utjecaj energetskih i financijskih šokova na gospodarstvo. U prehrambenom lancu takvi pritisci mogu povećati troškove prijevoza, proizvodnje i financiranja. Učinak ovisi o domaćim uvjetima pa nije opravdano jednom brojkom objašnjavati sve cijene hrane.",
+        "Odgovorno izvještavanje treba razlikovati proizvodnju, pristup hrani i kvalitetu prehrane. Također valja navesti izvor podataka i vremensko razdoblje. Bez toga je lako stvoriti dramatičnu sliku koja ne objašnjava što je u stvarnosti postalo skuplje i za koga.",
+        "Za čitatelja najveću vrijednost imaju usporedbe koje odvajaju globalne trendove od lokalne situacije. Kada se promatra dostupnost zdrave prehrane, jednako su važni kupovna moć i različite potrebe kućanstava."
+      ],
+      "articleBody": "Rasprava o prehrambenoj sigurnosti često se zaustavi na ukupnoj svjetskoj proizvodnji. No kućanstvu nije dovoljno da hrana fizički postoji ako je ne može redovito kupiti. Pristupačnost zdrave prehrane povezuje cijene, prihode, prometnu povezanost i stabilnost lokalne opskrbe.\n\nFAO-ovo izvješće za 2026. posebno se bavi strukturnim razlozima visoke cijene zdrave prehrane. U određenim regijama napredak u smanjenju gladi ne znači da je problem riješen svugdje. Razlike se moraju prikazivati prema stvarnoj metodologiji i godini, a ne pretpostaviti da isti globalni trend vrijedi za svaku državu.\n\nSvjetska banka u izvještaju o ekonomskim izgledima za lipanj 2026. razmatra utjecaj energetskih i financijskih šokova na gospodarstvo. U prehrambenom lancu takvi pritisci mogu povećati troškove prijevoza, proizvodnje i financiranja. Učinak ovisi o domaćim uvjetima pa nije opravdano jednom brojkom objašnjavati sve cijene hrane.\n\nOdgovorno izvještavanje treba razlikovati proizvodnju, pristup hrani i kvalitetu prehrane. Također valja navesti izvor podataka i vremensko razdoblje. Bez toga je lako stvoriti dramatičnu sliku koja ne objašnjava što je u stvarnosti postalo skuplje i za koga.\n\nZa čitatelja najveću vrijednost imaju usporedbe koje odvajaju globalne trendove od lokalne situacije. Kada se promatra dostupnost zdrave prehrane, jednako su važni kupovna moć i različite potrebe kućanstava.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "FAO 2026.: najveće pitanje nije samo proizvodnja hrane nego njezina dostupnost",
+        "metaDescription": "FAO i partnerske institucije upozoravaju na trošak zdrave prehrane i velike razlike među regijama.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-20",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "radne-uloge-generativni-ai-ilo-2026",
+      "category": "Rad i gospodarstvo",
+      "title": "Generativni AI mijenja zadatke prije nego što promijeni čitave profesije",
+      "description": "ILO i OECD opisuju kako produktivnost, organizacija rada i digitalne vještine utječu na stvarne rezultate uvođenja AI-a.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#ILO",
+        "#Rad",
+        "#AI"
+      ],
+      "sources": [
+        {
+          "name": "ILO — GenAI and Jobs Evidence Review 2026",
+          "url": "https://www.ilo.org/publications/impact-genai-jobs-productivity-and-work-organization-review-empirical",
+          "supports": "ILO-ov pregled empirijskih istraživanja iz 2026. analizira AI, produktivnost, zaposlenost i organizaciju rada."
+        },
+        {
+          "name": "OECD — Empowering SMEs in the Age of AI",
+          "url": "https://www.oecd.org/en/publications/empowering-smes-in-the-age-of-ai_bf5a9816-en.html",
+          "supports": "OECD istražuje poslovne koristi, digitalne vještine i sigurnosne izazove primjene AI-a u malim poduzećima."
+        }
+      ],
+      "paragraphs": [
+        "Kad se raspravlja o budućnosti rada, često se postavlja pitanje koliko će zanimanja nestati zbog umjetne inteligencije. Takav pristup previdi da jedan posao obuhvaća mnogo različitih zadataka. Neki se mogu automatizirati, dok drugi ovise o povjerenju, odgovornosti, složenoj komunikaciji i stručnom prosuđivanju.",
+        "Međunarodna organizacija rada u pregledu empirijskih nalaza za 2026. analizira učinke generativnog AI-a na radnu organizaciju, produktivnost i zaposlenost. Ti nalazi ne opravdavaju pojednostavljenu tvrdnju da će sve djelatnosti osjetiti istu promjenu. Ishod ovisi o načinu uvođenja tehnologije i stvarnom radu zaposlenika.",
+        "OECD-ovo istraživanje malih poduzeća pokazuje da su digitalne vještine i sigurnosne prakse važne za korisno usvajanje AI-a. Poduzeće koje uvede automatizaciju bez obuke možda će dobiti brži proces, ali će kasnije potrošiti dodatno vrijeme na ispravljanje pogrešaka i sporove oko odgovornosti.",
+        "Praktičan put je popisati zadatke, identificirati ponavljanja, definirati mjere kvalitete i odrediti gdje je potrebna ljudska potvrda. Nakon probnog razdoblja treba usporediti stvarni učinak s početnim stanjem. Broj automatski izrađenih dokumenata nije jedina niti najvažnija mjera uspjeha.",
+        "Organizacija treba pratiti i pozitivne i negativne posljedice: zadovoljstvo zaposlenika, pogreške u odlučivanju, dostupnost posla i sposobnost novih radnika da stječu znanja. Inače se tehnološki napredak može pogrešno zamijeniti s održivim poboljšanjem."
+      ],
+      "articleBody": "Kad se raspravlja o budućnosti rada, često se postavlja pitanje koliko će zanimanja nestati zbog umjetne inteligencije. Takav pristup previdi da jedan posao obuhvaća mnogo različitih zadataka. Neki se mogu automatizirati, dok drugi ovise o povjerenju, odgovornosti, složenoj komunikaciji i stručnom prosuđivanju.\n\nMeđunarodna organizacija rada u pregledu empirijskih nalaza za 2026. analizira učinke generativnog AI-a na radnu organizaciju, produktivnost i zaposlenost. Ti nalazi ne opravdavaju pojednostavljenu tvrdnju da će sve djelatnosti osjetiti istu promjenu. Ishod ovisi o načinu uvođenja tehnologije i stvarnom radu zaposlenika.\n\nOECD-ovo istraživanje malih poduzeća pokazuje da su digitalne vještine i sigurnosne prakse važne za korisno usvajanje AI-a. Poduzeće koje uvede automatizaciju bez obuke možda će dobiti brži proces, ali će kasnije potrošiti dodatno vrijeme na ispravljanje pogrešaka i sporove oko odgovornosti.\n\nPraktičan put je popisati zadatke, identificirati ponavljanja, definirati mjere kvalitete i odrediti gdje je potrebna ljudska potvrda. Nakon probnog razdoblja treba usporediti stvarni učinak s početnim stanjem. Broj automatski izrađenih dokumenata nije jedina niti najvažnija mjera uspjeha.\n\nOrganizacija treba pratiti i pozitivne i negativne posljedice: zadovoljstvo zaposlenika, pogreške u odlučivanju, dostupnost posla i sposobnost novih radnika da stječu znanja. Inače se tehnološki napredak može pogrešno zamijeniti s održivim poboljšanjem.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Generativni AI mijenja zadatke prije nego što promijeni čitave profesije",
+        "metaDescription": "ILO i OECD opisuju kako produktivnost, organizacija rada i digitalne vještine utječu na stvarne rezultate uvođenja AI-a.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-21",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "balkan-digitalna-ekonomija-poduzeca",
+      "category": "Regija",
+      "title": "Digitalizacija na zapadnom Balkanu: važniji su vještine i rezultati od broja alata",
+      "description": "OECD-ova analiza poduzeća u regiji upućuje na razlike u kapacitetu, troškovima i spremnosti za nove tehnologije.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#ZapadniBalkan",
+        "#Poduzetnistvo",
+        "#Digitalizacija"
+      ],
+      "sources": [
+        {
+          "name": "OECD — Western Balkans Enterprise Survey",
+          "url": "https://www.oecd.org/en/publications/western-balkans-enterprise-survey_a1b14188-en/full-report/component-4.html",
+          "supports": "OECD istražuje upotrebu digitalnih alata, sigurnost i prepreke digitalizaciji poslovanja zapadnog Balkana."
+        },
+        {
+          "name": "Svjetska banka — World Development Indicators",
+          "url": "https://datatopics.worldbank.org/world-development-indicators/",
+          "supports": "Svjetska banka omogućuje pristup međunarodnim pokazateljima, metodologijama i vremenskim serijama."
+        }
+      ],
+      "paragraphs": [
+        "Digitalna prisutnost poduzeća može značiti jednostavnu web stranicu, ali i naprednu automatizaciju nabave, skladišta ili korisničke podrške. Te razlike postaju važne kada se međunarodne usporedbe svode na jednu oznaku 'digitalizirano'. Tvrtka koja koristi mnogo alata nije nužno produktivnija od one koja je odabrala nekoliko prikladnih sustava.",
+        "OECD-ovo istraživanje poduzeća zapadnog Balkana iz 2026. razmatra uporabu digitalnih alata i praktične prepreke, uključujući ulaganja i potrebne vještine. Pritom se rezultati razlikuju prema veličini i situaciji poduzeća. To znači da programe pomoći ne treba oblikovati pretpostavljajući da sve tvrtke imaju jednake potrebe.",
+        "Svjetska banka kroz World Development Indicators pruža širi kontekst gospodarskog razvoja zemalja. No makroekonomski podaci nisu dokaz uspješnosti pojedine kompanije. Za stvarnu procjenu digitalizacije potrebni su pokazatelji poslovnog procesa: vrijeme obrade, trošak, sigurnosni incidenti i dostupnost usluge.",
+        "Ulaganje se može započeti ograničenim projektom s jasno definiranim ciljem. Ako su rezultati mjerljivi, lakše se odlučuje koje funkcije širiti. Takav pristup štiti kapital, smanjuje rizik pogrešne nabave i omogućuje zaposlenicima da razvijaju vještine postupno.",
+        "Korisno je provjeriti i ovisnost o jednom dobavljaču: može li se izvesti baza podataka, postoje li sigurnosne kopije i što se događa kad ugovor prestane. To su praktična pitanja koja postaju važna tek kad se pojavi problem."
+      ],
+      "articleBody": "Digitalna prisutnost poduzeća može značiti jednostavnu web stranicu, ali i naprednu automatizaciju nabave, skladišta ili korisničke podrške. Te razlike postaju važne kada se međunarodne usporedbe svode na jednu oznaku 'digitalizirano'. Tvrtka koja koristi mnogo alata nije nužno produktivnija od one koja je odabrala nekoliko prikladnih sustava.\n\nOECD-ovo istraživanje poduzeća zapadnog Balkana iz 2026. razmatra uporabu digitalnih alata i praktične prepreke, uključujući ulaganja i potrebne vještine. Pritom se rezultati razlikuju prema veličini i situaciji poduzeća. To znači da programe pomoći ne treba oblikovati pretpostavljajući da sve tvrtke imaju jednake potrebe.\n\nSvjetska banka kroz World Development Indicators pruža širi kontekst gospodarskog razvoja zemalja. No makroekonomski podaci nisu dokaz uspješnosti pojedine kompanije. Za stvarnu procjenu digitalizacije potrebni su pokazatelji poslovnog procesa: vrijeme obrade, trošak, sigurnosni incidenti i dostupnost usluge.\n\nUlaganje se može započeti ograničenim projektom s jasno definiranim ciljem. Ako su rezultati mjerljivi, lakše se odlučuje koje funkcije širiti. Takav pristup štiti kapital, smanjuje rizik pogrešne nabave i omogućuje zaposlenicima da razvijaju vještine postupno.\n\nKorisno je provjeriti i ovisnost o jednom dobavljaču: može li se izvesti baza podataka, postoje li sigurnosne kopije i što se događa kad ugovor prestane. To su praktična pitanja koja postaju važna tek kad se pojavi problem.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Digitalizacija na zapadnom Balkanu: važniji su vještine i rezultati od broja alata",
+        "metaDescription": "OECD-ova analiza poduzeća u regiji upućuje na razlike u kapacitetu, troškovima i spremnosti za nove tehnologije.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    },
+    {
+      "id": "aktual-tech-20261123-22",
+      "language": "hr",
+      "format": "original_explainer",
+      "slug": "unesco-buducnost-novinarstva-provjerljivost",
+      "category": "Mediji",
+      "title": "Budućnost novinarstva: brže objave nisu vrijedne bez provjerljivih izvora",
+      "description": "UNESCO upozorava na pritiske platformi i generativne umjetne inteligencije na povjerenje u informacije.",
+      "tags": [
+        "#AktualMedia",
+        "#NerminSefic",
+        "#Novinarstvo",
+        "#UNESCO",
+        "#Povjerenje"
+      ],
+      "sources": [
+        {
+          "name": "UNESCO — How Can Journalism Reinvent Itself?",
+          "url": "https://www.unesco.org/en/articles/how-can-journalism-reinvent-itself",
+          "supports": "UNESCO u 2026. raspravlja o povjerenju, održivosti novinarstva i promjenama koje donose AI i platforme."
+        },
+        {
+          "name": "OECD — Empowering SMEs in the Age of AI",
+          "url": "https://www.oecd.org/en/publications/empowering-smes-in-the-age-of-ai_bf5a9816-en.html",
+          "supports": "OECD istražuje poslovne koristi, digitalne vještine i sigurnosne izazove primjene AI-a u malim poduzećima."
+        }
+      ],
+      "paragraphs": [
+        "Medijska redakcija danas može vrlo brzo preuzeti naslove iz feedova i pretvoriti ih u novu naslovnicu. Takva pregledna usluga korisna je ako čitatelj vidi izvor i zna da je riječ o poveznici. Problem nastaje kada se tehnički prikupljeni naslov predstavlja kao vlastita reportaža bez izvornog istraživanja.",
+        "UNESCO u analizama za 2026. razmatra kako generativna umjetna inteligencija i platforme mijenjaju novinarstvo. U središtu su kvalitetno izvještavanje, održivost uredništava i medijska pismenost. Sama brzina proizvodnje teksta zato nije dovoljna da se potvrdi vrijednost vijesti.",
+        "OECD-ovo istraživanje digitalnih alata u malim poduzećima podsjeća da primjena tehnologije zahtijeva i organizacijske kapacitete. Medijske tvrtke trebaju pravila za provjeru navoda, evidenciju prava na fotografije, izdvojenu uredničku odgovornost i postupak ispravljanja eventualne netočne informacije.",
+        "Dobar sustav razlikuje prikupljenu temu, radni nacrt, provjeren i odobren članak te URL čija je javna dostupnost potvrđena. U svakom koraku odgovornost i dokaz moraju biti jasni. Jednaka načela vrijede za redakciju s pet ljudi i mrežu s velikim brojem regionalnih kanala.",
+        "Rast medijske mreže treba mjeriti i brojem vjerodostojnih korekcija, dostupnošću izvornih dokumenata i kvalitetom odgovora na prigovore. Bez tih pokazatelja velik broj tekstova može prikrivati mali broj stvarno korisnih informacija."
+      ],
+      "articleBody": "Medijska redakcija danas može vrlo brzo preuzeti naslove iz feedova i pretvoriti ih u novu naslovnicu. Takva pregledna usluga korisna je ako čitatelj vidi izvor i zna da je riječ o poveznici. Problem nastaje kada se tehnički prikupljeni naslov predstavlja kao vlastita reportaža bez izvornog istraživanja.\n\nUNESCO u analizama za 2026. razmatra kako generativna umjetna inteligencija i platforme mijenjaju novinarstvo. U središtu su kvalitetno izvještavanje, održivost uredništava i medijska pismenost. Sama brzina proizvodnje teksta zato nije dovoljna da se potvrdi vrijednost vijesti.\n\nOECD-ovo istraživanje digitalnih alata u malim poduzećima podsjeća da primjena tehnologije zahtijeva i organizacijske kapacitete. Medijske tvrtke trebaju pravila za provjeru navoda, evidenciju prava na fotografije, izdvojenu uredničku odgovornost i postupak ispravljanja eventualne netočne informacije.\n\nDobar sustav razlikuje prikupljenu temu, radni nacrt, provjeren i odobren članak te URL čija je javna dostupnost potvrđena. U svakom koraku odgovornost i dokaz moraju biti jasni. Jednaka načela vrijede za redakciju s pet ljudi i mrežu s velikim brojem regionalnih kanala.\n\nRast medijske mreže treba mjeriti i brojem vjerodostojnih korekcija, dostupnošću izvornih dokumenata i kvalitetom odgovora na prigovore. Bez tih pokazatelja velik broj tekstova može prikrivati mali broj stvarno korisnih informacija.",
+      "originalWork": true,
+      "independentFactCheck": false,
+      "editorApproved": false,
+      "imageRightsVerified": false,
+      "publicationStatus": "editorial_review_required",
+      "proposedDate": "2026-11-23",
+      "author": null,
+      "editor": null,
+      "publicUrl": null,
+      "editorDesk": "Nermin Sefić",
+      "seo": {
+        "title": "Budućnost novinarstva: brže objave nisu vrijedne bez provjerljivih izvora",
+        "metaDescription": "UNESCO upozorava na pritiske platformi i generativne umjetne inteligencije na povjerenje u informacije.",
+        "canonical": null,
+        "publicationState": "DRAFT_ONLY_NOT_INDEXABLE"
+      }
+    }
+  ],
+  "updatedAt": "2026-11-23"
+}

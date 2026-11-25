@@ -1,0 +1,37 @@
+name: AKTUAL Editorial Draft Quality
+
+on:
+  pull_request:
+    paths:
+      - 'content/hr-news/drafts/**'
+      - 'scripts/test-aktual-editorial-drafts-20261123.mjs'
+      - '.github/workflows/aktual-editorial-draft-quality.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'content/hr-news/drafts/**'
+      - 'scripts/test-aktual-editorial-drafts-20261123.mjs'
+      - '.github/workflows/aktual-editorial-draft-quality.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aktual-editorial-drafts-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate draft-only evidence and metadata
+        run: |
+          node --check scripts/test-aktual-editorial-drafts-20261123.mjs
+          node scripts/test-aktual-editorial-drafts-20261123.mjs
