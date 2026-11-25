@@ -45,19 +45,38 @@ async function listArticles(env,limit=100,days=365){
  if(!env.GNK_ASG_D1)return [];
  try{const cutoff=new Date(Date.now()-days*86400000).toISOString();const r=await env.GNK_ASG_D1.prepare("SELECT slug,title,image_url,published_at FROM aktual_newsroom100_articles WHERE status='published' AND published_at>=? ORDER BY published_at DESC LIMIT ?").bind(cutoff,limit).all();return r.results||[]}catch{return []}
 }
-function renderArticle(data,image,caption,licenseUrl,date){
- const url=ORIGIN+PREFIX+data.slug+"/",desc=data.body.replace(/\s+/g," ").slice(0,150);
- const news={"@context":"https://schema.org","@type":"NewsArticle",headline:data.title,description:desc,url,mainEntityOfPage:url,inLanguage:"hr",datePublished:date,dateModified:date,image:[ORIGIN+image],author:{"@type":"Organization",name:"Redakcija AKTUAL MEDIA"},publisher:{"@type":"Organization",name:"AKTUAL MEDIA",url:ORIGIN+"/gnk-aktual/"},citation:data.sources};
+// Synchronous, deterministic metadata: no extra AI call or editor step.
+export function articleMetadata(title,body){
+ const plain=String(body||"").replace(/\s+/g," ").trim();
+ const description=plain.length<=155?plain:plain.slice(0,155).replace(/\s+\S*$/,"").trim()+"…";
+ const rules=[
+ [/gospodar|ekonom|tržišt|burz|proračun|inflacij|financij|investic/i,"Gospodarstvo"],
+ [/nogomet|košark|tenis|sport|utakmic|prvenstv/i,"Sport"],
+ [/tehnolog|umjetn[a-z]* inteligenc|softver|digital|\bAI\b/i,"Tehnologija"],
+ [/izbor|parlament|vlada|sabor|politik/i,"Politika"],
+ [/zdrav|medicin|bolnic/i,"Zdravlje"],
+ [/kultur|film|kazališt|glazb/i,"Kultura"],
+ [/hrvatsk|zagreb|split|rijek|osijek/i,"Hrvatska"]
+ ];
+ const topics=rules.filter(([pattern])=>pattern.test(title)).map(([,topic])=>topic).slice(0,3);
+ return {description,section:topics[0]||"Vijesti",tags:["AKTUALMEDIA",...topics.map(t=>t.replace(/\s+/g,""))]};
+}
+export function renderArticle(data,image,caption,licenseUrl,date){
+ const url=ORIGIN+PREFIX+data.slug+"/";
+ const {description:desc,section,tags}=articleMetadata(data.title,data.body);
+ const news={"@context":"https://schema.org","@type":"NewsArticle",headline:data.title,description:desc,url,mainEntityOfPage:url,inLanguage:"hr",datePublished:date,dateModified:date,articleSection:section,keywords:tags,image:[ORIGIN+image],author:{"@type":"Organization",name:"Redakcija AKTUAL MEDIA"},publisher:{"@type":"Organization",name:"AKTUAL MEDIA",url:ORIGIN+"/gnk-aktual/"},citation:data.sources};
  const ps=data.body.split(/\n\s*\n/).map(p=>"<p>"+escapeHTML(p.replace(/\s*\n\s*/g," "))+"</p>").join("");
  const cites=data.sources.map((s,i)=>'<li><a href="'+escapeHTML(s)+'" rel="noopener noreferrer" target="_blank">Izvor '+(i+1)+": "+escapeHTML(new URL(s).hostname)+"</a></li>").join("");
+ const tagMeta=tags.map(tag=>'<meta property="article:tag" content="'+escapeHTML(tag)+'">').join('');
+ const tagLabels=tags.map(tag=>'<span>#'+escapeHTML(tag)+'</span>').join(' · ');
  const cred=escapeHTML(caption)+(licenseUrl?'; <a href="'+escapeHTML(licenseUrl)+'" rel="license noopener noreferrer" target="_blank">Prava/licenca</a>':"");
  return '<!doctype html><html lang="hr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'+
  '<title>'+escapeHTML(data.title)+' | AKTUAL MEDIA</title><meta name="robots" content="index,follow,max-image-preview:large"><meta name="description" content="'+escapeHTML(desc)+'">'+
- '<link rel="canonical" href="'+url+'"><meta property="og:type" content="article"><meta property="og:title" content="'+escapeHTML(data.title)+'"><meta property="og:url" content="'+url+'"><meta property="og:image" content="'+ORIGIN+image+'">'+
- '<meta name="twitter:card" content="summary_large_image"><meta property="article:published_time" content="'+date+'"><script type="application/ld+json">'+JSON.stringify(news).replace(/</g,"\\u003c")+'</script>'+
+ '<link rel="canonical" href="'+url+'"><link rel="icon" href="/assets/favicon.svg"><meta name="author" content="Redakcija AKTUAL MEDIA"><meta property="og:type" content="article"><meta property="og:site_name" content="AKTUAL MEDIA"><meta property="og:locale" content="hr_HR"><meta property="og:title" content="'+escapeHTML(data.title)+'"><meta property="og:description" content="'+escapeHTML(desc)+'"><meta property="og:url" content="'+url+'"><meta property="og:image" content="'+escapeHTML(ORIGIN+image)+'"><meta property="og:image:alt" content="'+escapeHTML(data.title)+'">'+
+ '<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="'+escapeHTML(data.title)+'"><meta name="twitter:description" content="'+escapeHTML(desc)+'"><meta name="twitter:image" content="'+escapeHTML(ORIGIN+image)+'"><meta name="twitter:image:alt" content="'+escapeHTML(data.title)+'"><meta property="article:section" content="'+escapeHTML(section)+'"><meta property="article:published_time" content="'+date+'"><meta property="article:modified_time" content="'+date+'">'+tagMeta+'<script type="application/ld+json">'+JSON.stringify(news).replace(/</g,"\\u003c")+'</script>'+
  '<style>body{margin:0;background:#fff;color:#15233b;font:17px/1.8 system-ui,sans-serif}header,footer{background:#091b33;color:white;padding:18px 6%}header a,footer a{color:white}main{max-width:790px;margin:auto;padding:30px 20px}h1{font-size:clamp(2rem,4vw,3rem);line-height:1.15}img{width:100%;height:auto;border-radius:12px}figcaption,time{font-size:.82rem;color:#667}figure{margin:20px 0}aside{border-top:1px solid #ddd;margin-top:35px;padding-top:15px}a{color:#125094}</style>'+
  '</head><body><header><a href="/gnk-aktual/">AKTUAL MEDIA</a> / <a href="'+PREFIX+'">Vijesti</a></header><main><article><h1>'+escapeHTML(data.title)+'</h1><p>Redakcija AKTUAL MEDIA · <time datetime="'+date+'">'+date.slice(0,16).replace("T"," ")+' UTC</time></p>'+
- '<figure><img src="'+escapeHTML(image)+'" alt="'+escapeHTML(data.title)+'" width="1200" height="630"><figcaption>'+cred+'</figcaption></figure>'+ps+'</article><aside><h2>Izvori</h2><ol>'+cites+'</ol><p>Originalni redakcijski tekst; za ispravke kontaktirajte redakciju.</p></aside></main><footer><a href="/gnk-aktual/">AKTUAL MEDIA</a></footer></body></html>';
+ '<figure><img src="'+escapeHTML(image)+'" alt="'+escapeHTML(data.title)+'" width="1200" height="630"><figcaption>'+cred+'</figcaption></figure>'+ps+'<p class="article-tags" aria-label="Teme">'+tagLabels+'</p></article><aside><h2>Izvori</h2><ol>'+cites+'</ol><p>Originalni redakcijski tekst; za ispravke kontaktirajte redakciju.</p></aside></main><footer><a href="/gnk-aktual/">AKTUAL MEDIA</a></footer></body></html>';
 }
 function svgCover(title){return '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#091a32"/><rect x="70" y="80" width="12" height="450" fill="#d5ac5c"/><text x="115" y="155" fill="white" font-family="Arial" font-size="52" font-weight="bold">AKTUAL MEDIA</text><text x="115" y="230" fill="#d5ac5c" font-family="Arial" font-size="24">ORIGINALNA REDAKCIJSKA ILUSTRACIJA</text><text x="115" y="500" fill="white" font-family="Arial" font-size="28">'+escapeHTML(title.slice(0,62))+'</text></svg>';}
 async function publish(req,env){
