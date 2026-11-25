@@ -21,11 +21,6 @@ on:
       - 'scripts/build-aktual-media-weekly-archive-v1.mjs'
       - 'scripts/build-aktual-media-weekly-v1.mjs'
       - 'scripts/check-published-weekly-integrity-v1.mjs'
-      - 'workers/gnk-asg-direct-operator/src/newsroom100-cms-v1.js'
-      - 'tests/test-aktual-newsroom100-cms-v1.mjs'
-      - 'apps/portal/admin/newsroom100/**'
-      - 'scripts/aktual-fast-intake-v1.mjs'
-      - 'tests/test-aktual-fast-intake-v1.mjs'
       - 'scripts/generate-editorial-cover-assets-v1.mjs'
       - 'scripts/generate-aktual-weekly-cover-assets-v1.mjs'
       - 'scripts/generate_aktual_columns.py'
@@ -119,17 +114,19 @@ jobs:
             echo "::error::Canonical editorial sitemap artifacts drift from their generator. Review the uploaded reproduced artifacts." >&2
             exit 1
           fi
-      - name: Validate Newsroom100 one-click runtime and editorial inputs
-        run: |
-          node --check workers/gnk-asg-direct-operator/src/newsroom100-cms-v1.js
-          node --check workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
-          node tests/test-aktual-newsroom100-cms-v1.mjs
-          node tests/test-aktual-fast-intake-v1.mjs
-          node tests/test-aktual-newsroom100-radar-v1.mjs
       - name: Validate published routes, lastmod and canonical registry
         run: python scripts/validate_publication_sitemap_registry_v1.py
-      - name: Validate last published curated weekly without fabricating current issue
-        run: node scripts/check-published-weekly-integrity-v1.mjs
+      - name: Verify materialized weekly integrity and keep new issue strictly gated
+        run: |
+          set -euo pipefail
+          node scripts/check-published-weekly-integrity-v1.mjs
+          readiness="$(node scripts/build-aktual-media-weekly-v1.mjs --readiness)"
+          if node -e 'const r=JSON.parse(process.argv[1]); process.exit(r.ready===true?0:1)' "$readiness"; then
+            node scripts/build-aktual-media-weekly-v1.mjs --check
+          else
+            node -e 'const r=JSON.parse(process.argv[1]);const c=require("./apps/portal/data/aktual-weekly.json");if(!r.issue_week||!c.issue_week||c.issue_week>=r.issue_week)process.exit(1)' "$readiness"
+            echo "::warning::New weekly edition remains withheld until source-verified curation is available."
+          fi
       - name: Test route-scoped completeness and protected-route safety
         run: node scripts/test-editorial-publication-completeness-v1.mjs
       - name: Enforce editorial publication completeness

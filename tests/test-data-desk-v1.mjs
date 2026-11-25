@@ -9,6 +9,7 @@
 // apps/region/data/*.json i da je svaka stranica povezana u oba smjera.
 import fs from 'node:fs';
 import path from 'node:path';
+import {sectionPage} from '../apps/region/engine/data-desk.mjs';
 
 const ROOT = process.cwd();
 const PORTAL = path.join(ROOT, 'apps', 'portal');
@@ -93,6 +94,36 @@ if (exists(dataFile)) {
   check(data.items === items, `mjerenja tvrde ${data.items} zapisa, mjerena izdanja imaju ${items}`);
   const html = read('apps/portal/aktual-media/nocna-smjena/index.html');
   check(html.includes(`${items} `), `stranica ne nosi ${items} mjerenih zapisa`);
+
+  // Popis prikazuje cijelu mrežu; brojke mjere samo eksplicitni regionalni podskup.
+  const configured = JSON.parse(read('apps/region/channels.json')).channels;
+  for (const [hr, en] of [...INDEX, ...DESKS]) {
+    for (const [route, lang] of [[hr, 'hr'], [en, 'en']]) {
+      const page = readPage(route);
+      const cityList = page.match(/<ul class="dd-city">([\s\S]*?)<\/ul>/)?.[1] || '';
+      const cityAnchors = [...cityList.matchAll(/<a href="([^"]+)" hreflang="([^"]+)"/g)];
+      check(cityAnchors.length === configured.length, `${route}: popis treba sadržavati ${configured.length} izdanja`);
+      check(page.includes(lang === 'hr' ? `Svih ${configured.length} gradskih izdanja` : `All ${configured.length} city editions`), `${route}: naslov mora odgovarati cijelom popisu`);
+      check(page.includes(lang === 'hr' ? `arhivu ${measured.length} regionalnih izdanja` : `archive of ${measured.length} regional editions`), `${route}: opseg mjerenja mora biti jasan`);
+      if (lang === 'en') {
+        check(cityAnchors.every(([, href, hreflang]) => href.endsWith('/en/') && hreflang === 'en'), `${route}: engleske poveznice moraju imati hreflang en`);
+        check(page.includes(`${items.toLocaleString('en-GB')} records`), `${route}: metodologija mora navesti stvarni ukupan broj zapisa`);
+        check(!page.includes('420 records each'), `${route}: zastarjela tvrdnja o jednakom broju zapisa`);
+      }
+    }
+  }
+
+  for (const lang of ['hr', 'en']) {
+    const generatedPage = sectionPage(lang);
+    check(generatedPage.includes(lang === 'hr' ? `Svih ${configured.length} gradskih izdanja` : `All ${configured.length} city editions`), `generator ${lang}: naslov popisa`);
+    check(generatedPage.includes(lang === 'hr' ? `arhivu ${measured.length} regionalnih izdanja` : `archive of ${measured.length} regional editions`), `generator ${lang}: opseg mjerenja`);
+    if (lang === 'en') {
+      const list = generatedPage.match(/<ul class="dd-city">([\s\S]*?)<\/ul>/)?.[1] || '';
+      const anchors = [...list.matchAll(/<a href="([^"]+)" hreflang="([^"]+)"/g)];
+      check(anchors.length === configured.length && anchors.every(([, href, hreflang]) => href.endsWith('/en/') && hreflang === 'en'), 'generator en: pogrešni jezični linkovi');
+      check(generatedPage.includes(`${items.toLocaleString('en-GB')} records`) && !generatedPage.includes('420 records each'), 'generator en: metodologija sadrži zastarjele podatke');
+    }
+  }
 
   const sumNight = data.night.rows.reduce((n, row) => n + row.count, 0);
   check(sumNight === data.night.totals.items, `zbroj noćnih redaka ${sumNight} nije jednak ukupnom ${data.night.totals.items}`);

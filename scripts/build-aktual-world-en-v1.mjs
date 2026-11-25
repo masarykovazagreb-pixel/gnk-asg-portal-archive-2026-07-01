@@ -8,6 +8,8 @@
 import {readFileSync,writeFileSync,mkdirSync,existsSync} from 'node:fs';
 import {dirname,join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {countryDirectoryDescription, englishWorldDirectoryDescription} from '../apps/shared/aktual-world-meta-v1.mjs';
+import {worldHashtagBlock} from '../apps/shared/aktual-world-hashtags-v1.mjs';
 const ROOT = 'https://gnk-asg.hr';
 
 
@@ -37,24 +39,25 @@ function renderCountry(c){
  const index=indexEligible(c);
  const title="AKTUAL MEDIA "+c.nameEn+" | Independent sources, news & radio";
  const desc="Explore independent news sources for "+c.nameEn+". Discover local publishers, current RSS sources and AKTUAL MEDIA global radio. External reports remain with their publishers.";
+ const metaDesc=countryDirectoryDescription(c.nameEn);
  const pairs='<link rel="alternate" hreflang="en" href="'+url+'"><link rel="alternate" hreflang="hr" href="'+hr+'"><link rel="alternate" hreflang="x-default" href="'+url+'">';
  const cards=p.map((s,i)=>'<li class="am-source-card"><span class="am-source-kind">'+(s.aggregator?"News aggregator":"Independent external publisher")+'</span><h3><a href="'+esc(s.url)+'" target="_blank" rel="noopener noreferrer nofollow">'+esc(s.name)+'</a></h3><p>Source for '+esc(c.nameEn)+' · '+esc(s.category)+'. Content and media rights remain with the source.</p>'+(s.rss?'<a class="am-small-link" href="'+esc(s.rss)+'" target="_blank" rel="noopener noreferrer nofollow">RSS source ↗</a>':"")+'</li>').join("\n");
  const schema=JSON.stringify({"@context":"https://schema.org","@type":"CollectionPage","@id":url+"#page",url,name:title,description:desc,inLanguage:"en",isPartOf:{"@id":ROOT+"/#website"},publisher:{"@id":ROOT+"/gnk-aktual/#news-organization"},editor:{"@type":"Person","@id":ROOT+"/#nermin-sefic",name:"Nermin Sefić"},about:{"@type":"Place",name:c.nameEn,alternateName:c.nameLocal,address:{"@type":"PostalAddress",addressCountry:c.code}}}).replace(/</g,"\\u003c");
  return `<!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>${esc(title)}</title><meta name="description" content="${esc(desc)}">
+<title>${esc(title)}</title><meta name="description" content="${esc(metaDesc)}">
 <meta name="robots" content="${index?"index,follow,max-image-preview:large":"noindex,follow"}">
 <meta name="publisher" content="AKTUAL MEDIA d.o.o."><meta name="editor" content="Nermin Sefić">
 <link rel="canonical" href="${url}">${pairs}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/aktual-world-premium-en-v1.css">
 <meta property="og:type" content="website"><meta property="og:site_name" content="AKTUAL MEDIA">
-<meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}">
+<meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(metaDesc)}">
 <meta property="og:url" content="${url}"><meta property="og:locale" content="en_GB">
 <meta property="og:image" content="${ROOT}/assets/editorial/aktual-media-800.webp">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}">
-<meta name="twitter:description" content="${esc(desc)}">
+<meta name="twitter:description" content="${esc(metaDesc)}">
 <meta name="twitter:image" content="${ROOT}/assets/editorial/aktual-media-800.webp">
 <script type="application/ld+json">${schema}</script>
 </head><body>
@@ -71,7 +74,9 @@ function renderCountry(c){
 <ul class="am-source-grid">${cards||'<li class="am-source-card"><h3>Sources being assessed</h3><p>No suitable registered source is currently available for this edition.</p></li>'}</ul></section>
 <section class="am-section am-radio"><div><p class="am-kicker">LISTEN / GLOBAL RADIO</p><h2>AKTUAL MEDIA Radio</h2><p>Open the radio player and browse stations. Some audio streams are operated by independent third parties; playback is user-initiated, never automatic.</p></div><a class="am-button am-radio-button" href="/en/radio/">◉ Open radio player ↗</a></section>
 <section class="am-section am-edit"><p class="am-kicker">EDITORIAL RESPONSIBILITY</p><h2>Source-first reporting</h2><p>All factual claims require provenance. Headlines from RSS are only topic prompts. Reports must be independently written and reviewed. Editorial lead: <a href="/nermin-sefic/">Nermin Sefić</a>; articles carry their own truthful bylines.</p><p><a href="/en/gnk-aktual/media/">Browse all 201 country directories</a> · <a href="/gnk-aktual/">Croatian newsroom</a></p></section>
-</main><footer class="am-footer"><div class="am-container"><span>© AKTUAL MEDIA · GNK ASG</span><span>${esc(c.nameEn)} · Independent external source directory · <a href="/en/gnk-aktual/">Network</a></span></div></footer></body></html>
+</main>
+${worldHashtagBlock}
+<footer class="am-footer"><div class="am-container"><span>© AKTUAL MEDIA · GNK ASG</span><span>${esc(c.nameEn)} · Independent external source directory · <a href="/en/gnk-aktual/">Network</a></span></div></footer></body></html>
 `;
 }
 
@@ -79,13 +84,13 @@ function renderDirectory(registry){
  const sorted=[...registry.countries].sort((a,b)=>a.code==="HR"?-1:b.code==="HR"?1:a.nameEn.localeCompare(b.nameEn,"en"));
  const items=sorted.map(c=>'<li data-search="'+esc((c.nameEn+" "+c.nameLocal+" "+c.code).toLowerCase())+'"><a href="/en/gnk-aktual/media/'+esc(c.slug)+'/"><span>'+esc(c.flag||"🌍")+' '+esc(c.nameEn)+'</span><small>'+esc(c.code)+' · '+providers(c).length+' sources</small></a></li>').join("\n");
  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>AKTUAL MEDIA WORLD | 201 English country directories</title>
-<meta name="description" content="Explore 201 English-language AKTUAL MEDIA country directories. Local independent news sources, research leads, editorial context and AKTUAL MEDIA Radio.">
+<meta name="description" content="${esc(englishWorldDirectoryDescription)}">
 <meta name="robots" content="index,follow"><meta name="editor" content="Nermin Sefić">
 <link rel="canonical" href="${ROOT}/en/gnk-aktual/media/"><link rel="alternate" hreflang="en" href="${ROOT}/en/gnk-aktual/media/"><link rel="alternate" hreflang="hr" href="${ROOT}/gnk-aktual/media/"><link rel="alternate" hreflang="x-default" href="${ROOT}/en/gnk-aktual/media/">
 <link rel="stylesheet" href="/assets/aktual-world-premium-en-v1.css">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AKTUAL MEDIA"><meta property="og:title" content="AKTUAL MEDIA WORLD — 201 English editions"><meta property="og:description" content="Explore country-specific sources, news topics and radio across 201 country directories."><meta property="og:url" content="${ROOT}/en/gnk-aktual/media/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AKTUAL MEDIA"><meta property="og:title" content="AKTUAL MEDIA WORLD — 201 English editions"><meta property="og:description" content="${esc(englishWorldDirectoryDescription)}"><meta property="og:url" content="${ROOT}/en/gnk-aktual/media/">
 <meta property="og:image" content="${ROOT}/assets/editorial/aktual-media-800.webp"><meta property="og:image:alt" content="AKTUAL MEDIA country directories">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AKTUAL MEDIA WORLD — 201 English editions"><meta name="twitter:description" content="Explore country-specific sources, news topics and radio across 201 country directories."><meta name="twitter:image" content="${ROOT}/assets/editorial/aktual-media-800.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AKTUAL MEDIA WORLD — 201 English editions"><meta name="twitter:description" content="${esc(englishWorldDirectoryDescription)}"><meta name="twitter:image" content="${ROOT}/assets/editorial/aktual-media-800.webp">
 </head><body><a href="#content" class="am-skip">Skip to content</a>
 <div class="am-top"><div class="am-container"><a class="am-brand" href="/en/gnk-aktual/">AKTUAL <em>MEDIA</em><span class="am-brand-sub">GLOBAL / 201 EDITIONS</span></a><nav aria-label="Site navigation"><a href="/en/gnk-aktual/">Newsroom</a><a href="/en/radio/">◉ RADIO</a><a class="am-lang" href="/gnk-aktual/media/" hreflang="hr" lang="hr">HR · Hrvatski</a><span class="am-lang current" aria-current="page">EN · English</span></nav></div></div>
 <main class="am-container" id="content"><div class="am-hero"><div><p class="am-kicker">INTERNATIONAL EDITIONS / ENGLISH</p><h1>The world.<br><span class="am-light">201 perspectives.</span></h1><p class="am-lead">Choose a country or territory to find its source directory. AKTUAL MEDIA does not claim ownership of linked publishers. Original news articles appear only after source verification.</p><div class="am-cta"><a class="am-button" href="/en/radio/">◉ Listen to AKTUAL RADIO</a><a class="am-button am-ghost" href="/en/gnk-aktual/">Explore news</a></div></div><aside class="am-hero-panel"><p class="am-kicker">AT A GLANCE</p><strong>201</strong><p>Country and territory directories</p><p class="am-explainer">Coverage and source freshness vary by edition. All links and publication rights require verification.</p></aside></div>

@@ -1851,7 +1851,10 @@ function writeSitemapIndex() {
     ['spt-sitemap.xml', '2026-10-12'], ['izdanja/sitemap.xml', today], ['galerija/sitemap.xml', today],
     ['aktual-media/sitemap.xml', today], ['tehnologija-buducnosti/sitemap.xml', today],
     ['glavni-gradovi/sitemap.xml', today], ['atlas/sitemap.xml', today], ['mreza/sitemap.xml', today],
-    ['gnk-aktual/mreza/sitemap.xml', today]
+    ['gnk-aktual/mreza/sitemap.xml', today],
+    // Nested country-directory sitemaps are not discoverable by the root-only scan.
+    // The EN sitemap has no reliable lastmod; omit rather than invent a date.
+    ['gnk-aktual/media/sitemap.xml', null], ['en/gnk-aktual/media/sitemap.xml', null]
   ];
   const file = join(PORTAL, 'sitemap-index.xml');
   const previous = new Map();
@@ -1868,7 +1871,11 @@ function writeSitemapIndex() {
       : (loc === 'editorial-sitemap.xml'
         ? (editorialCorpusLastmod() || sitemapLastmod(loc))
         : sitemapLastmod(loc));
-    entries.set(abs, measured || previous.get(abs) || fallback || today);
+    if (loc === 'en/gnk-aktual/media/sitemap.xml') {
+      if (existsSync(join(PORTAL, loc))) entries.set(abs, measured || null);
+    } else {
+      entries.set(abs, measured || previous.get(abs) || fallback || today);
+    }
   }
   for (const c of CHANNELS) entries.set(`${SITE}kanal/${c.id}/sitemap.xml`, today);
   /* Dijelovi slikovnog sitemapa i sve ostalo što je netko drugi dodao u
@@ -1882,7 +1889,7 @@ function writeSitemapIndex() {
     entries.set(abs, sitemapLastmod(name) || previous.get(abs) || today);
   }
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...entries.entries()]
-    .map(([loc, lastmod]) => `  <sitemap>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`).join('\n')}\n</sitemapindex>\n`;
+    .map(([loc, lastmod]) => `  <sitemap>\n    <loc>${loc}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}\n  </sitemap>`).join('\n')}\n</sitemapindex>\n`;
   writeFileSync(file, xml);
   return entries.size;
 }
