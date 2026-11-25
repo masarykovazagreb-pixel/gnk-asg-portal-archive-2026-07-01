@@ -33,10 +33,17 @@ const BASE = ((baseIndex >= 0 ? process.argv[baseIndex+1] : null) || process.env
 
 const data = JSON.parse(readFileSync(DATA, 'utf8'));
 if (new Set(data.countries.map(c=>c.slug)).size !== data.countries.length || new Set(data.countries.map(c=>c.code)).size !== data.countries.length) throw new Error('Duplicate country slug/code; refusing overwrite.');
+const countryIndex=process.argv.indexOf('--country');
+const countrySlug=countryIndex>=0 ? process.argv[countryIndex+1] : null;
+if(countryIndex>=0 && (!countrySlug || !data.countries.some(c=>c.slug===countrySlug))) throw new Error('Unknown --country slug');
 const CACHE_PATH = process.env.AKTUAL_WORLD_CACHE ? resolve(process.env.AKTUAL_WORLD_CACHE) : join(ROOT, 'apps', 'portal', 'data', 'aktual-world-headlines-v1.json');
 const cache = existsSync(CACHE_PATH) ? JSON.parse(readFileSync(CACHE_PATH, 'utf8')) : null;
 const maxCacheAgeMs = 24 * 60 * 60 * 1000;
-const cacheFresh = cache && Number.isFinite(Date.parse(cache.updatedAt)) && Date.now() - Date.parse(cache.updatedAt) < maxCacheAgeMs && Date.now() >= Date.parse(cache.updatedAt);
+const scopeTimestamp = (kind, slug) => cache?.scopeUpdatedAt ? cache.scopeUpdatedAt[kind]?.[slug] : cache?.updatedAt;
+const scopeFresh = (kind, slug) => {
+  const stamp=Date.parse(scopeTimestamp(kind,slug));
+  return Number.isFinite(stamp) && Date.now()-stamp<maxCacheAgeMs && Date.now()>=stamp;
+};
 function safeHeadlines(rows) {
   if (!Array.isArray(rows)) return [];
   const seen = new Set();
@@ -52,10 +59,10 @@ function safeHeadlines(rows) {
     } catch { return false; }
   });
 }
-const currentHeadlines = slug => cacheFresh ? safeHeadlines(cache.countries?.[slug]) : [];
-const cityHeadlines = slug => cacheFresh ? safeHeadlines(cache.cities?.[slug]) : [];
+const currentHeadlines = slug => scopeFresh('countries',slug) ? safeHeadlines(cache.countries?.[slug]) : [];
+const cityHeadlines = slug => scopeFresh('cities',slug) ? safeHeadlines(cache.cities?.[slug]) : [];
 function sourceCheckSummary(kind, slug) {
-  if (!cacheFresh || !Array.isArray(cache.sourceChecks)) return '';
+  if (!scopeFresh(kind === 'city' ? 'cities' : 'countries',slug) || !Array.isArray(cache.sourceChecks)) return '';
   const checks = cache.sourceChecks.filter(x => x && x.kind === kind && x.scope === slug);
   if (!checks.length) return '';
   const failed = checks.filter(x => x.status === 'failed').length;
@@ -203,7 +210,7 @@ ${countryNavigation(country, data.cities, BASE)}${externalStationSection(country
 
   <div class="section">
     <h2>Posljednje povezane vijesti</h2>
-    <p>${currentHeadlines(country.slug).length ? `Naslovi vanjskih izvora osvježeni: ${escHtml(cache.updatedAt)}. Prikazuju se samo naslovi i poveznice.` : 'Trenutačno nema provjerenog svježeg skupa naslova. Slijedite izvorne medije za aktualne vijesti.'}</p>
+    <p>${currentHeadlines(country.slug).length ? `Naslovi vanjskih izvora osvježeni: ${escHtml(scopeTimestamp('countries',country.slug))}. Prikazuju se samo naslovi i poveznice.` : 'Trenutačno nema provjerenog svježeg skupa naslova. Slijedite izvorne medije za aktualne vijesti.'}</p>
     ${sourceCheckSummary('country', country.slug) ? `<p>${escHtml(sourceCheckSummary('country', country.slug))}</p>` : ''}
     <div class="sources">${currentHeadlines(country.slug).map(row=>`<a href="${escHtml(row.url)}" target="_blank" rel="noopener noreferrer nofollow">${escHtml(row.title)} · ${escHtml(row.source)} · <time datetime="${escHtml(new Date(row.publishedAt).toISOString())}">${escHtml(new Date(row.publishedAt).toISOString().slice(0, 10))} UTC</time></a>`).join('')}</div>
   </div>
@@ -257,7 +264,7 @@ function buildCityPage(city) {
 ${cityNavigation(city, data.countries.find(c => c.slug === city.country), BASE)}
 <h1>${escHtml(city.flag)} AKTUAL MEDIA ${escHtml(city.nameLocal)}</h1>
 <p>Urednik: Nermin Sefić · GNK ASG · AKTUAL MEDIA</p>
-<p class="muted">${headlines.length ? `Poveznice na izvornike, zadnji uspješan dohvat: ${escHtml(cache.updatedAt)}.` : 'Nema svježih provjerenih naslova za ovo izdanje; vijesti nisu automatski objavljene.'}</p>
+<p class="muted">${headlines.length ? `Poveznice na izvornike, zadnji uspješan dohvat: ${escHtml(scopeTimestamp('cities',city.slug))}.` : 'Nema svježih provjerenih naslova za ovo izdanje; vijesti nisu automatski objavljene.'}</p>
 <ul>${headlineMarkup}</ul><p><a href="${escHtml(url)}feed.xml">RSS feed</a></p>
 <p class="muted">Prikaz sadrži samo naslove i poveznice. Dostupnost izvora i licencna prava ovise o izvornom izdavaču.</p>
 </main>
@@ -342,17 +349,19 @@ function updateHeadlineBlock(path, generated, pattern) {
   return previous.slice(0, oldMatches[0].index) + newMatches[0][0] + previous.slice(oldMatches[0].index + oldMatches[0][0].length);
 }
 const writes = [];
-for (const country of data.countries) {
+for (const country of data.countries.filter(c=>!countrySlug || c.slug===countrySlug)) {
   const dir = join(OUT, 'media', country.slug), page = join(dir, 'index.html');
   writes.push([page, updateHeadlineBlock(page, buildCountryPage(country), countryBlock)]);
   writes.push([join(dir, 'feed.xml'), buildCountryRss(country)]);
 }
-for (const city of data.cities) {
-  const dir = join(OUT, 'grad', city.slug), page = join(dir, 'index.html');
-  writes.push([page, updateHeadlineBlock(page, buildCityPage(city), cityBlock)]);
-  writes.push([join(dir, 'feed.xml'), buildCityRss(city)]);
+if (!countrySlug) {
+  for (const city of data.cities) {
+    const dir = join(OUT, 'grad', city.slug), page = join(dir, 'index.html');
+    writes.push([page, updateHeadlineBlock(page, buildCityPage(city), cityBlock)]);
+    writes.push([join(dir, 'feed.xml'), buildCityRss(city)]);
+  }
+  writes.push([join(OUT, 'media', 'sitemap.xml'), buildSitemap()]);
 }
-writes.push([join(OUT, 'media', 'sitemap.xml'), buildSitemap()]);
 for (const [path, content] of writes) {
   mkdirSync(dirname(path), {recursive:true});
   writeFileSync(path, content);
