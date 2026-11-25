@@ -30,6 +30,7 @@ import re
 import subprocess
 from datetime import date
 from collections import defaultdict, Counter
+import xml.etree.ElementTree as ET
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PORTAL_DIR = os.path.join(REPO_ROOT, "apps", "portal")
@@ -170,6 +171,35 @@ def render_urlset(items):
     return "\n".join(lines)
 
 
+def preserve_sitemap_index(existing, regenerated):
+    """Keep all registered sitemaps; do not assert a fabricated lastmod.
+
+    Rewritten sitemaps have no known modification time here. Removing their
+    old lastmod avoids leaving a stale value without inventing today's date.
+    Entries outside this generator's scope are retained, including extensions.
+    """
+    ns = "http://www.sitemaps.org/schemas/sitemap/0.9"
+    ET.register_namespace("", ns)
+    root = ET.fromstring(existing) if existing.strip() else ET.Element(f"{{{ns}}}sitemapindex")
+    if root.tag != f"{{{ns}}}sitemapindex":
+        raise ValueError("sitemap index must be a namespaced sitemapindex")
+    targets = {BASE_URL + "/" + name for name in regenerated}
+    seen = set()
+    for item in root.findall(f"{{{ns}}}sitemap"):
+        loc = item.find(f"{{{ns}}}loc")
+        url = loc.text.strip() if loc is not None and loc.text else ""
+        if url in targets:
+            if url in seen:
+                raise ValueError(f"duplicate sitemap index entry: {url}")
+            seen.add(url)
+            for lastmod in item.findall(f"{{{ns}}}lastmod"):
+                item.remove(lastmod)
+    for url in sorted(targets - seen):
+        item = ET.SubElement(root, f"{{{ns}}}sitemap")
+        ET.SubElement(item, f"{{{ns}}}loc").text = url
+    return '<?xml version="1.0" encoding="UTF-8"?>\n' + ET.tostring(root, encoding="unicode") + "\n"
+
+
 def main():
     entries = collect_entries()
     by_cat = defaultdict(list)
@@ -183,35 +213,18 @@ def main():
         "editorial-sitemap.xml": by_cat["editorial"],
         "visual-sitemap.xml": by_cat["visual"],
     }
+    index_path = os.path.join(PORTAL_DIR, "sitemap-index.xml")
+    existing = open(index_path, encoding="utf-8").read() if os.path.exists(index_path) else ""
+    index_xml = preserve_sitemap_index(existing, files)
     for filename, items in files.items():
         out_path = os.path.join(PORTAL_DIR, filename)
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(render_urlset(items))
         print(f"wrote {filename}: {len(items)} URLs")
 
-    today = date.today().isoformat()
-    index_xml = f'''<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap>
-    <loc>{BASE_URL}/sitemap.xml</loc>
-    <lastmod>{today}</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>{BASE_URL}/editorial-sitemap.xml</loc>
-    <lastmod>{today}</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>{BASE_URL}/visual-sitemap.xml</loc>
-    <lastmod>{today}</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>{BASE_URL}/image-sitemap.xml</loc>
-    <lastmod>{today}</lastmod>
-  </sitemap>
-</sitemapindex>'''
-    with open(os.path.join(PORTAL_DIR, "sitemap-index.xml"), "w", encoding="utf-8") as f:
+    with open(index_path, "w", encoding="utf-8") as f:
         f.write(index_xml)
-    print("wrote sitemap-index.xml")
+    print("updated sitemap-index.xml without dropping other registered sitemaps")
 
 
 if __name__ == "__main__":

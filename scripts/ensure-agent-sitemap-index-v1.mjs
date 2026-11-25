@@ -12,7 +12,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PORTAL = join(ROOT, 'apps', 'portal');
 const INDEX = join(PORTAL, 'sitemap-index.xml');
 const SITE = 'https://gnk-asg.hr';
-const SITEMAPS = ['agent-reviews-sitemap.xml', 'gnk-aktual/media/sitemap.xml'];
+const SITEMAPS = ['agent-reviews-sitemap.xml', 'gnk-aktual/media/sitemap.xml', 'en/gnk-aktual/media/sitemap.xml'];
 
 if (!existsSync(INDEX)) {
   console.log(JSON.stringify({ ok: true, changed: false, reason: 'nema sitemap indeksa' }));
@@ -29,7 +29,9 @@ for (const sitemap of SITEMAPS) {
   if (!existsSync(join(PORTAL, sitemap))) continue;
   const loc = `${SITE}/${sitemap}`;
   if (content.includes(`<loc>${loc}</loc>`)) continue;
-  const entry = `  <sitemap>\n    <loc>${loc}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>\n`;
+  // The EN directory sitemap has no reliable lastmod; do not fabricate one.
+  const lastmod = sitemap === 'en/gnk-aktual/media/sitemap.xml' ? '' : `\n    <lastmod>${today}</lastmod>`;
+  const entry = `  <sitemap>\n    <loc>${loc}</loc>${lastmod}\n  </sitemap>\n`;
   content = content.replace('</sitemapindex>', `${entry}</sitemapindex>`);
   added.push(sitemap);
 }
