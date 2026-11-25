@@ -22,7 +22,13 @@ const strict=process.argv.includes('--strict');
 const countryIndex=process.argv.indexOf('--country');
 const countrySlug=countryIndex>=0 ? process.argv[countryIndex+1] : null;
 if(countryIndex>=0 && (!countrySlug || !data.countries.some(c=>c.slug===countrySlug))) throw Error('Unknown --country slug');
-const unescapeXml=(s)=>String(s).replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g,'$1').replace(/&(?:amp|lt|gt|quot|apos);|&#(?:x[\da-f]+|\d+);/gi,m=>({ '&amp;':'&','&lt;':'<','&gt;':'>','&quot;':'"','&apos;':"'"}[m.toLowerCase()]??(m[2]==='x'?String.fromCodePoint(parseInt(m.slice(3,-1),16)):String.fromCodePoint(Number(m.slice(2,-1)))))).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+const unescapeXml=(s)=>String(s).replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g,'$1').replace(/&(?:amp|lt|gt|quot|apos);|&#(?:x[\da-f]+|\d+);/gi,m=>{
+  const named={ '&amp;':'&','&lt;':'<','&gt;':'>','&quot;':'"','&apos;':"'"}[m.toLowerCase()];
+  if(named!==undefined)return named;
+  const value=m[2].toLowerCase()==='x'?parseInt(m.slice(3,-1),16):Number(m.slice(2,-1));
+  // A malformed XML entity must not crash the entire feed or emit invalid Unicode.
+  return Number.isInteger(value)&&value>0&&value<=0x10ffff&&!(value>=0xd800&&value<=0xdfff)?String.fromCodePoint(value):' ';
+}).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
 const field=(s,t)=>s.match(new RegExp(`<${t}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${t}>`,'i'))?.[1]||'';
 function extract(xml,now){
   const chunks=[...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>|<entry(?:\s[^>]*)?>([\s\S]*?)<\/entry>/gi)];
@@ -81,7 +87,20 @@ for(const [scope,rows] of Object.entries(items)){
 }
 for(const [scope,rows] of Object.entries(cityItems))cityItems[scope]=diversifyHeadlines(rows,maxItems);
 const refreshedAt=new Date(now).toISOString();
-if((strict&&errors.length)||!([...Object.values(items),...Object.values(cityItems)].some(x=>x.length))){console.error(JSON.stringify({error:'No acceptable updates; previous cache retained',feedAttempts:targets.length,feedFailures:errors.length},null,2));process.exit(1);}
+const hasUpdates=[...Object.values(items),...Object.values(cityItems)].some(x=>x.length);
+const failureReason=strict&&errors.length?'strict-source-failure':!hasUpdates?'no-acceptable-updates':null;
+// Optional run diagnostics are independent of the cache and survive a failed
+// refresh. Do not store error strings or URLs, which may contain credentials.
+if(process.env.AKTUAL_WORLD_RUN_REPORT){
+ const runReport={version:'AKTUAL_WORLD_REFRESH_RUN_V1',startedAt:refreshedAt,
+  scope:countrySlug?'single-country':limitCountries<data.countries.length?'partial':'all',
+  country:countrySlug,feedAttempts:targets.length,feedFailures:errors.length,
+  outcome:failureReason||'candidates-available-cache-write-not-confirmed',
+  sourceChecks:sourceChecks.map(({kind,scope,source,status,acceptedHeadlines})=>({kind,scope,source,status,...(Number.isInteger(acceptedHeadlines)?{acceptedHeadlines}:{})}))};
+ const file=process.env.AKTUAL_WORLD_RUN_REPORT,temp=file+'.tmp-'+process.pid;
+ try{fs.writeFileSync(temp,JSON.stringify(runReport,null,2)+'\n');fs.renameSync(temp,file);}finally{if(fs.existsSync(temp))fs.unlinkSync(temp);}
+}
+if(failureReason){console.error(JSON.stringify({error:failureReason,detail:'Previous cache retained',feedAttempts:targets.length,feedFailures:errors.length},null,2));process.exit(1);}
 // Partial refreshes preserve other scopes with their own original timestamps.
 // A fresh timestamp for one country must never make another stale country fresh.
 let previous=null;
