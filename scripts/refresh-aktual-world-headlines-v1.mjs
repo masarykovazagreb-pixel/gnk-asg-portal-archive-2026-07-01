@@ -8,6 +8,7 @@
 import fs from 'node:fs';
 import { safeUrl, fetchFeedXml } from './lib/aktual-world-feed-http-v1.mjs';
 import {selectCountryFeeds, diversifyHeadlines} from './lib/aktual-world-selection-v1.mjs';
+import {countryAgent} from '../apps/agents/world201/coordinator-v1.mjs';
 const input='apps/portal/data/world-countries-v1.json';
 const output=process.env.AKTUAL_WORLD_CACHE_OUT || 'apps/portal/data/aktual-world-headlines-v1.json';
 const data=JSON.parse(fs.readFileSync(input,'utf8'));
@@ -31,7 +32,7 @@ function extract(xml,now){
     if(!link){let tag=raw.match(/<link\b[^>]*\b(?:rel=["']alternate["'][^>]*\b)?href=["']([^"']+)["']/i);link=unescapeXml(tag?.[1]||'');}
     let date=unescapeXml(field(raw,'pubDate')||field(raw,'published')||field(raw,'updated'));
     const ts=Date.parse(date),age=now-ts;
-    if(!title||!safeUrl(link)||!Number.isFinite(ts)||age< -3600000||age>maxAgeHours*3600000)return null;
+    if(!title||!safeUrl(link)||!Number.isFinite(ts)||age<0||age>maxAgeHours*3600000)return null;
     return {title,url:safeUrl(link),publishedAt:new Date(ts).toISOString()};
   }).filter(Boolean);
 }
@@ -74,7 +75,11 @@ async function worker(){while(idx<targets.length){const target=targets[idx++];co
   sourceChecks.push({kind,scope,source:target.source,status:headlines.length ? 'headlines' : 'no-eligible-headlines',acceptedHeadlines:headlines.length});
 }catch(e){const error=String(e.message).slice(0,120);errors.push({scope,source:target.source,error});sourceChecks.push({kind,scope,source:target.source,status:'failed',error});}}}
 await Promise.all(Array.from({length:concurrency},worker));
-for(const records of [items,cityItems])for(const [scope,rows] of Object.entries(records))records[scope]=diversifyHeadlines(rows,maxItems);
+for(const [scope,rows] of Object.entries(items)){
+ const country=selectedCountries.find(c=>c.slug===scope);
+ items[scope]=countryAgent(country,rows,{now,maxAgeHours,limit:maxItems}).selected;
+}
+for(const [scope,rows] of Object.entries(cityItems))cityItems[scope]=diversifyHeadlines(rows,maxItems);
 const refreshedAt=new Date(now).toISOString();
 if((strict&&errors.length)||!([...Object.values(items),...Object.values(cityItems)].some(x=>x.length))){console.error(JSON.stringify({error:'No acceptable updates; previous cache retained',feedAttempts:targets.length,feedFailures:errors.length},null,2));process.exit(1);}
 // Partial refreshes preserve other scopes with their own original timestamps.

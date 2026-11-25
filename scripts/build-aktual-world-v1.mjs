@@ -50,7 +50,7 @@ function safeHeadlines(rows) {
   return rows.filter(row => {
     if (!row || typeof row.title !== 'string' || !row.title.trim() || typeof row.source !== 'string' || !row.source.trim() || typeof row.url !== 'string') return false;
     const date = Date.parse(row.publishedAt), age = Date.now() - date;
-    if (!Number.isFinite(date) || age < -3600000 || age > 72 * 3600000) return false;
+    if (!Number.isFinite(date) || age < 0 || age > 72 * 3600000) return false;
     try {
       const url = new URL(row.url);
       if (url.protocol !== 'https:' || url.username || url.password || !url.hostname || seen.has(url.href)) return false;

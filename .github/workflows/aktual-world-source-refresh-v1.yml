@@ -37,6 +37,20 @@ jobs:
           args=()
           if [ -n "$COUNTRY" ]; then args+=(--country "$COUNTRY"); fi
           node scripts/refresh-aktual-world-headlines-v1.mjs "${args[@]}"
+      - name: Prepare country-agent source briefs (not articles or approval)
+        env:
+          COUNTRY: ${{ inputs.country }}
+        shell: bash
+        run: |
+          args=()
+          if [ -n "$COUNTRY" ]; then args+=(--country "$COUNTRY"); fi
+          node apps/agents/world201/run-v1.mjs "${args[@]}" > "$RUNNER_TEMP/world201-briefs.json"
+      - name: Save country-agent briefs for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: world201-briefs-${{ github.run_id }}
+          path: ${{ runner.temp }}/world201-briefs.json
+          retention-days: 7
       - name: Regenerate static pages and RSS without copying article bodies
         env:
           AKTUAL_WORLD_OUT: apps/portal/gnk-aktual
