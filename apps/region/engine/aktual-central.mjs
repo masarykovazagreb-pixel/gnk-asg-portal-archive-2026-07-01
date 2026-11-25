@@ -1271,7 +1271,7 @@ ${END}`;
   const desc = `AKTUAL MEDIA na jednoj ploči: ${CHANNELS.length} gradskih izdanja na ${hrCount(LANG_COUNT)} jezika, ${items.length} tekstova iz ${sources.size} medija, devet deskova, poslovni tjednik, moda, galerija i radio. Urednik: Nermin Sefić.`;
   /* Meta opisi su stabilni i jednaki na sva tri mjesta; promjenjive brojke
      ostaju u sadržaju i strukturiranim podacima, gdje im je vidljiv kontekst. */
-  const metaDesc = `AKTUAL MEDIA: vijesti iz Hrvatske i svijeta, gospodarstvo, tehnologija, sport i radio. Poveznice na izvore. Urednik: Nermin Sefić.`;
+  const metaDesc = `AKTUAL MEDIA: vijesti iz Hrvatske i svijeta, politika, gospodarstvo, sport, tehnologija i regionalna izdanja. Urednik: Nermin Sefić.`;
   const safeDesc = esc(metaDesc);
   html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${safeDesc}">`);
   html = html.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${safeDesc}">`);
