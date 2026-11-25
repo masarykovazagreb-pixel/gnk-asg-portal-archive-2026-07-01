@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {selectCountryFeeds,diversifyHeadlines} from '../scripts/lib/aktual-world-selection-v1.mjs';
+import {writeRoundups} from '../apps/agents/world201/writer-v1.mjs';
 const registry=JSON.parse(fs.readFileSync('apps/portal/data/world-countries-v1.json','utf8'));
 const croatia=registry.countries.find(c=>c.slug==='hrvatska');
 test('source gap audit counts distinct local-language publisher hosts, not Google categories',()=>{
@@ -36,6 +37,7 @@ test('full refresh covers all 201 registry countries and limits concurrency per 
   const run=spawnSync(process.execPath,['--import',mock,'scripts/refresh-aktual-world-headlines-v1.mjs'],{env:{...process.env,AKTUAL_WORLD_CACHE_OUT:out,MOCK_STATS:stats,AKTUAL_FETCH_CONCURRENCY:'12'},encoding:'utf8'});assert.equal(run.status,0,run.stderr);
   const cache=JSON.parse(fs.readFileSync(out)),metrics=JSON.parse(fs.readFileSync(stats));assert.equal(Object.keys(cache.countries).length,201);assert.equal(Object.keys(cache.scopeUpdatedAt.countries).length,201);assert.ok(Object.values(metrics.max).every(n=>n<=3));assert.ok(metrics.id>=201);
   const briefing=spawnSync(process.execPath,['apps/agents/world201/run-v1.mjs','--cache',out],{encoding:'utf8'});assert.equal(briefing.status,0,briefing.stderr);const report=JSON.parse(briefing.stdout);assert.equal(report.summary.countries,201);assert.equal(report.summary.withCandidates,201);assert.equal(report.automaticFullArticlePublishing,false);
+  const roundups=writeRoundups(registry,cache);assert.equal(roundups.countriesWithDrafts,201);assert.equal(roundups.published,false);
  }finally{fs.rmSync(tmp,{recursive:true,force:true});}
 });
 

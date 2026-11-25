@@ -53,6 +53,29 @@ jobs:
           args=()
           if [ -n "$COUNTRY" ]; then args+=(--country "$COUNTRY"); fi
           node apps/agents/world201/fleet-run-v1.mjs "${args[@]}" > "$RUNNER_TEMP/world210-fleet.json"
+      - name: Check editorial kill switch
+        id: writer_switch
+        run: |
+          node --input-type=module -e 'import {killSwitchState} from "./apps/agents/lib/policy-v1.mjs"; import {appendFileSync} from "node:fs"; const s=killSwitchState(); appendFileSync(process.env.GITHUB_OUTPUT, `enabled=${s.enabled ? "true" : "false"}\n`); console.log(s.enabled ? "Writer enabled" : "Writer paused: " + s.reason);'
+      - name: Write attributed bilingual roundup drafts (not articles or publication)
+        if: ${{ steps.writer_switch.outputs.enabled == 'true' }}
+        env:
+          COUNTRY: ${{ inputs.country }}
+        shell: bash
+        run: |
+          args=()
+          if [ -n "$COUNTRY" ]; then args+=(--country "$COUNTRY"); fi
+          node apps/agents/world201/writer-run-v1.mjs "${args[@]}" > "$RUNNER_TEMP/world-roundups.json"
+          node apps/agents/world201/writer-run-v1.mjs "${args[@]}" --format html > "$RUNNER_TEMP/world-roundups-preview.html"
+      - name: Save unpublished drafts and preview
+        if: ${{ steps.writer_switch.outputs.enabled == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-roundups-review-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/world-roundups.json
+            ${{ runner.temp }}/world-roundups-preview.html
+          retention-days: 7
       - name: Save fleet report for review
         uses: actions/upload-artifact@v4
         with:
@@ -75,6 +98,17 @@ jobs:
           if [ -n "$COUNTRY" ]; then args+=(--country "$COUNTRY"); fi
           node scripts/build-aktual-world-v1.mjs --base https://gnk-asg.hr/gnk-aktual/ "${args[@]}"
           node --test tests/test-aktual-world-v1.mjs
+      - name: Preserve update patch if PR creation fails
+        shell: bash
+        run: |
+          git add apps/portal/data/aktual-world-headlines-v1.json apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad
+          git diff --cached --binary -- apps/portal/data/aktual-world-headlines-v1.json apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad > "$RUNNER_TEMP/world-source-update.patch"
+      - name: Save update patch for recovery
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-source-update-${{ github.run_id }}
+          path: ${{ runner.temp }}/world-source-update.patch
+          retention-days: 7
       - name: Open source-update PR, never deploy or auto-merge
         env:
           GH_TOKEN: ${{ github.token }}
