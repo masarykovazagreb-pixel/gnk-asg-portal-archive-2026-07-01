@@ -93,12 +93,27 @@ const oldCities=countrySlug ? previous?.cities||{} : {};
 const oldStamps=previous?.scopeUpdatedAt||{};
 const previousTime=previous?.updatedAt||null;
 const scopeUpdatedAt={countries:{},cities:{}};
-for(const slug of Object.keys(oldCountries))if(!selected.has(slug))scopeUpdatedAt.countries[slug]=oldStamps.countries?.[slug]||previousTime;
-for(const slug of Object.keys(oldCities))scopeUpdatedAt.cities[slug]=oldStamps.cities?.[slug]||previousTime;
-for(const slug of selected)scopeUpdatedAt.countries[slug]=refreshedAt;
-for(const city of cityTargets)scopeUpdatedAt.cities[city.city]=refreshedAt;
-const countryResults={...oldCountries};for(const slug of selected)delete countryResults[slug];Object.assign(countryResults,items);
-const cityResults={...oldCities,...cityItems};
+for(const slug of Object.keys(oldCountries))if(!selected.has(slug))scopeUpdatedAt.countries[slug]=previous?.scopeUpdatedAt ? oldStamps.countries?.[slug]||null : previousTime;
+for(const slug of Object.keys(oldCities))scopeUpdatedAt.cities[slug]=previous?.scopeUpdatedAt ? oldStamps.cities?.[slug]||null : previousTime;
+const countryResults={...oldCountries}, cityResults={...oldCities};
+// If an edition has no new headlines and at least one failed source, retain the
+// prior snapshot with its original timestamp. A failure must not erase history
+// or make old headlines appear fresh; the builder still hides stale snapshots.
+function applyScope(kind,slug,rows,results){
+ const failed=sourceChecks.some(x=>x.kind===kind&&x.scope===slug&&x.status==='failed');
+ const prior=previous?.[kind==='country'?'countries':'cities']?.[slug];
+ const stamp=previous?.scopeUpdatedAt ? oldStamps[kind==='country'?'countries':'cities']?.[slug]||null : previousTime;
+ const stamps=scopeUpdatedAt[kind==='country'?'countries':'cities'];
+ delete results[slug];
+ if(!rows?.length&&failed){
+  if(Array.isArray(prior)){results[slug]=prior;stamps[slug]=stamp;}
+ }else{
+  if(rows?.length)results[slug]=rows;
+  stamps[slug]=refreshedAt;
+ }
+}
+for(const slug of selected)applyScope('country',slug,items[slug],countryResults);
+for(const city of cityTargets)applyScope('city',city.city,cityItems[city.city],cityResults);
 const priorChecks=partial && Array.isArray(previous?.sourceChecks) ? previous.sourceChecks.filter(x=>x.kind==='country'?!selected.has(x.scope):Boolean(countrySlug)) : [];
 const checks=[...priorChecks,...sourceChecks].sort((a,b)=>`${a.kind}:${a.scope}:${a.source}`.localeCompare(`${b.kind}:${b.scope}:${b.source}`));
 const report={version:'AKTUAL_WORLD_HEADLINE_CACHE_V1',updatedAt:refreshedAt,scopeUpdatedAt,origin:'external article titles and links only; no republished bodies',countries:countryResults,cities:cityResults,feedAttempts:targets.length,feedFailures:errors.length,errors,sourceChecks:checks};

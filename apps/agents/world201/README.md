@@ -29,3 +29,15 @@ Prava za pisanje vlastitih tekstova ne znače prava za kopiranje tuđih članaka
 - Prethodni workflow izvora je u zadnjem provjerenom izvršavanju pao na koraku otvaranja PR-a; pravi uzrok nije potvrđen. Novi kod i raspored nisu dokaz da su poslovi prošli niti da je sadržaj objavljen uživo.
 - Izvorni registar i dalje nema 10 potvrđenih izravnih RSS izvora po svakoj zemlji: pogledati `docs/integration/aktual-world-rss-201-izvori-v1.md` i pokrenuti `node scripts/audit-world-rss-coverage-v1.mjs`. Broj izvora u konfiguraciji ne dokazuje njihovu dostupnost.
 - Produkcija je samo uspješno deployan SHA potvrđen neovisno. Ne zaobilaziti release fence, kill switch, zaštitu ruta, pravila `approved_mentions.json` ni postojeće kontrole objave. Statusi u briefu nisu dozvola za deploy ni dokaz prava.
+
+## Mreža 210 logičkih agenata
+
+`fleet-run-v1.mjs` izvršava 201 agenta zemalja i devet mrežnih uloga u jednom Node procesu: registar, svježina, provjera URL-a i atribucije, raznolikost, izrada povezanih leadova, prava, ograda objave, pokrivenost i nadzor. Ovo nisu 210 trajnih neovisnih servisa; `execution: completed` znači da se funkcija izvršila, a `status: attention`, `empty` ili `blocked` pokazuju nedostatke i ne jamče zdravlje ni rad uživo. Botovi izvora i deska ostaju zasebne funkcije u agentima zemalja, a ne dodatno pribrojeni mrežnim agentima. Jedan zemaljski opseg izvršava 10 uloga, ne 210.
+
+```sh
+node apps/agents/world201/fleet-run-v1.mjs
+node apps/agents/world201/fleet-run-v1.mjs --country hrvatska
+node --test tests/test-world210-fleet-v1.mjs tests/test-world-rss-expansion-v1.mjs
+```
+
+Rezultat sadrži strukturirane leadove s naslovom, atribucijom i poveznicom, bez kopiranja tijela i bez izmišljenih detalja. To nisu napisani puni članci ni uredničko odobrenje. Postojeći workflow nakon uspješnog dohvata sprema izvještaj kao interni artefakt; nije proces koji je uvijek uključen, nije instant objava, ne objavljuje članke i ne preskače zaštitu. U slučaju djelomičnog neuspjeha dohvata bez novih naslova izdanje zadržava prethodni cache i izvornu vremensku oznaku; zastarjeli se naslovi i dalje ne prikazuju kao svježi. Konfiguracija ili lokalni testovi ne dokazuju da je raspored radio, da je deploy uspio ili da je izvor dostupan i licenciran.

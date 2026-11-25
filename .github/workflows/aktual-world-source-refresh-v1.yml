@@ -45,6 +45,20 @@ jobs:
           args=()
           if [ -n "$COUNTRY" ]; then args+=(--country "$COUNTRY"); fi
           node apps/agents/world201/run-v1.mjs "${args[@]}" > "$RUNNER_TEMP/world201-briefs.json"
+      - name: Run country and network agents (source-linked leads only)
+        env:
+          COUNTRY: ${{ inputs.country }}
+        shell: bash
+        run: |
+          args=()
+          if [ -n "$COUNTRY" ]; then args+=(--country "$COUNTRY"); fi
+          node apps/agents/world201/fleet-run-v1.mjs "${args[@]}" > "$RUNNER_TEMP/world210-fleet.json"
+      - name: Save fleet report for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: world210-fleet-${{ github.run_id }}
+          path: ${{ runner.temp }}/world210-fleet.json
+          retention-days: 7
       - name: Save country-agent briefs for review
         uses: actions/upload-artifact@v4
         with:
