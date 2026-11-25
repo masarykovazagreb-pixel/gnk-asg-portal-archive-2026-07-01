@@ -4,6 +4,9 @@ on:
     paths:
       - 'scripts/build-aktual-world-en-v1.mjs'
       - 'apps/shared/aktual-world-meta-v1.mjs'
+      - 'apps/shared/aktual-world-hashtags-v1.mjs'
+      - 'scripts/ensure-aktual-world-en-hashtags-v1.mjs'
+      - 'tests/test-world-hashtags-sitemap-v1.mjs'
       - 'tests/test-aktual-world-meta-v1.mjs'
       - 'tests/test-aktual-world-en-v1.mjs'
       - 'apps/portal/en/gnk-aktual/media/**'
@@ -33,7 +36,7 @@ jobs:
         with:
           node-version: '22'
       - name: Verify committed metadata without regenerating protected layers
-        run: node --test tests/test-aktual-world-meta-v1.mjs
+        run: node --test tests/test-aktual-world-meta-v1.mjs tests/test-world-hashtags-sitemap-v1.mjs
       - name: Regenerate all 201 pages from canonical registry (not from copied news)
         run: |
           node --check scripts/build-aktual-world-en-v1.mjs

@@ -9,6 +9,7 @@ import {readFileSync,writeFileSync,mkdirSync,existsSync} from 'node:fs';
 import {dirname,join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {countryDirectoryDescription, englishWorldDirectoryDescription} from '../apps/shared/aktual-world-meta-v1.mjs';
+import {worldHashtagBlock} from '../apps/shared/aktual-world-hashtags-v1.mjs';
 const ROOT = 'https://gnk-asg.hr';
 
 
@@ -73,7 +74,9 @@ function renderCountry(c){
 <ul class="am-source-grid">${cards||'<li class="am-source-card"><h3>Sources being assessed</h3><p>No suitable registered source is currently available for this edition.</p></li>'}</ul></section>
 <section class="am-section am-radio"><div><p class="am-kicker">LISTEN / GLOBAL RADIO</p><h2>AKTUAL MEDIA Radio</h2><p>Open the radio player and browse stations. Some audio streams are operated by independent third parties; playback is user-initiated, never automatic.</p></div><a class="am-button am-radio-button" href="/en/radio/">◉ Open radio player ↗</a></section>
 <section class="am-section am-edit"><p class="am-kicker">EDITORIAL RESPONSIBILITY</p><h2>Source-first reporting</h2><p>All factual claims require provenance. Headlines from RSS are only topic prompts. Reports must be independently written and reviewed. Editorial lead: <a href="/nermin-sefic/">Nermin Sefić</a>; articles carry their own truthful bylines.</p><p><a href="/en/gnk-aktual/media/">Browse all 201 country directories</a> · <a href="/gnk-aktual/">Croatian newsroom</a></p></section>
-</main><footer class="am-footer"><div class="am-container"><span>© AKTUAL MEDIA · GNK ASG</span><span>${esc(c.nameEn)} · Independent external source directory · <a href="/en/gnk-aktual/">Network</a></span></div></footer></body></html>
+</main>
+${worldHashtagBlock}
+<footer class="am-footer"><div class="am-container"><span>© AKTUAL MEDIA · GNK ASG</span><span>${esc(c.nameEn)} · Independent external source directory · <a href="/en/gnk-aktual/">Network</a></span></div></footer></body></html>
 `;
 }
 
