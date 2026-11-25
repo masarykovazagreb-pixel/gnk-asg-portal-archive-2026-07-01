@@ -359,8 +359,8 @@ const T = {
     agent: 'Pitaj asistenta',
     lang: 'English',
     more: 'Ostala mjerenja',
-    cities: `${channels.length} regionalnih izdanja`,
-    citiesNote: `Svaka brojka na ovoj stranici dolazi iz arhive tih ${channels.length} regionalnih izdanja; svjetska izdanja mjere se u arhivi i dnevniku.`,
+    cities: `Svih ${CHANNELS.length} gradskih izdanja`,
+    citiesNote: `Donji popis obuhvaća svih ${CHANNELS.length} izdanja. Brojke na ovoj stranici mjere arhivu ${channels.length} regionalnih izdanja; ostala izdanja nisu uključena u ova mjerenja.`,
     measuredEditions: 'mjerenih regionalnih izdanja',
     totalEditions: 'izdanja ukupno',
     method: 'Kako je izmjereno',
@@ -383,12 +383,12 @@ const T = {
     agent: 'Ask the assistant',
     lang: 'Hrvatski',
     more: 'Other measurements',
-    cities: 'The eight regional editions',
-    citiesNote: `Every number on this page comes from the archive of those ${channels.length} regional editions; world editions are measured in the archive and the daily.`,
+    cities: `All ${CHANNELS.length} city editions`,
+    citiesNote: `The list below includes all ${CHANNELS.length} editions. The figures on this page measure the archive of ${channels.length} regional editions; the remaining editions are not included in these measurements.`,
     measuredEditions: 'measured regional editions',
     totalEditions: 'editions in total',
     method: 'How this was measured',
-    methodBody: 'Numbers are computed on every build from the archive files of the eight city editions (420 records each). Nothing is typed by hand and nothing is rounded up. Times are UTC. When the archive changes, this page changes in the same cycle.',
+    methodBody: `Numbers are computed on every build from the archive files of ${channels.length} city editions — ${allStamps.length.toLocaleString('en-GB')} records. Nothing is typed by hand and nothing is rounded up. Times are UTC. When the archive changes, this page changes in the same cycle.`,
     measured: 'Measured',
     items: 'records in the regional archive',
     tags: 'Tags',
@@ -509,7 +509,7 @@ const COPY = {
 
 /* ---------- dijelovi ---------- */
 
-const cityLinks = (lang) => `<ul class="dd-city">${CHANNELS.map((c) => `<li><a href="${cityBase(c, lang)}" hreflang="${c.lang}">${esc(c.city)}<span>${esc(c.title.replace('AKTUAL MEDIA KANAL ', ''))}</span></a></li>`).join('')}</ul>`;
+const cityLinks = (lang) => `<ul class="dd-city">${CHANNELS.map((c) => `<li><a href="${cityBase(c, lang)}" hreflang="${lang === 'en' ? 'en' : c.lang}">${esc(c.city)}<span>${esc(c.title.replace('AKTUAL MEDIA KANAL ', ''))}</span></a></li>`).join('')}</ul>`;
 
 const deskNav = (current, lang) => `<nav class="dd-chips" aria-label="${lang === 'en' ? 'Data desk pages' : 'Podatkovne stranice'}">${DESKS.filter((d) => d.id !== current.id).map((d) => `<li><a href="${route(d, lang)}">${esc(COPY[d.id][lang].h1)}</a></li>`).join('')}</nav>`;
 
@@ -872,7 +872,7 @@ const SECTION_UNIT = {
   vocabulary: { hr: 'zajedničkih imena', en: 'shared names' },
 };
 
-function sectionPage(lang) {
+export function sectionPage(lang) {
   const copy = SECTION_HERO[lang];
   const t = T[lang];
   const canonical = lang === 'en' ? `${SITE}/en/aktual-media/` : `${SITE}/aktual-media/`;
