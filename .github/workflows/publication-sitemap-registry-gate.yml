@@ -21,6 +21,11 @@ on:
       - 'scripts/build-aktual-media-weekly-archive-v1.mjs'
       - 'scripts/build-aktual-media-weekly-v1.mjs'
       - 'scripts/check-published-weekly-integrity-v1.mjs'
+      - 'workers/gnk-asg-direct-operator/src/newsroom100-cms-v1.js'
+      - 'tests/test-aktual-newsroom100-cms-v1.mjs'
+      - 'apps/portal/admin/newsroom100/**'
+      - 'scripts/aktual-fast-intake-v1.mjs'
+      - 'tests/test-aktual-fast-intake-v1.mjs'
       - 'scripts/generate-editorial-cover-assets-v1.mjs'
       - 'scripts/generate-aktual-weekly-cover-assets-v1.mjs'
       - 'scripts/generate_aktual_columns.py'
@@ -114,6 +119,13 @@ jobs:
             echo "::error::Canonical editorial sitemap artifacts drift from their generator. Review the uploaded reproduced artifacts." >&2
             exit 1
           fi
+      - name: Validate Newsroom100 one-click runtime and editorial inputs
+        run: |
+          node --check workers/gnk-asg-direct-operator/src/newsroom100-cms-v1.js
+          node --check workers/gnk-asg-direct-operator/src/index-digital-workforce-v1.js
+          node tests/test-aktual-newsroom100-cms-v1.mjs
+          node tests/test-aktual-fast-intake-v1.mjs
+          node tests/test-aktual-newsroom100-radar-v1.mjs
       - name: Validate published routes, lastmod and canonical registry
         run: python scripts/validate_publication_sitemap_registry_v1.py
       - name: Validate last published curated weekly without fabricating current issue
