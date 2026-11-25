@@ -23,10 +23,12 @@ jobs:
         run: node --test tests/test-aktual-world-v1.mjs
       - name: Fetch external headlines as links only
         env:
-          AKTUAL_FEEDS_PER_COUNTRY: '2'
+          AKTUAL_FEEDS_PER_COUNTRY: '4'
           AKTUAL_FETCH_CONCURRENCY: '8'
-          AKTUAL_ITEMS_PER_COUNTRY: '10'
+          AKTUAL_ITEMS_PER_COUNTRY: '30'
         run: node scripts/refresh-aktual-world-headlines-v1.mjs
+      - name: Prepare up to 30 sourced original-article assignments per country (never autopublish)
+        run: node scripts/aktual-world-editorial-queue-v1.mjs
       - name: Regenerate static pages and RSS without copying article bodies
         env:
           AKTUAL_WORLD_OUT: apps/portal/gnk-aktual
@@ -39,7 +41,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add apps/portal/data/aktual-world-headlines-v1.json apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad
+          git add apps/portal/data/aktual-world-headlines-v1.json apps/portal/data/aktual-world-editorial-queue-v1.json apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad
           if git diff --cached --quiet; then
             echo 'No acceptable updated headlines.'
             exit 0

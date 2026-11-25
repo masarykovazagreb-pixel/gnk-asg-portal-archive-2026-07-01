@@ -1,0 +1,73 @@
+{
+  "schema": "aktual.world.fleet.v2",
+  "updated": "2026-11-21",
+  "goal": "Quality-first source-linked coverage for 201 country directories",
+  "execution": {
+    "status": "defined_not_provisioned",
+    "activeAIWorkers": 0,
+    "activeWorkerAgents": 0,
+    "logicalQueueSlots": 400,
+    "maxConcurrentProcessWorkers": 8,
+    "centralWriter": "main",
+    "rateLimit": "respect each source's published limits",
+    "budgetGate": "hard limit per release and per day",
+    "countryFairness": "round_robin_when_source_available"
+  },
+  "pools": [
+    {
+      "role": "source-scout",
+      "logicalSlots": 100,
+      "description": "Read public source metadata, URL and timestamp; validate provider terms and RSS endpoints"
+    },
+    {
+      "role": "evidence-validator",
+      "logicalSlots": 100,
+      "description": "Dedupe, cross-check independent sources and flag unsupported claims; preserve provenance"
+    },
+    {
+      "role": "original-writer",
+      "logicalSlots": 100,
+      "description": "Queue an original sourced draft; do not republish copyrighted text and do not auto-approve"
+    },
+    {
+      "role": "localization-seo",
+      "logicalSlots": 100,
+      "description": "Local relevance, source label, actual-language labels, canonical links, selective hashtags"
+    }
+  ],
+  "pipeline": [
+    "collect",
+    "dedupe",
+    "verify",
+    "compose_draft",
+    "editorial_review",
+    "publish_exact_sha",
+    "http_smoke_test"
+  ],
+  "publication": {
+    "originalArticleTargetPerCountryPerDay": 30,
+    "actualApprovedArticlesMeasuredSeparately": true,
+    "autoPublishUnreviewed": false,
+    "doNotInventSourcesOrDates": true,
+    "maxSuggestedHashtagsPerArticle": 5,
+    "sourceURLRequired": true,
+    "rightsCheckRequired": true,
+    "liveStatusRequiresPublicProof": true
+  },
+  "performance": {
+    "targetDisplayRefreshSeconds": 120,
+    "servedBy": "/api/public-news-feed",
+    "feedCacheSeconds": 60,
+    "canonicalIntakeSchedule": "6 per day; unchanged to preserve CI budget",
+    "nonClaim": "A 120-second client refresh does not make the four-hourly newsroom intake near real-time.",
+    "metrics": [
+      "live_feeds",
+      "source_success",
+      "fresh_source_links",
+      "verified_drafts",
+      "editor_approved_original_articles",
+      "production_sha",
+      "live_http_status"
+    ]
+  }
+}
