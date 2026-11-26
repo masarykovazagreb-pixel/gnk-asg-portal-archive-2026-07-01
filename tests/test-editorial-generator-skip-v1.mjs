@@ -25,7 +25,7 @@ test('world topics generator renders localized skip links',()=>{
  const src=fs.readFileSync('scripts/world-topics-materialize-v1.mjs','utf8');
  const start=src.indexOf('function pageFor('),end=src.indexOf('\nunpack();',start);assert.ok(start>=0&&end>start);
  const fn=vm.runInNewContext(`(${src.slice(start,end)})`,{
-  resolve:(...x)=>x.join('/'),SRC_DIR:'/tmp',readFileSync:()=> '# Title\nBody',splitTitle:()=>['Title','Body'],descFrom:()=> 'Description',coverFor:()=>({url:'https://example.com/image.webp',image:'/image.webp',alt:'Illustration'}),SITE:'https://gnk-asg.hr',ORGANIZATION_AUTHOR:'Desk',mdToHtml:()=>'<p>Body</p>',attr:String,esc:String
+  resolve:(...x)=>x.join('/'),SRC_DIR:'/tmp',readFileSync:()=> '# Title\nBody',splitTitle:()=>['Title','Body'],descFrom:()=> 'Description',coverFor:()=>({url:'https://example.com/image.webp',image:'/image.webp',alt:'Illustration'}),SITE:'https://gnk-asg.hr',ORGANIZATION_AUTHOR:'Desk',worldTopicsFooter:lang=>`<aside data-world-footer="${lang}"></aside>`,mdToHtml:()=>'<p>Body</p>',attr:String,esc:String
  });
  const topic={hr:'hr.md',en:'en.md',hrSlug:'primjer',enSlug:'example',hrSection:'Svijet',enSection:'World',charts:['x.webp','y.webp'],tags:['Test'],kw:['test']};
  for(const [lang,label] of [['hr','Preskoči na sadržaj'],['en','Skip to content']]){
@@ -33,6 +33,7 @@ test('world topics generator renders localized skip links',()=>{
   assert.ok(html.includes('<link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">'));
   assert.ok(html.includes('<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">'));
   assert.ok(html.includes(`<body><a class="skip" href="#editorialContent">${label}</a>`));
+  assert.ok(html.includes(`<aside data-world-footer="${lang}"></aside></body>`));
   assert.ok(html.includes('<main id="editorialContent" tabindex="-1" class="editorial-wrap article">'));
  }
 });
