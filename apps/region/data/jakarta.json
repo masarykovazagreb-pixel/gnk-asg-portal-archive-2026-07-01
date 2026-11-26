@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-11-25T22:30:21.897Z",
+  "updatedAt": "2026-11-26T05:02:31.201Z",
   "sources": [
     {
       "id": "antara",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T22:30:13.508Z"
+      "checkedAt": "2026-11-26T05:02:22.915Z"
     },
     {
       "id": "kompas",
@@ -24,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: HTTP 404",
-        "https://nasional.kompas.com/rss: HTTP 404"
+        "https://www.kompas.com/rss: HTTP 403",
+        "https://nasional.kompas.com/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-25T22:30:16.457Z"
+      "checkedAt": "2026-11-26T05:02:24.533Z"
     },
     {
       "id": "detik",
@@ -39,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-11-25T22:30:18.805Z"
+      "checkedAt": "2026-11-26T05:02:28.012Z"
     },
     {
       "id": "tempo",
@@ -51,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-25T22:30:19.664Z"
+      "checkedAt": "2026-11-26T05:02:28.846Z"
     },
     {
       "id": "cnnindonesia",
@@ -61,7 +61,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T22:30:20.036Z"
+      "checkedAt": "2026-11-26T05:02:29.247Z"
     },
     {
       "id": "republika",
@@ -71,7 +71,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T22:30:20.548Z"
+      "checkedAt": "2026-11-26T05:02:29.871Z"
     },
     {
       "id": "cnbcindonesia",
@@ -81,7 +81,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T22:30:20.687Z"
+      "checkedAt": "2026-11-26T05:02:30.219Z"
     },
     {
       "id": "kumparan",
@@ -93,10 +93,335 @@
       "errors": [
         "https://kumparan.com/feed: nije feed"
       ],
-      "checkedAt": "2026-11-25T22:30:21.896Z"
+      "checkedAt": "2026-11-26T05:02:31.200Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-11-26-cnbcindonesia-jadi-the-future-investing-pluang-dorong-02c44f",
+      "title": "Jadi The Future Investing, Pluang Dorong Investor ManfaatkanAI",
+      "summary": "Kecerdasan buatan (AI) diprediksi akan mengubah cara investasi dengan memberikan akses informasi dan alat analisis bagi investor ritel di Indonesia.",
+      "date": "2026-11-26T05:00:33.000Z",
+      "url": "https://www.cnbcindonesia.com/tech/20261126115557-37-788657/jadi-the-future-investing-pluang-dorong-investor-manfaatkanai",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/26/director-of-marketing-commercial-pluang-andreas-agung-hendrawan-saat-menyampaikan-pemaparan-dalam-road-to-cnbc-indonesia-award-1795663553148_169.jpeg?w=1200&q=90",
+      "imageAlt": "Jadi The Future Investing, Pluang Dorong Investor ManfaatkanAI",
+      "addedAt": "2026-11-26T05:02:30.219Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnnindonesia-tak-selalu-untuk-ibadah-tempat-religius-98b595",
+      "title": "Tak Selalu untuk Ibadah, Tempat Religius Kini Jadi Tujuan Wisata",
+      "summary": "Minat wisatawan dunia ke destinasi keagamaan makin meningkat. Tak semua datang berziarah, banyak yang datang hanya untuk mendapat ketenangan.",
+      "date": "2026-11-26T05:00:19.000Z",
+      "url": "https://www.cnnindonesia.com/gaya-hidup/20261124074927-269-1430648/tak-selalu-untuk-ibadah-tempat-religius-kini-jadi-tujuan-wisata",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2021/12/17/sanctuary-of-our-lady-of-lourdes-atau-sanctuary-notre-dame-de-lourdes-paris_169.jpeg?w=360&q=90",
+      "imageAlt": "Tak Selalu untuk Ibadah, Tempat Religius Kini Jadi Tujuan Wisata",
+      "addedAt": "2026-11-26T05:02:29.248Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnnindonesia-kebakaran-hebat-usai-truk-tangki-bbm-87a540",
+      "title": "Kebakaran Hebat usai Truk Tangki BBM Terguling di Mesir, 31 Tewas",
+      "summary": "Sebanyak 31 orang tewas dalam kebakaran hebat di ibu kota Mesir, usai sebuah truk tangki bahan bakar terguling di jalan raya padat kendaraan, Rabu (25/11).",
+      "date": "2026-11-26T05:00:10.000Z",
+      "url": "https://www.cnnindonesia.com/internasional/20261126102805-124-1431691/kebakaran-hebat-usai-truk-tangki-bbm-terguling-di-mesir-31-tewas",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/26/thumbnail-video-1795663836897_169.jpeg?w=360&q=90",
+      "imageAlt": "Kebakaran Hebat usai Truk Tangki BBM Terguling di Mesir, 31 Tewas",
+      "addedAt": "2026-11-26T05:02:29.248Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-republika-kecerdasan-pemain-dan-kekeluargaan-persib-e99ac9",
+      "title": "Kecerdasan Pemain dan Kekeluargaan Persib Jadi Kunci Kalahkan Juara Liga Korea di ACL 2 2026-2027",
+      "summary": "Igor Tolic, pelatih kepala Persib Bandung. (Grafis: Kevin Bagus Prinusa/Skor.id)SKOR.id - Pelatih Persib Bandung, Igor Tolic, mengungkapkan kunci keberhasilan tim berjuluk Pangeran Biru terletak pada kemampuan para pemain dan...",
+      "date": "2026-11-26T05:00:01.000Z",
+      "url": "https://skor.id/posts/794495/kecerdasan-pemain-dan-kekeluargaan-persib-jadi-kunci-kalahkan-juara-liga-korea-di-acl-2-2026-2027",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Skor"
+      ],
+      "author": "Skor",
+      "theme": "sport",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/042515500-1795669201-260526154528-878jpeg.jpeg",
+      "imageAlt": "Kecerdasan Pemain dan Kekeluargaan Persib Jadi Kunci Kalahkan Juara Liga Korea di ACL 2 2026-2027",
+      "addedAt": "2026-11-26T05:02:29.872Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-republika-patra-logistik-salurkan-bantuan-bahan-pokok-9ee949",
+      "title": "Patra Logistik Salurkan Bantuan Bahan Pokok ke Panti Asuhan dan AMT Kendari",
+      "summary": "KENDARI — PT Patra Logistik (Patlog) menyalurkan bantuan bahan pokok kepada Panti Asuhan Shabri dan awak mobil tangki (AMT) di Kendari, Sulawesi Tenggara, pada Kamis (26/11/2026). Bantuan melalui program Tanggung...",
+      "date": "2026-11-26T04:59:29.000Z",
+      "url": "https://halalhub.republika.co.id/berita/tp3f75370/patra-logistik-salurkan-bantuan-bahan-pokok-ke-panti-asuhan-dan-amt-kendari",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Filantropi Khazanah"
+      ],
+      "author": "Friska Yolandha",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261126115900-752.png",
+      "imageAlt": "Patra Logistik Salurkan Bantuan Bahan Pokok ke Panti Asuhan dan AMT Kendari",
+      "addedAt": "2026-11-26T05:02:29.872Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-antara-polresta-bandung-rekayasa-lalin-di-c5c500",
+      "title": "Polresta Bandung rekayasa lalin di Dayeuhkolot imbas banjir Citarum",
+      "summary": "Polresta Bandung, Jawa Barat, memberlakukan rekayasa lalu lintas di Dayeuhkolot, Kabupaten Bandung, dengan mengarahkan ...",
+      "date": "2026-11-26T04:59:24.000Z",
+      "url": "https://www.antaranews.com/berita/5879563/polresta-bandung-rekayasa-lalin-di-dayeuhkolot-imbas-banjir-citarum",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "potres",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/26/644025.jpg",
+      "imageAlt": "Polresta Bandung rekayasa lalin di Dayeuhkolot imbas banjir Citarum",
+      "addedAt": "2026-11-26T05:02:22.915Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnbcindonesia-video-nanovest-raih-innovative-multi-asset-1c0bfc",
+      "title": "Video: Nanovest Raih \"Innovative Multi Asset Investment Solution Award",
+      "summary": "Nanovest Raih Penghargaan \"Innovative Multi Asset Investment Solution Award\"",
+      "date": "2026-11-26T04:58:59.000Z",
+      "url": "https://www.cnbcindonesia.com/tech/20261125094008-39-788186/video-nanovest-raih-innovative-multi-asset-investment-solution-award",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/26/nanovest-raih-penghargaan-innovative-multi-asset-investment-solution-award-1795668387180_169.png?w=1200&q=90",
+      "imageAlt": "Video: Nanovest Raih \"Innovative Multi Asset Investment Solution Award",
+      "addedAt": "2026-11-26T05:02:30.219Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-republika-pupuk-indonesia-kembangkan-demplot-pm-aas-12c897",
+      "title": "Pupuk Indonesia Kembangkan Demplot PM-AAS di Kulon Progo, Dorong Pertanian Modern",
+      "summary": "YOGYAKARTA — PT Pupuk Indonesia (Persero) mendorong percepatan penerapan pertanian modern di Daerah Istimewa Yogyakarta (DIY) guna meningkatkan produktivitas sekaligus kesejahteraan petani. Komitmen tersebut diwujudkan melalui pengembangan demonstration plot (demplot)...",
+      "date": "2026-11-26T04:56:05.000Z",
+      "url": "https://ekonomi.republika.co.id/berita/tp3f1h370/pupuk-indonesia-kembangkan-demplot-pmaas-di-kulon-progo-dorong-pertanian-modern",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Bisnis"
+      ],
+      "author": "Friska Yolandha",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261126115528-503.png",
+      "imageAlt": "Pupuk Indonesia Kembangkan Demplot PM-AAS di Kulon Progo, Dorong Pertanian Modern",
+      "addedAt": "2026-11-26T05:02:29.872Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-antara-pasi-berangkatkan-12-atlet-jalani-pemusatan-f6b3b8",
+      "title": "PASI berangkatkan 12 atlet jalani pemusatan latihan di Australia",
+      "summary": "Pengurus Besar Persatuan Atletik Seluruh Indonesia (PB PASI) memberangkatkan sebanyak 12 atlet untuk menjalani ...",
+      "date": "2026-11-26T04:55:52.000Z",
+      "url": "https://www.antaranews.com/berita/5879559/pasi-berangkatkan-12-atlet-jalani-pemusatan-latihan-di-australia",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://img.antaranews.com/cache/800x533/2026/09/25/diva-renatta-gagal-raih-medali-lompat-galah-2871685.jpg",
+      "imageAlt": "PASI berangkatkan 12 atlet jalani pemusatan latihan di Australia",
+      "addedAt": "2026-11-26T05:02:22.915Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnnindonesia-hillstate-vs-soop-momentum-megawati-6c3f72",
+      "title": "Hillstate vs SOOP: Momentum Megawati 'Megatron' Cetak 100 Poin",
+      "summary": "Megawati Hangestri Pertiwi memiliki momentum mencetak poin ke-100 saat Hyundai Hillstate menjamu SOOP SOOPers dalam laga pertama ronde dua Liga Voli Korea.",
+      "date": "2026-11-26T04:55:00.000Z",
+      "url": "https://www.cnnindonesia.com/olahraga/20261126102615-178-1431689/hillstate-vs-soop-momentum-megawati-megatron-cetak-100-poin",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/18/megawati-hangestri-pertiwi-bersama-hyundai-hillstate-di-liga-voli-korea-1795000024579_169.png?w=360&q=90",
+      "imageAlt": "Hillstate vs SOOP: Momentum Megawati 'Megatron' Cetak 100 Poin",
+      "addedAt": "2026-11-26T05:02:29.248Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnbcindonesia-fitur-baru-whatsapp-bisa-jadwalkan-chat-307085",
+      "title": "Fitur Baru WhatsApp Bisa Jadwalkan Chat, Begini Cara Pakainya",
+      "summary": "WhatsApp meluncurkan fitur pesan terjadwal, memungkinkan pengguna mengatur pengiriman pesan otomatis hingga 14 hari ke depan.",
+      "date": "2026-11-26T04:55:00.000Z",
+      "url": "https://www.cnbcindonesia.com/tech/20261126113146-37-788647/fitur-baru-whatsapp-bisa-jadwalkan-chat-begini-cara-pakainya",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2019/07/26/2bdfd888-1b1c-404d-a284-71aa1c14308d_169.jpeg?w=1200&q=90",
+      "imageAlt": "Fitur Baru WhatsApp Bisa Jadwalkan Chat, Begini Cara Pakainya",
+      "addedAt": "2026-11-26T05:02:30.219Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-republika-mui-sahkan-pengunduran-diri-kh-ma-ruf-amin-fc49b6",
+      "title": "MUI Sahkan Pengunduran Diri KH Ma'ruf Amin",
+      "summary": "JAKARTA -- Dewan Pimpinan Majelis Ulama Indonesia (MUI) secara resmi mengesahkan pengunduran diri KH Ma'ruf Amin dari jabatan Ketua Dewan Pertimbangan (Wantim) MUI. Hal itu disampaikan Wakil Ketua Umum...",
+      "date": "2026-11-26T04:54:33.000Z",
+      "url": "https://khazanah.republika.co.id/berita/tp3eyx430/mui-sahkan-pengunduran-diri-kh-maruf-amin",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Islam Digest"
+      ],
+      "author": "Muhammad Hafil",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/rapat-paripurna-mui-menjelang-pelaksanaan-musyawarah-kerja-nasional-mukernas_261126115252-641.jpg",
+      "imageAlt": "MUI Sahkan Pengunduran Diri KH Ma'ruf Amin",
+      "addedAt": "2026-11-26T05:02:29.872Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-antara-bulog-komitmen-jaga-stabilisasi-harga-5dca16",
+      "title": "Bulog komitmen jaga stabilisasi harga pangan jelang Natal-Tahun Baru",
+      "summary": "Perum Bulog bersama para pemangku kepentingan terkait berkomitmen menjaga stabilisasi harga pangan di seluruh wilayah ...",
+      "date": "2026-11-26T04:54:23.000Z",
+      "url": "https://www.antaranews.com/berita/5879555/bulog-komitmen-jaga-stabilisasi-harga-pangan-jelang-natal-tahun-baru",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/26/680735.jpg",
+      "imageAlt": "Bulog komitmen jaga stabilisasi harga pangan jelang Natal-Tahun Baru",
+      "addedAt": "2026-11-26T05:02:22.915Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-antara-perkara-korupsi-bupati-sukoharjo-bfbd55",
+      "title": "Perkara korupsi Bupati Sukoharjo dilimpahkan ke Pengadilan",
+      "summary": "Komisi Pemberantasan Korupsi (KPK) melimpahkan berkas perkara dugaan korupsi dengan tersangka Bupati Nonaktif Sukoharjo ...",
+      "date": "2026-11-26T04:54:20.000Z",
+      "url": "https://www.antaranews.com/berita/5879551/perkara-korupsi-bupati-sukoharjo-dilimpahkan-ke-pengadilan",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/07/11/KPK-Tahan-Bupati-Sukoharjo-110726-IES-6.jpg",
+      "imageAlt": "Perkara korupsi Bupati Sukoharjo dilimpahkan ke Pengadilan",
+      "addedAt": "2026-11-26T05:02:22.915Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnnindonesia-pemerintah-targetkan-biaya-logistik-turun-777d7e",
+      "title": "Pemerintah Targetkan Biaya Logistik Turun ke 12,5 Persen PDB di 2029",
+      "summary": "Kemenko Pangan targetkan biaya logistik RI turun menjadi 12,5 persen dari PDB pada 2029. Fokus pada konektivitas dan penataan ruang laut di sektor perikanan.",
+      "date": "2026-11-26T04:53:40.000Z",
+      "url": "https://www.cnnindonesia.com/ekonomi/20261126112345-92-1431723/pemerintah-targetkan-biaya-logistik-turun-ke-125-persen-pdb-di-2029",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/26/kemenko-pangan-targetkan-biaya-logistik-turun-jadi-125-persen-pdb-pada-2029-1795668716363_169.png?w=360&q=90",
+      "imageAlt": "Pemerintah Targetkan Biaya Logistik Turun ke 12,5 Persen PDB di 2029",
+      "addedAt": "2026-11-26T05:02:29.249Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnbcindonesia-video-shoppepay-best-digital-wallet-dan-f2ddfb",
+      "title": "Video: ShoppePay:Best Digital Wallet dan Transaction Accessibility Award",
+      "summary": "ShopeePay Raih \"Best Digital Wallet dan Transaction Accessibility Award\"",
+      "date": "2026-11-26T04:51:32.000Z",
+      "url": "https://www.cnbcindonesia.com/tech/20261125094006-39-788182/video-shoppepaybest-digital-wallet-transaction-accessibility-award",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/26/shopeepay-raih-best-digital-wallet-transaction-accessibility-award-1795668332681_169.png?w=1200&q=90",
+      "imageAlt": "Video: ShoppePay:Best Digital Wallet dan Transaction Accessibility Award",
+      "addedAt": "2026-11-26T05:02:30.220Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-antara-eks-sekjen-mpr-jalani-sidang-perdana-kasus-910b2e",
+      "title": "Eks Sekjen MPR jalani sidang perdana kasus korupsi pengadaan barang",
+      "summary": "Sekretaris Jenderal Majelis Permusyawaratan Rakyat (MPR) periode 2016-2023 Ma'ruf Cahyono menjalani sidang perdana ...",
+      "date": "2026-11-26T04:51:04.000Z",
+      "url": "https://www.antaranews.com/berita/5879547/eks-sekjen-mpr-jalani-sidang-perdana-kasus-korupsi-pengadaan-barang",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/10/14/pemeriksaan-tersangka-maruf-cahyono-2884637.jpg",
+      "imageAlt": "Eks Sekjen MPR jalani sidang perdana kasus korupsi pengadaan barang",
+      "addedAt": "2026-11-26T05:02:22.916Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnbcindonesia-eks-kapolri-jenderal-listyo-tolak-hadiri-796289",
+      "title": "Eks Kapolri Jenderal Listyo Tolak Hadiri Sidang Etik Kasus Penyadapan",
+      "summary": "Sidang ditunda hingga 30 November 2026.",
+      "date": "2026-11-26T04:51:01.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261126114708-4-788654/eks-kapolri-jenderal-listyo-tolak-hadiri-sidang-etik-kasus-penyadapan",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://awsimages.detik.net.id/visual/2026/10/01/jenderal-polisi-listyo-sigit-prabowo-dan-komisaris-jenderal-polisi-dedi-prasetyo-menerima-tanda-kehormatan-dari-presiden-prabo-1790847093073_169.jpeg?w=1200&q=90",
+      "imageAlt": "Eks Kapolri Jenderal Listyo Tolak Hadiri Sidang Etik Kasus Penyadapan",
+      "addedAt": "2026-11-26T05:02:30.220Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-antara-pantau-kpps-8-di-subang-pnm-pastikan-ea1fa4",
+      "title": "Pantau KPPS 8% di Subang, PNM Pastikan Manfaat Dirasakan Langsung Nasabah",
+      "summary": "Jakarta (ANTARA) – Perluasan penyaluran Kredit Program Perempuan Pra Sejahtera (KPPS) dengan bunga 8% terus ...",
+      "date": "2026-11-26T04:50:51.000Z",
+      "url": "https://www.antaranews.com/berita/5879543/pantau-kpps-8-di-subang-pnm-pastikan-manfaat-dirasakan-langsung-nasabah",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/26/WhatsApp-Image-2026-11-26-at-11.45.26.jpg",
+      "imageAlt": "Pantau KPPS 8% di Subang, PNM Pastikan Manfaat Dirasakan Langsung Nasabah",
+      "addedAt": "2026-11-26T05:02:22.916Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnnindonesia-zulhas-minta-pengawasan-pupuk-bersubsidi-46010c",
+      "title": "Zulhas Minta Pengawasan Pupuk Bersubsidi Diperketat Jelang Akhir 2026",
+      "summary": "Penyaluran jelang akhir tahun kali ini ditantang untuk ketepatan waktu dan sasaran dengan sisa target sekitar 2,21 juta ton dalam waktu kurang dari dua bulan.",
+      "date": "2026-11-26T04:50:47.000Z",
+      "url": "https://www.cnnindonesia.com/ekonomi/20261126112934-97-1431729/zulhas-minta-pengawasan-pupuk-bersubsidi-diperketat-jelang-akhir-2026",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/10/bnr-kemenko-pangan-53150-nov-2026-1794311862451_169.jpeg?w=360&q=90",
+      "imageAlt": "Zulhas Minta Pengawasan Pupuk Bersubsidi Diperketat Jelang Akhir 2026",
+      "addedAt": "2026-11-26T05:02:29.249Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-republika-ini-alasan-rambut-anak-sebaiknya-nggak-824e38",
+      "title": "Ini Alasan Rambut Anak Sebaiknya Nggak Terlalu Sering Dikuncir Ketat",
+      "summary": "JAKARTA -- Merawat rambut anak sering kali menjadi perhatian khusus bagi para orang tua, mulai dari kebiasaan menata rambut agar tampak rapi hingga tradisi mencukur habis rambut bayi agar...",
+      "date": "2026-11-26T04:40:17.000Z",
+      "url": "https://ameera.republika.co.id/berita/tp3eb5425/ini-alasan-rambut-anak-sebaiknya-nggak-terlalu-sering-dikuncir-ketat",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Health"
+      ],
+      "author": "Qommarria Rostanti",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261126113545-524.png",
+      "imageAlt": "Ini Alasan Rambut Anak Sebaiknya Nggak Terlalu Sering Dikuncir Ketat",
+      "addedAt": "2026-11-26T05:02:29.872Z"
+    },
     {
       "slug": "jakarta-2026-11-25-republika-dprd-dan-pemkab-tanah-laut-sepakati-raperda-bbeb43",
       "title": "DPRD dan Pemkab Tanah Laut Sepakati Raperda APBD 2027 Berbasis Prioritas",

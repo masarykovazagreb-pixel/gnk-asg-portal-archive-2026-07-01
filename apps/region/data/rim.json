@@ -4,7 +4,7 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-11-25T22:29:40.718Z",
+  "updatedAt": "2026-11-26T05:01:04.439Z",
   "sources": [
     {
       "id": "ansa",
@@ -14,17 +14,22 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T22:29:33.778Z"
+      "checkedAt": "2026-11-26T05:00:54.439Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
-      "ok": true,
-      "fetched": 30,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-25T22:29:34.254Z"
+      "errors": [
+        "https://www.repubblica.it/rss/homepage/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/politica/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/economia/rss2.0.xml: HTTP 403",
+        "https://www.repubblica.it/rss/sport/rss2.0.xml: HTTP 403"
+      ],
+      "checkedAt": "2026-11-26T05:00:57.596Z"
     },
     {
       "id": "ilpost",
@@ -36,7 +41,7 @@
       "errors": [
         "https://www.ilpost.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-25T22:29:35.730Z"
+      "checkedAt": "2026-11-26T05:00:59.124Z"
     },
     {
       "id": "sole24",
@@ -46,7 +51,7 @@
       "fetched": 37,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T22:29:36.895Z"
+      "checkedAt": "2026-11-26T05:01:00.311Z"
     },
     {
       "id": "corriere",
@@ -56,17 +61,19 @@
       "fetched": 69,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T22:29:37.555Z"
+      "checkedAt": "2026-11-26T05:01:01.021Z"
     },
     {
       "id": "lastampa",
       "name": "La Stampa",
       "url": "https://www.lastampa.it/rss",
-      "ok": true,
-      "fetched": 70,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-25T22:29:38.470Z"
+      "errors": [
+        "https://www.lastampa.it/rss: HTTP 403"
+      ],
+      "checkedAt": "2026-11-26T05:01:02.018Z"
     },
     {
       "id": "fanpage",
@@ -78,7 +85,7 @@
       "errors": [
         "https://www.fanpage.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-25T22:29:39.540Z"
+      "checkedAt": "2026-11-26T05:01:03.167Z"
     },
     {
       "id": "adnkronos",
@@ -90,10 +97,100 @@
       "errors": [
         "https://www.adnkronos.com/rss: nije feed"
       ],
-      "checkedAt": "2026-11-25T22:29:40.717Z"
+      "checkedAt": "2026-11-26T05:01:04.439Z"
     }
   ],
   "items": [
+    {
+      "slug": "rim-2026-11-26-ansa-la-lettera-di-de-gennaro-sul-corriere-io-d126f4",
+      "title": "La lettera di De Gennaro sul Corriere: 'Io, condannato a morte'",
+      "summary": "'Questo è il mio testamento morale. Non ho mai chiesto nulla per me'",
+      "date": "2026-11-26T04:11:48.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/26/la-lettera-di-de-gennaro-sul-corriere-io-condannato-a-morte_b138f7d6-13f1-4427-a8e7-c1129a4e8d15.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "La lettera di De Gennaro sul Corriere: 'Io, condannato a morte'",
+      "addedAt": "2026-11-26T05:00:54.439Z"
+    },
+    {
+      "slug": "rim-2026-11-26-ansa-inondazione-in-una-miniera-d-oro-illegale-e7fe0a",
+      "title": "Inondazione in una miniera d'oro illegale, 13 morti e 13 dispersi in Indonesia",
+      "summary": "Le forti piogge hanno causato l'esondazione di un fiume, all'origine della tragedia",
+      "date": "2026-11-26T03:22:46.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/26/inondazione-in-una-miniera-doro-illegale-13-morti-e-13-dispersi-in-indonesia_4d1b3f1e-b306-4e10-98bd-61b4b15878a3.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Inondazione in una miniera d'oro illegale, 13 morti e 13 dispersi in Indonesia",
+      "addedAt": "2026-11-26T05:00:54.439Z"
+    },
+    {
+      "slug": "rim-2026-11-26-ansa-jannik-sinner-non-partecipera-agli-c8c8f5",
+      "title": "Jannik Sinner non parteciperà agli Australian Open",
+      "summary": "Lo hanno annunciato gli organizzatori del torneo",
+      "date": "2026-11-26T03:06:13.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/26/jannik-sinner-non-partecipera-agli-australian-open_85b4f546-cb04-4c14-abbf-fa5f9b9220cf.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Jannik Sinner non parteciperà agli Australian Open",
+      "addedAt": "2026-11-26T05:00:54.439Z"
+    },
+    {
+      "slug": "rim-2026-11-26-ansa-borsa-tokyo-apertura-in-rialzo-1-41-083308",
+      "title": "Borsa: Tokyo, apertura in rialzo (+1,41%)",
+      "summary": "Rimbalzo tecnico nonostante incertezze dazi",
+      "date": "2026-11-26T01:01:48.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/26/borsa-tokyo-apertura-in-rialzo-141_cea4473d-8312-4f53-a38e-4e9d11370792.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Borsa: Tokyo, apertura in rialzo (+1,41%)",
+      "addedAt": "2026-11-26T05:00:54.439Z"
+    },
+    {
+      "slug": "rim-2026-11-26-ansa-miss-universo-l-america-latina-conquista-il-79554e",
+      "title": "Miss Universo, l'America Latina conquista il podio",
+      "summary": "Vince la portoricana Barreto davanti alle miss di Repubblica Dominicana e Venezuela",
+      "date": "2026-11-26T00:31:15.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/26/miss-universo-lamerica-latina-conquista-il-podio_6eb50ec2-9f75-4d01-9472-96744bfae15d.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Miss Universo, l'America Latina conquista il podio",
+      "addedAt": "2026-11-26T05:00:54.439Z"
+    },
+    {
+      "slug": "rim-2026-11-25-ansa-davis-il-doppio-azzurro-batte-la-corea-l-12f82f",
+      "title": "Davis: il doppio azzurro batte la Corea, l'Italia in semifinale",
+      "summary": "Berrettini e Vavassori in due set al tie break, venerdì la Repubblica Ceca",
+      "date": "2026-11-25T22:43:57.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/25/davis-il-doppio-azzurro-batte-la-corea-litalia-in-semifinale_daebe8ea-0232-4c48-b249-51e8c79c45f4.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Davis: il doppio azzurro batte la Corea, l'Italia in semifinale",
+      "addedAt": "2026-11-26T05:00:54.440Z"
+    },
     {
       "slug": "rim-2026-11-25-ansa-champions-l-inter-batte-lo-stoccarda-la-980685",
       "title": "Champions: l'Inter batte lo Stoccarda, la Roma pareggia col Psg",
