@@ -1,0 +1,37 @@
+{
+  "version": "WORLD_SOURCE_DISCOVERY_CANDIDATES_V1",
+  "verifiedDate": "2026-11-26",
+  "status": "RESEARCH_ONLY_NOT_ACTIVE",
+  "note": "Public documentation identified; actual XML transport, rights and independence not yet confirmed. Do not auto-enable.",
+  "candidates": [
+    {
+      "country": "crna-gora",
+      "publisher": "RTCG",
+      "language": "sr",
+      "evidence": "https://rtcg.me/rss-feeds.html",
+      "next": "Check HTTPS feed and use terms"
+    },
+    {
+      "country": "makedonija",
+      "publisher": "State Statistical Office",
+      "language": "mk",
+      "evidence": "https://www.stat.gov.mk/RSS_Pocetna.aspx",
+      "next": "Check current XML endpoint and reuse terms"
+    },
+    {
+      "country": "makedonija",
+      "publisher": "Makfax",
+      "language": "mk",
+      "evidence": "https://makfax.com.mk/rss-2/",
+      "next": "Check HTTPS endpoints and rights"
+    },
+    {
+      "country": "japan",
+      "publisher": "NHK",
+      "language": "ja",
+      "evidence": "https://feeder.co/ja/knowledge-base/rss-content/popular-rss-feeds/",
+      "candidateFeed": "https://www.nhk.or.jp/rss/news/cat0.xml",
+      "next": "Confirm at official publisher and test current feed"
+    }
+  ]
+}

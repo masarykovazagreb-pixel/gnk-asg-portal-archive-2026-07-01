@@ -49,3 +49,4 @@ jobs:
         run: |
           node scripts/test-aktual-media-world-v1.mjs
           node scripts/test-aktual-world-directory-v1.mjs
+          node --test tests/test-world-source-coverage-v1.mjs tests/test-world-feed-recovery-v1.mjs

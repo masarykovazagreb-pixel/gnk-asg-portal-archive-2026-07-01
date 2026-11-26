@@ -59,13 +59,16 @@ async function fetchFeed(url,now){
 }
 
 const now=Date.now();
+let previous=null;
+if(fs.existsSync(output)){try{previous=JSON.parse(fs.readFileSync(output,'utf8'));}catch{throw Error('Existing cache is invalid; refusing to overwrite');}}
 const selectedCountries=countrySlug ? data.countries.filter(c=>c.slug===countrySlug) : data.countries.slice(0,limitCountries);
 // Reserve a small number of configured, deduplicated feeds as fallbacks.
 // Only schedule one when a primary or prior fallback fails or has no eligible
 // headlines; never discover or invent sources, and cap total attempts.
 const reserves=new Map();
 const targets=selectedCountries.flatMap(c=>{
- const feeds=selectCountryFeeds(c,Math.min(30,feedLimit+fallbackLimit));
+ const checks=(previous?.sourceChecks||[]).filter(x=>x.kind==='country'&&x.scope===c.slug);
+ const feeds=selectCountryFeeds(c,Math.min(30,feedLimit+fallbackLimit),{checks,now});
  reserves.set(c.slug,feeds.slice(feedLimit));
  return feeds.slice(0,feedLimit).map(s=>({country:c.slug,source:s.name,feedId:s.id,url:s.rss,fallback:false}));
 });
@@ -128,8 +131,6 @@ if(process.env.AKTUAL_WORLD_RUN_REPORT){
 if(failureReason){console.error(JSON.stringify({error:failureReason,detail:'Previous cache retained',feedAttempts:targets.length,feedFailures:errors.length},null,2));process.exit(1);}
 // Partial refreshes preserve other scopes with their own original timestamps.
 // A fresh timestamp for one country must never make another stale country fresh.
-let previous=null;
-if(fs.existsSync(output)){try{previous=JSON.parse(fs.readFileSync(output,'utf8'));}catch{throw Error('Existing cache is invalid; refusing to overwrite');}}
 const partial=Boolean(countrySlug)||limitCountries<data.countries.length;
 const selected=new Set(selectedCountries.map(c=>c.slug));
 const oldCountries=partial ? previous?.countries||{} : {};
@@ -158,7 +159,12 @@ function applyScope(kind,slug,rows,results){
 }
 for(const slug of selected)applyScope('country',slug,items[slug],countryResults);
 for(const city of cityTargets)applyScope('city',city.city,cityItems[city.city],cityResults);
-const priorChecks=partial && Array.isArray(previous?.sourceChecks) ? previous.sourceChecks.filter(x=>x.kind==='country'?!selected.has(x.scope):Boolean(countrySlug)) : [];
+// Keep exact observations for still-configured feeds not attempted this cycle.
+const configured=new Set(data.countries.flatMap(c=>(c.sourcesList||[]).map(s=>JSON.stringify([c.slug,s.id,feedIdentity(s.rss)]))));
+const checkKey=x=>JSON.stringify([x.scope,x.feedId,x.feedFingerprint]);
+const attempted=new Set(sourceChecks.filter(x=>x.kind==='country').map(checkKey));
+const priorChecks=Array.isArray(previous?.sourceChecks)?previous.sourceChecks.filter(x=>
+ x.kind==='country'?configured.has(checkKey(x))&&!attempted.has(checkKey(x)):Boolean(countrySlug)):[];
 const checks=[...priorChecks,...sourceChecks].sort((a,b)=>`${a.kind}:${a.scope}:${a.source}`.localeCompare(`${b.kind}:${b.scope}:${b.source}`));
 const report={version:'AKTUAL_WORLD_HEADLINE_CACHE_V1',updatedAt:refreshedAt,scopeUpdatedAt,origin:'external article titles and links only; no republished bodies',countries:countryResults,cities:cityResults,feedAttempts:targets.length,feedFailures:errors.length,errors,sourceChecks:checks};
 const temp=output+'.tmp-'+process.pid;

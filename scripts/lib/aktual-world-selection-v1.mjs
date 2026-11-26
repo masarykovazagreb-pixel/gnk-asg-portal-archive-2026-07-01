@@ -1,16 +1,27 @@
 import {safeUrl} from './aktual-world-feed-http-v1.mjs';
+import {freshFeedObservation} from './aktual-world-feed-identity-v1.mjs';
 
 // Registry language is configuration, not evidence of the language of every item.
 // Prefer direct local-language publishers; aggregator feeds remain a fallback.
-export function selectCountryFeeds(country, limit = 10) {
- const language=String(country.language||'').toLowerCase();
+const languageCode=value=>String(value||'').toLowerCase().replace(/^srp$/,'sr');
+export function selectCountryFeeds(country, limit = 10, {checks=[],now=Date.now()}={}) {
+ const language=languageCode(country.language);
  const seen=new Set();
  return (country.sourcesList||[]).filter(source=>{
-  const url=safeUrl(source.rss);const sourceLanguage=String(source.language||'').toLowerCase();
+  const url=safeUrl(source.rss);const sourceLanguage=languageCode(source.language);
   if(!url||!source.name||!language||sourceLanguage!==language||seen.has(url))return false;
   seen.add(url);return true;
- }).map((source,index)=>({source,index,aggregator:new URL(source.rss).hostname.toLowerCase().replace(/^www\./,'')==='news.google.com'}))
-   .sort((a,b)=>Number(a.aggregator)-Number(b.aggregator)||a.index-b.index)
+ }).map((source,index)=>{
+   const aggregator=new URL(source.rss).hostname.toLowerCase().replace(/^www\./,'')==='news.google.com';
+   const check=freshFeedObservation(checks,source,now);
+   const age=check?now-Date.parse(check.checkedAt):Infinity;
+   // Temporarily demote recent failures; re-probe after 12h. Unobserved local feeds
+   // receive a fair turn before healthy ones, and oldest checks rotate first.
+   const cooling=check?.status==='failed'&&age<12*3600000;
+   const priority=(cooling?4:0)+(aggregator?2:0);
+   return {source,index,priority,age};
+ })
+   .sort((a,b)=>a.priority-b.priority||(b.age-a.age)||a.index-b.index)
    .slice(0,limit).map(x=>x.source);
 }
 
