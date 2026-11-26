@@ -68,7 +68,8 @@ const selectedCountries=countrySlug ? data.countries.filter(c=>c.slug===countryS
 const reserves=new Map();
 const targets=selectedCountries.flatMap(c=>{
  const checks=(previous?.sourceChecks||[]).filter(x=>x.kind==='country'&&x.scope===c.slug);
- const feeds=selectCountryFeeds(c,Math.min(30,feedLimit+fallbackLimit),{checks,now});
+ // Strict diagnostics repeat the configured baseline, not the adaptive production ordering.
+ const feeds=selectCountryFeeds(c,Math.min(30,feedLimit+fallbackLimit),{checks:strict?[]:checks,now});
  reserves.set(c.slug,feeds.slice(feedLimit));
  return feeds.slice(0,feedLimit).map(s=>({country:c.slug,source:s.name,feedId:s.id,url:s.rss,fallback:false}));
 });

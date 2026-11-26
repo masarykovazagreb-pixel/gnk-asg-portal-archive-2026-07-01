@@ -75,7 +75,7 @@ test('mixed source failure preserves the failed edition without refreshing its t
   const out=path.join(tmp,'cache.json'), mock=path.join(tmp,'mock.mjs');
   const old='2026-01-01T00:00:00.000Z', row={title:'Retained',source:'Old',url:'https://example.org/old',publishedAt:old};
   fs.writeFileSync(out,JSON.stringify({updatedAt:old,scopeUpdatedAt:{countries:{slovenija:old},cities:{}},countries:{slovenija:[row]},cities:{}}));
-  fs.writeFileSync(mock,`globalThis.fetch=async url=>{if(new URL(url).hostname==='www.rtvslo.si')throw Error('offline');return {ok:true,headers:{get:()=>null},text:async()=>'<rss><item><title>New</title><link>https://example.org/new</link><pubDate>'+new Date(Date.now()-5000).toUTCString()+'</pubDate></item></rss>'}}`);
+  fs.writeFileSync(mock,`globalThis.fetch=async url=>{if(['www.rtvslo.si','www.24ur.com','www.delo.si'].includes(new URL(url).hostname))throw Error('offline');return {ok:true,headers:{get:()=>null},text:async()=>'<rss><item><title>New</title><link>https://example.org/new</link><pubDate>'+new Date(Date.now()-5000).toUTCString()+'</pubDate></item></rss>'}}`);
   const run=spawnSync(process.execPath,['--import',mock,'scripts/refresh-aktual-world-headlines-v1.mjs'],{env:{...process.env,AKTUAL_WORLD_CACHE_OUT:out,AKTUAL_COUNTRY_LIMIT:'2',AKTUAL_FEEDS_PER_COUNTRY:'1',AKTUAL_FALLBACK_FEEDS_PER_COUNTRY:'0'},encoding:'utf8'});
   assert.equal(run.status,0,run.stderr);const result=JSON.parse(fs.readFileSync(out));
   assert.deepEqual(result.countries.slovenija,[row]);assert.equal(result.scopeUpdatedAt.countries.slovenija,old);assert.ok(result.countries.hrvatska.length);assert.ok(result.sourceChecks.some(x=>x.scope==='slovenija'&&x.status==='failed'));

@@ -18,7 +18,8 @@ export function selectCountryFeeds(country, limit = 10, {checks=[],now=Date.now(
    // Temporarily demote recent failures; re-probe after 12h. Unobserved local feeds
    // receive a fair turn before healthy ones, and oldest checks rotate first.
    const cooling=check?.status==='failed'&&age<12*3600000;
-   const priority=(cooling?4:0)+(aggregator?2:0);
+   const retryDue=check?.status==='failed'&&!cooling;
+   const priority=(cooling?4:retryDue?-1:0)+(aggregator?2:0);
    return {source,index,priority,age};
  })
    .sort((a,b)=>a.priority-b.priority||(b.age-a.age)||a.index-b.index)
