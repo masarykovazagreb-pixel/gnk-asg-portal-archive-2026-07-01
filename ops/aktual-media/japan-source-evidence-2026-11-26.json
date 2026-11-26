@@ -1,0 +1,40 @@
+{
+  "schema": "AKTUAL_WORLD_SOURCE_EVIDENCE_V1",
+  "edition": "japan",
+  "checkedDate": "2026-11-26",
+  "status": "RESEARCH_ONLY",
+  "sources": [
+    {
+      "publisher": "Digital Agency, Government of Japan",
+      "language": "ja",
+      "documentation": "https://www.digital.go.jp/rss",
+      "feed": "https://www.digital.go.jp/rss/news.xml",
+      "transport": "web retrieval reported application/rss+xml but did not return XML; item freshness unverified",
+      "terms": "https://www.digital.go.jp/copyright-policy",
+      "termsUpdated": "2026-05-12",
+      "rights": "PDL1.0 applies by default unless expressly excluded; attribute original page and disclose adaptations; logos and separately governed content excluded",
+      "activation": "pending actual feed parse and source-specific rate policy"
+    },
+    {
+      "publisher": "Cabinet Office of Japan",
+      "documentation": "https://www.cao.go.jp/rss/",
+      "feed": "https://www.cao.go.jp/rss/news.rdf",
+      "rights": "Official RSS instructions prohibit redistribution and creation of websites based on the feed, including noncommercial use",
+      "activation": "blocked for automatic RSS publication"
+    },
+    {
+      "publisher": "e-Stat",
+      "documentation": "https://www.e-stat.go.jp/rss",
+      "status": "RSS discontinued 2023-09-30 according to official page",
+      "activation": "retired RSS; consider separately documented statistics API"
+    },
+    {
+      "publisher": "NHK",
+      "documentation": "https://feeder.co/discover/3aaa629fb5/news-web-nhk-newsweb",
+      "candidateFeed": "https://news.web.nhk/n-data/conf/na/rss/cat0.xml",
+      "status": "third-party directory only; do not assume availability or rights",
+      "activation": "pending official confirmation"
+    }
+  ],
+  "note": "No feeds activated or articles published. Record rights decisions independently of transport and facts. Do not infer independent ownership from feed count."
+}
