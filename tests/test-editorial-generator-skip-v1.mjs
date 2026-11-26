@@ -31,6 +31,7 @@ test('world topics generator renders localized skip links',()=>{
  for(const [lang,label] of [['hr','Preskoči na sadržaj'],['en','Skip to content']]){
   const html=fn(topic,lang).html;
   assert.ok(html.includes('<link rel="stylesheet" href="/assets/am-design-v1.css" data-am-design="v1">'));
+  assert.ok(html.includes('<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">'));
   assert.ok(html.includes(`<body><a class="skip" href="#editorialContent">${label}</a>`));
   assert.ok(html.includes('<main id="editorialContent" tabindex="-1" class="editorial-wrap article">'));
  }
