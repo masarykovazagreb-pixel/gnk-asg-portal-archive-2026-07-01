@@ -8,12 +8,12 @@ import {externalStationSection} from '../apps/shared/aktual-external-stations-v1
 const ROOT=process.cwd();
 const src=JSON.parse(fs.readFileSync('apps/portal/data/world-countries-v1.json','utf8'));
 const slugs=src.countries.map(x=>x.slug),codes=src.countries.map(x=>x.code);
-test('201 unique countries, 10 cities, 435 configured sources',()=>{
+test('201 unique countries, 10 cities, 438 configured sources',()=>{
   assert.equal(slugs.length,201);
   assert.equal(new Set(slugs).size,201);
   assert.equal(new Set(codes).size,201);
   assert.equal(src.cities.length,10);
-  assert.equal(src.countries.reduce((sum,c)=>sum+c.sourcesList.length,0),435);
+  assert.equal(src.countries.reduce((sum,c)=>sum+c.sourcesList.length,0),438);
 });
 test('build includes only real generated URLs and no fake headlines',()=>{
   const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'aktual-world-test-'));

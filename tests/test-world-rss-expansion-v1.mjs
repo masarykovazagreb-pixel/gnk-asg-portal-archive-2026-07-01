@@ -1,0 +1,136 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {spawnSync} from 'node:child_process';
+import {selectCountryFeeds,diversifyHeadlines} from '../scripts/lib/aktual-world-selection-v1.mjs';
+import {writeRoundups} from '../apps/agents/world201/writer-v1.mjs';
+const registry=JSON.parse(fs.readFileSync('apps/portal/data/world-countries-v1.json','utf8'));
+const croatia=registry.countries.find(c=>c.slug==='hrvatska');
+test('source gap audit counts distinct local-language publisher hosts, not Google categories',()=>{
+ const run=spawnSync(process.execPath,['scripts/audit-world-rss-coverage-v1.mjs'],{encoding:'utf8'});assert.equal(run.status,0,run.stderr);
+ const report=JSON.parse(run.stdout);assert.equal(report.countries,201);assert.equal(report.countryRows.length,201);
+ const hr=report.countryRows.find(c=>c.slug==='hrvatska');const uniqueHosts=new Set(croatia.sourcesList.filter(s=>s.language===croatia.language&&s.rss&&new URL(s.rss).hostname!=='news.google.com').map(s=>new URL(s.rss).hostname.replace(/^www\./,'')));
+ assert.equal(hr.directPublisherHosts,uniqueHosts.size);assert.equal(hr.gapToTen,Math.max(0,10-uniqueHosts.size));
+ assert.match(report.scope,/not verified live/);
+});
+
+test('prioritises configured local-language direct feeds and never invents sources',()=>{
+ const chosen=selectCountryFeeds(croatia,10);assert.equal(chosen.length,10);
+ assert.ok(chosen.every(s=>new URL(s.rss).hostname!=='news.google.com'&&s.language==='hr'));
+ assert.ok(chosen.some(s=>s.name==='Novi list'));
+ assert.equal(selectCountryFeeds(croatia,30).length,14);
+ const india=registry.countries.find(c=>c.slug==='indija');assert.ok(selectCountryFeeds(india,10).every(s=>s.language===india.language));
+ for(const c of registry.countries)assert.ok(selectCountryFeeds(c,10).every(s=>c.sourcesList.includes(s)));
+});
+test('multiple publishers survive the volume cap and duplicate URLs are removed',()=>{
+ const rows=[1,2,3,4].map(n=>({title:'A'+n,source:'A',url:`https://a.example/${n}`,publishedAt:`2026-01-01T0${6-n}:00:00.000Z`}));
+ rows.push({title:'B',source:'B',url:'https://b.example/story',publishedAt:'2026-01-01T01:00:00.000Z'}, {title:'duplicate',source:'C',url:'https://b.example/story?copy=1',publishedAt:'2026-01-01T00:30:00.000Z'});
+ const chosen=diversifyHeadlines(rows,3);assert.equal(chosen.length,3);assert.ok(chosen.some(x=>x.source==='B'));assert.equal(new Set(chosen.map(x=>x.url.split('?')[0])).size,3);
+ assert.ok(chosen[0].publishedAt>=chosen[1].publishedAt);
+});
+test('full refresh covers all 201 registry countries and limits concurrency per host',()=>{
+ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'world-bounded-'));
+ try{
+  const mock=path.join(tmp,'mock.mjs'),stats=path.join(tmp,'stats.json'),out=path.join(tmp,'cache.json');
+  fs.writeFileSync(mock,`import fs from 'node:fs';const active={},max={};let id=0;globalThis.fetch=async url=>{const host=new URL(url).hostname;active[host]=(active[host]||0)+1;max[host]=Math.max(max[host]||0,active[host]);const n=++id;await new Promise(r=>setTimeout(r,2));active[host]--;const xml='<rss><channel><item><title>Mock headline '+n+'</title><link>https://example.org/'+n+'</link><pubDate>'+new Date(Date.now()-5000).toUTCString()+'</pubDate></item></channel></rss>';return {ok:true,headers:{get:()=>null},text:async()=>xml};};process.on('exit',()=>fs.writeFileSync(process.env.MOCK_STATS,JSON.stringify({max,id})));`);
+  const run=spawnSync(process.execPath,['--import',mock,'scripts/refresh-aktual-world-headlines-v1.mjs'],{env:{...process.env,AKTUAL_WORLD_CACHE_OUT:out,MOCK_STATS:stats,AKTUAL_FETCH_CONCURRENCY:'12'},encoding:'utf8'});assert.equal(run.status,0,run.stderr);
+  const cache=JSON.parse(fs.readFileSync(out)),metrics=JSON.parse(fs.readFileSync(stats));assert.equal(Object.keys(cache.countries).length,201);assert.equal(Object.keys(cache.scopeUpdatedAt.countries).length,201);assert.ok(Object.values(metrics.max).every(n=>n<=3));assert.ok(metrics.id>=201);
+  const briefing=spawnSync(process.execPath,['apps/agents/world201/run-v1.mjs','--cache',out],{encoding:'utf8'});assert.equal(briefing.status,0,briefing.stderr);const report=JSON.parse(briefing.stdout);assert.equal(report.summary.countries,201);assert.equal(report.summary.withCandidates,201);assert.equal(report.automaticFullArticlePublishing,false);
+  const roundups=writeRoundups(registry,cache);assert.equal(roundups.countriesWithDrafts,201);assert.equal(roundups.published,false);
+ }finally{fs.rmSync(tmp,{recursive:true,force:true});}
+});
+
+test('single-country refresh preserves other timestamps and updates only one page and feed',()=>{
+ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'world-target-'));
+ try{
+  const old=new Date(Date.now()-30*3600000).toISOString(),now=new Date().toISOString();
+  const output=path.join(tmp,'cache.json');
+  const oldRow={title:'Old retained',url:'https://example.org/old',source:'Old',publishedAt:now};
+  fs.writeFileSync(output,JSON.stringify({updatedAt:old,countries:{srbija:[oldRow]},cities:{zagreb:[oldRow]},sourceChecks:[{kind:'country',scope:'srbija',source:'Old',status:'headlines'}]}));
+  const mock=path.join(tmp,'mock.mjs');fs.writeFileSync(mock,`globalThis.fetch=async url=>{const host=new URL(url).hostname;const xml='<rss><channel><item><title>Headline '+host+'</title><link>https://example.org/'+host+'</link><pubDate>'+new Date(Date.now()-5000).toUTCString()+'</pubDate></item></channel></rss>';return {ok:true,headers:{get:()=>null},text:async()=>xml};};`);
+  const run=spawnSync(process.execPath,['--import',mock,'scripts/refresh-aktual-world-headlines-v1.mjs','--country','hrvatska'],{env:{...process.env,AKTUAL_WORLD_CACHE_OUT:output},encoding:'utf8'});
+  assert.equal(run.status,0,run.stderr);const cache=JSON.parse(fs.readFileSync(output));
+  assert.equal(cache.feedAttempts,10);assert.equal(cache.countries.hrvatska.length,10);assert.deepEqual(cache.countries.srbija,[oldRow]);
+  assert.equal(cache.scopeUpdatedAt.countries.srbija,old);assert.equal(cache.scopeUpdatedAt.cities.zagreb,old);assert.ok(cache.scopeUpdatedAt.countries.hrvatska!==old);
+  const out=path.join(tmp,'out');for(const slug of ['hrvatska','srbija']){const dst=path.join(out,'media',slug);fs.mkdirSync(dst,{recursive:true});fs.copyFileSync(`apps/portal/gnk-aktual/media/${slug}/index.html`,path.join(dst,'index.html'));fs.writeFileSync(path.join(dst,'feed.xml'),'SENTINEL');}
+  const other=fs.readFileSync(path.join(out,'media/srbija/index.html'),'utf8');
+  const build=spawnSync(process.execPath,['scripts/build-aktual-world-v1.mjs','--country','hrvatska'],{env:{...process.env,AKTUAL_WORLD_OUT:out,AKTUAL_WORLD_CACHE:output},encoding:'utf8'});assert.equal(build.status,0,build.stderr);
+  assert.equal(fs.readFileSync(path.join(out,'media/srbija/index.html'),'utf8'),other);assert.equal(fs.readFileSync(path.join(out,'media/srbija/feed.xml'),'utf8'),'SENTINEL');
+  assert.ok(!fs.existsSync(path.join(out,'media/sitemap.xml')));assert.match(fs.readFileSync(path.join(out,'media/hrvatska/feed.xml'),'utf8'),/Headline/);
+  const all=spawnSync(process.execPath,['scripts/build-aktual-world-v1.mjs'],{env:{...process.env,AKTUAL_WORLD_OUT:path.join(tmp,'all'),AKTUAL_WORLD_CACHE:output},encoding:'utf8'});assert.equal(all.status,0,all.stderr);
+  assert.doesNotMatch(fs.readFileSync(path.join(tmp,'all/media/srbija/feed.xml'),'utf8'),/Old retained/,'30-hour cache must not be refreshed by another country');
+  const before=fs.readFileSync(output,'utf8');
+  const bad=spawnSync(process.execPath,['scripts/refresh-aktual-world-headlines-v1.mjs','--country','not-a-country'],{env:{...process.env,AKTUAL_WORLD_CACHE_OUT:output},encoding:'utf8'});assert.notEqual(bad.status,0);assert.equal(fs.readFileSync(output,'utf8'),before);
+  const offline=path.join(tmp,'offline.mjs'), runReport=path.join(tmp,'run.json');fs.writeFileSync(offline,`globalThis.fetch=async()=>{throw Error('offline SECRET')}`);
+  const failed=spawnSync(process.execPath,['--import',offline,'scripts/refresh-aktual-world-headlines-v1.mjs','--country','hrvatska'],{env:{...process.env,AKTUAL_WORLD_CACHE_OUT:output,AKTUAL_WORLD_RUN_REPORT:runReport,AKTUAL_FALLBACK_FEEDS_PER_COUNTRY:'0'},encoding:'utf8'});assert.notEqual(failed.status,0);assert.equal(fs.readFileSync(output,'utf8'),before,'all failed feeds must preserve the cache');
+  const diagnostic=JSON.parse(fs.readFileSync(runReport));assert.equal(diagnostic.outcome,'no-acceptable-updates');assert.equal(diagnostic.feedFailures,10);assert.equal(diagnostic.sourceChecks.length,10);assert.ok(!JSON.stringify(diagnostic).includes('SECRET'));
+ }finally{fs.rmSync(tmp,{recursive:true,force:true});}
+});
+
+test('mixed source failure preserves the failed edition without refreshing its timestamp',()=>{
+ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'world-failure-'));
+ try {
+  const out=path.join(tmp,'cache.json'), mock=path.join(tmp,'mock.mjs');
+  const old='2026-01-01T00:00:00.000Z', row={title:'Retained',source:'Old',url:'https://example.org/old',publishedAt:old};
+  fs.writeFileSync(out,JSON.stringify({updatedAt:old,scopeUpdatedAt:{countries:{slovenija:old},cities:{}},countries:{slovenija:[row]},cities:{}}));
+  fs.writeFileSync(mock,`globalThis.fetch=async url=>{if(new URL(url).hostname==='www.rtvslo.si')throw Error('offline');return {ok:true,headers:{get:()=>null},text:async()=>'<rss><item><title>New</title><link>https://example.org/new</link><pubDate>'+new Date(Date.now()-5000).toUTCString()+'</pubDate></item></rss>'}}`);
+  const run=spawnSync(process.execPath,['--import',mock,'scripts/refresh-aktual-world-headlines-v1.mjs'],{env:{...process.env,AKTUAL_WORLD_CACHE_OUT:out,AKTUAL_COUNTRY_LIMIT:'2',AKTUAL_FEEDS_PER_COUNTRY:'1',AKTUAL_FALLBACK_FEEDS_PER_COUNTRY:'0'},encoding:'utf8'});
+  assert.equal(run.status,0,run.stderr);const result=JSON.parse(fs.readFileSync(out));
+  assert.deepEqual(result.countries.slovenija,[row]);assert.equal(result.scopeUpdatedAt.countries.slovenija,old);assert.ok(result.countries.hrvatska.length);assert.ok(result.sourceChecks.some(x=>x.scope==='slovenija'&&x.status==='failed'));
+  delete result.scopeUpdatedAt.countries.slovenija;fs.writeFileSync(out,JSON.stringify(result));
+  const second=spawnSync(process.execPath,['--import',mock,'scripts/refresh-aktual-world-headlines-v1.mjs'],{env:{...process.env,AKTUAL_WORLD_CACHE_OUT:out,AKTUAL_COUNTRY_LIMIT:'2',AKTUAL_FEEDS_PER_COUNTRY:'1',AKTUAL_FALLBACK_FEEDS_PER_COUNTRY:'0'},encoding:'utf8'});
+  assert.equal(second.status,0,second.stderr);assert.equal(JSON.parse(fs.readFileSync(out)).scopeUpdatedAt.countries.slovenija,null);
+ }finally{fs.rmSync(tmp,{recursive:true,force:true});}
+});
+
+test('one malformed numeric entity does not discard an entire feed',()=>{
+ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'world-entity-'));
+ try {
+  const out=path.join(tmp,'cache.json'),mock=path.join(tmp,'mock.mjs');
+  fs.writeFileSync(mock,`globalThis.fetch=async()=>({ok:true,status:200,headers:{get:()=>null},text:async()=>'<rss><item><title>Valid &#99999999999999999999; headline &#x1F30D;</title><link>https://example.org/news</link><pubDate>'+new Date(Date.now()-5000).toUTCString()+'</pubDate></item></rss>'})`);
+  const run=spawnSync(process.execPath,['--import',mock,'scripts/refresh-aktual-world-headlines-v1.mjs','--country','hrvatska'],{env:{...process.env,AKTUAL_WORLD_CACHE_OUT:out,AKTUAL_FEEDS_PER_COUNTRY:'1'},encoding:'utf8'});
+  assert.equal(run.status,0,run.stderr);const result=JSON.parse(fs.readFileSync(out));assert.match(result.countries.hrvatska[0].title,/Valid headline 🌍/);
+ }finally{fs.rmSync(tmp,{recursive:true,force:true});}
+});
+
+test('automatically tries bounded configured fallback feeds after failure and empty results',()=>{
+ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'world-fallback-'));
+ try {
+  const out=path.join(tmp,'cache.json'),mock=path.join(tmp,'mock.mjs'),diagnostic=path.join(tmp,'report.json');
+  fs.writeFileSync(mock,`globalThis.fetch=async url=>{let h=new URL(url).hostname;if(h==='www.rtvslo.si')return {ok:false,status:403,headers:{get:()=>null}};let body=h==='www.24ur.com'?'<rss></rss>':'<rss><item><title>Fallback headline</title><link>https://example.org/fallback</link><pubDate>'+new Date(Date.now()-5000).toUTCString()+'</pubDate></item></rss>';return {ok:true,status:200,headers:{get:()=>null},text:async()=>body};};`);
+  const env={...process.env,AKTUAL_WORLD_CACHE_OUT:out,AKTUAL_WORLD_RUN_REPORT:diagnostic,AKTUAL_FEEDS_PER_COUNTRY:'1',AKTUAL_FALLBACK_FEEDS_PER_COUNTRY:'2'};
+  const run=spawnSync(process.execPath,['--import',mock,'scripts/refresh-aktual-world-headlines-v1.mjs','--country','slovenija'],{env,encoding:'utf8'});
+  assert.equal(run.status,0,run.stderr);const cache=JSON.parse(fs.readFileSync(out));const report=JSON.parse(fs.readFileSync(diagnostic));
+  assert.equal(cache.feedAttempts,3);assert.equal(cache.feedFailures,1);assert.equal(cache.countries.slovenija[0].title,'Fallback headline');
+  assert.equal(cache.sourceChecks.filter(c=>c.fallback).length,2);assert.deepEqual(cache.sourceChecks.map(c=>c.status).sort(),['failed','headlines','no-eligible-headlines']);
+  assert.equal(report.sourceChecks.filter(c=>c.fallback).length,2);assert.equal(report.feedAttempts,3);
+  const previous=fs.readFileSync(out,'utf8');const strict=spawnSync(process.execPath,['--import',mock,'scripts/refresh-aktual-world-headlines-v1.mjs','--country','slovenija','--strict'],{env,encoding:'utf8'});
+  assert.notEqual(strict.status,0);assert.equal(fs.readFileSync(out,'utf8'),previous);assert.equal(JSON.parse(fs.readFileSync(diagnostic)).outcome,'strict-source-failure');
+ }finally{fs.rmSync(tmp,{recursive:true,force:true});}
+});
+
+test('Atom selects article alternate link rather than self or enclosure',()=>{
+ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'world-atom-'));
+ try {
+  const out=path.join(tmp,'cache.json'),mock=path.join(tmp,'mock.mjs');
+  fs.writeFileSync(mock,`globalThis.fetch=async()=>({ok:true,status:200,headers:{get:()=>null},text:async()=>'<feed><entry><title>Atom title</title><link rel="self" href="https://example.org/atom"/><link href="https://example.org/picture" rel="enclosure"/><link href="https://example.org/article?a=1&amp;b=2" type="text/html" rel="alternate"/><updated>'+new Date(Date.now()-5000).toISOString()+'</updated></entry></feed>'})`);
+  const run=spawnSync(process.execPath,['--import',mock,'scripts/refresh-aktual-world-headlines-v1.mjs','--country','slovenija'],{env:{...process.env,AKTUAL_WORLD_CACHE_OUT:out,AKTUAL_FEEDS_PER_COUNTRY:'1'},encoding:'utf8'});
+  assert.equal(run.status,0,run.stderr);const row=JSON.parse(fs.readFileSync(out)).countries.slovenija[0];assert.equal(row.url,'https://example.org/article?a=1&b=2');
+ }finally{fs.rmSync(tmp,{recursive:true,force:true});}
+});
+
+test('Croatian source catalogue, public directories and generator stay aligned',()=>{
+ const ids=['novilist','tportal','nacional'];
+ const local=fs.readFileSync('apps/portal/gnk-aktual/media/hrvatska/index.html','utf8');
+ const en=fs.readFileSync('apps/portal/en/gnk-aktual/media/hrvatska/index.html','utf8');
+ const directory=fs.readFileSync('apps/portal/en/gnk-aktual/media/index.html','utf8');
+ const generator=fs.readFileSync('scripts/generate-world-countries-v1.mjs','utf8');
+ for(const id of ids){
+  const source=croatia.sourcesList.find(x=>x.id===id);assert.ok(source,`${id} missing`);assert.ok(generator.includes(source.rss));
+  assert.ok(local.includes(`>${source.name}</a>`));assert.ok(en.includes(`href="${source.rss}"`));
+ }
+ assert.equal(croatia.sources,14);assert.match(local,/14 konfiguriranih izvora/);assert.match(en,/14 listed sources/);assert.match(en,/Direct publisher hosts<\/dt><dd>12/);assert.match(directory,/HR · 14 sources/);
+ assert.match(fs.readFileSync('apps/portal/gnk-aktual/media/index.html','utf8'),/438 konfiguriranih izvora/);
+});
