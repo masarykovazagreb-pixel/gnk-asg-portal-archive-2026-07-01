@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-11-26T05:02:31.201Z",
+  "updatedAt": "2026-11-26T10:50:17.946Z",
   "sources": [
     {
       "id": "antara",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:02:22.915Z"
+      "checkedAt": "2026-11-26T10:50:10.956Z"
     },
     {
       "id": "kompas",
@@ -24,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: HTTP 403",
-        "https://nasional.kompas.com/rss: HTTP 403"
+        "https://www.kompas.com/rss: HTTP 404",
+        "https://nasional.kompas.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-26T05:02:24.533Z"
+      "checkedAt": "2026-11-26T10:50:13.287Z"
     },
     {
       "id": "detik",
@@ -39,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-11-26T05:02:28.012Z"
+      "checkedAt": "2026-11-26T10:50:14.613Z"
     },
     {
       "id": "tempo",
@@ -51,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-26T05:02:28.846Z"
+      "checkedAt": "2026-11-26T10:50:15.425Z"
     },
     {
       "id": "cnnindonesia",
@@ -61,7 +61,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:02:29.247Z"
+      "checkedAt": "2026-11-26T10:50:15.468Z"
     },
     {
       "id": "republika",
@@ -71,7 +71,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:02:29.871Z"
+      "checkedAt": "2026-11-26T10:50:16.308Z"
     },
     {
       "id": "cnbcindonesia",
@@ -81,7 +81,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:02:30.219Z"
+      "checkedAt": "2026-11-26T10:50:16.812Z"
     },
     {
       "id": "kumparan",
@@ -93,10 +93,335 @@
       "errors": [
         "https://kumparan.com/feed: nije feed"
       ],
-      "checkedAt": "2026-11-26T05:02:31.200Z"
+      "checkedAt": "2026-11-26T10:50:17.945Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-11-26-antara-usai-putusan-icj-indonesia-serukan-5d902c",
+      "title": "Usai putusan ICJ, Indonesia serukan perlindungan kelompok Rohingya",
+      "summary": "Indonesia menegaskan penguatan perlindungan terhadap kelompok muslim Rohingya dan masyarakat sipil ...",
+      "date": "2026-11-26T10:47:09.000Z",
+      "url": "https://www.antaranews.com/berita/5880551/usai-putusan-icj-indonesia-serukan-perlindungan-kelompok-rohingya",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2025/08/06/rohingya-aceh-timur.jpg",
+      "imageAlt": "Usai putusan ICJ, Indonesia serukan perlindungan kelompok Rohingya",
+      "addedAt": "2026-11-26T10:50:10.956Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnnindonesia-kapolri-setahun-terakhir-ada-247-wna-jadi-d2b43a",
+      "title": "Kapolri: Setahun Terakhir Ada 247 WNA Jadi Tersangka Narkoba di RI",
+      "summary": "Kapolri Suyudi Ario Seto ungkap 247 WNA jadi tersangka narkoba dalam setahun terakhir. Total 73.913 tersangka terlibat dalam 56.203 kasus narkoba di Indonesia.",
+      "date": "2026-11-26T10:47:00.000Z",
+      "url": "https://www.cnnindonesia.com/nasional/20261126172505-12-1431984/kapolri-setahun-terakhir-ada-247-wna-jadi-tersangka-narkoba-di-ri",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/26/prabowo-hadiri-pemusnahan-6017-ton-narkoba-1795678483699_169.jpeg?w=360&q=90",
+      "imageAlt": "Kapolri: Setahun Terakhir Ada 247 WNA Jadi Tersangka Narkoba di RI",
+      "addedAt": "2026-11-26T10:50:15.468Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnbcindonesia-bikin-guru-ri-sejahtera-prabowo-sudah-tebar-a0492c",
+      "title": "Bikin Guru RI Sejahtera, Prabowo Sudah Tebar Tunjangan Sampai Rp 90 T",
+      "summary": "Presiden Prabowo Subianto menata pendidikan Indonesia dengan meningkatkan kesejahteraan guru. Total tunjangan mencapai Rp 90,85 triliun hingga 2026.",
+      "date": "2026-11-26T10:46:56.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261126174504-4-788855/bikin-guru-ri-sejahtera-prabowo-sudah-tebar-tunjangan-sampai-rp-90-t",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/26/presiden-prabowo-hadiri-puncak-peringatan-hari-guru-nasional-2026-sicc-26-november-2026-1795686531546_169.png?w=1200&q=90",
+      "imageAlt": "Bikin Guru RI Sejahtera, Prabowo Sudah Tebar Tunjangan Sampai Rp 90 T",
+      "addedAt": "2026-11-26T10:50:16.812Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnnindonesia-jennifer-barreto-dijuluki-miss-chatgpt-usai-22838d",
+      "title": "Jennifer Barreto Dijuluki 'Miss ChatGPT' Usai Final Miss Universe",
+      "summary": "Jawaban Miss Universe 2026 Jennifer Barreto saat menjawab pertanyaan juri pada malam final dikritik mirip dengan jawaban chatbot.",
+      "date": "2026-11-26T10:45:52.000Z",
+      "url": "https://www.cnnindonesia.com/gaya-hidup/20261126172050-277-1431970/jennifer-barreto-dijuluki-miss-chatgpt-usai-final-miss-universe",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/25/jennifer-barreto-miss-universe-2026-dari-puerto-rico-1795582700962_169.png?w=360&q=90",
+      "imageAlt": "Jennifer Barreto Dijuluki 'Miss ChatGPT' Usai Final Miss Universe",
+      "addedAt": "2026-11-26T10:50:15.469Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-antara-danantara-optimistis-laba-dam-capai-rp332-87ec00",
+      "title": "Danantara optimistis laba DAM capai Rp332 triliun pada 2026",
+      "summary": "ANTARA - Danantara Asset Management (DAM) optimistis mencapai target laba sebesar Rp332 triliun pada akhir 2026. Chief ...",
+      "date": "2026-11-26T10:45:38.000Z",
+      "url": "https://www.antaranews.com/video/5880511/danantara-optimistis-laba-dam-capai-rp332-triliun-pada-2026",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/SANS_DANANTARA-OPTIMISTIS-LABA-DAM-CAPAI-RP332-TRILIUN-PADA-2026.jpg",
+      "imageAlt": "Danantara optimistis laba DAM capai Rp332 triliun pada 2026",
+      "addedAt": "2026-11-26T10:50:10.956Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnbcindonesia-nasib-asn-ri-gaji-pokok-di-bawah-umr-7a18b8",
+      "title": "Nasib ASN RI: Gaji Pokok di Bawah UMR, Tunjangan Beras Rp74.000/Bulan",
+      "summary": "Nasib ASN RI: Gaji Pokok di Bawah UMR, Tunjangan Beras Rp74.000 Per Bulan",
+      "date": "2026-11-26T10:45:31.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261126124819-8-788691/nasib-asn-ri-gaji-pokok-di-bawah-umr-tunjangan-beras-rp74000-bulan",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/26/nasib-asn-ri-gaji-pokok-di-bawah-umr-tunjangan-beras-rp74000-per-bulan-1795680306618_169.png?w=1200&q=90",
+      "imageAlt": "Nasib ASN RI: Gaji Pokok di Bawah UMR, Tunjangan Beras Rp74.000/Bulan",
+      "addedAt": "2026-11-26T10:50:16.813Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-antara-bnpb-ingatkan-ancaman-galodo-di-sumbar-9867b4",
+      "title": "BNPB ingatkan ancaman galodo di Sumbar akibat bibit siklon tropis 96S",
+      "summary": "Badan Nasional Penanggulangan Bencana (BNPB) mengingatkan masyarakat di Provinsi Sumatera Barat agar mewaspadai ...",
+      "date": "2026-11-26T10:45:28.000Z",
+      "url": "https://www.antaranews.com/berita/5880547/bnpb-ingatkan-ancaman-galodo-di-sumbar-akibat-bibit-siklon-tropis-96s",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/08/04/1000794597.jpg",
+      "imageAlt": "BNPB ingatkan ancaman galodo di Sumbar akibat bibit siklon tropis 96S",
+      "addedAt": "2026-11-26T10:50:10.956Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnnindonesia-whatsapp-uji-coba-fitur-stiker-bersuara-ini-e161e7",
+      "title": "WhatsApp Uji Coba Fitur Stiker Bersuara, Ini Cara Membuatnya",
+      "summary": "WhatsApp uji coba fitur stiker bersuara untuk Android. Pelajari cara membuat stiker dari video dengan suara asli atau rekaman sendiri.",
+      "date": "2026-11-26T10:45:20.000Z",
+      "url": "https://www.cnnindonesia.com/teknologi/20261126121832-185-1431761/whatsapp-uji-coba-fitur-stiker-bersuara-ini-cara-membuatnya",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2018/12/12/a7188b3b-28de-4334-97db-0f96fd5eaa0b_169.jpeg?w=360&q=90",
+      "imageAlt": "WhatsApp Uji Coba Fitur Stiker Bersuara, Ini Cara Membuatnya",
+      "addedAt": "2026-11-26T10:50:15.469Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnbcindonesia-robot-bedah-da-vinci-5-sudah-ada-di-rs-14216a",
+      "title": "Robot Bedah Da Vinci 5 Sudah Ada di RS Indonesia, Begini Cara Kerjanya",
+      "summary": "Pemerintah Indonesia memperkenalkan layanan bedah robotik dengan Da Vinci 5 di RSJPD Harapan Kita, menjadi yang pertama di ASEAN.",
+      "date": "2026-11-26T10:45:00.000Z",
+      "url": "https://www.cnbcindonesia.com/tech/20261126133604-37-788733/robot-bedah-da-vinci-5-sudah-ada-di-rs-indonesia-begini-cara-kerjanya",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/26/pemerintah-mulai-menghadirkan-layanan-bedah-robotik-robotic-surgery-pada-tahun-ini-rumah-sakit-jantung-dan-pembuluh-darah-rsjp-1795682150732_169.jpeg?w=1200&q=90",
+      "imageAlt": "Robot Bedah Da Vinci 5 Sudah Ada di RS Indonesia, Begini Cara Kerjanya",
+      "addedAt": "2026-11-26T10:50:16.813Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnbcindonesia-danantara-bongkar-modus-anak-usaha-bumn-600-591c34",
+      "title": "Danantara Bongkar Modus Anak Usaha BUMN, 600 Perusahaan Ditutup!",
+      "summary": "Danantara melakukan perampingan 380 BUMN untuk efisiensi dan menutup celah penyalahgunaan. Target 600 perusahaan hingga akhir 2026.",
+      "date": "2026-11-26T10:42:20.000Z",
+      "url": "https://www.cnbcindonesia.com/market/20261126173219-17-788852/danantara-bongkar-modus-anak-usaha-bumn-600-perusahaan-ditutup",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://awsimages.detik.net.id/visual/2026/05/23/coo-danantara-dony-oskaria-menyampaikan-pemaparan-dalam-jogja-financial-festival-2026-di-jogja-expo-center-jec-yogyakarta-diy--1779525254361_169.jpeg?w=1200&q=90",
+      "imageAlt": "Danantara Bongkar Modus Anak Usaha BUMN, 600 Perusahaan Ditutup!",
+      "addedAt": "2026-11-26T10:50:16.813Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnbcindonesia-4-500-kg-bahan-peledak-beracun-meledak-3b7968",
+      "title": "4.500 Kg Bahan Peledak Beracun Meledak, Warga Dievakuasi",
+      "summary": "Angkatan Darat AS meledakkan bahan peledak berbahaya di Iowa untuk menghindari risiko ledakan spontan. Warga dievakuasi.",
+      "date": "2026-11-26T10:40:00.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261126172022-4-788849/4500-kg-bahan-peledak-beracun-meledak-warga-dievakuasi",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/26/asap-membubung-setelah-peledakan-timbunan-bahan-peledak-berbasis-timbal-di-iowa-1795681406223_169.png?w=1200&q=90",
+      "imageAlt": "4.500 Kg Bahan Peledak Beracun Meledak, Warga Dievakuasi",
+      "addedAt": "2026-11-26T10:50:16.813Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-republika-menag-apresiasi-guru-di-pelosok-madrasah-c92932",
+      "title": "Menag Apresiasi Guru di Pelosok, Madrasah Kian Diperhitungkan",
+      "summary": "JAKARTA — Menteri Agama Prof Nasaruddin Umar memberikan apresiasi kepada para guru yang mengabdikan diri di berbagai pelosok Indonesia. Mereka dinilai telah menunjukkan dedikasi dan prestasi meski harus mengajar...",
+      "date": "2026-11-26T10:38:52.000Z",
+      "url": "https://news.republika.co.id/berita/tp3uws483/menag-apresiasi-guru-di-pelosok-madrasah-kian-diperhitungkan",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Islam"
+      ],
+      "author": "A.Syalaby Ichsan",
+      "theme": "politika",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/050246700-1779022583-830-556.jpg",
+      "imageAlt": "Menag Apresiasi Guru di Pelosok, Madrasah Kian Diperhitungkan",
+      "addedAt": "2026-11-26T10:50:16.309Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-republika-izw-revisi-uu-zakat-harus-perjelas-status-bd8664",
+      "title": "IZW: Revisi UU Zakat Harus Perjelas Status Hukum Dana ZIS",
+      "summary": "JAKARTA -- Indonesia Zakat Watch (IZW) meminta revisi Undang-Undang (UU) Zakat memberikan kepastian hukum mengenai status dana zakat, infak, dan sedekah (ZIS) yang dihimpun dari masyarakat. IZW menegaskan, dana...",
+      "date": "2026-11-26T10:38:20.000Z",
+      "url": "https://khazanah.republika.co.id/berita/tp3uvw430/izw-revisi-uu-zakat-harus-perjelas-status-hukum-dana-zis",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Islam Digest"
+      ],
+      "author": "Muhammad Hafil",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_260213153719-466.png",
+      "imageAlt": "IZW: Revisi UU Zakat Harus Perjelas Status Hukum Dana ZIS",
+      "addedAt": "2026-11-26T10:50:16.309Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-antara-prabowo-luncurkan-studio-guru-jamin-akses-40dcda",
+      "title": "Prabowo luncurkan Studio Guru, jamin akses berkualitas untuk semua",
+      "summary": "Presiden Prabowo Subianto meluncurkan Studio Guru saat puncak peringatan Hari Guru Nasional 2026 di SICC, Kabupaten ...",
+      "date": "2026-11-26T10:38:13.000Z",
+      "url": "https://www.antaranews.com/berita/5880539/prabowo-luncurkan-studio-guru-jamin-akses-berkualitas-untuk-semua",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/26/IMG_9253.jpg",
+      "imageAlt": "Prabowo luncurkan Studio Guru, jamin akses berkualitas untuk semua",
+      "addedAt": "2026-11-26T10:50:10.956Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-republika-unm-gelar-wisuda-ke-41-cetak-lulusan-d93acb",
+      "title": "UNM Gelar Wisuda ke-41, Cetak Lulusan Adaptif di Era Transformasi Digital",
+      "summary": "JAKARTA -- Universitas Nusa Mandiri (UNM) akan menyelenggarakan prosesi Wisuda ke-41 pada Rabu 2 Desember 2026. Agenda akademik ini mengukuhkan mahasiswa jenjang Sarjana (S1) dan Magister (S2) yang telah...",
+      "date": "2026-11-26T10:38:00.000Z",
+      "url": "https://news.republika.co.id/berita/tp3plb423/unm-gelar-wisuda-ke41-cetak-lulusan-adaptif-di-era-transformasi-digital",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Pendidikan"
+      ],
+      "author": "Gita Amanda",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_261126154145-719.png",
+      "imageAlt": "UNM Gelar Wisuda ke-41, Cetak Lulusan Adaptif di Era Transformasi Digital",
+      "addedAt": "2026-11-26T10:50:16.309Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-antara-bnpb-waspada-cuaca-ekstrem-aceh-meningkat-5fafea",
+      "title": "BNPB: Waspada cuaca ekstrem Aceh meningkat jelang puncak musim hujan",
+      "summary": "Badan Nasional Penanggulangan Bencana (BNPB) mengingatkan masyarakat di Provinsi Aceh agar meningkatkan kewaspadaan ...",
+      "date": "2026-11-26T10:37:56.000Z",
+      "url": "https://www.antaranews.com/berita/5880535/bnpb-waspada-cuaca-ekstrem-aceh-meningkat-jelang-puncak-musim-hujan",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/25/distribusi-mbg_1.jpeg",
+      "imageAlt": "BNPB: Waspada cuaca ekstrem Aceh meningkat jelang puncak musim hujan",
+      "addedAt": "2026-11-26T10:50:10.956Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnnindonesia-pedagang-ngeluh-pasar-sepi-jelang-nataru-7215e7",
+      "title": "Pedagang Ngeluh Pasar Sepi Jelang Nataru, Daging Sapi Rp145 Ribu",
+      "summary": "Pedagang daging sapi di Pasar Senen, Jakarta Pusat, mengeluhkan kondisi pasar yang masih sepi pembeli menjelang Natal 2026 dan Tahun Baru 2027 (Nataru).",
+      "date": "2026-11-26T10:37:49.000Z",
+      "url": "https://www.cnnindonesia.com/ekonomi/20261126135416-92-1431847/pedagang-ngeluh-pasar-sepi-jelang-nataru-daging-sapi-rp145-ribu",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://akcdn.detik.net.id/visual/2018/06/12/2ce597d4-1326-492e-8d72-1c4c9323d8a8_169.jpeg?w=360&q=90",
+      "imageAlt": "Pedagang Ngeluh Pasar Sepi Jelang Nataru, Daging Sapi Rp145 Ribu",
+      "addedAt": "2026-11-26T10:50:15.469Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-cnnindonesia-prabowo-ada-kapolri-baru-buzzer-hilang-336a9b",
+      "title": "Prabowo: Ada Kapolri Baru, Buzzer Hilang, Keracunan MBG Berkurang",
+      "summary": "Presiden Prabowo Subianto menyatakan Kapolri baru menghilangkan buzzer di media sosial dan mengurangi kasus keracunan Makan Bergizi Gratis.",
+      "date": "2026-11-26T10:37:23.000Z",
+      "url": "https://www.cnnindonesia.com/nasional/20261126171945-32-1431983/prabowo-ada-kapolri-baru-buzzer-hilang-keracunan-mbg-berkurang",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/26/presiden-prabowo-subianto-hadiri-puncak-peringatan-hari-guru-nasional-2026-1795687167206_169.png?w=360&q=90",
+      "imageAlt": "Prabowo: Ada Kapolri Baru, Buzzer Hilang, Keracunan MBG Berkurang",
+      "addedAt": "2026-11-26T10:50:15.469Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-antara-mendag-sp2kp-sediakan-data-perkembangan-f3633d",
+      "title": "Mendag: SP2KP sediakan data perkembangan harga secara komprehensif",
+      "summary": "Menteri Perdagangan RI Budi Santoso mengapresiasi 563 kontributor Sistem Pemantauan Pasar Kebutuhan Pokok (SP2KP) di ...",
+      "date": "2026-11-26T10:36:13.000Z",
+      "url": "https://www.antaranews.com/berita/5880531/mendag-sp2kp-sediakan-data-perkembangan-harga-secara-komprehensif",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/26/IMG_20261126_172652.jpg",
+      "imageAlt": "Mendag: SP2KP sediakan data perkembangan harga secara komprehensif",
+      "addedAt": "2026-11-26T10:50:10.957Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-republika-investasi-danantara-diproyeksikan-buka-50-d86f29",
+      "title": "Investasi Danantara Diproyeksikan Buka 50 Ribu Lapangan Kerja",
+      "summary": "JAKARTA — Investasi yang dilakukan Danantara Investment Management (DIM) diproyeksikan membuka lebih dari 50 ribu lapangan kerja baru. Dampak terhadap penyerapan tenaga kerja dan penguatan sektor strategis dinilai menjadi...",
+      "date": "2026-11-26T10:28:19.000Z",
+      "url": "https://ekonomi.republika.co.id/berita/tp3uf7522/investasi-danantara-diproyeksikan-buka-50-ribu-lapangan-kerja",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Bisnis"
+      ],
+      "author": "Intan Pratiwi",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_260821141219-698.png",
+      "imageAlt": "Investasi Danantara Diproyeksikan Buka 50 Ribu Lapangan Kerja",
+      "addedAt": "2026-11-26T10:50:16.309Z"
+    },
+    {
+      "slug": "jakarta-2026-11-26-republika-ekonom-fulbright-vietnam-ungguli-indonesia-09185d",
+      "title": "Ekonom Fulbright: Vietnam Ungguli Indonesia Karena Manufaktur Pesat, Ini Harus Ditiru",
+      "summary": "JAKARTA -- Ekonom pembangunan Jonathan Pincus menilai keberhasilan Vietnam menyalip Indonesia dalam pendapatan per kapita berakar pada neraca pembayaran. Tanpa ekspor manufaktur yang kuat, menurut dia, laju pertumbuhan yang...",
+      "date": "2026-11-26T10:21:02.000Z",
+      "url": "https://ekonomi.republika.co.id/berita/tp3u32475/ekonom-fulbright-vietnam-ungguli-indonesia-karena-manufaktur-pesat-ini-harus-ditiru",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Bisnis"
+      ],
+      "author": "Stevy maradona",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/pengumuman-harga-vinfast-limo-green-di-iims-2026-jiexpo_260205224421-479.jpeg",
+      "imageAlt": "Ekonom Fulbright: Vietnam Ungguli Indonesia Karena Manufaktur Pesat, Ini Harus Ditiru",
+      "addedAt": "2026-11-26T10:50:16.309Z"
+    },
     {
       "slug": "jakarta-2026-11-26-cnbcindonesia-jadi-the-future-investing-pluang-dorong-02c44f",
       "title": "Jadi The Future Investing, Pluang Dorong Investor ManfaatkanAI",

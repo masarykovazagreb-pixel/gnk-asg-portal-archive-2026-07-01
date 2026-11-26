@@ -4,19 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-26T05:01:54.717Z",
+  "updatedAt": "2026-11-26T10:49:41.997Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss/",
-      "ok": true,
-      "fetched": 20,
+      "url": "https://www.agerpres.ro/rss",
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: This operation was aborted"
+        "https://www.agerpres.ro/rss: HTTP 408",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
       ],
-      "checkedAt": "2026-11-26T05:01:47.282Z"
+      "checkedAt": "2026-11-26T10:49:32.034Z"
     },
     {
       "id": "hotnews",
@@ -26,17 +27,17 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:01:47.353Z"
+      "checkedAt": "2026-11-26T10:49:32.460Z"
     },
     {
       "id": "zf",
       "name": "Ziarul Financiar",
       "url": "https://www.zf.ro/rss",
       "ok": true,
-      "fetched": 19,
+      "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:01:49.346Z"
+      "checkedAt": "2026-11-26T10:49:38.008Z"
     },
     {
       "id": "profit",
@@ -46,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:01:49.581Z"
+      "checkedAt": "2026-11-26T10:49:38.136Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 273,
+      "fetched": 280,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:01:52.425Z"
+      "checkedAt": "2026-11-26T10:49:40.239Z"
     },
     {
       "id": "g4media",
@@ -66,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:01:53.879Z"
+      "checkedAt": "2026-11-26T10:49:41.363Z"
     },
     {
       "id": "newsro",
@@ -76,10 +77,583 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:01:54.714Z"
+      "checkedAt": "2026-11-26T10:49:41.993Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-26-g4media-romeo-lungu-liderul-psd-buzau-primarul-b988df",
+      "title": "Romeo Lungu, liderul PSD Buzău: Primarul Constantin Toma se apropie de o exludere din partid, dar nu în decembrie, în luna cadourilor",
+      "summary": "Preşedintele organizaţiei judeţene a Partidului Social Democrat (PSD) Buzău, Romeo Lungu, a declarat că primarul municipiului Buzău, Constantin Toma, se apropie de o excludere din partid, pe fondul atacurilor din ultima perioadă la adresa unor colegi şi a formaţiunii politice din care face parte, scrie Agerpres. Romeo Lungu a menţionat că a luat la cunoştinţă […] © G4Media.ro .",
+      "date": "2026-11-26T10:48:49.000Z",
+      "url": "https://www.g4media.ro/romeo-lungu-liderul-psd-buzau-primarul-constantin-toma-se-apropie-de-o-exludere-din-partid-dar-nu-in-decembrie-in-luna-cadourilor.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Romeo Lungu"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/06/Romeo-Lungu-scaled.jpg",
+      "imageAlt": "Romeo Lungu, liderul PSD Buzău: Primarul Constantin Toma se apropie de o exludere din partid, dar nu în decembrie, în luna cadourilor",
+      "addedAt": "2026-11-26T10:49:41.363Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-zf-confederatia-patronala-concordia-estimeaza-0c77a8",
+      "title": "Confederaţia Patronală Concordia estimează că economia României va scădea cu 0,3–0,5% în 2026. Revenirea pe creştere în 2027 depinde de continuarea consolidării fiscale, fără noi…",
+      "summary": "",
+      "date": "2026-11-26T10:47:59.000Z",
+      "url": "https://www.zf.ro/eveniment/confederatia-patronala-concordia-estimeaza-ca-economia-romaniei-va-scadea-cu-0-3-0-5-in-2026-revenirea-pe-crestere-in-2027-depinde-de-continuarea-consolidarii-fiscale-fara-noi-majorari-de-taxe-23290012",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Eveniment"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22466/23290012/1/pexels-thales13-38654744-2048x1365.jpg?width=700",
+      "imageAlt": "Confederaţia Patronală Concordia estimează că economia României va scădea cu 0,3–0,5% în 2026. Revenirea pe creştere în 2027 depinde de continuarea consolidării fiscale, fără noi m",
+      "addedAt": "2026-11-26T10:49:38.009Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-digi24-romanii-din-strainatate-vor-putea-solicita-9b5db9",
+      "title": "Românii din străinătate vor putea solicita cartea electronică de identitate la consulate, de săptămâna viitoare",
+      "summary": "Românii aflați în străinătate vor putea solicita, începând de săptămâna viitoare, eliberarea cărții electronice de identitate la misiunile diplomatice și oficiile consulare, a anunțat joi premierul Luca Niculescu, la începutul ședinței de Guvern. În prima etapă, serviciul va fi disponibil exclusiv cetățenilor care au domiciliul în România.",
+      "date": "2026-11-26T10:47:56.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/romanii-din-strainatate-vor-putea-solicita-cartea-electronica-de-identitate-la-consulate-de-saptamana-viitoare-4053695",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjI2JTJGMzA4NzEwOV8zMDg3/MTA5X0dldHR5SW1hZ2VzLTExNTE3Nzc5/NDMuanBnJmhhc2g9NjlhMDhmZDFlM2U1NjBhYzQxNWNhNGZkMjZhNjBjOGM=.jpg",
+      "imageAlt": "Românii din străinătate vor putea solicita cartea electronică de identitate la consulate, de săptămâna viitoare",
+      "addedAt": "2026-11-26T10:49:40.243Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-digi24-raportul-letta-despre-romania-nu-spune-f27dcd",
+      "title": "Raportul Letta despre România nu spune nimic nou, iar asta e adevărata veste proastă",
+      "summary": "Zilele acestea, la Banca Națională, cunoscutul economist european Enrico Letta a prezentat un raport de 136 de pagini despre competitivitatea României. Se va spune că documentul nu aduce nimic nou. Așa este, și autorii o recunosc și ei. României nu îi lipsesc strategiile naționale și nici analizele organizațiilor internaționale, scriu ei, iar ce se împiedică de fiecare dată este asumarea și execuția lor. Avem, deci, același diagnostic de peste douăzeci de ani. Și despre asta, da, chiar merită să vorbim.",
+      "date": "2026-11-26T10:46:29.000Z",
+      "url": "https://www.digi24.ro/opinii/agora-digi/raportul-letta-despre-romania-nu-spune-nimic-nou-iar-asta-e-adevarata-veste-proasta-4053857",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjUl/MkYwMSUyRjIyJTJGMjE3Mzc1MF8yMTcz/NzUwX2J1cmR1amEuanBnJmhhc2g9YmU0/ZDAzNWQ4YjYxYTk2MTgyZDA1OTdlMzliMzZiODg=.jpg",
+      "imageAlt": "Raportul Letta despre România nu spune nimic nou, iar asta e adevărata veste proastă",
+      "addedAt": "2026-11-26T10:49:40.243Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-digi24-george-simion-a-fost-chemat-la-parchetul-53b91c",
+      "title": "George Simion a fost chemat la Parchetul General: „Sunt inculpat”. Sute de oameni l-au așteptat în fața clădirii. Acuzațiile oficiale",
+      "summary": "Președintele Alianţei pentru Unirea Românilor (AUR), George Simion, a mers joi la Parchetul General, unde a fost chemat de procurori. Deputatul AUR a fost așteptat de mai mult de o sută de oameni în fața Parchetului, care strigau lozinci în favoarea lui. Simion a ieșit după circa o oră de la audieri, comunicând că procurorii i-au schimbat calitatea din suspect în inculpat în dosar. Parchetul General a informat într-un comunicat de presă că a pus în mișcare acțiunea penale față de deputat pentru instigare publică, după ce Simion a declarat în urmă mai bine de un an și jumătate că membrii Biroului Electoral Central „ar trebui jupuiți în piața publică”.",
+      "date": "2026-11-26T10:46:16.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/justitie/george-simion-este-asteptat-azi-la-parchetul-general-in-calitate-de-suspect-4053375",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjI2JTJGMzA4NzA2OV8zMDg3/MDY5X0dlb3JnZS1TaW1pb24tUGFyY2hl/dHVsLUdlbmVyYWwtMjAyNi0xMS0yNi04/LTMuanBnJmhhc2g9MGZiZDUyNmUxOWY4YWY4NDU0ODZjZTlkNjlkNzQ2NTY=.jpg",
+      "imageAlt": "George Simion a fost chemat la Parchetul General: „Sunt inculpat”. Sute de oameni l-au așteptat în fața clădirii. Acuzațiile oficiale",
+      "addedAt": "2026-11-26T10:49:40.243Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-newsro-nicusor-dan-dupa-reuniunea-grupului-50f2cb",
+      "title": "Nicuşor Dan, după reuniunea grupului „Prietenii Coeziunii”, la Bruxelles: Am fost desemnat, alături de premierul Italiei, Giorgia Meloni, să reprezint interesele grupului în…",
+      "summary": "Preşedintele Nicuşor Dan anunţă, după participarea la reuniunea grupului „Prietenii Coeziunii”, la Bruxelles, că a fost desemnat, alături de premierul Italiei, Giorgia Meloni, să reprezinte interesele grupului în următoarele etape ale negocierilor privind viitorul buget UE. El arată că va susţine cu fermitate un buget european care să ţină cont de nevoile României, să ofere şanse reale de dezvoltare tuturor regiunilor şi să asigure că ţara noastră îşi poate continua parcursul de convergenţă şi modernizare.",
+      "date": "2026-11-26T10:43:44.000Z",
+      "url": "https://www.news.ro/politic-intern/nicusor-dan-dupa-reuniunea-grupului-prietenii-coeziunii-bruxelles-desemnat-alaturi-premierul-italiei-giorgia-meloni-reprezint-interesele-grupului-urmatoarele-etape-negocierilor-privind-viitorul-1922404326442026111223012133",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Nicuşor Dan, după reuniunea grupului „Prietenii Coeziunii”, la Bruxelles: Am fost desemnat, alături de premierul Italiei, Giorgia Meloni, să reprezint interesele grupului în următo",
+      "addedAt": "2026-11-26T10:49:41.994Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-digi24-rusia-respinge-armistitiul-energetic-si-0d6824",
+      "title": "Rusia respinge armistițiul energetic şi maritim în Ucraina, cerut de Ursula Von der Leyen: Trebuie să apărăm interesele naționale",
+      "summary": "Kremlinul a respins joi armistiţiul de iarnă, atât în ce priveşte atacurile asupra infrastructurilor energice, cât şi cele care ţintesc exporturile de cereale prin Marea Neagră, cerut în ziua precedentă de preşedinta Comisiei Europene, Ursula von der Leyen, solicitare descrisă de preşedinţia rusă drept un ultimatum.",
+      "date": "2026-11-26T10:43:04.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/rusia-respinge-armistitiul-energetic-si-maritim-in-ucraina-cerut-de-ursula-von-der-leyen-trebuie-sa-aparam-interesele-nationale-4053795",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "energija",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjI2JTJGMzA4NzIyOV8zMDg3/MjI5X3Byb2ZpbWVkaWEtMTE0MDExNzY5/MC5qcGcmaGFzaD0zNDJhMjVhZDNkMGM3NjkyNzY0YTZmZTExYjU2OGVlNg==.jpg",
+      "imageAlt": "Rusia respinge armistițiul energetic şi maritim în Ucraina, cerut de Ursula Von der Leyen: Trebuie să apărăm interesele naționale",
+      "addedAt": "2026-11-26T10:49:40.244Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-g4media-coreea-de-nord-a-suspendat-livrarile-de-6419c9",
+      "title": "Coreea de Nord a suspendat livrările de rachete către Rusia, după încercarea Moscovei de a îmbunătăți relațiile cu Coreea de Sud",
+      "summary": "Coreea de Nord a suspendat livrările de rachete către Rusia. Informația provine dintr-o sursă ucraineană și nu este confirmată de părțile direct implicate. Se pare că dictatorul din Coreea de Nord a fost deranjat de atitudinea Rusiei față de Coreea de Sud, scrie Mediafax. Coreea de Nord a suspendat livrările de rachete către Rusia, anunță […] © G4Media.ro .",
+      "date": "2026-11-26T10:42:35.000Z",
+      "url": "https://www.g4media.ro/coreea-de-nord-a-suspendat-livrarile-de-rachete-catre-rusia-dupa-incercarea-moscovei-de-a-imbunatati-relatiile-cu-coreea-de-sud.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Coreea de Nord",
+        "rachete",
+        "Rusia"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/05/profimedia-1105865565-scaled.jpg",
+      "imageAlt": "Coreea de Nord a suspendat livrările de rachete către Rusia, după încercarea Moscovei de a îmbunătăți relațiile cu Coreea de Sud",
+      "addedAt": "2026-11-26T10:49:41.363Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-g4media-lista-completa-a-pilotilor-din-formula-1-c15c28",
+      "title": "Lista completă a piloților din Formula 1 pentru 2027: „Totul e pregătit”",
+      "summary": "Haas a anunțat joi că i-a prelungit contractul lui Oliver Bearman. Pilotul britanic în vârstă de 21 de ani va concura și anul viitor pentru echipa americană. Oficialii Formulei 1 transmit că „puzzle-ul” este complet pentru sezonul 2027 din Marele Circ. VIDEO: Max Verstappen, acuzat de ipocrizie: „Asta mă dezgustă cu adevărat, nu-mi place de […] © G4Media.ro .",
+      "date": "2026-11-26T10:42:21.000Z",
+      "url": "https://www.g4media.ro/lista-completa-a-pilotilor-din-formula-1-pentru-2027-totul-e-pregatit.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Sportz",
+        "charles leclerc",
+        "formula 1 2027",
+        "Lewis Hamilton"
+      ],
+      "author": "Adrian Ilincescu",
+      "theme": "sport",
+      "image": "https://www.g4media.ro/wp-content/uploads/2025/03/Formula-1-1.jpg",
+      "imageAlt": "Lista completă a piloților din Formula 1 pentru 2027: „Totul e pregătit”",
+      "addedAt": "2026-11-26T10:49:41.363Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-newsro-garda-nationala-de-mediu-peste-40-de-tone-e4f8b7",
+      "title": "Garda Naţională de Mediu: Peste 40 de tone de deşeuri cu azbest găsite în evidenţele unui operator economic din Baia Mare / Au fost date amenzi de 445.000 de lei / Activitatea a…",
+      "summary": "Comisarii Gărzii Naţionale de Mediu au controlat mai mulţi operatori economici de pe o platformă industrială din Baia Mare şi au constatat mai multe nereguli, printre care deşeuri depozitate direct pe sol, recipiente cu posibile scurgeri, depăşirea capacităţilor autorizate de colectare şi activităţi desfăşurate fără autorizaţie de mediu. De asemenea, în evidenţele unuia dintre operatori figurau peste 40 de tone de deşeuri din construcţii cu conţinut de azbest, pentru care comisarii au dispus clarificarea localizării, provenienţei şi destinaţiei. Totodată, activitatea a trei operatori economici a fost suspendată, fiind date amenzi în valoare de 445.000 de lei.",
+      "date": "2026-11-26T10:41:31.000Z",
+      "url": "https://www.news.ro/eveniment/garda-nationala-mediu-peste-40-tone-deseuri-azbest-gasite-evidentele-unui-operator-economic-baia-mare-au-date-amenzi-445-000-lei-activitatea-trei-operatori-economici-suspendata-foto-1922404126312026111223012129",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Garda Naţională de Mediu: Peste 40 de tone de deşeuri cu azbest găsite în evidenţele unui operator economic din Baia Mare / Au fost date amenzi de 445.000 de lei / Activitatea a tr",
+      "addedAt": "2026-11-26T10:49:41.994Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-profit-popeyes-anunta-trei-noi-restaurante-in-750b3d",
+      "title": "Popeyes anunță trei noi restaurante în București",
+      "summary": "Popeyes inaugurează luna viitoare trei noi restaurante în București, mergând mai departe cu expansiunea în România.",
+      "date": "2026-11-26T10:41:00.000Z",
+      "url": "https://www.profit.ro/insider/retail/popeyes-anunta-trei-noi-restaurante-in-bucuresti-23012112?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Retail"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/34141/23012112/20/whatsapp-image-2026-10-27-at-10-33-40-3.jpg?width=800",
+      "imageAlt": "Popeyes anunță trei noi restaurante în București",
+      "addedAt": "2026-11-26T10:49:38.137Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-digi24-luca-niculescu-anunta-doua-scheme-de-bd7efa",
+      "title": "Luca Niculescu anunță două scheme de sprijin pentru fermieri. Cine va primi ajutor de la stat",
+      "summary": "Premierul Luca Niculescu a anunțat că Guvernul va aproba, în ședința de joi, două scheme de sprijin financiar pentru fermieri. Prima, în valoare de peste 314 milioane de lei, este destinată compensării creșterii prețurilor la îngrășăminte, pe fondul tensiunilor din Orientul Mijlociu. Cea de-a doua schemă vizează sectorul zootehnic și va oferi finanțare crescătorilor de animale.",
+      "date": "2026-11-26T10:40:53.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/social/luca-niculescu-anunta-doua-scheme-de-sprijin-pentru-fermieri-cine-va-primi-ajutor-de-la-stat-4053777",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOSUyRjE1JTJGMjk1OTYxMl8yOTU5/NjEyX2JhbmktbnVtYXJhdGktYmFuY25v/dGUtbGVpLWdldHR5aW1hZ2VzLmpwZyZo/YXNoPWE1NTEzZTdjZDg5NDk1MWNlMGY4Y2ZlZDM4MTFkNTgx.jpg",
+      "imageAlt": "Luca Niculescu anunță două scheme de sprijin pentru fermieri. Cine va primi ajutor de la stat",
+      "addedAt": "2026-11-26T10:49:40.244Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-digi24-protest-spontan-la-cet-iasi-150-de-angajati-5d8b0a",
+      "title": "Protest spontan la CET Iași: 150 de angajați cer indexarea salariilor cu 6,5%. Furnizarea căldurii nu este afectată",
+      "summary": "Aproximativ 150 de angajați ai CET Iași au declanșat joi dimineață un protest spontan și cer indexarea salariilor cu 6,5%. Acțiunea nu a întrerupt furnizarea agentului termic către locuințele și instituțiile racordate la sistemul centralizat de încălzire din municipiu.",
+      "date": "2026-11-26T10:40:30.000Z",
+      "url": "https://www.digi24.ro/stiri/economie/protest-spontan-la-cet-iasi-150-de-angajati-cer-indexarea-salariilor-cu-65-furnizarea-caldurii-nu-este-afectata-4053835",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjI2JTJGMzA4NzIzMF8zMDg3/MjMwXzkyODIyNDYwMl8xMTcyNjQyNTI5/MDYyODQ3XzM3OTIwNDA2NzQ4ODc2MDY0/NzBfbi5qcGcmaGFzaD1mODFkODI4MWExNDk3MTY2ZTIyYzAzZmQ3MzE0OGNiZg==.jpg",
+      "imageAlt": "Protest spontan la CET Iași: 150 de angajați cer indexarea salariilor cu 6,5%. Furnizarea căldurii nu este afectată",
+      "addedAt": "2026-11-26T10:49:40.244Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-zf-raportul-mind-the-gap-2026-al-comisiei-5a0fca",
+      "title": "Raportul Mind the Gap 2026 al Comisiei Europene enumeră progresele făcute de România în simplificarea fiscală şi digitalizarea administraţiei fiscale. Ce recomandări face CE…",
+      "summary": "",
+      "date": "2026-11-26T10:39:40.000Z",
+      "url": "https://www.zf.ro/zf-24/raportul-mind-the-gap-2026-comisiei-europene-enumera-progresele-facute-romania-simplificarea-fiscala-digitalizarea-administratiei-fiscale-recomandari-face-continuarea-modernizarii-reducerea-23290004",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF 24"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21333/23290004/1/1-alexandru-nazare.jpg?width=700",
+      "imageAlt": "Raportul Mind the Gap 2026 al Comisiei Europene enumeră progresele făcute de România în simplificarea fiscală şi digitalizarea administraţiei fiscale. Ce recomandări face CE pentru",
+      "addedAt": "2026-11-26T10:49:38.009Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-newsro-ministrul-agriculturii-guvernul-a-aprobat-4-903948",
+      "title": "Ministrul Agriculturii: Guvernul a aprobat 4 măsuri pentru sprijinirea producţiei româneşti şi protejarea fermierilor români / Am prelungit plafonarea adaosului comercial pentru…",
+      "summary": "Ministrul Agriculturii, Florin Barbu, anunţă că Guvernul a aprobat, în şedinţa de joi, patru măsuri pentru sprijinirea producţiei româneşti şi protejarea fermierilor români. Printre măsuri se află prelungires plafonării adaosului comercial pentru alimentele de bază până la 30 iunie 2027, acordarea unui sprijin financiar de peste 314 de milioane de lei fermierilor, pentru compensarea scumpirii îngrăşămintelor din cauza războiului din Orientul Mijlociu, acordarea a 2 milioane de lei pentru crescătorii de porci din rasele Bazna şi Mangaliţa.",
+      "date": "2026-11-26T10:39:00.000Z",
+      "url": "https://www.news.ro/politic-intern/ministrul-agriculturii-guvernul-aprobat-4-masuri-sprijinirea-productiei-romanesti-protejarea-fermierilor-romani-prelungit-plafonarea-adaosului-comercial-alimentele-baza-pana-30-iunie-2027-1922403926002026111223012126",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Ministrul Agriculturii: Guvernul a aprobat 4 măsuri pentru sprijinirea producţiei româneşti şi protejarea fermierilor români / Am prelungit plafonarea adaosului comercial pentru al",
+      "addedAt": "2026-11-26T10:49:41.995Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-newsro-lucrare-de-ioan-andreescu-una-dintre-cele-eaef88",
+      "title": "Lucrare de Ioan Andreescu, una dintre cele mai mari ale pictorului, are un preţ de pornire de 300.000 de euro în Licitaţia de Iarnă",
+      "summary": "„Pădurea de fagi”, ulei pe pânză de 100x150 cm de Ioan Andreescu, a primit o estimare între 300.000 şi 500.000 la Licitaţia de Iarnă organizată în 15 decembrie de casa A10 by Artmark.",
+      "date": "2026-11-26T10:36:52.000Z",
+      "url": "https://www.news.ro/cultura-media/lucrare-de-ioan-andreescu-una-dintre-cele-mai-mari-ale-pictorului-are-un-pret-de-pornire-de-300-000-de-euro-in-licitatia-de-iarna-1922403626522026111223012106",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Lucrare de Ioan Andreescu, una dintre cele mai mari ale pictorului, are un preţ de pornire de 300.000 de euro în Licitaţia de Iarnă",
+      "addedAt": "2026-11-26T10:49:41.995Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-g4media-adjunctul-comandantului-fortelor-c49368",
+      "title": "Adjunctul comandantului Forțelor Aerospațiale ruse a fost arestat pentru luare de mită",
+      "summary": "Generalul Iuri Grehov, adjunctul comandantului-șef al Forțelor Aerospațiale al Rusiei (VKS) a fost arestat preventiv la Moscova pentru luare de mită în proporții deosebit de mari, scrie Mediafax. Decizia a fost luată de Tribunalul Militar al Garnizoanei 235 din capitala Rusiei, la solicitarea Direcției Principale de Investigații Militare din cadrul Comitetului de Investigații al Federației […] © G4Media.ro .",
+      "date": "2026-11-26T10:36:02.000Z",
+      "url": "https://www.g4media.ro/adjunctul-comandantului-fortelor-aerospatiale-ruse-a-fost-arestat-pentru-luare-de-mita.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Adjunctul comandantului Forțelor Aerospațiale ruse",
+        "arestare",
+        "mită"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2022/02/catuse.jpg",
+      "imageAlt": "Adjunctul comandantului Forțelor Aerospațiale ruse a fost arestat pentru luare de mită",
+      "addedAt": "2026-11-26T10:49:41.364Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-newsro-mediapart-si-le-monde-publica-noi-elemente-3b99cf",
+      "title": "Mediapart şi Le Monde publică noi elemente care-l identifică şi noi mesaje antisemite atribuite liderului extremei drepte Jordan Bardella, care nu recunoaşte că este autorul…",
+      "summary": "Site-ul de investigaţie Mediapart şi cotidianul Le Monde publică joi, la două luni după primele dezvăluiri ale Mediapart, noi elemente care arată că preşedintele Partidului Rassemblement national (RN, extremă dreapta) Jordan Bardella este autorul unor declaraţii antisemite, în 2013, pe care acesta le neagă neîncetat, relatează AFP.",
+      "date": "2026-11-26T10:35:01.000Z",
+      "url": "https://www.news.ro/externe/mediapart-si-le-monde-publica-noi-elemente-care-l-identifica-si-noi-mesaje-antisemite-atribuite-liderului-extremei-drepte-jordan-bardella-care-nu-recunoaste-ca-este-autorul-acestora-1922403526012026111223012064",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Mediapart şi Le Monde publică noi elemente care-l identifică şi noi mesaje antisemite atribuite liderului extremei drepte Jordan Bardella, care nu recunoaşte că este autorul acesto",
+      "addedAt": "2026-11-26T10:49:41.995Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-profit-foto-george-simion-inculpat-pentru-91529e",
+      "title": "FOTO George Simion, inculpat pentru instigare publică. REACȚIA politicianului: Cer tuturor oamenilor de bun simț să aprecieze dacă mai există un precedent de acest fel",
+      "summary": "George Simion, lderul AUR, a fost inculpat pentru instigare publică, după ce a afirmat că ”cei care au comis lovitura de stat” ”ar trebui jupuiți în piața publică”",
+      "date": "2026-11-26T10:35:00.000Z",
+      "url": "https://www.profit.ro/stiri/politic/foto-george-simion-inculpat-pentru-instigare-publica-reactia-politicianului-cer-tuturor-oamenilor-de-bun-simt-sa-aprecieze-daca-mai-exista-un-precedent-de-acest-fel-23012118?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Politic"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33238/23012118/1/2026-11-26-6.jpg?width=800",
+      "imageAlt": "FOTO George Simion, inculpat pentru instigare publică. REACȚIA politicianului: Cer tuturor oamenilor de bun simț să aprecieze dacă mai există un precedent de acest fel",
+      "addedAt": "2026-11-26T10:49:38.137Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-hotnews-pentru-ce-a-fost-inculpat-george-simion-9f317c",
+      "title": "Pentru ce a fost inculpat George Simion. Declarația care l-a dus în vizorul anchetatorilor",
+      "summary": "Liderul AUR, George Simion, a fost pus sub urmărire penală, joi, de Parchetul General într-un dosar în care este acuzat de instigare publică. Procurorii spun că mesajul lui Simion, care i-a atras ancheta, „a îndemnat publicul să săvârșească fapte ce constituie infracțiuni grave”. George Simion a fost citat joi, la ora 11.00, la Parchetul General, …",
+      "date": "2026-11-26T10:32:10.000Z",
+      "url": "https://hotnews.ro/pentru-ce-a-fost-inculpat-george-simion-declaratia-care-l-a-dus-in-vizorul-anchetatorilor-2414458",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ramona Ciobanu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Pentru ce a fost inculpat George Simion. Declarația care l-a dus în vizorul anchetatorilor",
+      "addedAt": "2026-11-26T10:49:32.460Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-g4media-bulgaria-sustine-imprumutul-ue-de-45-de-84372c",
+      "title": "Bulgaria susține împrumutul UE de 45 de miliarde de euro pentru Ucraina, dar refuză finanțarea ajutorului militar",
+      "summary": "Bulgaria va susține noul împrumut de 45 de miliarde de euro propus de Uniunea Europeană pentru Ucraina, însă va contribui doar la componenta destinată sprijinului nemilitar. Premierul bulgar Rumen Radev a declarat joi, la sosirea la summitul UE de la Bruxelles, că țara sa nu va aloca bani pentru achiziția de armament destinat Kievului, scrie […] © G4Media.ro .",
+      "date": "2026-11-26T10:32:08.000Z",
+      "url": "https://www.g4media.ro/bulgaria-sustine-imprumutul-ue-de-45-de-miliarde-de-euro-pentru-ucraina-dar-refuza-finantarea-ajutorului-militar.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "Bulgaria",
+        "împrumut UE",
+        "ucraina"
+      ],
+      "author": "Rareș Constantin",
+      "theme": "politika",
+      "image": "https://www.g4media.ro/wp-content/uploads/2022/06/neven-myst-PplU-JccwFA-unsplash-e1656432455484.jpg",
+      "imageAlt": "Bulgaria susține împrumutul UE de 45 de miliarde de euro pentru Ucraina, dar refuză finanțarea ajutorului militar",
+      "addedAt": "2026-11-26T10:49:41.364Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-g4media-evenimentul-aur-de-la-hotel-platinia-din-6dca18",
+      "title": "Evenimentul AUR de la Hotel Platinia din Cluj, fără prezența preotului Ioan Chirilă: „După ce am înțeles despre ce e vorba am comunicat organizatorilor neparticiparea mea. Am fost…",
+      "summary": "Strategia formațiunii extremiste AUR de a coopta intelectuali de marcă nu dă rezultate de fiecare dată. Directorul Bibliotecii Academiei-filiala Cluj, preotul Ioan Chirilă, spune că i-a anunțat pe organizatori că nu dorește să participe la evenimentul politic organizat la Hotel Platinia, după ce a înțeles despre ce este vorba. „Eu am fost cel neatent, o […] © G4Media.ro .",
+      "date": "2026-11-26T10:31:16.000Z",
+      "url": "https://www.g4media.ro/evenimentul-aur-de-la-hotel-platinia-din-cluj-fara-prezenta-preotului-ioan-chirila-dupa-ce-am-inteles-despre-ce-e-vorba-am-comunicat-organizatorilor-neparticiparea-mea-am-fost-neatent-o-l.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "ioan chirila",
+        "preotul ioan chirila"
+      ],
+      "author": "Cosmina Fernoagă",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/Ioan-Chirila-preot-directorul-Bibliotecii-Academiei-e1795686264195.jpg",
+      "imageAlt": "Evenimentul AUR de la Hotel Platinia din Cluj, fără prezența preotului Ioan Chirilă: „După ce am înțeles despre ce e vorba am comunicat organizatorilor neparticiparea mea. Am fost ",
+      "addedAt": "2026-11-26T10:49:41.364Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-profit-video-anunt-noua-fabrica-in-romania-e54cd6",
+      "title": "VIDEO ANUNȚ Nouă fabrică în România. Artesana va deschide o nouă fabrică de brânzeturi la Tecuci. Alina Donici, co-fondatoare Artesana: Este o direcție complementară; credem…",
+      "summary": "Artesana pregătește o nouă fabrică de brânzeturi, la Tecuci, pentru care va contracta un credit bancar în valoare de 15 milioane de euro, a anunțat, la Maratonul Profit la feminin, Femei care construiesc România, organizat de Profit.ro, Alina Donici, co-fondatoarea companiei.",
+      "date": "2026-11-26T10:30:00.000Z",
+      "url": "https://www.profit.ro/maratoanele-profit-ro/video-anunt-fabrica-romania-artesana-deschide-fabrica-branzeturi-tecuci-alina-donici-co-fondatoare-artesana-directie-complementara-credem-foarte-mult-acest-proiect-maratonul-profit-feminin-femei-23012059?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Maratoanele Profit.ro"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/39246/23012059/9/img-6098.jpg?width=800",
+      "imageAlt": "VIDEO ANUNȚ Nouă fabrică în România. Artesana va deschide o nouă fabrică de brânzeturi la Tecuci. Alina Donici, co-fondatoare Artesana: Este o direcție complementară; credem foarte",
+      "addedAt": "2026-11-26T10:49:38.137Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-newsro-comunicat-de-presa-referitor-la-suspendarea-9e8981",
+      "title": "COMUNICAT DE PRESĂ referitor la suspendarea definitivă a hotărârilor Inspectoratului Şcolar Judeţean Constanţa privind desfiinţarea a 7,5 posturi de la Palatul Copiilor Constanţa",
+      "summary": "Prin Hotărârea nr. 921 din 23.11.2026, Curtea de Apel Constanţa a respins, ca nefondat, recursul formulat împotriva Sentinţei civile nr. 936 din 23.07.2026 a Tribunalului Constanţa. Hotărârea este definitivă, astfel că suspendarea executării hotărârilor prin care Inspectoratul Şcolar Judeţean Constanţa a decis desfiinţarea a 7,5 norme/posturi de la Palatul Copiilor Constanţa a rămas definitiv confirmată, iar măsurile contestate rămân suspendate până la soluţionarea definitivă a acţiunii în anulare. În primă instanţă, şi acţiunea în anulare a fost admisă.",
+      "date": "2026-11-26T10:29:12.000Z",
+      "url": "https://www.news.ro/opinii-avocat-ro/comunicat-de-presa-referitor-la-suspendarea-definitiva-a-hotararilor-inspectoratului-scolar-judetean-constanta-privind-desfiintarea-a-7-5-posturi-de-la-palatul-copiilor-constanta-1924402926122026111223012110",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "COMUNICAT DE PRESĂ referitor la suspendarea definitivă a hotărârilor Inspectoratului Şcolar Judeţean Constanţa privind desfiinţarea a 7,5 posturi de la Palatul Copiilor Constanţa",
+      "addedAt": "2026-11-26T10:49:41.996Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-profit-prabusire-premiera-la-banii-pe-care-i-mai-518d9d",
+      "title": "Prăbușire premieră la banii pe care-i mai poți lua pentru casă prin credit ipotecar. Accesibilitatea locuințelor noi a ajuns la cel mai scăzut nivel din 2019. Scăderea…",
+      "summary": "Cu un salariu mediu, creditul ipotecar acoperă astăzi mai puțin de jumătate din prețul unui apartament nou de două camere în marile orașe.",
+      "date": "2026-11-26T10:20:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/real-estate-constructii/prabusire-premiera-banii-i-poti-lua-casa-credit-ipotecar-accesibilitatea-locuintelor-ajuns-cel-scazut-nivel-2019-scaderea-accesibilitatii-vine-multe-directii-23012077?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Real Estate&Construcții"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33219/23012077/1/financing-3536755-1920.jpg?width=800",
+      "imageAlt": "Prăbușire premieră la banii pe care-i mai poți lua pentru casă prin credit ipotecar. Accesibilitatea locuințelor noi a ajuns la cel mai scăzut nivel din 2019. Scăderea accesibilită",
+      "addedAt": "2026-11-26T10:49:38.138Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-zf-metawealth-platforma-de-investitii-fondata-9102e9",
+      "title": "MetaWealth, platformă de investiţii fondată de Michael Topolinski, semnează un contract de 10 mil.euro cu StarCharge pentru baterii de 100 MWh destinate proiectului de stocare de…",
+      "summary": "",
+      "date": "2026-11-26T10:16:28.000Z",
+      "url": "https://www.zf.ro/zf-24/metawealth-platforma-investitii-fondata-michael-topolinski-semneaza-contract-10-mil-euro-starcharge-baterii-100-mwh-destinate-proiectului-stocare-sanpaul-judetul-mures-23290000",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF 24"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21330/23290000/1/bess-photo-002.jpg?width=700",
+      "imageAlt": "MetaWealth, platformă de investiţii fondată de Michael Topolinski, semnează un contract de 10 mil.euro cu StarCharge pentru baterii de 100 MWh destinate proiectului de stocare de l",
+      "addedAt": "2026-11-26T10:49:38.009Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-hotnews-p-coltul-tau-de-beauty-acasa-cum-alegi-o-8809c9",
+      "title": "[P] Colțul tău de beauty acasă: cum alegi o masă de machiaj cu oglindă și un kit de unghii care chiar te ajută",
+      "summary": "Pregătirile de dimineață și manichiura de duminică seara au ceva în comun: amândouă depind de un loc bine pus la punct. Când pensulele stau într-un sertar, pila în altul, iar lumina vine din spate, chiar și cea mai simplă rutină devine o mică bătălie. O masă de machiaj cu oglindă potrivită și un kit de …",
+      "date": "2026-11-26T10:16:16.000Z",
+      "url": "https://hotnews.ro/p-coltul-tau-de-beauty-acasa-cum-alegi-o-masa-de-machiaj-cu-oglinda-si-un-kit-de-unghii-care-chiar-te-ajuta-2414559",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "codruta.predatu@zyxgroup.ro",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "[P] Colțul tău de beauty acasă: cum alegi o masă de machiaj cu oglindă și un kit de unghii care chiar te ajută",
+      "addedAt": "2026-11-26T10:49:32.460Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-profit-video-veste-buna-anuntata-de-premierul-85a68f",
+      "title": "VIDEO ”Veste bună”, anunțată de premierul Niculescu. După 4 ani de la înființare, Oficiul pentru Licență Industrială a emis prima licență industrială unică din România",
+      "summary": "Oficiul pentru Licență Industrială a emis prima licență industrială unică din România, a anunțat premierul Luca Niculescu, care a calificat evenimentul drept o ”veste bună”.",
+      "date": "2026-11-26T10:16:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/video-veste-buna-anuntata-de-premierul-niculescu-dupa-4-ani-de-la-infiintare-oficiul-pentru-licenta-industriala-a-emis-prima-licenta-industriala-unica-din-romania-23012038?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Povești cu Profit"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33209/23012038/1/worker-5736096-1280.jpg?width=800",
+      "imageAlt": "VIDEO ”Veste bună”, anunțată de premierul Niculescu. După 4 ani de la înființare, Oficiul pentru Licență Industrială a emis prima licență industrială unică din România",
+      "addedAt": "2026-11-26T10:49:38.138Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-hotnews-document-scaderea-impozitului-pe-dividende-0bc451",
+      "title": "DOCUMENT Scăderea impozitului pe dividende în trei etape, până la 10% în 2030 (propunere oficială)",
+      "summary": "O propunere de lege înregistrată la Senat prevede reducerea treptată a impozitului pe dividende, începând din 2028. În prezent, cota este de 16%, după ce Guvernul Bolojan a majorat-o de la 10%, începând cu 1 ianuarie 2026. Citește mai departe pe StartupCafe… Foto: : © Vlad Ispas | Dreamstime.com",
+      "date": "2026-11-26T10:15:25.000Z",
+      "url": "https://hotnews.ro/document-scaderea-impozitului-pe-dividende-in-trei-etape-pana-la-10-in-2030-propunere-oficiala-2414558",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Startup Cafe",
+        "Economie",
+        "Finante"
+      ],
+      "author": "George Sîrbu",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "DOCUMENT Scăderea impozitului pe dividende în trei etape, până la 10% în 2030 (propunere oficială)",
+      "addedAt": "2026-11-26T10:49:32.461Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-hotnews-video-george-simion-urmarit-penal-de-b70123",
+      "title": "VIDEO George Simion, urmărit penal de Parchetul General. Sute de susținători în fața instituției",
+      "summary": "George Simion a fost pus sub urmărire penală, joi, de Parchetul General într-un dosar în care este acuzat de instigare publică. Ancheta a pornit după ce liderul AUR a spus, pe Facebook, că membrii BEC care au invalidat candidatura lui Călin Georgescu la prezidențiale ar trebui „jupuiți în piața publică”. Înainte să intre în sediul …",
+      "date": "2026-11-26T10:02:00.000Z",
+      "url": "https://hotnews.ro/george-simion-la-parchetul-general-dosar-instigare-publica-2414202",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ramona Ciobanu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "VIDEO George Simion, urmărit penal de Parchetul General. Sute de susținători în fața instituției",
+      "addedAt": "2026-11-26T10:49:32.461Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-zf-belgienii-de-la-speedwell-semneaza-un-547501",
+      "title": "Belgienii de la Speedwell semnează un contract de închiriere pe 10 ani cu operatorul de restaurante Spoonful pentru un spaţiu în proiectul Queens District din nordul Capitalei",
+      "summary": "",
+      "date": "2026-11-26T10:00:28.000Z",
+      "url": "https://www.zf.ro/constructii-imobiliare/belgienii-de-la-speedwell-semneaza-un-contract-de-inchiriere-pe-10-ani-cu-operatorul-de-restaurante-spoonful-pentru-un-spatiu-in-proiectul-queens-district-din-nordul-capitalei-23289992",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Constructii & Imobiliare"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21328/23289992/1/maria-jianu-leasing-director-speedwell.jpg?width=700",
+      "imageAlt": "Belgienii de la Speedwell semnează un contract de închiriere pe 10 ani cu operatorul de restaurante Spoonful pentru un spaţiu în proiectul Queens District din nordul Capitalei",
+      "addedAt": "2026-11-26T10:49:38.009Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-zf-emisiunea-zf-generatia-pilon-ii-adrian-50c5c3",
+      "title": "Emisiunea ZF Generaţia Pilon II: Adrian Codirlaşu, preşedintele CFA România: Fondurile de pensii votează în AGA în numele participanţilor. Interesele viitorului pensionar trebuie…",
+      "summary": "",
+      "date": "2026-11-26T10:00:00.000Z",
+      "url": "https://www.zf.ro/zf-generatia-pilon-ii/emisiunea-zf-generatia-pilon-ii-adrian-codirlasu-presedintele-cfa-romania-fondurile-pensii-voteaza-aga-numele-participantilor-interesele-viitorului-pensionar-puse-primul-loc-inclusiv-inaintea-23285555",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "ZF Generaţia Pilon II"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/42746/23285555/20/grafica-fonduri-00-00-58-00-still010.png?width=700",
+      "imageAlt": "Emisiunea ZF Generaţia Pilon II: Adrian Codirlaşu, preşedintele CFA România: Fondurile de pensii votează în AGA în numele participanţilor. Interesele viitorului pensionar trebuie p",
+      "addedAt": "2026-11-26T10:49:38.009Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-hotnews-fjord-va-fi-prezentat-la-washington-inainte-77142f",
+      "title": "Fjord va fi prezentat la Washington, înainte de votul pe lista scurtă pentru Oscar. Cristian Mungiu va discuta cu publicul",
+      "summary": "Trei dintre filmele regizate de Cristian Mungiu vor fi difuzate în perioada 4-6 decembrie la cinematograful AMC Georgetown 14 din Washington în cadrul programul „Cristian Mungiu: Stories of Our Times”, anunță Ambasada României în SUA într-un comunicat de presă. Cele trei filme care vor fi difuzate în cadrul programului sunt „După dealuri”, „R.M.N.” și „Fjord”. …",
+      "date": "2026-11-26T09:59:27.000Z",
+      "url": "https://hotnews.ro/fjord-va-fi-prezentat-la-washington-inainte-de-votul-pe-lista-scurta-pentru-oscar-cristian-mungiu-va-discuta-cu-publicul-2414514",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "cristian mungiu",
+        "fjord"
+      ],
+      "author": "Sebastian Pricop",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Fjord va fi prezentat la Washington, înainte de votul pe lista scurtă pentru Oscar. Cristian Mungiu va discuta cu publicul",
+      "addedAt": "2026-11-26T10:49:32.461Z"
+    },
+    {
+      "slug": "bukurest-2026-11-26-hotnews-video-institutul-sanului-mai-aproape-de-f956ab",
+      "title": "VIDEO Institutul Sânului, mai aproape de pacientele din județul Argeș: consultații și investigații, disponibile în Hyperclinica MedLife Solomed Pitești",
+      "summary": "Din noiembrie, femeile din Argeș și din județele învecinate pot beneficia, de consultații de senologie și ecografie mamară oferite de echipa Institutului Sânului, în cadrul Hyperclinicii MedLife Solomed din Pitești. Colaborarea aduce mai aproape de paciente expertiza unei echipe medicale specializate în patologia sânului și facilitează accesul la investigații suplimentare și soluții de tratament, atunci …",
+      "date": "2026-11-26T09:53:26.000Z",
+      "url": "https://hotnews.ro/video-institutul-sanului-mai-aproape-de-pacientele-din-judetul-arges-consultatii-si-investigatii-disponibile-in-hyperclinica-medlife-solomed-pitesti-2414356",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Esential"
+      ],
+      "author": "Zero Georgiana",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "VIDEO Institutul Sânului, mai aproape de pacientele din județul Argeș: consultații și investigații, disponibile în Hyperclinica MedLife Solomed Pitești",
+      "addedAt": "2026-11-26T10:49:32.461Z"
+    },
     {
       "slug": "bukurest-2026-11-26-agerpres-trump-si-secretarul-general-al-nato-8b2c75",
       "title": "Trump și secretarul general al NATO îndeamnă Rusia să nu 'extindă războiul' cu #Ucraina",

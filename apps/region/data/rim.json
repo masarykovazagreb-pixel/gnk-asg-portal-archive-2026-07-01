@@ -4,7 +4,7 @@
   "lang": "it",
   "city": "Rim",
   "country": "Italija",
-  "updatedAt": "2026-11-26T05:01:04.439Z",
+  "updatedAt": "2026-11-26T10:48:29.187Z",
   "sources": [
     {
       "id": "ansa",
@@ -14,22 +14,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:00:54.439Z"
+      "checkedAt": "2026-11-26T10:48:24.102Z"
     },
     {
       "id": "repubblica",
       "name": "la Repubblica",
       "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 30,
       "corrupt": 0,
-      "errors": [
-        "https://www.repubblica.it/rss/homepage/rss2.0.xml: HTTP 403",
-        "https://www.repubblica.it/rss/politica/rss2.0.xml: HTTP 403",
-        "https://www.repubblica.it/rss/economia/rss2.0.xml: HTTP 403",
-        "https://www.repubblica.it/rss/sport/rss2.0.xml: HTTP 403"
-      ],
-      "checkedAt": "2026-11-26T05:00:57.596Z"
+      "errors": [],
+      "checkedAt": "2026-11-26T10:48:24.471Z"
     },
     {
       "id": "ilpost",
@@ -41,7 +36,7 @@
       "errors": [
         "https://www.ilpost.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-26T05:00:59.124Z"
+      "checkedAt": "2026-11-26T10:48:25.717Z"
     },
     {
       "id": "sole24",
@@ -51,7 +46,7 @@
       "fetched": 37,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:01:00.311Z"
+      "checkedAt": "2026-11-26T10:48:26.397Z"
     },
     {
       "id": "corriere",
@@ -61,19 +56,17 @@
       "fetched": 69,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T05:01:01.021Z"
+      "checkedAt": "2026-11-26T10:48:26.774Z"
     },
     {
       "id": "lastampa",
       "name": "La Stampa",
       "url": "https://www.lastampa.it/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 64,
       "corrupt": 0,
-      "errors": [
-        "https://www.lastampa.it/rss: HTTP 403"
-      ],
-      "checkedAt": "2026-11-26T05:01:02.018Z"
+      "errors": [],
+      "checkedAt": "2026-11-26T10:48:27.217Z"
     },
     {
       "id": "fanpage",
@@ -85,7 +78,7 @@
       "errors": [
         "https://www.fanpage.it/feed/: HTTP 403"
       ],
-      "checkedAt": "2026-11-26T05:01:03.167Z"
+      "checkedAt": "2026-11-26T10:48:28.215Z"
     },
     {
       "id": "adnkronos",
@@ -97,10 +90,304 @@
       "errors": [
         "https://www.adnkronos.com/rss: nije feed"
       ],
-      "checkedAt": "2026-11-26T05:01:04.439Z"
+      "checkedAt": "2026-11-26T10:48:29.187Z"
     }
   ],
   "items": [
+    {
+      "slug": "rim-2026-11-26-ansa-la-camera-approva-il-decreto-scuola-142-i-fe645d",
+      "title": "La Camera approva il decreto scuola, 142 i sì, 112 i no",
+      "summary": "Gli astenuti sono stati 4. Sul provvedimento il governo aveva posto la fiducia",
+      "date": "2026-11-26T10:24:32.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/26/la-camera-approva-il-decreto-scuola-142-i-si-112-i-no_ec0ec19c-1fd1-407c-ae05-6df35060499a.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "La Camera approva il decreto scuola, 142 i sì, 112 i no",
+      "addedAt": "2026-11-26T10:48:24.102Z"
+    },
+    {
+      "slug": "rim-2026-11-26-ansa-cremlino-da-ue-altra-ingente-somma-per-la-50d33b",
+      "title": "Cremlino, 'da Ue altra ingente somma per la guerra invece che per i suoi cittadini",
+      "summary": "'Meno soldi nelle tasche di francesi, italiani e tedeschi'",
+      "date": "2026-11-26T10:14:58.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/26/cremlino-da-ue-altra-ingente-somma-per-la-guerra-invece-che-per-i-suoi_3c3467ab-8d4e-411b-a371-83a2e2096ab8.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Cremlino, 'da Ue altra ingente somma per la guerra invece che per i suoi cittadini",
+      "addedAt": "2026-11-26T10:48:24.102Z"
+    },
+    {
+      "slug": "rim-2026-11-26-repubblica-anm-replica-a-meloni-dispiaciuti-per-il-suo-2d8a43",
+      "title": "Anm replica a Meloni: “Dispiaciuti per il suo ennesimo attacco strumentale, noi per il dialogo”",
+      "summary": "Il presidente dell’Associazione magistrati risponde alla premier dopo la decisione del Consiglio di Stato sull’adeguamento degli stipendi e dopo l’annuncio che non parteciperà al congresso a Napoli in programma nei prossimi giorni",
+      "date": "2026-11-26T10:09:37.000Z",
+      "url": "https://www.repubblica.it/politica/2026/11/26/news/anm_replica_meloni_rinuncia_confronto_aumenti-425751546/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Politica"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Anm replica a Meloni: “Dispiaciuti per il suo ennesimo attacco strumentale, noi per il dialogo”",
+      "addedAt": "2026-11-26T10:48:24.471Z"
+    },
+    {
+      "slug": "rim-2026-11-26-ansa-uccide-compagna-poi-si-getta-da-viadotto-lo-3bd201",
+      "title": "Uccide compagna poi si getta da viadotto, lo stesso cavalcavia di Lorena Isceri",
+      "summary": "Femminicidio nel Pistoiese, uomo ha poi raggiunto A1 e si è lanciato da ponte",
+      "date": "2026-11-26T10:01:05.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/26/uccide-compagna-poi-si-getta-da-viadotto-lo-stesso-cavalcavia-di-lorena-isceri_ac88f057-b0bc-4146-8cb1-af1024cfcd4a.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Uccide compagna poi si getta da viadotto, lo stesso cavalcavia di Lorena Isceri",
+      "addedAt": "2026-11-26T10:48:24.103Z"
+    },
+    {
+      "slug": "rim-2026-11-26-ansa-anm-noi-per-il-dialogo-ma-meloni-ci-attacca-d071c3",
+      "title": "Anm, 'noi per il dialogo, ma Meloni ci attacca e rinuncia al confronto'",
+      "summary": "'Dispiaciuti della decisione della premier di rifiutare l'invito al congresso di Napoli'",
+      "date": "2026-11-26T09:57:21.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/26/anm-noi-per-il-dialogo-ma-meloni-ci-attacca-e-rinuncia-al-confronto_acda90b4-86ca-47b7-97ad-eaea971d33aa.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Anm, 'noi per il dialogo, ma Meloni ci attacca e rinuncia al confronto'",
+      "addedAt": "2026-11-26T10:48:24.103Z"
+    },
+    {
+      "slug": "rim-2026-11-26-repubblica-uccide-la-compagna-e-poi-si-getta-dal-efbcbb",
+      "title": "Uccide la compagna e poi si getta dal viadotto, lo stesso di Lorena Isceri",
+      "summary": "Il femminicidio è avvenuto nel Pistoiese. L’uomo, 25 anni, avrebbe dato fuoco alla macchina, poi a sé stesso e infine si sarebbe gettato nel vuoto",
+      "date": "2026-11-26T09:48:42.000Z",
+      "url": "https://firenze.repubblica.it/cronaca/2026/11/26/news/uccide_compagna_viadotto_lorena_isceri_pistoiese-425751488/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Cronaca"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Uccide la compagna e poi si getta dal viadotto, lo stesso di Lorena Isceri",
+      "addedAt": "2026-11-26T10:48:24.472Z"
+    },
+    {
+      "slug": "rim-2026-11-26-ansa-sasso-assassini-vigliacchi-partigiani-657d03",
+      "title": "Sasso, assassini vigliacchi partigiani comunisti\", Ascani \"in Aula non si può dire\"",
+      "summary": "Opposizioni insorgono, la Presidente placa lo scontro",
+      "date": "2026-11-26T09:39:18.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/26/sasso-assassini-vigliacchi-partigiani-comunisti-ascani-in-aula-non-si-puo-dire_27c09e25-8ac2-4dcf-980f-2c3eee58a2a0.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Sasso, assassini vigliacchi partigiani comunisti\", Ascani \"in Aula non si può dire\"",
+      "addedAt": "2026-11-26T10:48:24.103Z"
+    },
+    {
+      "slug": "rim-2026-11-26-ansa-merz-il-bilancio-ue-proposto-e-ancora-a55441",
+      "title": "Merz, il bilancio Ue proposto è ancora troppo alto, no a nuovo debito comune",
+      "summary": "'Le ipotesi sul tavolo non sono una base per un accordo'",
+      "date": "2026-11-26T09:37:12.000Z",
+      "url": "https://www.ansa.it/sito/notizie/topnews/2026/11/26/merz-il-bilancio-ue-proposto-e-ancora-troppo-alto-no-a-nuovo-debito-comune_ea4738ae-4bdf-4ec4-a9b2-50db435493e4.html",
+      "source": "ansa",
+      "sourceName": "ANSA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Merz, il bilancio Ue proposto è ancora troppo alto, no a nuovo debito comune",
+      "addedAt": "2026-11-26T10:48:24.103Z"
+    },
+    {
+      "slug": "rim-2026-11-26-repubblica-emergenza-casa-e-disuguaglianze-la-risposta-c46186",
+      "title": "Emergenza casa e disuguaglianze, la risposta dell’Europa è nel bilancio",
+      "summary": "La lettera dei sindaci di Roma, Barcellona, Lisbona, Parigi e Varsavia: “L'Unione europea ha bisogno di un bilancio che agisca come scudo sociale contro le disuguaglianze, risponda alle preoccupazioni dei cittadini e riconosca le città e le regioni come attori strategici per il futuro”",
+      "date": "2026-11-26T09:22:52.000Z",
+      "url": "https://roma.repubblica.it/cronaca/2026/11/26/news/lettera_sindaci_europei_bilancio_casa_disuguaglianze-425751407/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Cronaca"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Emergenza casa e disuguaglianze, la risposta dell’Europa è nel bilancio",
+      "addedAt": "2026-11-26T10:48:24.472Z"
+    },
+    {
+      "slug": "rim-2026-11-26-lastampa-le-onde-si-abbattono-sul-pontile-e-ne-5b8981",
+      "title": "Le onde si abbattono sul pontile e ne strappano un pezzo: il crollo ripreso dall’alto in California",
+      "summary": "Un tratto del pontile cede sotto i colpi delle onde e precipita in mare: le immagini aeree mostrano il crollo a Pacifica, in California, il 25 novembre. La mareggiata ha colpito la costa durante le “king tides”, maree astronomiche particolarmente alte. La struttura era chiusa da giugno dopo la scoperta di crepe. Il Comune ha invitato residenti e visitatori a restare lontani dalla spiaggia, segnalando il rischio di detriti in acqua, forti correnti e onde pericolose.",
+      "date": "2026-11-26T09:20:00.000Z",
+      "url": "https://www.lastampa.it/video/socialnews/2026/11/26/video/california_onde_pontile_crollo_immagini-15809861/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/video/socialnews"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "drustvo",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/11/26/112017528-f649a339-d9c6-4efd-a9fc-b4b44c7fc934.jpg",
+      "imageAlt": "Le onde si abbattono sul pontile e ne strappano un pezzo: il crollo ripreso dall’alto in California",
+      "addedAt": "2026-11-26T10:48:27.218Z"
+    },
+    {
+      "slug": "rim-2026-11-26-lastampa-ho-impedito-alla-mia-famiglia-di-darmi-in-93ace6",
+      "title": "“Ho impedito alla mia famiglia di darmi in sposa a 17 anni”, la storia di Heema e l’abbraccio di Beckham",
+      "summary": "Unicef India ha voluto raccontare la vicenda attraverso un documentario",
+      "date": "2026-11-26T09:13:00.000Z",
+      "url": "https://www.lastampa.it/esteri/2026/11/26/news/heema_matrimonio_forzato_david_beckham_storia-15809855/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/esteri"
+      ],
+      "author": "A CURA DELLA REDAZIONE WEB",
+      "theme": "drustvo",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/11/26/111342454-c91e93ff-42a5-4cbc-ac61-775b27983fd4.jpg",
+      "imageAlt": "“Ho impedito alla mia famiglia di darmi in sposa a 17 anni”, la storia di Heema e l’abbraccio di Beckham",
+      "addedAt": "2026-11-26T10:48:27.218Z"
+    },
+    {
+      "slug": "rim-2026-11-26-lastampa-elisa-racconta-l-abuso-subito-da-bambina-42e94d",
+      "title": "Elisa racconta l'abuso subito da bambina: \"Capita di chiedersi se sia successo davvero\"",
+      "summary": "Elisa ieri alla Triennale di Milano ha presentando Kintsugi, il nuovo album in uscita il 27 novembre. Ha anche parlato degli abusi subita da bambina e di come affrontare questi temi con i propri figli. \"Bisogna poter denunciare ogni tipo di violenza. Fin da quando erano piccoli io ho messo in guardia i miei figli sul fatto che esistono persone che hanno impulsi sbagliati nei loro confronti. Non pensate che sia colpa vostra o di essere sbagliati. – ha detto la cantante - Il senso di colpa che rimane addosso è un paradosso perché tu non hai fatto niente. Hai paura che se lo racconti nessuno ti crederà. Io avevo 8 anni: in certi momenti ti chiedi se è successo davvero. L'orrore non puoi…",
+      "date": "2026-11-26T09:05:00.000Z",
+      "url": "https://www.lastampa.it/milano/2026/11/26/video/elisa_cantante_abusata_bambina-15809843/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/milano"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "sigurnost",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/11/26/110552631-35054cae-bbba-452e-862f-4ac96d74a6e7.jpg",
+      "imageAlt": "Elisa racconta l'abuso subito da bambina: \"Capita di chiedersi se sia successo davvero\"",
+      "addedAt": "2026-11-26T10:48:27.218Z"
+    },
+    {
+      "slug": "rim-2026-11-26-repubblica-lega-giovani-arriva-verri-il-nuovo-63dff0",
+      "title": "Lega giovani, arriva Verri: il nuovo coordinatore insultò Tajani sulla riforma della cittadinanza",
+      "summary": "Premiato il futuro capo della giovanile che nel 2024 in corteo attaccò il segretario forzista. Dopo sette anni prende il posto di Luca Toccalini. L’investitura è in programma per sabato a Verona, sarà eletta anche la nuova squadra che affiancherà",
+      "date": "2026-11-26T09:02:41.000Z",
+      "url": "https://www.repubblica.it/politica/2026/11/26/news/alessandro_verri_lega_giovani_tajani-425751354/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Politica"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Lega giovani, arriva Verri: il nuovo coordinatore insultò Tajani sulla riforma della cittadinanza",
+      "addedAt": "2026-11-26T10:48:24.472Z"
+    },
+    {
+      "slug": "rim-2026-11-26-lastampa-torino-folle-inseguimento-con-un-15enne-al-02affc",
+      "title": "Torino, folle inseguimento con un 15enne al volante: “Ho imparato a guidare dai simulatori”",
+      "summary": "La gimkana con carabinieri e polizia a Torino: a bordo con il ragazzo altri due minorenni, speronata l’auto dei militari. Lui: «Non c’erano più bus e così ho noleggiato un’auto»",
+      "date": "2026-11-26T08:58:00.000Z",
+      "url": "https://www.lastampa.it/torino/2026/11/26/news/inseguimento_torino_15enne_auto_noleggio_carabinieri_arrestato-15809830/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/torino"
+      ],
+      "author": "Caterina Stamin",
+      "theme": "drustvo",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/11/26/105802690-67636490-0f49-4b12-b972-b2379550cf89.jpg",
+      "imageAlt": "Torino, folle inseguimento con un 15enne al volante: “Ho imparato a guidare dai simulatori”",
+      "addedAt": "2026-11-26T10:48:27.218Z"
+    },
+    {
+      "slug": "rim-2026-11-26-lastampa-huang-yi-hao-il-comico-che-ha-bisogno-della-d47808",
+      "title": "Huang Yi-Hao, il comico che ha bisogno della scorta per raccontare barzellette sulla Cina",
+      "summary": "Durante i suoi spettacoli, tra il pubblico ci sono agenti in borghese incaricati di sorvegliare la sala",
+      "date": "2026-11-26T08:57:00.000Z",
+      "url": "https://www.lastampa.it/spettacoli/2026/11/26/news/huang_yi_hao_comico_scorta_satira_cina-15809827/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/spettacoli"
+      ],
+      "author": "A CURA DELLA REDAZIONE WEB",
+      "theme": "sigurnost",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/11/26/105706914-6dd86040-14ca-4c87-b9f5-1ec9214b9c67.jpg",
+      "imageAlt": "Huang Yi-Hao, il comico che ha bisogno della scorta per raccontare barzellette sulla Cina",
+      "addedAt": "2026-11-26T10:48:27.218Z"
+    },
+    {
+      "slug": "rim-2026-11-26-lastampa-uccide-la-compagna-e-si-lancia-dallo-stesso-1518d3",
+      "title": "Uccide la compagna e si lancia dallo stesso viadotto a Firenze dove morì Lorena Isceri",
+      "summary": "La tragedia a Ponte Buggianese nel Pistoiese. La vittima aveva 24 anni. L’uomo avrebbe dato fuoco alla macchina, poi a sé stesso e infine si sarebbe gettato nel vuoto",
+      "date": "2026-11-26T08:56:00.000Z",
+      "url": "https://www.lastampa.it/cronaca/2026/11/26/news/femminicidio_pistoia_uomo_uccide_compagna_suicidio-15809824/",
+      "source": "lastampa",
+      "sourceName": "La Stampa",
+      "categories": [
+        "/lastampa/cronaca"
+      ],
+      "author": "(Redazione La Stampa)",
+      "theme": "drustvo",
+      "image": "https://www.gedistatic.it/content/gnn/img/lastampa/2026/11/26/112255605-0d9524bf-b070-433a-9bef-0a3587b92490.jpg",
+      "imageAlt": "Uccide la compagna e si lancia dallo stesso viadotto a Firenze dove morì Lorena Isceri",
+      "addedAt": "2026-11-26T10:48:27.218Z"
+    },
+    {
+      "slug": "rim-2026-11-26-repubblica-manifestazione-unitaria-del-centrosinistra-ebda6b",
+      "title": "Manifestazione unitaria del centrosinistra in stand-by, Pd e Avs in pressing ma i 5s non rispondono",
+      "summary": "A rischio l’appuntamento unitario annunciato dai leader delle opposizioni a fine ottobre. Non si sa ancora nulla. L'idea di coinvolgere anche le associazioni e le organizzazioni sociali approfittando della discussione parlamentare sulla manovra per presentare l’alternativa a Meloni",
+      "date": "2026-11-26T08:38:48.000Z",
+      "url": "https://www.repubblica.it/politica/2026/11/26/news/manifestazione_unitaria_pd_m5s_avs_campo_largo-425751291/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "Politica"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Manifestazione unitaria del centrosinistra in stand-by, Pd e Avs in pressing ma i 5s non rispondono",
+      "addedAt": "2026-11-26T10:48:24.472Z"
+    },
+    {
+      "slug": "rim-2026-11-26-repubblica-lavoro-si-sgonfiano-i-bonus-per-giovani-1070ce",
+      "title": "Lavoro, si sgonfiano i bonus per giovani, donne e Sud. Cresce la disoccupazione over 50",
+      "summary": "I dati Inps sugli incentivi che la manovra rinnova con 867 milioni in tre anni. Dal 2021 aumentano di un terzo i trattamenti di disoccupazione degli over 55 e le Naspi lunghe",
+      "date": "2026-11-26T07:00:00.000Z",
+      "url": "https://www.repubblica.it/economia/dossier/manovra-finanziaria-legge-di-bilancio/2026/11/26/news/lavoro_si_sgonfiano_i_bonus_per_giovani_donne_e_sud_cresce_la_disoccupazione_over_50-425751053/",
+      "source": "repubblica",
+      "sourceName": "la Repubblica",
+      "categories": [
+        "manovra finanziaria legge di bilancio"
+      ],
+      "author": "repubblicawww@repubblica.it (Redazione Repubblica.it)",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Lavoro, si sgonfiano i bonus per giovani, donne e Sud. Cresce la disoccupazione over 50",
+      "addedAt": "2026-11-26T10:48:24.472Z"
+    },
     {
       "slug": "rim-2026-11-26-ansa-la-lettera-di-de-gennaro-sul-corriere-io-d126f4",
       "title": "La lettera di De Gennaro sul Corriere: 'Io, condannato a morte'",
