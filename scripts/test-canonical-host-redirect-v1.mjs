@@ -14,4 +14,16 @@ for(const method of ['GET','POST']){
 
 assert.equal(canonicalHostRedirect(new Request('https://gnk-asg.hr/contact/')),null);
 
-console.log('Canonical www to non-www Worker redirect: PASS');
+// Exact public routes only; preserve the operator root and authenticated writes.
+for(const path of ['/gnk-aktual/','/nermin-sefic/','/en/nermin-sefic/','/about/','/en/about/','/objave/','/en/publications/','/intelligence-desk/','/mreza/']){
+ for(const method of ['GET','HEAD']){
+  const response=canonicalHostRedirect(new Request('https://operator.gnk-asg.hr'+path+'?ref=search',{method}));
+  assert.equal(response?.status,308,path);
+  assert.equal(response.headers.get('location'),'https://gnk-asg.hr'+path+'?ref=search');
+ }
+ assert.equal(canonicalHostRedirect(new Request('https://operator.gnk-asg.hr'+path,{method:'POST'})),null);
+}
+for(const path of ['/','/admin/','/api/public-news','/nermin-sefic/private/','/about/preview/']){
+ assert.equal(canonicalHostRedirect(new Request('https://operator.gnk-asg.hr'+path)),null,path);
+}
+console.log('Canonical public entity and www redirects: PASS');

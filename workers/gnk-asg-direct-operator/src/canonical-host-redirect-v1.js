@@ -1,6 +1,6 @@
 // Canonical redirects: exact verified public paths, not a broad operator prefix.
 // Preserve the pre-existing www host consolidation. Never redirect operator writes.
-const PUBLIC_MEDIA_PATHS=new Set(["/gnk-aktual/","/gnk-aktual/mreza/","/gnk-aktual/izvori/","/gnk-aktual/tjedni/","/aktual-media/","/aktual-media/proizvodi/","/en/gnk-aktual/","/en/gnk-aktual/network/","/en/aktual-media/","/izdanja/","/kanal/"]);
+const PUBLIC_MEDIA_PATHS=new Set(["/gnk-aktual/","/gnk-aktual/mreza/","/gnk-aktual/izvori/","/gnk-aktual/tjedni/","/aktual-media/","/aktual-media/proizvodi/","/en/gnk-aktual/","/en/gnk-aktual/network/","/en/aktual-media/","/izdanja/","/kanal/","/nermin-sefic/","/en/nermin-sefic/","/about/","/en/about/","/objave/","/en/publications/","/intelligence-desk/","/mreza/"]);
 export function canonicalHostRedirect(request){
  const url=new URL(request.url);
  const read=request.method==='GET'||request.method==='HEAD';
