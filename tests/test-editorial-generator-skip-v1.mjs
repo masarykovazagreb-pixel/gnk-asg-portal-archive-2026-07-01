@@ -2,15 +2,22 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { limitSeoDescription } from '../scripts/lib/seo-description-v1.mjs';
 
 test('scheduled editorial generator renders a keyboard skip link and target',()=>{
  const source=fs.readFileSync('scripts/editorial-publish-scheduled-v1.mjs','utf8');
  const start=source.indexOf('function articleHtml('),end=source.indexOf('\nfunction appendCard(',start);assert.ok(start>=0&&end>start);
  const fn=vm.runInNewContext(`(${source.slice(start,end)})`,{
-  routeFor:()=>'/objave/example/',SITE:'https://gnk-asg.hr',articleAuthorFor:()=>null,articleImage:()=>({url:'https://example.com/img.webp',path:'/img.webp'}),isVerifiedNerminAuthor:()=>false,topicalKeywords:()=>[],esc:x=>String(x??''),PERSON_URL:'https://gnk-asg.hr/nermin-sefic/',PERSON_ID:'person',ORGANIZATION_ID:'org',WEBSITE_ID:'web',labelFor:()=> 'Objava',dateLabel:()=> 'Dan',authorBox:()=>''
+  limitSeoDescription,routeFor:()=>'/objave/example/',SITE:'https://gnk-asg.hr',articleAuthorFor:()=>null,articleImage:()=>({url:'https://example.com/img.webp',path:'/img.webp'}),isVerifiedNerminAuthor:()=>false,topicalKeywords:()=>[],esc:x=>String(x??''),PERSON_URL:'https://gnk-asg.hr/nermin-sefic/',PERSON_ID:'person',ORGANIZATION_ID:'org',WEBSITE_ID:'web',labelFor:()=> 'Objava',dateLabel:()=> 'Dan',authorBox:()=>''
  });
  const html=fn({type:'objava',title:'Primjer',summary:'Primjer',section:'Svijet',paragraphs:['Tekst'],links:[]},'2026-01-01T00:00:00Z');
  assert.match(html,/<link rel="stylesheet" href="\/assets\/am-design-v1\.css" data-am-design="v1">/);
+ assert.match(html,/<link rel="icon" href="\/assets\/favicon\.svg">/);
+ const longSummary='Dugačak opis uredničkog članka s provjerenim informacijama i kontekstom. '.repeat(6);
+ const longHtml=fn({type:'objava',title:'Primjer',summary:longSummary,section:'Svijet',paragraphs:['Tekst'],links:[]},'2026-01-01T00:00:00Z');
+ const description=longHtml.match(/<meta name="description" content="([^"]+)"/)?.[1];
+ assert.ok(description && description.length<=160);
+ assert.equal(description,limitSeoDescription(longSummary,160));
  assert.match(html,/<body><a class="skip" href="#editorialContent">Preskoči na sadržaj<\/a>/);
  assert.match(html,/<main id="editorialContent" tabindex="-1" class="editorial-wrap article">/);
 });
