@@ -87,6 +87,7 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/test-news-queue-guardrails.mjs
+          node --test tests/test-news-publication-no-daily-quota-v1.mjs
           node scripts/test-news-publication-seo-contract.mjs
           node scripts/test-news-share-routing-v1.mjs
           node --check scripts/gnk-news-refresh.mjs

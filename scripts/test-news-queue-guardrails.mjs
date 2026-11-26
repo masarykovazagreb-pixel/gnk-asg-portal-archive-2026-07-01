@@ -87,8 +87,9 @@ assert.match(source,/function scheduledEnabled\(value\)\{return \/\^\(1\|true\|y
 assert.match(source,/scheduled_publication_disabled/);
 assert.doesNotMatch(source,/!\['0','false','no','off','disabled'\]\.includes/);
 assert.match(source,/PUBLICATION_BATCH_LIMIT=13/);
-assert.match(source,/completeDailyBatch/);
-assert.match(source,/invalid_daily_batch_contract/);
-assert.match(source,/members\.length!==13/);
+// Owner-approved removal of editorial quotas; retain source checks and bounded work.
+assert.doesNotMatch(source,/completeDailyBatch|DAILY_POST_LIMIT|DAILY_COMMENTARY_LIMIT/);
+assert.match(source,/invalid_batch_metadata/);
+assert.match(source,/dailyQuota:null/);
 
 console.log(JSON.stringify({ok:true,cors:'public-only',dedupe:'canonical-source-url',scheduler:'strict-opt-in',marketNewsOwnership:'single-writer',retentionOwner:'scripts/gnk-news-refresh.mjs',newsWriter:'gnk-news-refresh-v2-main-only',releaseFence:'enforced',trackingRemoved:['utm_*','fbclid','gclid','msclkid']},null,2));
