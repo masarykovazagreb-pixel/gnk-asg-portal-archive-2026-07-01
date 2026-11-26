@@ -4,7 +4,7 @@
   "lang": "hr",
   "city": "Zagreb",
   "country": "Hrvatska",
-  "updatedAt": "2026-11-25T20:31:48.412Z",
+  "updatedAt": "2026-11-26T00:10:35.056Z",
   "sources": [
     {
       "id": "index",
@@ -14,7 +14,7 @@
       "fetched": 150,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T20:31:41.934Z"
+      "checkedAt": "2026-11-26T00:09:55.964Z"
     },
     {
       "id": "jutarnji",
@@ -24,7 +24,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T20:31:42.474Z"
+      "checkedAt": "2026-11-26T00:09:56.430Z"
     },
     {
       "id": "poslovni",
@@ -34,7 +34,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T20:31:43.409Z"
+      "checkedAt": "2026-11-26T00:09:57.221Z"
     },
     {
       "id": "tportal",
@@ -44,17 +44,20 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T20:31:45.320Z"
+      "checkedAt": "2026-11-26T00:09:58.511Z"
     },
     {
       "id": "hrt",
       "name": "HRT Vijesti",
       "url": "https://www.hrt.hr/rss/vijesti/",
-      "ok": true,
-      "fetched": 33,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-25T20:31:46.974Z"
+      "errors": [
+        "https://www.hrt.hr/rss/vijesti/: fetch failed",
+        "https://vijesti.hrt.hr/rss: fetch failed"
+      ],
+      "checkedAt": "2026-11-26T00:10:34.350Z"
     },
     {
       "id": "n1hr",
@@ -64,7 +67,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T20:31:47.728Z"
+      "checkedAt": "2026-11-26T00:10:34.739Z"
     },
     {
       "id": "telegram",
@@ -74,10 +77,615 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-25T20:31:48.411Z"
+      "checkedAt": "2026-11-26T00:10:35.054Z"
     }
   ],
   "items": [
+    {
+      "slug": "zagreb-2026-11-26-tportal-garcia-brani-unatoc-ozljedi-livakovic-i-1accf7",
+      "title": "Garcia brani unatoč ozljedi, Livaković i dalje na klupi: Riječi katalonskog novinara sada posebno zabrinjavaju",
+      "summary": "Barcelona je u Bakuu uvjerljivo pobijedila Sabah 4:1 u petom kolu Lige prvaka, no za Dominika Livakovića bila je to još jedna večer za zaborav.",
+      "date": "2026-11-26T00:01:00.000Z",
+      "url": "https://www.tportal.hr/sport/clanak/garcia-brani-unatoc-ozljedi-livakovic-i-dalje-na-klupi-rijeci-katalonskog-novinara-sada-posebno-zabrinjavaju-20261126",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Sport"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2816049.jpeg?cropId=0",
+      "imageAlt": "Garcia brani unatoč ozljedi, Livaković i dalje na klupi: Riječi katalonskog novinara sada posebno zabrinjavaju",
+      "addedAt": "2026-11-26T00:09:58.512Z"
+    },
+    {
+      "slug": "zagreb-2026-11-26-tportal-pet-godina-od-uvodenja-novih-lijekova-941218",
+      "title": "Pet godina od uvođenja novih lijekova: Oboljeli od cistične fibroze danas žive bitno drukčije",
+      "summary": "Pet godina nakon što su postali dostupni visokoučinkoviti CFTR modulatori, bolesnici s cističnom fibrozom imaju manje plućnih infekcija, bolju plućnu funkciju i rjeđe su u bolnici, a nekima više nije potrebna transplantacija pluća, istaknuto je na simpoziju u KBC-u Zagreb",
+      "date": "2026-11-26T00:00:00.000Z",
+      "url": "https://www.tportal.hr/vijesti/clanak/pet-godina-od-uvodenja-novih-lijekova-oboljeli-od-cisticne-fibroze-danas-zive-bitno-drukcije-20261125",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2823246.jpeg?cropId=0",
+      "imageAlt": "Pet godina od uvođenja novih lijekova: Oboljeli od cistične fibroze danas žive bitno drukčije",
+      "addedAt": "2026-11-26T00:09:58.512Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-index-miro-nadmasio-franku-i-juana-te-osigurao-28cffb",
+      "title": "Miro nadmašio Franku i Juana te osigurao mjesto među najboljih devet",
+      "summary": "NAPETA borba za zlatnu karticu imuniteta u MasterChefu završila je pobjedom Mire Gudelja Marjanovića.",
+      "date": "2026-11-25T23:15:00.000Z",
+      "url": "https://www.index.hr/food/clanak/miro-nadmasio-franku-i-juana-te-osigurao-mjesto-medju-najboljih-devet/2860880.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Food"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://bucket.index.hr/b/index/0aa1f231-7d44-4d64-b60e-b6d499a579f1.png",
+      "imageAlt": "Miro nadmašio Franku i Juana te osigurao mjesto među najboljih devet",
+      "addedAt": "2026-11-26T00:09:56.108Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-jutarnji-srusili-vatrenog-i-drustvo-uz-pomoc-5b5a5b",
+      "title": "Srušili Vatrenog i društvo uz pomoć smiješnog autogola i kreirali senzaciju: ‘Nitko ovo nije očekivao...‘",
+      "summary": "Lille je u petom kolu Lige prvaka došao do prve pobjede ove sezone u najelitnijem klupskom natjecanju. Francuski klub senzacionalno je slavio protiv Bayerna pred svojim navijačima nakon preokreta koji će ostati upamćen po komičnom autogolu Aleksandra Pavlovića, mladog veznjaka koji je loše reagirao...",
+      "date": "2026-11-25T23:14:00.000Z",
+      "url": "https://www.jutarnji.hr/sportske/nogomet/srusili-vatrenog-i-drustvo-nevjerojatnim-pogotkom-i-kreirali-senzaciju-nitko-ovo-nije-ocekivao-15768896",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Nogomet"
+      ],
+      "author": "dominik.blazevic@sportskenovosti.hr (Dominik Blažević)",
+      "theme": "sport",
+      "image": "https://media.jutarnji.hr/images/slike/2026/11/25/f_40031011_1280.jpg?1795649666",
+      "imageAlt": "Srušili Vatrenog i društvo uz pomoć smiješnog autogola i kreirali senzaciju: ‘Nitko ovo nije očekivao...‘",
+      "addedAt": "2026-11-26T00:09:56.431Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-tportal-dnevni-horoskop-za-26-11-jarcima-se-napokon-048f9e",
+      "title": "Dnevni horoskop za 26.11.: Jarcima se napokon rješava problem, Strijelci otkrivaju novu strast",
+      "summary": "Bikovima bi se napokon mogao ostvariti dogovor za susret koji su već nekoliko puta morali odgoditi, a prilika da provedu vrijeme s osobom koju dugo žele vidjeti donijet će im posebno veselje i osjećaj da se strpljenje ipak isplatilo. Rakovima bi nakon dugotrajnog traženja moglo stići praktično rješenje za problem povezan s domom, bilo da je riječ o pronalasku pouzdanog majstora ili odgovarajuće usluge, a završetak neizvjesnosti donijet će im veliko olakšanje",
+      "date": "2026-11-25T23:00:00.000Z",
+      "url": "https://www.tportal.hr/lifestyle/clanak/dnevni-horoskop-za-26-11-jarcima-se-napokon-rjesava-problem-strijelci-otkrivaju-novu-strast-20261117",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Lifestyle"
+      ],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2829155.jpeg?cropId=4348963",
+      "imageAlt": "Dnevni horoskop za 26.11.: Jarcima se napokon rješava problem, Strijelci otkrivaju novu strast",
+      "addedAt": "2026-11-26T00:09:58.512Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-index-kekin-i-hdz-ov-drzavni-tajnik-u-otvorenom-257a73",
+      "title": "Kekin i HDZ-ov državni tajnik u Otvorenom se sukobili oko odgovornosti za Jankomir",
+      "summary": "STRUČNJACI i političari raspravljali su o stanju u zdravstvu nakon smrti pacijenta u PB Sveti Ivan, pozivajući na reformu psihijatrije i rješavanje krize s otkazima radiologa u KBC-u.",
+      "date": "2026-11-25T22:58:00.000Z",
+      "url": "https://www.index.hr/vijesti/clanak/kekin-i-hdzov-drzavni-tajnik-u-otvorenom-se-sukobili-oko-odgovornosti-za-jankomir/2861085.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://bucket.index.hr/b/index/2c8aedd8-f4bc-43c6-9efc-0bcc7f69ee14.png",
+      "imageAlt": "Kekin i HDZ-ov državni tajnik u Otvorenom se sukobili oko odgovornosti za Jankomir",
+      "addedAt": "2026-11-26T00:09:56.108Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-index-ovo-se-bayernu-nije-dogodilo-12-godina-u-36f5c6",
+      "title": "Ovo se Bayernu nije dogodilo 12 godina u Ligi prvaka",
+      "summary": "BAYERN je izgubio nakon vodstva na poluvremenu.",
+      "date": "2026-11-25T22:54:00.000Z",
+      "url": "https://www.index.hr/sport/clanak/ovo-se-bayernu-nije-dogodilo-12-godina-u-ligi-prvaka/2861086.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Sport"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://bucket.index.hr/b/index/aae35802-0252-4ffc-a5ed-b456350167cb.png",
+      "imageAlt": "Ovo se Bayernu nije dogodilo 12 godina u Ligi prvaka",
+      "addedAt": "2026-11-26T00:09:56.108Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-tportal-mucna-ispovijest-hrvatske-olimpijke-3077c1",
+      "title": "Mučna ispovijest hrvatske olimpijke: Najprije je bilo psihičko, pa onda seksualno zlostavljanje",
+      "summary": "Ucjene i manipulacije. Fizičko, psihičko, pa i seksualno zlostavljanje. Tako bivša olimpijka opisuje godine provedene u raljama poznatog i priznatog atletskog trenera",
+      "date": "2026-11-25T22:53:00.000Z",
+      "url": "https://www.tportal.hr/vijesti/clanak/mucna-ispovijest-hrvatske-olimpijke-najprije-je-bilo-psihicko-pa-onda-seksualno-zlostavljanje-20261125",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2833370.png?cropId=0",
+      "imageAlt": "Mučna ispovijest hrvatske olimpijke: Najprije je bilo psihičko, pa onda seksualno zlostavljanje",
+      "addedAt": "2026-11-26T00:09:58.512Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-jutarnji-sucic-zabio-i-na-novoj-poziciji-konacno-15738e",
+      "title": "Sučić zabio i na novoj poziciji konačno naslijedio Vatrenog koji je najviše nedostajao i Biliću i Daliću!",
+      "summary": "Petar Sučić po mnogima je bio najbolji igrač utakmice u pobjedi Intera nad Stuttgartom 2:0, čemu je bitno pridonijela realizacija s bijele točke za prvi pogodak, ali posebno je bilo zanimljivo pratiti igru hrvatskog reprezentativca zato što je ovaj put bio – šestica! Već na gostovanju kod Atalante z...",
+      "date": "2026-11-25T22:51:00.000Z",
+      "url": "https://www.jutarnji.hr/sportske/nogomet/sucic-zabio-i-na-novoj-poziciji-konacno-naslijedio-vatrenog-koji-je-najvise-nedostajao-i-bilicu-i-dalicu-15768894",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Nogomet"
+      ],
+      "author": "drazen.antolic@sportskenovosti.hr (Dražen Antolić)",
+      "theme": "sport",
+      "image": "https://media.jutarnji.hr/images/slike/2026/11/25/f_40030717_1280.jpg?1795649666",
+      "imageAlt": "Sučić zabio i na novoj poziciji konačno naslijedio Vatrenog koji je najviše nedostajao i Biliću i Daliću!",
+      "addedAt": "2026-11-26T00:09:56.432Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-tportal-drzavni-tajnik-tvrdi-da-zdravstvo-dobro-7505db",
+      "title": "Državni tajnik tvrdi da zdravstvo dobro funkcionira, Kekin mu uzvratila nizom potresnih primjera",
+      "summary": "Tragična smrt Kristijana Josipa Periša u Klinici za psihijatriju Sveti Ivan u Jankomiru, nedostatak stručnog kadra i kriza u Vinogradskoj bolnici otvorili su niz pitanja o stanju hrvatskog zdravstva. Dok psihijatrice Ivana Kekin i Sara Medved upozoravaju na sustavne probleme i nužnost reforme psihijatrijske skrbi, državni tajnik u Ministarstvu zdravstva Tomislav Dulibić tvrdi da sustav funkcionira, a odgovornost za probleme u Jankomiru vidi u kadrovskoj politici zagrebačke vlasti",
+      "date": "2026-11-25T22:39:00.000Z",
+      "url": "https://www.tportal.hr/vijesti/clanak/zestok-okrsaj-u-otvorenom-drzavni-tajnik-ne-zna-za-slucaj-zlostavljanja-maloljetnika-u-osijeku-20261125",
+      "source": "tportal",
+      "sourceName": "tportal",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.tportal.hr/media/thumbnail/500x300/2833371.jpeg?cropId=0",
+      "imageAlt": "Državni tajnik tvrdi da zdravstvo dobro funkcionira, Kekin mu uzvratila nizom potresnih primjera",
+      "addedAt": "2026-11-26T00:09:58.513Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-jutarnji-magdeburg-tesko-porazio-jake-portugalce-uz-5ee75b",
+      "title": "Magdeburg teško porazio jake Portugalce uz 14 obrana briljantnog Mateja Mandića",
+      "summary": "Rukometaši Magdeburga nastavljaju svoj pobjednički niz u Ligi prvaka, nakon što su u susretu 2. kola drugog kruga porazili Sporting s 37-31 uz 14 obrana hrvatskog vratara Mateja Mandića. Magdeburg je u drugi krug prenio maksimalna četiri boda, a sada je upisao i drugu pobjedu pa vodi u skupini s osa...",
+      "date": "2026-11-25T22:35:00.000Z",
+      "url": "https://www.jutarnji.hr/sportske/sport-mix/rukomet/magdeburg-tesko-porazio-portugalce-uz-14-obrana-briljantnog-mateja-mandica-15768891",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Rukomet"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "sport",
+      "image": "https://media.jutarnji.hr/images/slike/2026/11/25/f_39905768_1280.jpg?1795649666",
+      "imageAlt": "Magdeburg teško porazio jake Portugalce uz 14 obrana briljantnog Mateja Mandića",
+      "addedAt": "2026-11-26T00:09:56.432Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-index-video-rusi-izveli-masovni-raketni-napad-na-c396be",
+      "title": "VIDEO Rusi izveli masovni raketni napad na Kijev",
+      "summary": "RUSIJA je izvela masovni napad balističkim projektilima na Ukrajinu. U Kijevu je pogođen trgovački centar, pri čemu su tri osobe ozlijeđene. Napadi su zabilježeni i diljem zemlje.",
+      "date": "2026-11-25T22:33:00.000Z",
+      "url": "https://www.index.hr/vijesti/clanak/video-rusi-izveli-masovni-raketni-napad-na-kijev/2861084.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://bucket.index.hr/b/index/35d469f0-e9f7-4325-bc3a-e41c97f5e212.jpg",
+      "imageAlt": "VIDEO Rusi izveli masovni raketni napad na Kijev",
+      "addedAt": "2026-11-26T00:09:56.108Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-jutarnji-obavjestajci-rusija-se-sprema-za-aneksiju-b0c4e3",
+      "title": "Obavještajci: Rusija se sprema za aneksiju još dvije velike regije!",
+      "summary": "Rusija jača političku, ekonomsku i vojnu ovisnost Abhazije i Južne Osetije, odmetnutih područja u Gruziji, stvarajući uvjete za njihovu moguću aneksiju u budućnosti, javlja UAnews. Zamjenik šefa agencije Gruzijske službe državne sigurnosti David Archvadze izjavio je da Moskva nastavlja pripremati te...",
+      "date": "2026-11-25T22:24:45.000Z",
+      "url": "https://www.jutarnji.hr/vijesti/svijet/obavjestajci-rusija-se-sprema-za-aneksiju-jos-dvije-velike-regije-15768887",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Svijet"
+      ],
+      "author": "vjeko.stanicic@hanzamedia.hr (Vjeko Staničić)",
+      "theme": "sigurnost",
+      "image": "https://media.jutarnji.hr/images/slike/2026/11/25/f_35726678_1280.jpg?1795649666",
+      "imageAlt": "Obavještajci: Rusija se sprema za aneksiju još dvije velike regije!",
+      "addedAt": "2026-11-26T00:09:56.432Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-telegram-mourinho-pokazuje-prema-vrhu-real-je-nakon-feb401",
+      "title": "Mourinho pokazuje prema vrhu. Real je nakon 5. kola jedini maksimalan u Ligi prvaka, evo kakvo je stanje",
+      "summary": "Bit će velike borbe za Top 8 i 24",
+      "date": "2026-11-25T22:23:18.000Z",
+      "url": "https://www.telegram.hr/telesport/na-prvu/mourinho-pokazuje-prema-vrhu-real-je-nakon-5-kola-jedini-maksimalan-u-ligi-prvaka-evo-kakvo-je-stanje/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Na prvu",
+        "Telesport",
+        "Real Madrid",
+        "UEFA Liga prvaka"
+      ],
+      "author": "Telesport",
+      "theme": "drustvo",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/11/jose-mourinho-1-150x150.jpg",
+      "imageAlt": "Mourinho pokazuje prema vrhu. Real je nakon 5. kola jedini maksimalan u Ligi prvaka, evo kakvo je stanje",
+      "addedAt": "2026-11-26T00:10:35.055Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-index-video-bruno-fernandes-zabio-jedan-od-41d4e4",
+      "title": "VIDEO Bruno Fernandes zabio jedan od najbizarnijih golova u Ligi prvaka",
+      "summary": "BRUNO FERNANDES zabio je bizaran gol.",
+      "date": "2026-11-25T22:16:00.000Z",
+      "url": "https://www.index.hr/sport/clanak/video-bruno-fernandes-zabio-jedan-od-najbizarnijih-golova-u-ligi-prvaka/2861083.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Sport"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://bucket.index.hr/b/index/ce416355-2c8d-4b5c-9729-dec0dbae13aa.png",
+      "imageAlt": "VIDEO Bruno Fernandes zabio jedan od najbizarnijih golova u Ligi prvaka",
+      "addedAt": "2026-11-26T00:09:56.109Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-telegram-vec-prva-utakmica-bez-kanea-pokazuje-da-ce-7059bc",
+      "title": "Već prva utakmica bez Kanea pokazuje da će se Bayern mučiti. Izgubio je kod jedne od najgorih ekipa Lige prvaka",
+      "summary": "Lille je tek sad upisao prvu pobjedu",
+      "date": "2026-11-25T22:12:20.000Z",
+      "url": "https://www.telegram.hr/telesport/na-prvu/vec-prva-utakmica-bez-kanea-pokazuje-da-ce-se-bayern-muciti-izgubio-je-kod-jedne-od-najgorih-ekipa-lige-prvaka/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Na prvu",
+        "Telesport",
+        "Bayern Munchen",
+        "Harry Kane"
+      ],
+      "author": "Telesport, Hina",
+      "theme": "sport",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/11/bayern-150x150.jpg",
+      "imageAlt": "Već prva utakmica bez Kanea pokazuje da će se Bayern mučiti. Izgubio je kod jedne od najgorih ekipa Lige prvaka",
+      "addedAt": "2026-11-26T00:10:35.055Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-index-bivsa-hrvatska-olimpijka-optuzila-trenera-8daee5",
+      "title": "Bivša hrvatska olimpijka optužila trenera za višegodišnje seksualno zlostavljanje",
+      "summary": "BIVŠA hrvatska olimpijka optužila je trenera za višegodišnje zlostavljanje. Njena ispovijest otkrila je sustavni problem zlostavljanja u hrvatskoj atletici, potaknuvši i druge žrtve da progovore.",
+      "date": "2026-11-25T22:11:00.000Z",
+      "url": "https://www.index.hr/vijesti/clanak/bivsa-hrvatska-olimpijka-optuzila-trenera-za-visegodisnje-seksualno-zlostavljanje/2861082.aspx",
+      "source": "index",
+      "sourceName": "Index.hr",
+      "categories": [
+        "Vijesti"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://bucket.index.hr/b/index/6d93ac36-b72e-4b00-9cc9-c8cbc17ef3c4.png",
+      "imageAlt": "Bivša hrvatska olimpijka optužila trenera za višegodišnje seksualno zlostavljanje",
+      "addedAt": "2026-11-26T00:09:56.109Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-jutarnji-dubrovnik-ugostio-prvi-dan-godisnje-f52f8f",
+      "title": "Dubrovnik ugostio prvi dan Godišnje konferencije HOO-a u znaku OI u LA-u",
+      "summary": "Više od 100 predstavnika nacionalnih sportskih saveza i lokalnih sportskih zajednica nazočilo je prvom danu Godišnje konferencije Hrvatskog olimpijskog odbora (HOO), koja se održava u Dubrovniku. Konferenciju su pozdravnim govorima otvorili v. d. glavnog tajnika HOO-a Milan Pavelić i gradonačelnik D...",
+      "date": "2026-11-25T22:04:15.000Z",
+      "url": "https://www.jutarnji.hr/sportske/sport-mix/ostali-sportovi/dubrovnik-ugostio-prvi-dan-godisnje-konferencije-hoo-a-u-znaku-oi-u-la-u-15768884",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Ostali sportovi 2. razina"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "sport",
+      "image": "https://media.jutarnji.hr/images/slike/2026/11/25/f_39947320_1280.jpg?1795649666",
+      "imageAlt": "Dubrovnik ugostio prvi dan Godišnje konferencije HOO-a u znaku OI u LA-u",
+      "addedAt": "2026-11-26T00:09:56.432Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-telegram-na-bajakovu-pronadena-slika-koja-mozda-58f6db",
+      "title": "Na Bajakovu pronađena slika koja možda vrijedi milijune, vozač kaže da ju je kupio na tržnici",
+      "summary": "Riječ je o ulju na platnu iz 1920. godine, za koje se vjeruje da je djelo njemačkog slikara Maxa Pechsteina",
+      "date": "2026-11-25T21:59:27.000Z",
+      "url": "https://www.telegram.hr/vijesti/na-bajakovu-pronadena-slika-koja-mozda-vrijedi-milijune-vozac-kaze-da-ju-je-kupio-na-trznici/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Vijesti",
+        "Bajakovo",
+        "umjetnine",
+        "granični prijelaz Bajakovo"
+      ],
+      "author": "Valentina Pavlica",
+      "theme": "drustvo",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/11/photo-collagepng-69-150x150.png",
+      "imageAlt": "Na Bajakovu pronađena slika koja možda vrijedi milijune, vozač kaže da ju je kupio na tržnici",
+      "addedAt": "2026-11-26T00:10:35.055Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-telegram-pochettino-ce-pricekati-na-prvu-pobjedu-s-293d16",
+      "title": "Pochettino će pričekati na prvu pobjedu s Unitedom, u najluđoj utakmici večeri uspio je izboriti tek bod",
+      "summary": "Tri penala, četiri gola uz dva poništena i crveni",
+      "date": "2026-11-25T21:59:04.000Z",
+      "url": "https://www.telegram.hr/telesport/na-prvu/pochettino-ce-pricekati-na-prvu-pobjedu-s-unitedom-u-najludoj-utakmici-veceri-uspio-je-izboriti-tek-bod/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Na prvu",
+        "Telesport",
+        "UEFA Liga prvaka",
+        "Manchester United"
+      ],
+      "author": "Telesport",
+      "theme": "sport",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/11/bruno-fernandes-1-150x150.jpg",
+      "imageAlt": "Pochettino će pričekati na prvu pobjedu s Unitedom, u najluđoj utakmici večeri uspio je izboriti tek bod",
+      "addedAt": "2026-11-26T00:10:35.055Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-telegram-video-lekin-club-brugge-namucio-liverpool-afff8f",
+      "title": "Video. Lekin Club Brugge namučio Liverpool, ali engleski velikan uspio je slaviti 3-0",
+      "summary": "Belgijanci su pali tek u završnici susreta",
+      "date": "2026-11-25T21:58:50.000Z",
+      "url": "https://www.telegram.hr/telesport/na-prvu/video-lekin-club-brugge-namucio-liverpool-ali-engleski-velikan-uspio-je-slaviti-3-0/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Na prvu",
+        "Telesport",
+        "UEFA Liga prvaka",
+        "Liverpool FC"
+      ],
+      "author": "Telesport",
+      "theme": "sport",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/08/ivan-leko-club-brugge-belgija-150x150.jpg",
+      "imageAlt": "Video. Lekin Club Brugge namučio Liverpool, ali engleski velikan uspio je slaviti 3-0",
+      "addedAt": "2026-11-26T00:10:35.055Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-jutarnji-ubio-zapovjednika-hvo-a-nudio-se-hamasu-a-355ae6",
+      "title": "Ubio zapovjednika HVO-a, nudio se Hamasu, a sada je pobjegao prije nego što je dobio 10 godina zatvora!",
+      "summary": "Sud Bosne i Hercegovine u petak je nepravomoćno proglasio krivim za ratne zločine nad pripadnicima HVO-a bivšeg zapovjednika Armije BiH Šerifa Patkovića i osudio ga na deset godina zatvora. Patković je osuđen jer je potkraj siječnja 1993. godine u selu Dusina na području tadašnje općine Zenica, kao...",
+      "date": "2026-11-25T21:57:29.000Z",
+      "url": "https://www.jutarnji.hr/vijesti/svijet/ubio-zapovjednika-hvo-a-nudio-se-hamasu-a-sada-je-pobjegao-prije-nego-sto-je-dobio-10-godina-zatvora-15768883",
+      "source": "jutarnji",
+      "sourceName": "Jutarnji list",
+      "categories": [
+        "Svijet"
+      ],
+      "author": "redakcija@jutarnji.hr",
+      "theme": "rat",
+      "image": "https://media.jutarnji.hr/images/slike/2026/11/25/f_31112875_1280.jpg?1795649666",
+      "imageAlt": "Ubio zapovjednika HVO-a, nudio se Hamasu, a sada je pobjegao prije nego što je dobio 10 godina zatvora!",
+      "addedAt": "2026-11-26T00:09:56.433Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-telegram-hrabra-roma-osvojila-bod-na-gostovanju-kod-7e13bf",
+      "title": "Hrabra Roma osvojila bod na gostovanju kod PSG-a, pogledajte golove iz Pariza",
+      "summary": "Gosti su se nadigravali s braniteljem naslova",
+      "date": "2026-11-25T21:55:13.000Z",
+      "url": "https://www.telegram.hr/telesport/na-prvu/hrabra-roma-osvojila-bod-na-gostovanju-kod-psg-a-pogledajte-golove-iz-pariza/",
+      "source": "telegram",
+      "sourceName": "Telegram.hr",
+      "categories": [
+        "Na prvu",
+        "Telesport",
+        "UEFA Liga prvaka",
+        "PSG"
+      ],
+      "author": "Telesport",
+      "theme": "sport",
+      "image": "https://www.telegram.hr/wp-content/uploads/2026/11/psg-roma-150x150.jpg",
+      "imageAlt": "Hrabra Roma osvojila bod na gostovanju kod PSG-a, pogledajte golove iz Pariza",
+      "addedAt": "2026-11-26T00:10:35.055Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-n1hr-jesu-li-macje-nacije-doista-sretnije-9779e4",
+      "title": "Jesu li \"mačje\" nacije doista sretnije? Studija u 93 zemlje otkrila intrigantne obrasce",
+      "summary": "Stanovnici država u kojima živi veći broj mačaka u prosjeku su zadovoljniji svojim životom, pokazalo je opsežno istraživanje znanstvenika iz SAD-a, Me",
+      "date": "2026-11-25T21:44:38.000Z",
+      "url": "https://n1info.hr/magazin/ljubimci/jesu-li-macje-nacije-doista-sretnije-studija-u-93-zemlje-otkrila-intrigantne-obrasce/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Ljubimci",
+        "Znanost"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.hr/media/images/2026/11/23/1795438994_pexels-amiyananda-790033.width-1200.jpg",
+      "imageAlt": "Jesu li \"mačje\" nacije doista sretnije? Studija u 93 zemlje otkrila intrigantne obrasce",
+      "addedAt": "2026-11-26T00:10:34.739Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-n1hr-na-bajakovu-pronadena-slika-koja-bi-mogla-462aea",
+      "title": "Na Bajakovu pronađena slika koja bi mogla vrijediti milijune: Vozač tvrdi da ju je kupio na tržnici",
+      "summary": "Na graničnom prijelazu Bajakovo, u automobilu srbijanskih registarskih oznaka, pronađena je slika za koju se sumnja da je djelo njemačkog slikara i gr",
+      "date": "2026-11-25T21:33:43.000Z",
+      "url": "https://n1info.hr/vijesti/na-bajakovu-pronadjena-slika-koja-bi-mogla-vrijediti-milijune/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Vijesti",
+        "max pechstein",
+        "slika",
+        "autentičnost slike"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://n1info.hr/media/images/2026/11/25/1795642383_PXL_310122_91712364.width-1200.jpg",
+      "imageAlt": "Na Bajakovu pronađena slika koja bi mogla vrijediti milijune: Vozač tvrdi da ju je kupio na tržnici",
+      "addedAt": "2026-11-26T00:10:34.739Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-n1hr-popularna-internetska-trgovina-upozorila-efc0c1",
+      "title": "Popularna internetska trgovina upozorila kupce: Ukradeni osobni podaci",
+      "summary": "Popularna internetska trgovina Dedoles obavijestila je svoje kupce o sigurnosnom incidentu u kojem je neovlaštena osoba došla do njihovih osobnih poda",
+      "date": "2026-11-25T21:17:48.000Z",
+      "url": "https://n1info.hr/magazin/tehnologija/popularna-internetska-trgovina-upozorila-kupce-ukradeni-osobni-podaci/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Tehnologija",
+        "prijevara",
+        "dedoles",
+        "krađa osobnih podataka"
+      ],
+      "author": "",
+      "theme": "sigurnost",
+      "image": "https://n1info.hr/media/images/2026/7/25/1784981210_gdk-software-computer-5978788.width-1200.jpg",
+      "imageAlt": "Popularna internetska trgovina upozorila kupce: Ukradeni osobni podaci",
+      "addedAt": "2026-11-26T00:10:34.739Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-n1hr-nakon-pozara-koji-je-odnio-sest-zivota-omis-145b20",
+      "title": "Nakon požara koji je odnio šest života, Omiš donio važne odluke",
+      "summary": "Gradsko vijeće Grada Omiša na sjednici održanoj u srijedu navečer donijelo je odluku o proglašenju 13. kolovoza Danom sjećanja na katastrofalni požar",
+      "date": "2026-11-25T21:08:01.000Z",
+      "url": "https://n1info.hr/vijesti/nakon-pozara-koji-je-odnio-sest-zivota-omis-donio-vazne-odluke/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Vijesti",
+        "omiš",
+        "požar"
+      ],
+      "author": "",
+      "theme": "potres",
+      "image": "https://n1info.hr/media/images/2026/11/25/1795640661_PXL_280826_157432485.width-1200.jpg",
+      "imageAlt": "Nakon požara koji je odnio šest života, Omiš donio važne odluke",
+      "addedAt": "2026-11-26T00:10:34.739Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-poslovni-siromastvo-univerzalni-temeljni-dohodak-i-1cfb6a",
+      "title": "Siromaštvo, univerzalni temeljni dohodak i jedna skroz nova ideja",
+      "summary": "Obični ljudi trebaju imati udio u dobiti koju stvara globalno gospodarstvo.",
+      "date": "2026-11-25T21:00:00.000Z",
+      "url": "https://www.poslovni.hr/kolumne/siromastvo-univerzalni-temeljni-dohodak-i-jedna-skroz-nova-ideja-4565842",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Kolumne",
+        "globalno siromaštvo",
+        "svjetsko gospodarstvo",
+        "univerzalni temeljni dohodak"
+      ],
+      "author": "Kaushik Basu",
+      "theme": "ekonomija",
+      "image": "https://www.poslovni.hr/wp-content/uploads/2026/11/17kolumna-7-800x500.jpg",
+      "imageAlt": "Siromaštvo, univerzalni temeljni dohodak i jedna skroz nova ideja",
+      "addedAt": "2026-11-26T00:09:57.222Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-poslovni-slovenska-sij-grupa-povecala-gubitak-na-58-ce671d",
+      "title": "Slovenska Sij Grupa povećala gubitak na 58 milijuna eura",
+      "summary": "Na rezultat su značajno utjecali troškovi financiranja, restrukturiranja i otpremnina.",
+      "date": "2026-11-25T21:00:00.000Z",
+      "url": "https://www.poslovni.hr/kompanije/slovenska-sij-grupa-povecala-gubitak-na-58-milijuna-eura-4565855",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Kompanije",
+        "financijski rezultati kompanija",
+        "Poslovni plus",
+        "Republika Slovenija"
+      ],
+      "author": "Siniša Malus",
+      "theme": "sigurnost",
+      "image": "https://www.poslovni.hr/wp-content/uploads/2026/11/12sij-800x500.jpg",
+      "imageAlt": "Slovenska Sij Grupa povećala gubitak na 58 milijuna eura",
+      "addedAt": "2026-11-26T00:09:57.222Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-poslovni-isplacena-oko-polovice-osiguranih-depozita-bcfe8c",
+      "title": "Isplaćena oko polovice osiguranih depozita Alta banke",
+      "summary": "Isplata osiguranih depozita štediša stečajne Alta banke započela je 13. studenog putem Banke Poštanska štedionica.",
+      "date": "2026-11-25T21:00:00.000Z",
+      "url": "https://www.poslovni.hr/financije/isplacena-oko-polovice-osiguranih-depozita-alta-banke-4565851",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Financije",
+        "Alta banka",
+        "Banka Poštanska štedionica"
+      ],
+      "author": "Poslovni dnevnik",
+      "theme": "drustvo",
+      "image": "https://www.poslovni.hr/wp-content/uploads/2026/11/13alta-800x500.jpg",
+      "imageAlt": "Isplaćena oko polovice osiguranih depozita Alta banke",
+      "addedAt": "2026-11-26T00:09:57.222Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-poslovni-dohodak-poljoprivrednika-pada-hpk-trazi-ef7a76",
+      "title": "Dohodak poljoprivrednika pada, HPK traži fond od 300 milijuna eura",
+      "summary": "Smanjena investicijska i kreditna sposobnost otežava i sufinanciranje projekata iz europskih fondova.",
+      "date": "2026-11-25T21:00:00.000Z",
+      "url": "https://www.poslovni.hr/vijesti/dohodak-poljoprivrednika-pada-hpk-trazi-fond-od-300-milijuna-eura-4565893",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Vijesti",
+        "HPK",
+        "hrvatska poljoprivreda",
+        "Željko Mihelić"
+      ],
+      "author": "Poslovni dnevnik",
+      "theme": "ekonomija",
+      "image": "https://www.poslovni.hr/wp-content/uploads/2026/11/3hpk-800x500.jpg",
+      "imageAlt": "Dohodak poljoprivrednika pada, HPK traži fond od 300 milijuna eura",
+      "addedAt": "2026-11-26T00:09:57.222Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-poslovni-e-on-bilda-svoju-vrijednost-jer-razmislja-o-5b8f6e",
+      "title": "E.On bilda svoju vrijednost jer razmišlja o izlasku s tržišta",
+      "summary": "MET Croatia zainteresiran za preuzimanje segmenta poslovanja s krajnjim korisnicima E.Ona.",
+      "date": "2026-11-25T21:00:00.000Z",
+      "url": "https://www.poslovni.hr/kompanije/e-on-bilda-svoju-vrijednost-jer-razmislja-o-izlasku-s-trzista-4565874",
+      "source": "poslovni",
+      "sourceName": "Poslovni dnevnik",
+      "categories": [
+        "Kompanije",
+        "E.ON Hrvatska",
+        "MET Croatia",
+        "Poslovni plus"
+      ],
+      "author": "Siniša Malus",
+      "theme": "ekonomija",
+      "image": "https://www.poslovni.hr/wp-content/uploads/2026/11/4met-800x500.jpg",
+      "imageAlt": "E.On bilda svoju vrijednost jer razmišlja o izlasku s tržišta",
+      "addedAt": "2026-11-26T00:09:57.222Z"
+    },
+    {
+      "slug": "zagreb-2026-11-25-n1hr-kamo-za-advent-ovo-je-10-najpopularnijih-cdbc10",
+      "title": "Kamo za Advent? Ovo je 10 najpopularnijih europskih destinacija",
+      "summary": "London, Pariz i Edinburgh najtraženije su europske destinacije za božićna i novogodišnja putovanja, pokazalo je najnovije istraživanje platforme TUI M",
+      "date": "2026-11-25T20:49:42.000Z",
+      "url": "https://n1info.hr/magazin/lifestyle/kamo-za-advent-ovo-je-10-najpopularnijih-europskih-destinacija/",
+      "source": "n1hr",
+      "sourceName": "N1 Hrvatska",
+      "categories": [
+        "Lifestyle",
+        "turizam",
+        "nova godina",
+        "europski gradovi"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://n1info.hr/media/images/2026/11/25/1795595223_European_Christmas_Markets_Collage.width-1200.png",
+      "imageAlt": "Kamo za Advent? Ovo je 10 najpopularnijih europskih destinacija",
+      "addedAt": "2026-11-26T00:10:34.739Z"
+    },
     {
       "slug": "zagreb-2026-11-25-index-bih-srbija-i-kosovo-zbog-zastoja-u-820374",
       "title": "BiH, Srbija i Kosovo zbog zastoja u reformama ostaju bez EU sredstava",
