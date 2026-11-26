@@ -1,0 +1,68 @@
+{
+  "schema": "AKTUAL_WORLD_SOURCE_EVIDENCE_V1",
+  "checkedDate": "2026-11-26",
+  "status": "RESEARCH_ONLY",
+  "notes": [
+    "Publisher documentation verified through public web pages; feed XML transport not confirmed.",
+    "Never treat multiple feeds from one publisher as independent sources.",
+    "No source activation without rights assessment and technical validation."
+  ],
+  "sources": [
+    {
+      "edition": "crna-gora",
+      "publisher": "RTCG",
+      "language": "sr",
+      "documentation": "https://rtcg.me/rss-feeds.html",
+      "documentedFeedUrls": [
+        "http://rtcg.me/rss.html",
+        "http://rtcg.me/vijesti/rss.html",
+        "http://rtcg.me/vijesti/politika/rss.html",
+        "http://rtcg.me/vijesti/ekonomija/rss.html",
+        "http://rtcg.me/sport/rss.html"
+      ],
+      "httpsProbes": [
+        {
+          "url": "https://rtcg.me/vijesti/rss.html",
+          "outcome": "web retrieval unsuccessful"
+        },
+        {
+          "url": "https://rtcg.me/rss.html",
+          "outcome": "web retrieval unsuccessful"
+        }
+      ],
+      "rights": "not-confirmed",
+      "activation": "pending"
+    },
+    {
+      "edition": "makedonija",
+      "publisher": "State Statistical Office",
+      "language": "mk",
+      "documentation": "https://www.stat.gov.mk/RSS_Pocetna.aspx",
+      "documentedFeedUrls": [
+        "https://www.stat.gov.mk/RSS/RSS_MK.xml"
+      ],
+      "httpsProbes": [
+        {
+          "url": "https://www.stat.gov.mk/RSS/RSS_MK.xml",
+          "outcome": "web retrieval unsuccessful"
+        }
+      ],
+      "rights": "not-confirmed",
+      "activation": "pending"
+    },
+    {
+      "edition": "makedonija",
+      "publisher": "Makfax",
+      "language": "mk",
+      "documentation": "https://makfax.com.mk/rss-2/",
+      "documentedFeedUrls": [
+        "http://makfax.com.mk/feed/",
+        "http://makfax.com.mk/makedonija/feed/",
+        "http://makfax.com.mk/ekonomija/feed/",
+        "http://makfax.com.mk/sport/feed/"
+      ],
+      "rights": "RSS terms restrict use to noncommercial purposes, require attribution and link; commercial use requires separate permission",
+      "activation": "blocked-for-commercial-RSS-unless-permission-documented"
+    }
+  ]
+}
