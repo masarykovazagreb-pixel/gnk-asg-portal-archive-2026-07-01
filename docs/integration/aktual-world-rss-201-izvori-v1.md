@@ -10,12 +10,12 @@
 
 ## Stvarno stanje izvora
 
-Audit ispod čita konfiguraciju, **ne provjerava rad feeda, prava, neovisnost izdavača ni stvarni jezik vijesti**. Agregator Google News nije 10 zasebnih izdavača. U registru je 435 stavki za 201 zemlju. Nijedna zemlja nema 10 zasebnih konfiguriranih izravnih RSS hostova na označenom domicilnom jeziku; 187 ih nema nijedan. Hrvatska ima devet zasebnih izravnih konfiguriranih hostova i dva Google feeda, ne 11 potvrđenih nezavisnih izvora. Kandidat za deseti hrvatski izvor: [Novi list](https://www.novilist.hr/) i [njegov RSS](https://www.novilist.hr/feed/); dohvat pomoću web alata vratio je hrvatske naslove, ali rad iz GitHub runnera i uvjeti korištenja nisu provjereni. Kandidat još nije dodan u produkcijsku konfiguraciju ni brojan kao postojeći izvor. Po zemlji nedostaje sljedeći broj izvora do cilja:
+Audit ispod čita konfiguraciju, **ne provjerava rad feeda, prava, neovisnost vlasništva ni stvarni jezik svake vijesti**. Agregator Google News nije 10 zasebnih izdavača. U registru je 438 stavki za 201 zemlju. Jedna zemlja ima najmanje 10 konfiguriranih izravnih RSS hostova na označenom jeziku, a 187 ih nema nijedan. Hrvatska ima 12 različitih izravnih hostova i dva Google feeda. Novi list, tportal i Nacional dodani su nakon što je web alat dohvatio njihove feedove s hrvatskim naslovima; to nije provjera dostupnosti iz GitHub runnera, trajne dostupnosti, neovisnog vlasništva ni prava korištenja. Uobičajeni dohvat uzima do deset, a po potrebi do dva dodatna konfigurirana feeda. Ne kopiraju se tijela članaka, a promjene idu kroz postojeći postupak. Po zemlji nedostaje sljedeći broj konfiguriranih hostova do cilja, ne broj provjerenih izvora:
 
 | Izdanje | Konfigurirani jezik | Izravni RSS hostovi | Nedostaje do 10 |
 |---|---:|---:|---:|
 | Slovenia (`slovenija`) | sl | 3 | 7 |
-| Croatia (`hrvatska`) | hr | 9 | 1 |
+| Croatia (`hrvatska`) | hr | 12 | 0 |
 | Bosnia & Herzegovina (`bih`) | bs | 3 | 7 |
 | Serbia (`srbija`) | sr | 3 | 7 |
 | Montenegro (`crna-gora`) | srp | 0 | 10 |

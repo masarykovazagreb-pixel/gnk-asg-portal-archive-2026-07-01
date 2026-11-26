@@ -27,7 +27,9 @@ jobs:
       - name: Test registry and builder
         run: node --test tests/test-aktual-world-v1.mjs
       - name: Fetch external headlines as links only
+        id: fetch_headlines
         env:
+          AKTUAL_WORLD_RUN_REPORT: ${{ runner.temp }}/world-refresh-run.json
           AKTUAL_FEEDS_PER_COUNTRY: '10'
           AKTUAL_FETCH_CONCURRENCY: '12'
           AKTUAL_ITEMS_PER_COUNTRY: '30'
@@ -37,6 +39,14 @@ jobs:
           args=()
           if [ -n "$COUNTRY" ]; then args+=(--country "$COUNTRY"); fi
           node scripts/refresh-aktual-world-headlines-v1.mjs "${args[@]}"
+      - name: Save fetch diagnostics even when refresh fails
+        if: ${{ !cancelled() && steps.fetch_headlines.outcome != 'skipped' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-refresh-run-${{ github.run_id }}
+          path: ${{ runner.temp }}/world-refresh-run.json
+          if-no-files-found: warn
+          retention-days: 7
       - name: Prepare country-agent source briefs (not articles or approval)
         env:
           COUNTRY: ${{ inputs.country }}
@@ -45,6 +55,43 @@ jobs:
           args=()
           if [ -n "$COUNTRY" ]; then args+=(--country "$COUNTRY"); fi
           node apps/agents/world201/run-v1.mjs "${args[@]}" > "$RUNNER_TEMP/world201-briefs.json"
+      - name: Run country and network agents (source-linked leads only)
+        env:
+          COUNTRY: ${{ inputs.country }}
+        shell: bash
+        run: |
+          args=()
+          if [ -n "$COUNTRY" ]; then args+=(--country "$COUNTRY"); fi
+          node apps/agents/world201/fleet-run-v1.mjs "${args[@]}" > "$RUNNER_TEMP/world210-fleet.json"
+      - name: Check editorial kill switch
+        id: writer_switch
+        run: |
+          node --input-type=module -e 'import {killSwitchState} from "./apps/agents/lib/policy-v1.mjs"; import {appendFileSync} from "node:fs"; const s=killSwitchState(); appendFileSync(process.env.GITHUB_OUTPUT, `enabled=${s.enabled ? "true" : "false"}\n`); console.log(s.enabled ? "Writer enabled" : "Writer paused: " + s.reason);'
+      - name: Write attributed bilingual roundup drafts (not articles or publication)
+        if: ${{ steps.writer_switch.outputs.enabled == 'true' }}
+        env:
+          COUNTRY: ${{ inputs.country }}
+        shell: bash
+        run: |
+          args=()
+          if [ -n "$COUNTRY" ]; then args+=(--country "$COUNTRY"); fi
+          node apps/agents/world201/writer-run-v1.mjs "${args[@]}" > "$RUNNER_TEMP/world-roundups.json"
+          node apps/agents/world201/writer-run-v1.mjs "${args[@]}" --format html > "$RUNNER_TEMP/world-roundups-preview.html"
+      - name: Save unpublished drafts and preview
+        if: ${{ steps.writer_switch.outputs.enabled == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-roundups-review-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/world-roundups.json
+            ${{ runner.temp }}/world-roundups-preview.html
+          retention-days: 7
+      - name: Save fleet report for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: world210-fleet-${{ github.run_id }}
+          path: ${{ runner.temp }}/world210-fleet.json
+          retention-days: 7
       - name: Save country-agent briefs for review
         uses: actions/upload-artifact@v4
         with:
@@ -61,22 +108,44 @@ jobs:
           if [ -n "$COUNTRY" ]; then args+=(--country "$COUNTRY"); fi
           node scripts/build-aktual-world-v1.mjs --base https://gnk-asg.hr/gnk-aktual/ "${args[@]}"
           node --test tests/test-aktual-world-v1.mjs
-      - name: Open source-update PR, never deploy or auto-merge
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Preserve update patch if PR creation fails
+        shell: bash
+        run: |
+          git add apps/portal/data/aktual-world-headlines-v1.json apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad
+          git diff --cached --binary -- apps/portal/data/aktual-world-headlines-v1.json apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad > "$RUNNER_TEMP/world-source-update.patch"
+      - name: Save update patch for recovery
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-source-update-${{ github.run_id }}
+          path: ${{ runner.temp }}/world-source-update.patch
+          retention-days: 7
+      - name: Prepare source-update commit
+        id: prepare_pr
         shell: bash
         run: |
           set -euo pipefail
-          git add apps/portal/data/aktual-world-headlines-v1.json apps/portal/gnk-aktual/media apps/portal/gnk-aktual/grad
           if git diff --cached --quiet; then
             echo 'No acceptable updated headlines.'
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          # Keep updates in review, no uncontrolled production publishing.
-          branch="auto/aktual-world-refresh-${GITHUB_RUN_ID}"
+          # A rerun gets a separate branch, avoiding collisions with its earlier attempt.
+          branch="auto/aktual-world-refresh-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git checkout -b "$branch"
           git commit -m 'chore(aktual-world): refresh external headline links'
-          git push origin "$branch"
-          gh pr create --base main --head "$branch" --title 'AKTUAL World: osvježi poveznice na izvorne naslove' --body 'Automatski pripremljen skup poveznica i naslova vanjskih izvora. Bez kopiranja članaka i bez automatskog mergea/deploya. Provjeriti prava, svježinu, točnost naslova i CI prije objave.'
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          echo 'changed=true' >> "$GITHUB_OUTPUT"
+      - name: Push source-update branch
+        if: ${{ steps.prepare_pr.outputs.changed == 'true' }}
+        env:
+          UPDATE_BRANCH: ${{ steps.prepare_pr.outputs.branch }}
+        run: git push origin "$UPDATE_BRANCH"
+      - name: Open source-update PR, never deploy or auto-merge
+        if: ${{ steps.prepare_pr.outputs.changed == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          UPDATE_BRANCH: ${{ steps.prepare_pr.outputs.branch }}
+        run: |
+          gh pr create --base main --head "$UPDATE_BRANCH" --title 'AKTUAL World: osvježi poveznice na izvorne naslove' --body 'Automatski pripremljen skup poveznica i naslova vanjskih izvora. Bez kopiranja članaka i bez automatskog mergea/deploya. Provjeriti prava, svježinu, točnost naslova i CI prije objave.'
