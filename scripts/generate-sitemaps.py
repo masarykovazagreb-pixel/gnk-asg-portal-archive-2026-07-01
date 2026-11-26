@@ -12,7 +12,7 @@ What it does:
      (kept in sync with robots.txt's Disallow list) and any page whose
      own <head> contains <meta name="robots" content="noindex...">.
   2. For every remaining index.html, records its URL and last-modified
-     date (from git history, falling back to today's date).
+     date (from git history, omitted if unknown).
   3. Buckets each URL into one of three sitemaps to match the existing
      robots.txt convention:
        - visual-sitemap.xml   -> /visual-index/ and /en/visual-index/
@@ -28,7 +28,9 @@ resulting XML diffs alongside your content change.
 import os
 import re
 import subprocess
-from datetime import date
+from html.parser import HTMLParser
+from urllib.parse import urljoin, urlsplit
+from xml.sax.saxutils import escape, quoteattr
 from collections import defaultdict, Counter
 import xml.etree.ElementTree as ET
 
@@ -52,13 +54,37 @@ EXCLUDE_PREFIXES = [
     "tests/", "__preview/", ".github/", "artifacts/",
 ]
 
-NOINDEX_RE = re.compile(
-    r'<meta\s+name=["\']robots["\']\s+content=["\'][^"\']*noindex', re.IGNORECASE
-)
+class IndexSignals(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.noindex = False
+        self.canonicals = []
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "meta" and (a.get("name") or "").lower() in ("robots", "googlebot", "bingbot"):
+            if re.search(r"\b(?:noindex|none)\b", a.get("content") or "", re.I):
+                self.noindex = True
+        if tag == "link" and "canonical" in (a.get("rel") or "").lower().split():
+            self.canonicals.append(a.get("href") or "")
 
 
 def is_excluded(rel_path):
-    return any(rel_path.startswith(p) for p in EXCLUDE_PREFIXES)
+    # Apply the same protection to translated operational paths.
+    local_path = rel_path[3:] if rel_path.startswith("en/") else rel_path
+    return any(local_path.startswith(p) for p in EXCLUDE_PREFIXES)
+
+
+def indexable_page(url, text):
+    signals = IndexSignals()
+    head = re.split(r"</head\s*>", text, maxsplit=1, flags=re.I)[0]
+    signals.feed(head)
+    if signals.noindex:
+        return False
+    if not signals.canonicals:
+        return True
+    return (len(signals.canonicals) == 1 and bool(signals.canonicals[0])
+            and urljoin(url, signals.canonicals[0]) == url)
 
 
 def git_lastmod(fs_path):
@@ -67,9 +93,9 @@ def git_lastmod(fs_path):
             ["git", "log", "-1", "--format=%ad", "--date=short", "--", fs_path],
             capture_output=True, text=True, cwd=REPO_ROOT, check=True,
         ).stdout.strip()
-        return out if out else date.today().isoformat()
+        return out if re.fullmatch(r'\d{4}-\d{2}-\d{2}', out) else None
     except Exception:
-        return date.today().isoformat()
+        return None
 
 
 def classify(url_path):
@@ -97,13 +123,14 @@ def collect_entries():
             continue
         fs_path = os.path.join(dirpath, "index.html")
         try:
-            head = open(fs_path, encoding="utf-8", errors="ignore").read(4000)
-        except Exception:
-            head = ""
-        if NOINDEX_RE.search(head):
+            with open(fs_path, encoding="utf-8", errors="ignore") as page:
+                head = page.read()
+        except OSError:
             continue
         url_path = "/" + rel_dir + ("/" if rel_dir else "")
         url = BASE_URL + url_path
+        if not indexable_page(url, head):
+            continue
         lastmod = git_lastmod(fs_path)
         entries.append((url, lastmod, classify(url_path)))
     return entries
@@ -159,12 +186,13 @@ def render_urlset(items):
         veze = ""
         if hr_url in sve_adrese and en_url in sve_adrese:
             veze = (
-                f'<xhtml:link rel="alternate" hreflang="hr" href="{hr_url}"/>'
-                f'<xhtml:link rel="alternate" hreflang="en" href="{en_url}"/>'
-                f'<xhtml:link rel="alternate" hreflang="x-default" href="{x_default_url}"/>'
+                f'<xhtml:link rel="alternate" hreflang="hr" href={quoteattr(hr_url)}/>'
+                f'<xhtml:link rel="alternate" hreflang="en" href={quoteattr(en_url)}/>'
+                f'<xhtml:link rel="alternate" hreflang="x-default" href={quoteattr(x_default_url)}/>'
             )
+        modified = f"<lastmod>{escape(lastmod)}</lastmod>" if lastmod else ""
         lines.append(
-            f"  <url><loc>{url}</loc><lastmod>{lastmod}</lastmod>"
+            f"  <url><loc>{escape(url)}</loc>{modified}"
             f"<changefreq>{freq}</changefreq><priority>{pr}</priority>{veze}</url>"
         )
     lines.append("</urlset>")
