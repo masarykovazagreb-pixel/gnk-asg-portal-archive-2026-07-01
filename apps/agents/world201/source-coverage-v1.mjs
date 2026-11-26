@@ -1,4 +1,5 @@
 // Country coverage audit: configuration is not proof of access, licensing or facts.
+import {freshFeedObservation} from '../../../scripts/lib/aktual-world-feed-identity-v1.mjs';
 const host=value=>{try{const u=new URL(value);if(u.protocol!=='https:'||u.username||u.password)return '';return u.hostname.toLowerCase().replace(/^www\./,'')}catch{return ''}};
 const normalizeLanguage=value=>String(value||'').toLowerCase()==='srp'?'sr':String(value||'').toLowerCase();
 export function sourceCoverage(registry,cache,{slug=null,now=Date.now()}={}){
@@ -13,14 +14,10 @@ export function sourceCoverage(registry,cache,{slug=null,now=Date.now()}={}){
   const checks=Array.isArray(cache?.sourceChecks)?cache.sourceChecks.filter(x=>x.kind==='country'&&x.scope===c.slug):[];
   const feeds=(c.sourcesList||[]).map(s=>{
    const domain=host(s.rss);
-   const matching=checks.filter(x=>x.source===s.name);
-   // Old diagnostics lack feed identity. A shared source label must not verify a specific URL.
-   const sameLabel=(c.sourcesList||[]).filter(x=>x.name===s.name).length;
-   const exact=matching.filter(x=>x.feedId===s.id);
-   const check=exact.length===1?exact[0]:sameLabel===1&&matching.length===1?matching[0]:null;
+   const check=freshFeedObservation(checks,s,now);
    return {id:s.id,name:s.name,domain,kind:!domain?'invalid':domain==='news.google.com'?'aggregator':'direct',
     nativeLanguage:normalizeLanguage(s.language)===language,
-    observation:fresh&&check?check.status:'unverified',
+    observation:check?check.status:'unverified',checkedAt:check?.checkedAt||null,
     rightsStatus:'unverified',factVerification:'not-performed'};
   });
   const direct=feeds.filter(f=>f.kind==='direct'&&f.nativeLanguage);
@@ -34,7 +31,7 @@ export function sourceCoverage(registry,cache,{slug=null,now=Date.now()}={}){
     publisher:'submit-to-existing-authorized-single-writer',
     execution:'configured-responsibility-not-independent-service',
     productionPublication:'unverified'};
-  return {slug:c.slug,language,configuredFeeds:feeds.length,directFeeds:direct.length,
+  return {slug:c.slug,language,contentCacheFresh:fresh,configuredFeeds:feeds.length,directFeeds:direct.length,
     uniqueDirectDomains,aggregatorFeeds:feeds.filter(f=>f.kind==='aggregator').length,
     observedDirectHeadlines:observedDirect.length,discoveryGapToFive:gap,feeds,roles,
     discoveryPriority:uniqueDirectDomains===0?'P0':gap>0?'P1':'P2',

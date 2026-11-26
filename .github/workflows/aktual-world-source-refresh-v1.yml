@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: '22'
       - name: Test registry and builder
-        run: node --test tests/test-aktual-world-v1.mjs
+        run: node --test tests/test-aktual-world-v1.mjs tests/test-world-source-coverage-v1.mjs
       - name: Fetch external headlines as links only
         id: fetch_headlines
         env:

@@ -6,6 +6,7 @@
  * consumes that cache; the presence of a schedule does not prove it ran.
  */
 import fs from 'node:fs';
+import {feedIdentity} from './lib/aktual-world-feed-identity-v1.mjs';
 import { safeUrl, fetchFeedXml } from './lib/aktual-world-feed-http-v1.mjs';
 import {selectCountryFeeds, diversifyHeadlines} from './lib/aktual-world-selection-v1.mjs';
 import {countryAgent} from '../apps/agents/world201/coordinator-v1.mjs';
@@ -66,12 +67,12 @@ const reserves=new Map();
 const targets=selectedCountries.flatMap(c=>{
  const feeds=selectCountryFeeds(c,Math.min(30,feedLimit+fallbackLimit));
  reserves.set(c.slug,feeds.slice(feedLimit));
- return feeds.slice(0,feedLimit).map(s=>({country:c.slug,source:s.name,url:s.rss,fallback:false}));
+ return feeds.slice(0,feedLimit).map(s=>({country:c.slug,source:s.name,feedId:s.id,url:s.rss,fallback:false}));
 });
 function scheduleFallback(target){
  if(!target.country)return;
  const source=reserves.get(target.country)?.shift();
- if(source)targets.push({country:target.country,source:source.name,url:source.rss,fallback:true});
+ if(source)targets.push({country:target.country,source:source.name,feedId:source.id,url:source.rss,fallback:true});
 }
 // Use the configured country edition of Google News for city search rather
 // than imposing US English; query parameters are not proof of item language.
@@ -101,9 +102,9 @@ let idx=0;
 async function worker(){while(idx<targets.length){const target=targets[idx++];const scope=target.city || target.country, kind=target.city ? 'city' : 'country';try{
   const headlines=await limitedFetch(target.url);
   ((target.city ? cityItems : items)[scope] ||= []).push(...headlines.map(x=>({...x,source:target.source})));
-  sourceChecks.push({kind,scope,source:target.source,status:headlines.length ? 'headlines' : 'no-eligible-headlines',acceptedHeadlines:headlines.length,...(target.fallback?{fallback:true}:{})});
+  sourceChecks.push({kind,scope,source:target.source,feedId:target.feedId||null,feedFingerprint:feedIdentity(target.url),checkedAt:new Date().toISOString(),status:headlines.length ? 'headlines' : 'no-eligible-headlines',acceptedHeadlines:headlines.length,...(target.fallback?{fallback:true}:{})});
   if(!headlines.length)scheduleFallback(target);
-}catch(e){const error=String(e.message).slice(0,120);errors.push({scope,source:target.source,error});sourceChecks.push({kind,scope,source:target.source,status:'failed',error,...(target.fallback?{fallback:true}:{})});scheduleFallback(target);}}}
+}catch(e){const error=String(e.message).slice(0,120);errors.push({scope,source:target.source,error});sourceChecks.push({kind,scope,source:target.source,feedId:target.feedId||null,feedFingerprint:feedIdentity(target.url),checkedAt:new Date().toISOString(),status:'failed',error,...(target.fallback?{fallback:true}:{})});scheduleFallback(target);}}}
 await Promise.all(Array.from({length:concurrency},worker));
 for(const [scope,rows] of Object.entries(items)){
  const country=selectedCountries.find(c=>c.slug===scope);
@@ -120,7 +121,7 @@ if(process.env.AKTUAL_WORLD_RUN_REPORT){
   scope:countrySlug?'single-country':limitCountries<data.countries.length?'partial':'all',
   country:countrySlug,feedAttempts:targets.length,feedFailures:errors.length,
   outcome:failureReason||'candidates-available-cache-write-not-confirmed',
-  sourceChecks:sourceChecks.map(({kind,scope,source,status,acceptedHeadlines,fallback})=>({kind,scope,source,status,...(fallback?{fallback:true}:{}),...(Number.isInteger(acceptedHeadlines)?{acceptedHeadlines}:{})}))};
+  sourceChecks:sourceChecks.map(({kind,scope,source,feedId,feedFingerprint,checkedAt,status,acceptedHeadlines,fallback})=>({kind,scope,source,feedId,feedFingerprint,checkedAt,status,...(fallback?{fallback:true}:{}),...(Number.isInteger(acceptedHeadlines)?{acceptedHeadlines}:{})}))};
  const file=process.env.AKTUAL_WORLD_RUN_REPORT,temp=file+'.tmp-'+process.pid;
  try{fs.writeFileSync(temp,JSON.stringify(runReport,null,2)+'\n');fs.renameSync(temp,file);}finally{if(fs.existsSync(temp))fs.unlinkSync(temp);}
 }
