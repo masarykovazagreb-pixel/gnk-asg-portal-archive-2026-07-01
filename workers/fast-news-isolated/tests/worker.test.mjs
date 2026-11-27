@@ -31,3 +31,6 @@ assert.match(await (await get("/rss.xml")).text(),/test-vijest/);
 assert.equal((await get("/slika/test-vijest.svg")).status,200);
 assert.equal((await handle(new Request("https://wrong.example/"),{...env,DB})).status,421);
 console.log("FAST NEWS regression checks passed; fixture DB only, no real publication.");
+
+const dev=await get("/");assert.equal(dev.headers.get("x-robots-tag"),"noindex");assert.match(await dev.text(),/content="noindex,follow"/);
+const prod=await get("/","GET",{...env,DB,INDEX_ENABLED:"true"});assert.equal(prod.headers.get("x-robots-tag"),null);assert.match(await prod.text(),/content="index,follow,max-image-preview:large"/);
