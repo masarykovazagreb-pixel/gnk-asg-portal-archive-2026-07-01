@@ -4,7 +4,7 @@
   "lang": "id",
   "city": "Jakarta",
   "country": "Indonezija",
-  "updatedAt": "2026-11-27T04:56:19.678Z",
+  "updatedAt": "2026-11-27T10:11:52.028Z",
   "sources": [
     {
       "id": "antara",
@@ -14,7 +14,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-27T04:56:13.623Z"
+      "checkedAt": "2026-11-27T10:11:45.059Z"
     },
     {
       "id": "kompas",
@@ -24,10 +24,10 @@
       "fetched": 0,
       "corrupt": 0,
       "errors": [
-        "https://www.kompas.com/rss: empty response",
-        "https://nasional.kompas.com/rss: empty response"
+        "https://www.kompas.com/rss: HTTP 404",
+        "https://nasional.kompas.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-27T04:56:15.199Z"
+      "checkedAt": "2026-11-27T10:11:47.328Z"
     },
     {
       "id": "detik",
@@ -39,7 +39,7 @@
       "errors": [
         "https://rss.detik.com/index.php/detikcom: fetch failed"
       ],
-      "checkedAt": "2026-11-27T04:56:16.656Z"
+      "checkedAt": "2026-11-27T10:11:48.180Z"
     },
     {
       "id": "tempo",
@@ -51,7 +51,7 @@
       "errors": [
         "https://www.tempo.co/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-27T04:56:17.422Z"
+      "checkedAt": "2026-11-27T10:11:48.982Z"
     },
     {
       "id": "cnnindonesia",
@@ -61,7 +61,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-27T04:56:17.776Z"
+      "checkedAt": "2026-11-27T10:11:49.991Z"
     },
     {
       "id": "republika",
@@ -71,7 +71,7 @@
       "fetched": 15,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-27T04:56:18.479Z"
+      "checkedAt": "2026-11-27T10:11:50.732Z"
     },
     {
       "id": "cnbcindonesia",
@@ -81,7 +81,7 @@
       "fetched": 100,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-27T04:56:18.559Z"
+      "checkedAt": "2026-11-27T10:11:51.009Z"
     },
     {
       "id": "kumparan",
@@ -93,10 +93,335 @@
       "errors": [
         "https://kumparan.com/feed: nije feed"
       ],
-      "checkedAt": "2026-11-27T04:56:19.677Z"
+      "checkedAt": "2026-11-27T10:11:52.028Z"
     }
   ],
   "items": [
+    {
+      "slug": "jakarta-2026-11-27-cnnindonesia-mentan-biasakan-kerja-sejak-subuh-tak-kenal-6acdda",
+      "title": "Mentan Biasakan Kerja Sejak Subuh, Tak Kenal Tanggal Merah",
+      "summary": "Menteri Pertanian, Andi Amran Sulaiman, menekankan disiplin kerja Kementan untuk percepat program pertanian dan wujudkan jaminan pangan nasional.",
+      "date": "2026-11-27T10:11:04.000Z",
+      "url": "https://www.cnnindonesia.com/ekonomi/20261127164347-97-1432451/mentan-biasakan-kerja-sejak-subuh-tak-kenal-tanggal-merah",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/27/kementan-1795771723918_169.jpeg?w=360&q=90",
+      "imageAlt": "Mentan Biasakan Kerja Sejak Subuh, Tak Kenal Tanggal Merah",
+      "addedAt": "2026-11-27T10:11:49.992Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-cnbcindonesia-batas-nilai-lolos-skd-cpns-2026-resmi-138235",
+      "title": "Batas Nilai Lolos SKD CPNS 2026 Resmi Terbit, Ini Bocoran Materinya",
+      "summary": "Menteri PANRB Rini Widyantini telah resmi menetapkan ambang batas nilai seleksi kompetensi dasar (SKD) untuk CPNS 2026.",
+      "date": "2026-11-27T10:10:00.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261127153302-4-789120/batas-nilai-lolos-skd-cpns-2026-resmi-terbit-ini-bocoran-materinya",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://awsimages.detik.net.id/visual/2021/02/10/infografisastagaada-13-juta-lowongan-cpns-di-202iaristya-rahadian_169.png?w=1200&q=90",
+      "imageAlt": "Batas Nilai Lolos SKD CPNS 2026 Resmi Terbit, Ini Bocoran Materinya",
+      "addedAt": "2026-11-27T10:11:51.009Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-antara-basarnas-ri-perkuat-pengamanan-destinasi-7eb908",
+      "title": "Basarnas RI perkuat pengamanan destinasi wisata prioritas di Kepri",
+      "summary": "Kepala Badan Nasional Pencarian dan Pertolongan (Basarnas) RI Mohammad Syafii menyebut pihaknya terus memperkuat ...",
+      "date": "2026-11-27T10:07:58.000Z",
+      "url": "https://www.antaranews.com/berita/5882851/basarnas-ri-perkuat-pengamanan-destinasi-wisata-prioritas-di-kepri",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/27/Facebook_creation_6E3D0779-78DB-42D0-B145-3382C2C601B6.jpeg",
+      "imageAlt": "Basarnas RI perkuat pengamanan destinasi wisata prioritas di Kepri",
+      "addedAt": "2026-11-27T10:11:45.059Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-antara-bnpb-sumbar-berstatus-awas-dan-16-provinsi-3be854",
+      "title": "BNPB: Sumbar berstatus Awas, dan 16 provinsi hujan ekstrem pada Sabtu",
+      "summary": "Badan Nasional Penanggulangan Bencana (BNPB) menyatakan Provinsi Sumatera Barat (Sumbar) berstatus peringatan dini ...",
+      "date": "2026-11-27T10:07:20.000Z",
+      "url": "https://www.antaranews.com/berita/5882847/bnpb-sumbar-berstatus-awas-dan-16-provinsihujan-ekstrem-pada-sabtu",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/20/1795171617363_copy_1436x958.jpg",
+      "imageAlt": "BNPB: Sumbar berstatus Awas, dan 16 provinsi hujan ekstrem pada Sabtu",
+      "addedAt": "2026-11-27T10:11:45.059Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-antara-mendagri-apresiasi-kementerian-pkp-tata-6f9b24",
+      "title": "Mendagri apresiasi Kementerian PKP tata Kampung Gotong Royong",
+      "summary": "Menteri Dalam Negeri (Mendagri) Muhammad Tito Karnavian mengapresiasi Menteri Perumahan dan Kawasan Permukiman (PKP) ...",
+      "date": "2026-11-27T10:06:11.000Z",
+      "url": "https://www.antaranews.com/berita/5882843/mendagri-apresiasi-kementerian-pkp-tata-kampung-gotong-royong",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/27/1000675315.jpg",
+      "imageAlt": "Mendagri apresiasi Kementerian PKP tata Kampung Gotong Royong",
+      "addedAt": "2026-11-27T10:11:45.059Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-antara-mendiktisaintek-ri-perlu-perkuat-riset-23a69e",
+      "title": "Mendiktisaintek: RI perlu perkuat riset bangun ekosistem teknologi",
+      "summary": "Menteri Pendidikan Tinggi, Sains, dan Teknologi (Mendiktisaintek) Brian Yuliarto menegaskan Indonesia perlu ...",
+      "date": "2026-11-27T10:06:08.000Z",
+      "url": "https://www.antaranews.com/berita/5882839/mendiktisaintek-ri-perlu-perkuat-riset-bangun-ekosistem-teknologi",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://img.antaranews.com/cache/800x533/2026/08/28/IMG_3911.jpeg",
+      "imageAlt": "Mendiktisaintek: RI perlu perkuat riset bangun ekosistem teknologi",
+      "addedAt": "2026-11-27T10:11:45.060Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-republika-di-tengah-gempuran-digital-buku-cetak-punya-5cea8a",
+      "title": "Di Tengah Gempuran Digital, Buku Cetak Punya Rumah Baru",
+      "summary": "JAKARTA -- Lintas Bookstore hadir di Summarecon Mall Kelapa Gading, Jakarta, sebagai ruang baru bagi masyarakat untuk kembali menikmati pengalaman membaca buku secara langsung di tengah maraknya akses bacaan digital....",
+      "date": "2026-11-27T10:06:00.000Z",
+      "url": "https://visual.republika.co.id/berita/tp5mvz375/di-tengah-gempuran-digital-buku-cetak-punya-rumah-baru",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Inpicture"
+      ],
+      "author": "Edwin Dwi Putranto",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/070602200-1795690995-830-556.jpg",
+      "imageAlt": "Di Tengah Gempuran Digital, Buku Cetak Punya Rumah Baru",
+      "addedAt": "2026-11-27T10:11:50.733Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-cnbcindonesia-makin-berat-5-negara-ini-ekonominya-babak-75e334",
+      "title": "Makin Berat! 5 Negara Ini Ekonominya Babak Belur-Masuk Jurang Resesi",
+      "summary": "Norwegia menyusul Chile, Kolombia, Lithuania, dan Prancis yang mengalami kontraksi ekonomi pada kuartal III-2026.",
+      "date": "2026-11-27T10:05:28.000Z",
+      "url": "https://www.cnbcindonesia.com/research/20261127114858-128-789023/makin-berat-5-negara-ini-ekonominya-babak-belur-masuk-jurang-resesi",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://awsimages.detik.net.id/visual/2022/05/31/ilustrasi-resesi-photo-by-martpexels_169.jpeg?w=1200&q=90",
+      "imageAlt": "Makin Berat! 5 Negara Ini Ekonominya Babak Belur-Masuk Jurang Resesi",
+      "addedAt": "2026-11-27T10:11:51.009Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-republika-penjurusan-sma-dimulai-kelas-xi-ada-empat-8a84e4",
+      "title": "Penjurusan SMA Dimulai Kelas XI, Ada Empat Rumpun Program Studi dan Bukan Lagi IPA-IPS-Bahasa",
+      "summary": "JAKARTA – Menteri Pendidikan Dasar dan Menengah (Mendikdasmen) Abdul Mu’ti mengusulkan model penjurusan baru di jenjang SMA melalui empat rumpun program studi yakni Teknologi dan Rekayasa, Sains dan Kesehatan,...",
+      "date": "2026-11-27T10:05:08.000Z",
+      "url": "https://news.republika.co.id/berita/tp5o0k487/penjurusan-sma-dimulai-kelas-xi-ada-empat-rumpun-program-studi-dan-bukan-lagi-ipaipsbahasa",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Pendidikan"
+      ],
+      "author": "Mas Alamil Huda",
+      "theme": "politika",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/032216500-1771827958-830-556.jpg",
+      "imageAlt": "Penjurusan SMA Dimulai Kelas XI, Ada Empat Rumpun Program Studi dan Bukan Lagi IPA-IPS-Bahasa",
+      "addedAt": "2026-11-27T10:11:50.733Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-cnbcindonesia-wakil-walikota-tidore-kepulauan-ungkap-69abf1",
+      "title": "Wakil Walikota Tidore Kepulauan Ungkap Potensi Ekonomi Daerah",
+      "summary": "Wakil Walikota Tidore, Ahmad Laman, berupaya menurunkan ICOR dengan mendorong investasi dan kolaborasi ekonomi antar daerah penghasil tambang di sekitarnya.",
+      "date": "2026-11-27T10:05:06.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261127165557-4-789147/wakil-walikota-tidore-kepulauan-ungkap-potensi-ekonomi-daerah",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/20/menteri-dalam-negeri-mendagri-muhammad-tito-karnavian-menyerahkan-piala-penghargaan-kategori-percepatan-pertumbuhan-ekonomi-da-1795187212919_169.jpeg?w=1200&q=90",
+      "imageAlt": "Wakil Walikota Tidore Kepulauan Ungkap Potensi Ekonomi Daerah",
+      "addedAt": "2026-11-27T10:11:51.009Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-republika-dolar-australia-anjlok-7-persen-tertekan-75860d",
+      "title": "Dolar Australia Anjlok 7 Persen, Tertekan Kebijakan The Fed dan Perlambatan China",
+      "summary": "JAKARTA -- Performa dolar Australia (AUD) berbalik arah secara drastis memasuki paruh kedua 2026. Setelah sempat menyandang predikat sebagai mata uang kelompok G10 dengan kinerja terbaik pada sebagian besar...",
+      "date": "2026-11-27T10:05:00.000Z",
+      "url": "https://ekonomi.republika.co.id/berita/tp5msy423/dolar-australia-anjlok-7-persen-tertekan-kebijakan-the-fed-dan-perlambatan-china",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Finansial"
+      ],
+      "author": "Gita Amanda",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/dolar-australia-ilustrasi-_121025181824-163.jpg",
+      "imageAlt": "Dolar Australia Anjlok 7 Persen, Tertekan Kebijakan The Fed dan Perlambatan China",
+      "addedAt": "2026-11-27T10:11:50.733Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-antara-perumnas-optimalisasi-aset-lewat-kerja-sama-56e064",
+      "title": "Perumnas optimalisasi aset lewat kerja sama dengan REI",
+      "summary": "Perum Perumnas menegaskan komitmen dalam mengoptimalkan pemanfaatan lahan dan aset potensial melalui kerja sama dengan ...",
+      "date": "2026-11-27T10:04:41.000Z",
+      "url": "https://www.antaranews.com/berita/5882835/perumnas-optimalisasi-aset-lewat-kerja-sama-dengan-rei",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/27/WhatsApp-Image-2026-11-27-at-16.20.23.jpeg",
+      "imageAlt": "Perumnas optimalisasi aset lewat kerja sama dengan REI",
+      "addedAt": "2026-11-27T10:11:45.060Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-cnnindonesia-video-bantuan-insulin-dari-mesir-tiba-di-3abcaa",
+      "title": "VIDEO: Bantuan Insulin dari Mesir Tiba di Gaza",
+      "summary": "Bantuan Insulin dari Mesir Tiba di Gaza, Bantu Anak-Anak Penderita Diabetes",
+      "date": "2026-11-27T10:04:30.000Z",
+      "url": "https://www.cnnindonesia.com/tv/20261127164017-400-1432445/video-bantuan-insulin-dari-mesir-tiba-di-gaza",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "https://akcdn.detik.net.id/visual/2026/11/27/pkg-1795772682851_169.png?w=360&q=90",
+      "imageAlt": "VIDEO: Bantuan Insulin dari Mesir Tiba di Gaza",
+      "addedAt": "2026-11-27T10:11:49.992Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-cnnindonesia-terduga-pelaku-penganiayaan-siswi-malang-e36e64",
+      "title": "Terduga Pelaku Penganiayaan Siswi Malang Diduga Sempat Kabur",
+      "summary": "Terduga pelaku penganiayaan maut siswi SMA SN (17) di Malang, Jatim, telah ditangkap setelah sempat melarikan diri ke Salatiga, Jateng.",
+      "date": "2026-11-27T10:03:41.000Z",
+      "url": "https://www.cnnindonesia.com/nasional/20261127164453-12-1432452/terduga-pelaku-penganiayaan-siswi-malang-diduga-sempat-kabur",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2015/07/24/0676200f-0af8-4c87-a754-bff6467e55d7_169.jpg?w=360&q=90",
+      "imageAlt": "Terduga Pelaku Penganiayaan Siswi Malang Diduga Sempat Kabur",
+      "addedAt": "2026-11-27T10:11:49.992Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-antara-movefest-2026-menggali-daya-tarik-fesyen-58bbdd",
+      "title": "MOVEFEST 2026 menggali daya tarik fesyen dan keunikan jenama lokal",
+      "summary": "Ketua Nasional Indonesian Fashion Chamber (IFC) Lenny Agustin mengatakan ajang fesyen MOVEFEST (Modest Fashion ...",
+      "date": "2026-11-27T10:03:29.000Z",
+      "url": "https://www.antaranews.com/berita/5882831/movefest-2026-menggali-daya-tarik-fesyen-dan-keunikan-jenama-lokal",
+      "source": "antara",
+      "sourceName": "ANTARA",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://img.antaranews.com/cache/800x533/2026/11/27/WhatsApp-Image-2026-11-27-at-15.56.45_1.jpeg",
+      "imageAlt": "MOVEFEST 2026 menggali daya tarik fesyen dan keunikan jenama lokal",
+      "addedAt": "2026-11-27T10:11:45.060Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-cnbcindonesia-ekonom-eropa-minta-ri-tak-tiru-korsel-china-14e639",
+      "title": "Ekonom Eropa Minta RI Tak Tiru Korsel-China Tapi Negara Ini, Kok Bisa?",
+      "summary": "Ekonom Piatkowski menilai RI sebaiknya tidak meniru model pembangunan Korsel-China. Ia rekomendasikan pendekatan lebih manusiawi ala Polandia",
+      "date": "2026-11-27T10:03:17.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261127144129-4-789088/ekonom-eropa-minta-ri-tak-tiru-korsel-china-tapi-negara-ini-kok-bisa",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://awsimages.detik.net.id/visual/2026/05/01/massa-buruh-memadati-kawasan-monumen-nasional-monas-dalam-peringatan-hari-buruh-internasional-mayday-di-jakarta-jumat-152026-1777601273089_169.jpeg?w=1200&q=90",
+      "imageAlt": "Ekonom Eropa Minta RI Tak Tiru Korsel-China Tapi Negara Ini, Kok Bisa?",
+      "addedAt": "2026-11-27T10:11:51.009Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-republika-tiket-konser-westlife-di-gbk-ludes-terjual-555a68",
+      "title": "Tiket Konser Westlife di GBK Ludes Terjual, Promotor Buka Alokasi Tambahan Mulai 4 Desember",
+      "summary": "JAKARTA -- Antusiasme pencinta musik Tanah Air terhadap konser perayaan 25 tahun perjalanan karier grup pop asal Irlandia, Westlife, cukup tinggi. Seluruh kategori tiket konser bertajuk \"Westlife: 25 Years...",
+      "date": "2026-11-27T10:02:59.000Z",
+      "url": "https://ameera.republika.co.id/berita/tp5nwz425/tiket-konser-westlife-di-gbk-ludes-terjual-promotor-buka-alokasi-tambahan-mulai-4-desember",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "Happening"
+      ],
+      "author": "Qommarria Rostanti",
+      "theme": "ai",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/_260524093436-891.png",
+      "imageAlt": "Tiket Konser Westlife di GBK Ludes Terjual, Promotor Buka Alokasi Tambahan Mulai 4 Desember",
+      "addedAt": "2026-11-27T10:11:50.733Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-cnbcindonesia-tak-kenal-libur-amran-biasa-kerja-sejak-0cc1c0",
+      "title": "Tak Kenal Libur, Amran Biasa Kerja Sejak Subuh: Rapat Pukul 05.30",
+      "summary": "Menteri Pertanian Andi Amran Sulaiman menekankan disiplin kerja di Kementan untuk ketahanan pangan.",
+      "date": "2026-11-27T10:01:55.000Z",
+      "url": "https://www.cnbcindonesia.com/news/20261127164627-4-789145/tak-kenal-libur-amran-biasa-kerja-sejak-subuh-rapat-pukul-0530",
+      "source": "cnbcindonesia",
+      "sourceName": "CNBC Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "https://awsimages.detik.net.id/visual/2026/11/27/dok-kementerian-pertanian-1795773702668_169.jpeg?w=1200&q=90",
+      "imageAlt": "Tak Kenal Libur, Amran Biasa Kerja Sejak Subuh: Rapat Pukul 05.30",
+      "addedAt": "2026-11-27T10:11:51.009Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-republika-bnpt-deteksi-penyebaran-radikalisme-lewat-6c4270",
+      "title": "BNPT Deteksi Penyebaran Radikalisme Lewat Desa Siapsiaga",
+      "summary": "BANDUNG BARAT – Badan Nasional Penanggulangan Terorisme (BNPT) memperkuat pencegahan penyebaran paham radikalisme, terorisme, dan ekstremisme berbasis kekerasan melalui program Desa Siapsiaga. Program ini menyasar masyarakat hingga tingkat desa...",
+      "date": "2026-11-27T10:01:48.000Z",
+      "url": "https://rejabar.republika.co.id/berita/tp5nsy416/bnpt-deteksi-penyebaran-radikalisme-lewat-desa-siapsiaga",
+      "source": "republika",
+      "sourceName": "Republika",
+      "categories": [
+        "News Rejabar"
+      ],
+      "author": "Satria K Yudha",
+      "theme": "drustvo",
+      "image": "https://static.republika.co.id/uploads/images/detailnews/sosialisasi-desa-siapsiaga-bnpt-di-desa-batujajar-barat-kabupaten_261127170122-621.jpeg",
+      "imageAlt": "BNPT Deteksi Penyebaran Radikalisme Lewat Desa Siapsiaga",
+      "addedAt": "2026-11-27T10:11:50.733Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-cnnindonesia-bank-mandiri-nilai-rupiah-punya-ruang-af93eb",
+      "title": "Bank Mandiri Nilai Rupiah Punya Ruang Menguat ke Rp18.100 per Dolar AS",
+      "summary": "PT Bank Mandiri (Persero) Tbk melihat potensi penguatan rupiah kembali ke kisaran Rp18.100 per dolar AS.",
+      "date": "2026-11-27T10:00:47.000Z",
+      "url": "https://www.cnnindonesia.com/ekonomi/20261127151300-78-1432400/bank-mandiri-nilai-rupiah-punya-ruang-menguat-ke-rp18100-per-dolar-as",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://akcdn.detik.net.id/visual/2020/06/02/7dc1b79e-ff19-4a8e-9182-1a89b962ac7f_169.jpeg?w=360&q=90",
+      "imageAlt": "Bank Mandiri Nilai Rupiah Punya Ruang Menguat ke Rp18.100 per Dolar AS",
+      "addedAt": "2026-11-27T10:11:49.992Z"
+    },
+    {
+      "slug": "jakarta-2026-11-27-cnnindonesia-badai-besar-menerjang-new-york-umumkan-815aa2",
+      "title": "Badai Besar Menerjang, New York Umumkan Situasi Darurat",
+      "summary": "Badai dahsyat picu banjir, pemadaman listrik, serta gangguan perjalanan membuat New York menetapkan status keadaan darurat.",
+      "date": "2026-11-27T10:00:25.000Z",
+      "url": "https://www.cnnindonesia.com/internasional/20261127130332-134-1432279/badai-besar-menerjang-new-york-umumkan-situasi-darurat",
+      "source": "cnnindonesia",
+      "sourceName": "CNN Indonesia",
+      "categories": [],
+      "author": "",
+      "theme": "potres",
+      "image": "https://akcdn.detik.net.id/visual/2025/10/14/hujan-lebat-dan-angin-kencang-akibat-badai-noreaster-di-new-york-1760411651196_169.jpeg?w=360&q=90",
+      "imageAlt": "Badai Besar Menerjang, New York Umumkan Situasi Darurat",
+      "addedAt": "2026-11-27T10:11:49.992Z"
+    },
     {
       "slug": "jakarta-2026-11-27-cnbcindonesia-kepergok-bea-cukai-50-000-rokok-ilegal-aa26de",
       "title": "Kepergok Bea Cukai, 50.000 Rokok Ilegal Diselundupkan Lewat Kapal Laut",
