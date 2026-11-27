@@ -40,7 +40,7 @@ export async function handle(req,env){
   try{const payload=JSON.stringify(a),digest=await hash(payload),date=new Date().toISOString();await env.DB.prepare("INSERT INTO fast_news_articles (slug,title,description,payload,digest,published_at) VALUES (?,?,?,?,?,?) ON CONFLICT(slug) DO NOTHING").bind(a.slug,a.title,a.description,payload,digest,date).run();const r=await one(env.DB,a.slug);if(!r)return json({error:"Storage confirmation failed"},503);if(r.digest!==digest)return json({error:"Slug conflict"},409);return json({status:"stored",url:urlFor(o,a.slug),publishedAt:r.published_at,requiresPublicVerification:true},200)}catch{return json({error:"Storage unavailable"},503)}
  }
  if(!["GET","HEAD"].includes(m))return reply(null,405);
- const done=(body,status=200,type)=>reply(m==="HEAD"?null:body,status,type);
+ const done=(body,status=200,type)=>{const indexable=env.INDEX_ENABLED==="true";if(!indexable&&typeof body==="string"&&(!type||type.startsWith("text/html")))body=body.replace('content="index,follow,max-image-preview:large"','content="noindex,follow"');const res=reply(m==="HEAD"?null:body,status,type);if(!indexable)res.headers.set("x-robots-tag","noindex");return res};
  if(p==="/robots.txt")return done("User-agent: *\nDisallow: /api/\nSitemap: "+o+"/sitemap.xml\nSitemap: "+o+"/news-sitemap.xml\n",200,"text/plain; charset=utf-8");
  if(!env.DB)return done("Service temporarily unavailable",503,"text/plain");
  try{
