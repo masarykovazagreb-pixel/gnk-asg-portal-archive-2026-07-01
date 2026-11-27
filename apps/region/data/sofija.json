@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-11-26T22:36:59.645Z",
+  "updatedAt": "2026-11-27T00:33:09.340Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-26T22:36:53.541Z"
+      "checkedAt": "2026-11-27T00:33:01.821Z"
     },
     {
       "id": "capital",
@@ -27,17 +27,20 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T22:36:54.039Z"
+      "checkedAt": "2026-11-27T00:33:02.890Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": true,
-      "fetched": 10,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-26T22:36:54.981Z"
+      "errors": [
+        "https://www.mediapool.bg/rss: nije feed",
+        "https://www.mediapool.bg/rss/: nije feed"
+      ],
+      "checkedAt": "2026-11-27T00:33:04.201Z"
     },
     {
       "id": "dnevnikbg",
@@ -49,7 +52,7 @@
       "errors": [
         "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-26T22:36:56.186Z"
+      "checkedAt": "2026-11-27T00:33:05.411Z"
     },
     {
       "id": "actualno",
@@ -59,7 +62,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T22:36:56.721Z"
+      "checkedAt": "2026-11-27T00:33:06.108Z"
     },
     {
       "id": "sega",
@@ -69,7 +72,7 @@
       "fetched": 95,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-26T22:36:56.907Z"
+      "checkedAt": "2026-11-27T00:33:06.206Z"
     },
     {
       "id": "novinite",
@@ -81,7 +84,7 @@
       "errors": [
         "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-26T22:36:57.833Z"
+      "checkedAt": "2026-11-27T00:33:07.631Z"
     },
     {
       "id": "btaen",
@@ -93,10 +96,27 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-26T22:36:59.645Z"
+      "checkedAt": "2026-11-27T00:33:09.339Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-11-27-actualno-zaradi-raznoglasi-ta-otmeniha-vtori-den-ot-b5618d",
+      "title": "Заради разногласията: Отмениха втория ден от срещата за бюджета на Европейския съюз (ВИДЕО)",
+      "summary": "Германският канцлер Фридрих Мерц заяви, че заради продължаващите разногласия между лидерите на страните от ЕС относно бъ...",
+      "date": "2026-11-27T00:16:00.000Z",
+      "url": "https://www.actualno.com/europe/zaradi-raznoglasijata-otmeniha-vtorija-den-ot-sreshtata-za-budjeta-na-evropejskija-syuz-video-news_2667664.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/27/73df8de6985f181ff38c016a0c1c4bce_2667664_1920x1080.jpg",
+      "imageAlt": "Заради разногласията: Отмениха втория ден от срещата за бюджета на Европейския съюз (ВИДЕО)",
+      "addedAt": "2026-11-27T00:33:06.109Z"
+    },
     {
       "slug": "sofija-2026-11-27-sega-sport-t-po-televizi-ta-27-noemvri-f68b1e",
       "title": "Спортът по телевизията - 27 ноември",
@@ -113,6 +133,74 @@
       "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2020/01/tv_1.jpg",
       "imageAlt": "Спортът по телевизията - 27 ноември",
       "addedAt": "2026-11-26T22:36:56.907Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-actualno-cbs-news-cernomorski-t-front-moze-da-v-0c714a",
+      "title": "CBS News: Черноморският фронт може да въвлече САЩ във война",
+      "summary": "В Черно море румънските военноморски сили непрекъснато търсят останки от война, в която не участват. Морето се превърна ...",
+      "date": "2026-11-27T00:02:00.000Z",
+      "url": "https://www.actualno.com/europe/cbs-news-chernomorskijat-front-moje-da-vyvleche-sasht-vyv-vojna-news_2667663.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "rat",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/27/10b6661457baed2ff0a90654da478db3_2667663_1920x1080.jpg",
+      "imageAlt": "CBS News: Черноморският фронт може да въвлече САЩ във война",
+      "addedAt": "2026-11-27T00:33:06.109Z"
+    },
+    {
+      "slug": "sofija-2026-11-26-actualno-cetirima-ostavat-v-aresta-za-izmamite-s-137a91",
+      "title": "Четирима остават в ареста за измамите с европроекти за 70 млн. евро в Хасково",
+      "summary": "Софийският градски съд остави 3 от хасковските общински съветници и 1 бизнесмен в ареста. Общо 8 души са обвиняеми за уч...",
+      "date": "2026-11-26T23:48:00.000Z",
+      "url": "https://www.actualno.com/crime/chetirima-ostavat-v-aresta-za-izmamite-s-evroproekti-za-70-mln-evro-v-haskovo-news_2667659.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Крими"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/27/3b64f7e5406b9d7f93dea6f1bcad3b42_2667659_1920x1080.jpg",
+      "imageAlt": "Четирима остават в ареста за измамите с европроекти за 70 млн. евро в Хасково",
+      "addedAt": "2026-11-27T00:33:06.109Z"
+    },
+    {
+      "slug": "sofija-2026-11-26-actualno-agresi-ta-i-nasilieto-n-mat-m-sto-v-d01b3a",
+      "title": "\"Агресията и насилието нямат място в цивилизована Европа\": Радев разговаря с Макрон за ексцесиите в Марсилия",
+      "summary": "Премиерът Румен Радев е разговарял с президента на Франция Еманюел Макрон за нападението срещу български граждани по вре...",
+      "date": "2026-11-26T23:37:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/agresijata-i-nasilieto-njamat-mjasto-v-civilizovana-evropa-radev-razgovarja-s-makron-za-ekscesiite-v-marsilija-news_2667657.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/27/00f3f43ffd51e1139fee2eb6723b934c_2667657_1920x1080.jpg",
+      "imageAlt": "\"Агресията и насилието нямат място в цивилизована Европа\": Радев разговаря с Макрон за ексцесиите в Марсилия",
+      "addedAt": "2026-11-27T00:33:06.109Z"
+    },
+    {
+      "slug": "sofija-2026-11-26-actualno-tr-mp-iznenada-r-te-dobavi-ukra-na-k-m-fe6d46",
+      "title": "Тръмп изненада Рюте: Добави Украйна към призива към Русия да се въздържа от разширяване на войната",
+      "summary": "Доналд Тръмп поднесе изненада на генералния секретар на НАТО Марк Рюте след срещата им във Флорида на фона на последния ...",
+      "date": "2026-11-26T22:42:00.000Z",
+      "url": "https://www.actualno.com/europe/trymp-iznenada-rute-dobavi-ukrajna-kym-priziva-kym-rusija-da-se-vyzdyrja-ot-razshirjavane-na-vojnata-news_2667649.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Европа"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "rat",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/27/492fc506dc408b5fea130d6948623fe5_2667649_1920x1080.jpg",
+      "imageAlt": "Тръмп изненада Рюте: Добави Украйна към призива към Русия да се въздържа от разширяване на войната",
+      "addedAt": "2026-11-27T00:33:06.109Z"
     },
     {
       "slug": "sofija-2026-11-26-actualno-ne-bih-bil-dovolen-dori-ot-ravenstvo-gizdol-016861",
