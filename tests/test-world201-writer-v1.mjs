@@ -37,7 +37,7 @@ test('CLI produces scoped HTML without writing to the portal and rejects invalid
 test('writer CLI fails closed when editorial switch is missing, disabled or corrupt',()=>{
  const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'world-switch-'));
  try{
-  for(const file of ['apps/agents/world201/writer-run-v1.mjs','apps/agents/world201/writer-v1.mjs','apps/agents/world201/coordinator-v1.mjs','apps/agents/lib/policy-v1.mjs','scripts/lib/aktual-world-feed-http-v1.mjs','scripts/lib/aktual-world-selection-v1.mjs']){
+  for(const file of ['apps/agents/world201/writer-run-v1.mjs','apps/agents/world201/writer-v1.mjs','apps/agents/world201/coordinator-v1.mjs','apps/agents/lib/policy-v1.mjs','scripts/lib/aktual-world-feed-http-v1.mjs','scripts/lib/aktual-world-feed-identity-v1.mjs','scripts/lib/aktual-world-selection-v1.mjs']){
    const dst=path.join(tmp,file);fs.mkdirSync(path.dirname(dst),{recursive:true});fs.copyFileSync(file,dst);
   }
   fs.mkdirSync(path.join(tmp,'ops'));

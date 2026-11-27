@@ -15,6 +15,7 @@
  * Test ne piše ništa i ne pristupa mreži.
  */
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import {NEWSROOM_PUBLIC_LINKS} from '../workers/gnk-asg-direct-operator/src/newsroom100-cms-v1.js';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -61,7 +62,7 @@ for (const page of pages) {
   for (const match of html.matchAll(/href="(\/[^"#?]*)(?:[#?][^"]*)?"/g)) {
     const href = match[1];
     if (href.startsWith('//')) continue;
-    if (ALLOWED_PREFIXES.some((prefix) => href.startsWith(prefix))) continue;
+    if (NEWSROOM_PUBLIC_LINKS.includes(href)||ALLOWED_PREFIXES.some((prefix) => href.startsWith(prefix))) continue;
     links += 1;
     if (!existsSync(resolveTarget(href))) failures.push(`${rel}: veza ${href} ne postoji`);
   }

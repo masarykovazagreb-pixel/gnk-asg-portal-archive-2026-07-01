@@ -1,6 +1,7 @@
 // 201 country agents plus nine deterministic network roles, executed in one process.
 // Outputs are internal leads, never verified facts or publication authorizations.
 import {masterAgent} from './coordinator-v1.mjs';
+import {sourceCoverage} from './source-coverage-v1.mjs';
 import {safeUrl} from '../../../scripts/lib/aktual-world-feed-http-v1.mjs';
 
 export function runFleet(registry, cache, {now=Date.now(), slug=null}={}) {
@@ -32,5 +33,5 @@ export function runFleet(registry, cache, {now=Date.now(), slug=null}={}) {
   configuredAgents:210,executedAgents:countries.length+networkAgents.length,
   agentsAre:'201 country roles plus 9 network roles in one deterministic process; not independent services or people',
   publication:'not-approved',automaticArticlePublishing:false,
-  countryAgents:countries,networkAgents,drafts};
+  countryAgents:countries,networkAgents,drafts,sourceCoverage:sourceCoverage(registry,cache,{now,slug})};
 }

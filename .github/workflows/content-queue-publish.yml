@@ -1,11 +1,51 @@
 name: Content Queue Publish
 
 # GNK ASG Content Factory — publishes guarded READY items from the calendar (Europe/Zagreb).
-# Site release uses the exact-SHA production fence with search notifications disabled.
+# Manual input and scheduled READY publications use the same exact-SHA production fence.
 # External mirrors remain separate manual opt-in workflows; a registry change is not approval to distribute.
 
 on:
   workflow_dispatch:
+    inputs:
+      headline:
+        description: 'Naslov originalnog teksta (18-145 znakova)'
+        required: false
+        type: string
+      slug:
+        description: 'URL slug: mala slova i crtice'
+        required: false
+        type: string
+      body_text:
+        description: 'Originalni tekst, odlomci odvojeni praznim retkom'
+        required: false
+        type: string
+      source_urls:
+        description: 'Najmanje 2 neovisne HTTPS domene, URL po retku'
+        required: false
+        type: string
+      image_path:
+        description: 'Opcionalno: prethodno uploadana /assets/... fotografija, inače originalni SVG'
+        required: false
+        type: string
+      image_license:
+        description: 'Prava za dostavljenu fotografiju'
+        required: false
+        type: choice
+        options: ['none', 'owned', 'licensed', 'cc-by', 'public-domain']
+        default: 'none'
+      image_credit:
+        description: 'Fotograf i izvor; obavezno za tuđe fotografije'
+        required: false
+        type: string
+      image_license_url:
+        description: 'HTTPS dokaz licence za CC-BY/licensed'
+        required: false
+        type: string
+      editorial_verified:
+        description: 'Potvrđujem provjeru činjenica, vlastitu obradu i prava na objavu'
+        required: false
+        type: boolean
+        default: false
   # Immediately process newly committed queue items through the same guarded publisher.
   # Generated portal files are deliberately excluded to prevent publication loops.
   push:
@@ -27,7 +67,7 @@ concurrency:
 
 jobs:
   publish:
-    if: vars.GNK_ASG_RELEASE_FENCE != 'true'
+    if: github.ref == 'refs/heads/main' && vars.GNK_ASG_RELEASE_FENCE != 'true' && (github.event_name != 'workflow_dispatch' || inputs.headline == '' || inputs.editorial_verified == true)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -41,6 +81,25 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Import one-click approved editorial submission
+        if: github.event_name == 'workflow_dispatch' && inputs.headline != ''
+        env:
+          FAST_TITLE: ${{ inputs.headline }}
+          FAST_SLUG: ${{ inputs.slug }}
+          FAST_BODY: ${{ inputs.body_text }}
+          FAST_SOURCES: ${{ inputs.source_urls }}
+          FAST_IMAGE_PATH: ${{ inputs.image_path }}
+          FAST_IMAGE_LICENSE: ${{ inputs.image_license }}
+          FAST_IMAGE_CREDIT: ${{ inputs.image_credit }}
+          FAST_IMAGE_LICENSE_URL: ${{ inputs.image_license_url }}
+          FAST_FACTS_VERIFIED: ${{ inputs.editorial_verified }}
+          FAST_ORIGINALITY_VERIFIED: ${{ inputs.editorial_verified }}
+          FAST_APPROVAL: 'OBJAVI'
+        run: |
+          node --check scripts/aktual-fast-intake-v1.mjs
+          node tests/test-aktual-fast-intake-v1.mjs
+          node tests/test-aktual-newsroom100-radar-v1.mjs
+          node scripts/aktual-fast-intake-v1.mjs
       - name: Test Content Factory safety gate
         run: node tests/test-content-queue-preflight-v1.mjs
       - name: Fail closed on duplicate, held or invalid publications
@@ -74,7 +133,7 @@ jobs:
           set -euo pipefail
           git config user.name "gnk-content-queue-bot"
           git config user.email "actions@github.com"
-          git add apps/portal
+          git add apps/portal content/factory-queue
           if git diff --cached --quiet; then
             echo "Generator reported changed=true but there is no staged diff; nothing to publish."
             exit 0
