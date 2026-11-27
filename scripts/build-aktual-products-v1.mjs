@@ -70,6 +70,7 @@ const PLATFORMS = [
   ['https://gnk-asg-tjednik.pages.dev/', 'Business Tjednik', 'Tjedni poslovni pregled W43'],
   ['/galerija/', 'Galerija znakova', '63 stranice znakova kuće'],
   ['/radio/', 'Radio', 'Šest stanica, jedan player'],
+  ['/gnk-aktual/prati-cijenu/', 'Prati cijenu', 'Dnevno praćenje i obavijesti o provjerenom padu cijene; prijave u pripremi'],
   ['/gnk-aktual/mreza/', 'Mreža izdanja', '17 gradova i 14 jezika na jednoj karti'],
   ['/status/', 'Status ažurnosti', 'Javno mjerenje svježine svakog izdanja'],
   ['/aktual-media/', 'Podatkovni desk', 'Četiri mjerenja vlastite arhive'],
@@ -135,13 +136,14 @@ const deskCards = (lang) => DESKS.map(([slug, hr, note]) => {
 }).join('');
 
 const platformCards = (lang) => PLATFORMS.map(([url, hr, note]) => {
-  const label = lang === 'hr' ? hr : ({ 'Business Tjednik': 'Business Weekly', 'Galerija znakova': 'Brand gallery', 'Radio': 'Radio', 'Mreža izdanja': 'Edition network', 'Status ažurnosti': 'Freshness status', 'Podatkovni desk': 'Data desk' }[hr] || hr);
+  const label = lang === 'hr' ? hr : ({ 'Business Tjednik': 'Business Weekly', 'Galerija znakova': 'Brand gallery', 'Radio': 'Radio', 'Prati cijenu': 'Price alerts', 'Mreža izdanja': 'Edition network', 'Status ažurnosti': 'Freshness status', 'Podatkovni desk': 'Data desk' }[hr] || hr);
   const noteEn = Object.assign({}, {
     [`Samostalan portal: ${hrCount(archiveCount())} tekstova u pretraživoj arhivi`]: `Standalone portal: ${enCount(archiveCount())} stories in a searchable archive`,
   }, {
     'Tjedni poslovni pregled W43': 'Weekly business review W43',
     '63 stranice znakova kuće': '63 pages of house brand marks',
     'Šest stanica, jedan player': 'Six stations, one player',
+    'Dnevno praćenje i obavijesti o provjerenom padu cijene; prijave u pripremi': 'Daily checks and verified price-drop alerts; enrollment pending verification',
     '17 gradova i 14 jezika na jednoj karti': '17 cities and 14 languages on one map',
     '8 gradova i 8 jezika na jednoj karti': '8 cities and 8 languages on one map',
     'Javno mjerenje svježine svakog izdanja': 'Public freshness measurement for every edition',
