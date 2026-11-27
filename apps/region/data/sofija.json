@@ -4,7 +4,7 @@
   "lang": "bg",
   "city": "Sofija",
   "country": "Bugarska",
-  "updatedAt": "2026-11-27T00:33:09.340Z",
+  "updatedAt": "2026-11-27T04:33:43.039Z",
   "sources": [
     {
       "id": "bta",
@@ -17,7 +17,7 @@
         "https://www.bta.bg/bg/rss: HTTP 404",
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-27T00:33:01.821Z"
+      "checkedAt": "2026-11-27T04:33:35.983Z"
     },
     {
       "id": "capital",
@@ -27,20 +27,17 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-27T00:33:02.890Z"
+      "checkedAt": "2026-11-27T04:33:36.679Z"
     },
     {
       "id": "mediapool",
       "name": "Mediapool",
       "url": "https://www.mediapool.bg/rss",
-      "ok": false,
-      "fetched": 0,
+      "ok": true,
+      "fetched": 10,
       "corrupt": 0,
-      "errors": [
-        "https://www.mediapool.bg/rss: nije feed",
-        "https://www.mediapool.bg/rss/: nije feed"
-      ],
-      "checkedAt": "2026-11-27T00:33:04.201Z"
+      "errors": [],
+      "checkedAt": "2026-11-27T04:33:37.681Z"
     },
     {
       "id": "dnevnikbg",
@@ -52,7 +49,7 @@
       "errors": [
         "https://www.dnevnik.bg/rss: HTTP 403"
       ],
-      "checkedAt": "2026-11-27T00:33:05.411Z"
+      "checkedAt": "2026-11-27T04:33:38.893Z"
     },
     {
       "id": "actualno",
@@ -62,7 +59,7 @@
       "fetched": 50,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-27T00:33:06.108Z"
+      "checkedAt": "2026-11-27T04:33:39.194Z"
     },
     {
       "id": "sega",
@@ -72,7 +69,7 @@
       "fetched": 95,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-27T00:33:06.206Z"
+      "checkedAt": "2026-11-27T04:33:39.506Z"
     },
     {
       "id": "novinite",
@@ -84,7 +81,7 @@
       "errors": [
         "https://www.novinite.com/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-27T00:33:07.631Z"
+      "checkedAt": "2026-11-27T04:33:41.179Z"
     },
     {
       "id": "btaen",
@@ -96,10 +93,282 @@
       "errors": [
         "https://www.bta.bg/en/rss: HTTP 404"
       ],
-      "checkedAt": "2026-11-27T00:33:09.339Z"
+      "checkedAt": "2026-11-27T04:33:43.038Z"
     }
   ],
   "items": [
+    {
+      "slug": "sofija-2026-11-27-dnevnikbg-fotogaleri-koledna-magi-pri-zasileni-merki-a0d882",
+      "title": "Фотогалерия: Коледна магия при засилени мерки за сигурност",
+      "summary": "",
+      "date": "2026-11-27T04:30:00.000Z",
+      "url": "https://www.dnevnik.bg/photos/2026/11/27/4983761_fotogaleriia_koledna_magiia_pri_zasileni_merki_za/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1707"
+      ],
+      "author": "Юлия Лазарова",
+      "theme": "sigurnost",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4983745.jpg",
+      "imageAlt": "Фотогалерия: Коледна магия при засилени мерки за сигурност",
+      "addedAt": "2026-11-27T04:33:38.893Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-dnevnikbg-liderite-na-zapadnite-balkani-se-s-birat-v-8c9ecf",
+      "title": "Лидерите на Западните Балкани се събират в Охрид",
+      "summary": "Два дни след среща с ЕС лидерите на Западните Балкани се събират в Охрид. Това е срещата на върха по процеса Бърдо-Бриони, с домакин Северна Македония. Това е третият път, когато страната председателства процеса. Очаква се шестте...",
+      "date": "2026-11-27T04:24:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/27/4985095_liderite_na_zapadnite_balkani_se_subirat_v_ohrid/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4985094.jpg",
+      "imageAlt": "Лидерите на Западните Балкани се събират в Охрид",
+      "addedAt": "2026-11-27T04:33:38.893Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-actualno-problem-v-v-vo-dz-r-1-sondata-spr-da-pra-a-70dfc6",
+      "title": "Проблем във \"Вояджър 1\": Сондата спря да праща научни данни",
+      "summary": "Легендарната сонда \"Вояджър 1\" престана да изпраща научна и техническа информация, като вместо това излъчва само празен ...",
+      "date": "2026-11-27T04:22:00.000Z",
+      "url": "https://www.actualno.com/cosmos/problem-vyv-vojadjyr-1-sondata-sprja-da-prashta-nauchni-danni-news_2667674.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Космос"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/27/eec01184d24e91e7654454ab059c2925_2667674_1920x1080.jpg",
+      "imageAlt": "Проблем във \"Вояджър 1\": Сондата спря да праща научни данни",
+      "addedAt": "2026-11-27T04:33:39.195Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-capital-v-ocakvane-na-poredni-konstitucionni-e1232f",
+      "title": "В очакване на поредни конституционни промени",
+      "summary": "Изборите за нов Висш съдебен съвет (ВСС) отвориха и темата за промени в конституцията, които за пореден път се оказаха незаобиколимо условие за провеждане на пълноценна съдебна реформа. Поне такива заявки направиха и от ПБ, и от ДБ. Предложения на \"Прогресивна България\" Всъщност управляващите направиха заявка за конституционна реформа още в средата на август в управленската програма на правителството, обявена тогава, където конституционната реформа е включена в сектор правосъдие. В програмата т...",
+      "date": "2026-11-27T04:21:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/pravo/2026/11/27/4984400_v_ochakvane_na_poredni_konstitucionni_promeni/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "4904"
+      ],
+      "author": "Мирела Веселинова",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "В очакване на поредни конституционни промени",
+      "addedAt": "2026-11-27T04:33:36.680Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-actualno-bez-parno-i-topla-voda-desetki-stolicni-ra-471c81",
+      "title": "Без парно и топла вода: Десетки столични района излизат на протест",
+      "summary": "Жители на 20 столични района излизат на протест срещу липсата на парно и топла вода в София, съобщи БНР. В социалните мр...",
+      "date": "2026-11-27T04:21:00.000Z",
+      "url": "https://www.actualno.com/society/bez-parno-i-topla-voda-desetki-stolichni-rajona-izlizat-na-protest-news_2667673.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Общество"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/27/24cc26965c3b9eba81cea207b8128583_2667673_1920x1080.jpg",
+      "imageAlt": "Без парно и топла вода: Десетки столични района излизат на протест",
+      "addedAt": "2026-11-27T04:33:39.195Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-sega-stipendii-e-polucavat-samo-studentite-v-d-a5d359",
+      "title": "Стипендии ще получават само студентите в държавна поръчка",
+      "summary": "",
+      "date": "2026-11-27T04:18:15.000Z",
+      "url": "https://www.segabg.com/hot/category-education/stipendii-shte-poluchavat-samo-studentite-durzhavna-poruchka",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2018/06/img_9520.jpg",
+      "imageAlt": "Стипендии ще получават само студентите в държавна поръчка",
+      "addedAt": "2026-11-27T04:33:39.507Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-capital-sre-ata-na-tr-mp-si-i-putin-mnogo-simvolika-6875dd",
+      "title": "Срещата на Тръмп, Си и Путин: много символика, малко резултати",
+      "summary": "Няколко дни след срещата между Тръмп, Си и Путин в Шънджън заключението е ясно: срещата на върха не доведе до почти никакви конкретни дипломатически резултати, но предизвика политически шок. Тръмп се завърна във Вашингтон със снимки, топли думи за Путин и неясен ангажимент за бъдещи преговори по ядрената програма на Иран; Путин си тръгна с дипломатическото признание, към което се стреми от 2022 г. насам; Си си осигури ролята на организатор на събития на \"великите сили\". Междувременно Европа оста...",
+      "date": "2026-11-27T04:17:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/sviat/2026/11/27/4983810_sreshtata_na_trump_si_i_putin_mnogo_simvolika_malko/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "2253"
+      ],
+      "author": "Руслан Трад",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Срещата на Тръмп, Си и Путин: много символика, малко резултати",
+      "addedAt": "2026-11-27T04:33:36.680Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-sega-v-kra-na-godinata-izgar-t-otpuskite-ot-2024-dee7eb",
+      "title": "В края на годината изгарят отпуските от 2024 г.",
+      "summary": "",
+      "date": "2026-11-27T04:15:40.000Z",
+      "url": "https://www.segabg.com/hot/category-bulgaria/kraya-na-godinata-izgaryat-otpuskite-2024-g",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/beach-umbrellas-sea-ocean-seashore-1851100_0.jpg",
+      "imageAlt": "В края на годината изгарят отпуските от 2024 г.",
+      "addedAt": "2026-11-27T04:33:39.507Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-dnevnikbg-protestira-i-sre-u-toplofikaci-se-zakanvat-acb734",
+      "title": "Протестиращи срещу \"Топлофикация\" се заканват да блокират \"Орлов мост\" и \"Цариградско шосе\"",
+      "summary": "Жители на столицата излизат на протест срещу \"Топлофикация - София\" от 17 ч. на \"Орлов мост\". Заявката им е да блокират централното кръстовище, както и бул. \"Цариградско шосе\". Протестиращите са недоволни от \"безобразното качество на...",
+      "date": "2026-11-27T04:13:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/27/4985114_protestirashti_sreshtu_toplofikaciia_se_zakanvat_da/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_2008933.jpg",
+      "imageAlt": "Протестиращи срещу \"Топлофикация\" се заканват да блокират \"Орлов мост\" и \"Цариградско шосе\"",
+      "addedAt": "2026-11-27T04:33:38.893Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-dnevnikbg-bo-no-pole-ispani-izborite-v-nedel-e-63073b",
+      "title": "Бойно поле Испания: изборите в неделя ще отекнат в цяла Европа",
+      "summary": "Гражданската война в Испания е лаборатория за Втората световна. Почти век по-късно леви и десни, крайнолеви и крайнодесни се впускат в изборна битка, която тества не само Европа преди съдбовната 2027 г.; част от света подкрепя основни играчи и чака...",
+      "date": "2026-11-27T04:08:00.000Z",
+      "url": "https://www.dnevnik.bg/sviat/2026/11/27/4985042_boino_pole_ispaniia_izborite_v_nedelia_shte_oteknat_v/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "1658"
+      ],
+      "author": "Ангел Петров",
+      "theme": "rat",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4985055.jpg",
+      "imageAlt": "Бойно поле Испания: изборите в неделя ще отекнат в цяла Европа",
+      "addedAt": "2026-11-27T04:33:38.893Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-actualno-eman-el-makron-os-zda-nasilieto-sre-u-b-c519a1",
+      "title": "Еманюел Макрон осъжда насилието срещу български фенове в Марсилия",
+      "summary": "Френският президент Еманюел Макрон осъди по най-категоричен начин актовете на насилие срещу български фенове на ПФК \"Лев...",
+      "date": "2026-11-27T04:08:00.000Z",
+      "url": "https://www.actualno.com/bgfootball/emanuel-makron-osyjda-nasilieto-sreshtu-bylgarski-fenove-v-marsilija-news_2667671.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Футбол България"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/27/0e99a2946a6b8aac58aae07620286120_2667671_1920x1080.jpg",
+      "imageAlt": "Еманюел Макрон осъжда насилието срещу български фенове в Марсилия",
+      "addedAt": "2026-11-27T04:33:39.195Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-capital-infografika-ko-ko-e-v-novi-viss-s-deben-s-2a908d",
+      "title": "Инфографика | Кой кой е в новия Висш съдебен съвет?",
+      "summary": "Висшият съдебен съвет се състои от 25 членове, от които трима по право - председателите на ВКС и ВАС, както и главният прокурор. В момента, тъй като няма титулярни председател на ВАС и главен прокурор, изпълняващите функции не участват в заседанията на ВСС. Единадесет членове на съвета се избират от парламента, от тях шестима - за съдийската колегия, и петима - за прокурорската. Останалите 11 са т.нар. професионална квота - съдиите избират от своя състав шестима членове на ВСС за съдийската коле...",
+      "date": "2026-11-27T04:07:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/pravo/2026/11/27/4984771_infografika_koi_koi_e_v_noviia_vissh_sudeben_suvet/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "4904"
+      ],
+      "author": "Капитал",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Инфографика | Кой кой е в новия Висш съдебен съвет?",
+      "addedAt": "2026-11-27T04:33:36.680Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-dnevnikbg-dnes-e-vali-na-mnogo-mesta-na-mnogo-v-zna-b-c2aa9c",
+      "title": "Днес ще вали на много места, най-много - в Южна България",
+      "summary": "Днес ще бъде облачно и ще вали дъжд. В Южна България валежите ще бъдат по-интензивни и значителни в следобедните часове и през нощта срещу събота. Вятърът ще започне да се усилва. Максималните температури ще бъдат между 5° и 6° в...",
+      "date": "2026-11-27T04:05:00.000Z",
+      "url": "https://www.dnevnik.bg/burzi-novini/2026/11/27/4985107_dnes_shte_vali_na_mnogo_mesta_v_jujna_bulgariia_-/?ref=rss",
+      "source": "dnevnikbg",
+      "sourceName": "Dnevnik",
+      "categories": [
+        "5026"
+      ],
+      "author": "Дневник",
+      "theme": "drustvo",
+      "image": "https://img.dnevnik.bg/shimg/zx350c_4980102.jpg",
+      "imageAlt": "Днес ще вали на много места, най-много - в Южна България",
+      "addedAt": "2026-11-27T04:33:38.893Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-capital-agrovoltaicite-e-stanat-v-zmozni-i-v-b-182d96",
+      "title": "🥐 Агроволтаиците ще станат възможни и в България; Коцев остава кмет на Варна, засега",
+      "summary": "Това е нюзлетърът \"Бизнес закуска\", който абонатите на \"Капитал\" получават всяка сутрин в електронните си пощи. В него дежурният редактор събира всичко важно, така че с един поглед да сте наясно какво се случва. Може да се абонирате от тук. Благомир Коцев остава кмет на Варна, поне засега. Варненският административен съд спря предварителното изпълнение на решението на Общинската избирателна комисия (ОИК), която в понеделник вечер прекрати правомощията на Коцев. Според съда незабавното п...",
+      "date": "2026-11-27T04:04:00.000Z",
+      "url": "https://www.capital.bg/biznes-zakuska/2026/11/27/4985051__radev_obeshta_po-burzo_izgrajdane_na_agrovoltaici/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "5035"
+      ],
+      "author": "Йоан Запрянов",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "🥐 Агроволтаиците ще станат възможни и в България; Коцев остава кмет на Варна, засега",
+      "addedAt": "2026-11-27T04:33:36.680Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-actualno-tr-mp-ne-znae-dali-putin-e-p-tuva-za-g-20-ae1d7a",
+      "title": "Тръмп не знае дали Путин ще пътува за Г-20",
+      "summary": "Президентът на САЩ Доналд Тръмп не знае дали руският му колега Владимир Путин ще присъства на срещата на Г-20 във Флорид...",
+      "date": "2026-11-27T04:02:00.000Z",
+      "url": "https://www.actualno.com/america/trymp-ne-znae-dali-putin-shte-pytuva-za-g-20-news_2667670.html",
+      "source": "actualno",
+      "sourceName": "Actualno.com",
+      "categories": [
+        "Америка"
+      ],
+      "author": "reklama@webground.bg (Actualno.com)",
+      "theme": "drustvo",
+      "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/27/35759877fefdf4fd8333f0ff3f68056c_2667670_1920x1080.jpg",
+      "imageAlt": "Тръмп не знае дали Путин ще пътува за Г-20",
+      "addedAt": "2026-11-27T04:33:39.195Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-capital-novi-t-s-deben-s-vet-ko-d-rzi-kozovete-67e3e5",
+      "title": "Новият съдебен съвет: кой държи козовете",
+      "summary": "\"Чий е ВСС сега?\" С този въпрос започна разговорът с Теменужка Петкова по БНТ в събота, ден след като парламентът избра 11 нови членове на Висшия съдебен съвет (ВСС) от своята квота. И с обяснението, че сега, след като \"ВСС не е ваш\", а е в тежест на други партии, Петкова трябва да чувства облекчение. На това бившата финансова министърка и депутат на ГЕРБ отговори: \"Този ВСС е нормално да бъде на г-н Радев и на колегите от ПП и ДБ, които предложиха и подкрепиха тези кандидатури.\" И въпросът, и ...",
+      "date": "2026-11-27T04:00:00.000Z",
+      "url": "https://www.capital.bg/politika_i_ikonomika/pravo/2026/11/27/4984189_noviiat_sudeben_suvet_koi_durji_kozovete/?ref=rss",
+      "source": "capital",
+      "sourceName": "Capital",
+      "categories": [
+        "4904"
+      ],
+      "author": "Мирела Веселинова",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Новият съдебен съвет: кой държи козовете",
+      "addedAt": "2026-11-27T04:33:36.680Z"
+    },
     {
       "slug": "sofija-2026-11-27-actualno-zaradi-raznoglasi-ta-otmeniha-vtori-den-ot-b5618d",
       "title": "Заради разногласията: Отмениха втория ден от срещата за бюджета на Европейския съюз (ВИДЕО)",
@@ -150,6 +419,23 @@
       "image": "https://static.actualno.com/actualno_2013/upload/news/2026/11/27/10b6661457baed2ff0a90654da478db3_2667663_1920x1080.jpg",
       "imageAlt": "CBS News: Черноморският фронт може да въвлече САЩ във война",
       "addedAt": "2026-11-27T00:33:06.109Z"
+    },
+    {
+      "slug": "sofija-2026-11-27-sega-11-b-lgarski-fenove-sa-raneni-pri-bo-predi-3837c6",
+      "title": "11 български фенове са ранени при боя преди мача \"Левски\"- \"Олимпик\"",
+      "summary": "",
+      "date": "2026-11-27T00:00:59.000Z",
+      "url": "https://www.segabg.com/hot/category-sport/11-bulgarski-fenove-sa-raneni-pri-boya-predi-macha-levski-olimpik",
+      "source": "sega",
+      "sourceName": "Sega.bg",
+      "categories": [
+        "Водещи новини"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://www.segabg.com/sites/default/files/_sega//styles/focal_medium/public/2026/11/levs_0.jpeg",
+      "imageAlt": "11 български фенове са ранени при боя преди мача \"Левски\"- \"Олимпик\"",
+      "addedAt": "2026-11-27T04:33:39.507Z"
     },
     {
       "slug": "sofija-2026-11-26-actualno-cetirima-ostavat-v-aresta-za-izmamite-s-137a91",
