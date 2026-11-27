@@ -15,7 +15,8 @@ from __future__ import annotations
 import os
 import re
 import html
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlsplit, unquote
+from html.parser import HTMLParser
 
 KORIJEN = "apps/portal"
 BAZA = "https://gnk-asg.hr"
@@ -27,7 +28,7 @@ ALT = re.compile(r'alt=["\']([^"\']*)["\']', re.I)
 OG = re.compile(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', re.I)
 CSS_VEZA = re.compile(r'<link[^>]+href=["\']([^"\']+\.css[^"\']*)["\']', re.I)
 CSS_SLIKA = re.compile(r'url\(["\']?([^"\')]+\.(?:webp|jpg|jpeg|png|svg))["\']?\)', re.I)
-NASTAVAK = re.compile(r'\.(webp|jpe?g|png|svg)(\?|$)', re.I)
+NASTAVAK = re.compile(r'\.(webp|jpe?g|png|svg|avif|gif)(\?|$)', re.I)
 
 NAJMANJE = 3000
 PRESKOCI = ("favicon", "sprite", "spacer", "pixel", "tracking")
@@ -40,19 +41,70 @@ def adresa_stranice(putanja):
     return BAZA + rel
 
 
+# Only public, same-origin canonical landing pages belong in this sitemap.
+PRIVATE = frozenset(("admin", "admin-center", "control", "automation-status",
+    "webmail", "mail-studio", "campaign-mailer", "email-status", "worker-ops",
+    "operator-dashboard", "digital-headquarters", "media-registration-admin",
+    "podijeli", "api"))
+
+
+def public_path(url):
+    try:
+        u = urlsplit(url)
+        path = unquote(u.path)
+        segments = [x.lower() for x in path.split("/") if x]
+        return (u.scheme == "https" and u.netloc == urlsplit(BAZA).netloc
+                and not any(x in PRIVATE or x in (".", "..") for x in segments)
+                and "\\" not in path)
+    except ValueError:
+        return False
+
+
+class HeadSignals(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.noindex = False
+        self.canonicals = []
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "meta" and (a.get("name") or "").lower() in ("robots", "googlebot", "googlebot-image", "bingbot"):
+            if re.search(r"\b(?:noindex|none|noimageindex)\b", a.get("content") or "", re.I):
+                self.noindex = True
+        if tag == "link" and "canonical" in (a.get("rel") or "").lower().split():
+            self.canonicals.append(a.get("href") or "")
+
+
+def eligible_page(url, text):
+    if not public_path(url):
+        return False
+    head = re.split(r"</head\s*>", text, maxsplit=1, flags=re.I)[0]
+    signals = HeadSignals()
+    signals.feed(head)
+    if signals.noindex:
+        return False
+    # Skip aliases rather than asking crawlers to index the same content twice.
+    return not signals.canonicals or (len(signals.canonicals) == 1
+        and bool(signals.canonicals[0])
+        and urljoin(url, signals.canonicals[0]) == url)
+
+
 def apsolutna(izvor, temelj):
     izvor = html.unescape(izvor.strip())
     if not izvor or izvor.startswith(("data:", "blob:", "mailto:", "//")):
         return None
-    if not NASTAVAK.search(izvor):
+    url = urljoin(temelj, izvor)
+    if not public_path(url) or not NASTAVAK.search(url):
         return None
-    if izvor.startswith("http"):
-        return izvor if izvor.startswith(BAZA) else None
-    return urljoin(temelj, izvor)
+    return url
 
 
 def lokalna(url):
-    return os.path.join(KORIJEN, url[len(BAZA):].lstrip("/").split("?")[0])
+    if not public_path(url):
+        return ""
+    root = os.path.realpath(KORIJEN)
+    put = os.path.realpath(os.path.join(root, unquote(urlsplit(url).path).lstrip("/")))
+    return put if os.path.commonpath((root, put)) == root else ""
 
 
 def dovoljno_velika(url):
@@ -84,10 +136,9 @@ def skupi():
             sadrzaj = open(put, encoding="utf-8", errors="ignore").read()
         except Exception:
             continue
-        if NOINDEX.search(sadrzaj[:4000]):
-            continue
-
         stranica = adresa_stranice(put)
+        if not eligible_page(stranica, sadrzaj):
+            continue
         nadjene = {}
 
         for oznaka in IMG.finditer(sadrzaj):
@@ -108,7 +159,7 @@ def skupi():
 
         for veza in CSS_VEZA.finditer(sadrzaj):
             css_url = urljoin(stranica, html.unescape(veza.group(1)))
-            if not css_url.startswith(BAZA):
+            if not public_path(css_url):
                 continue
             for izvor in slike_iz_css(css_url):
                 url = apsolutna(izvor, css_url)
@@ -128,13 +179,10 @@ def ispisi(po_stranici):
         ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
     ]
     for stranica in sorted(po_stranici):
-        redci.append(f"  <url><loc>{stranica}</loc>")
+        redci.append(f"  <url><loc>{html.escape(stranica)}</loc>")
         for url, opis in po_stranici[stranica]:
-            naslov = ""
-            if opis.strip():
-                naslov = f"<image:title>{html.escape(opis.strip())[:180]}</image:title>"
             redci.append(
-                f"    <image:image><image:loc>{html.escape(url)}</image:loc>{naslov}</image:image>"
+                f"    <image:image><image:loc>{html.escape(url)}</image:loc></image:image>"
             )
         redci.append("  </url>")
     redci.append("</urlset>")
