@@ -1,0 +1,19 @@
+// Invoke once per already verified READY article, not as a daily batch.
+import {readFile} from "node:fs/promises";
+const source=process.argv[2];if(!source)throw Error("Provide an authorized private READY article JSON");
+const article=JSON.parse(await readFile(source,"utf8"));
+if(article.editorial_verified!==true)throw Error("Editorial approval missing");
+const origin=new URL(process.env.FAST_NEWS_DEV_ORIGIN||"");
+if(origin.protocol!=="https:"||origin.pathname!=="/"||origin.username||origin.password||origin.search||origin.hash)throw Error("Invalid origin");
+const token=process.env.FAST_NEWS_PUBLISH_TOKEN;if(!token)throw Error("Missing authorized publisher token");
+const result=await fetch(new URL("/api/publish",origin),{method:"POST",headers:{"content-type":"application/json",authorization:"Bearer "+token},body:JSON.stringify(article),redirect:"error",signal:AbortSignal.timeout(20000)});
+if(!result.ok)throw Error("Publication rejected: HTTP "+result.status);
+const stored=await result.json();
+const expected=new URL("/novosti/"+article.slug+"/",origin).href;
+if(stored.status!=="stored"||stored.url!==expected)throw Error("Storage receipt not confirmed");
+const live=await fetch(expected,{redirect:"error",signal:AbortSignal.timeout(15000),headers:{"cache-control":"no-cache"}});
+if(!live.ok)throw Error("Stored but public verification failed: HTTP "+live.status);
+const html=await live.text(),match=html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+let schema;try{schema=JSON.parse(match?.[1]||"")}catch{throw Error("Missing valid NewsArticle")}
+if(schema["@type"]!=="NewsArticle"||schema.url!==expected||schema.headline!==article.title.trim()||schema.inLanguage!==(article.language||"hr")||!html.includes('rel="canonical" href="'+expected+'"'))throw Error("Public content or canonical mismatch");
+console.log(JSON.stringify({status:"VERIFIED_PUBLIC_GET",url:expected,verifiedAt:new Date().toISOString(),publishedAt:stored.publishedAt,developmentNoindex:live.headers.get("x-robots-tag")==="noindex"}));
