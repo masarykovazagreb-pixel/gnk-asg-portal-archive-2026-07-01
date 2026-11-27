@@ -1,6 +1,7 @@
 // Invoke once per already verified READY article, not as a daily batch.
 import {readFile} from "node:fs/promises";
 import {checkReady} from "./editorial-gate.mjs";
+import {verifyArticleHTML,verifyImageHTML} from "./public-verification.mjs";
 const source=process.argv[2];if(!source)throw Error("Provide an authorized private READY article JSON");
 const article=JSON.parse(await readFile(source,"utf8"));
 checkReady(article);
@@ -15,7 +16,10 @@ const expected=new URL("/novosti/"+article.slug+"/",origin).href;
 if(stored.status!=="stored"||stored.url!==expected)throw Error("Storage receipt not confirmed");
 const live=await fetch(expected,{redirect:"error",signal:AbortSignal.timeout(15000),headers:{"cache-control":"no-cache"}});
 if(!live.ok)throw Error("Stored but public verification failed: HTTP "+live.status);
-const html=await live.text(),match=html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
-let schema;try{schema=JSON.parse(match?.[1]||"")}catch{throw Error("Missing valid NewsArticle")}
-if(schema["@type"]!=="NewsArticle"||schema.url!==expected||schema.headline!==article.title.trim()||schema.inLanguage!==(article.language||"hr")||!html.includes('rel="canonical" href="'+expected+'"'))throw Error("Public content or canonical mismatch");
-console.log(JSON.stringify({status:"VERIFIED_PUBLIC_GET",url:expected,verifiedAt:new Date().toISOString(),publishedAt:stored.publishedAt,developmentNoindex:live.headers.get("x-robots-tag")==="noindex"}));
+const html=await live.text();
+verifyArticleHTML(html,article,expected,stored.publishedAt);
+const imageURL=new URL("/slika/"+article.slug+"/",origin).href;
+const image=await fetch(imageURL,{redirect:"error",signal:AbortSignal.timeout(15000),headers:{"cache-control":"no-cache"}});
+if(!image.ok)throw Error("Stored but image page verification failed: HTTP "+image.status);
+verifyImageHTML(await image.text(),imageURL,expected);
+console.log(JSON.stringify({status:"VERIFIED_PUBLIC_GET",url:expected,imageURL,verifiedAt:new Date().toISOString(),publishedAt:stored.publishedAt,developmentNoindex:live.headers.get("x-robots-tag")==="noindex"}));
