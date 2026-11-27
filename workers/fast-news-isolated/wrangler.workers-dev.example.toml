@@ -1,0 +1,24 @@
+# Alternative public bootstrap: no custom-domain DNS or legacy portal changes.
+# TEMPLATE ONLY. Confirm account, unused/owned Worker name, existing dedicated
+# D1 and R2 resources, budget, and assigned workers.dev subdomain before use.
+# Copy locally to wrangler.workers-dev.toml; never commit secrets.
+name = "aktual-fast-news-isolated"
+main = "src/index.mjs"
+compatibility_date = "2026-11-27"
+workers_dev = true
+preview_urls = false
+
+[vars]
+PUBLIC_ORIGIN = "https://aktual-fast-news-isolated.REPLACE_WITH_ACCOUNT_SUBDOMAIN.workers.dev"
+PUBLISH_ENABLED = "false"
+INDEX_ENABLED = "false"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "REPLACE_WITH_EXISTING_DEDICATED_D1_NAME"
+database_id = "REPLACE_WITH_EXISTING_DEDICATED_D1_UUID"
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "REPLACE_WITH_EXISTING_DEDICATED_R2_BUCKET"
