@@ -4,20 +4,19 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-28T10:20:15.390Z",
+  "updatedAt": "2026-11-28T18:56:29.806Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
-      "url": "https://www.agerpres.ro/rss",
-      "ok": false,
-      "fetched": 0,
+      "url": "https://www.agerpres.ro/rss/",
+      "ok": true,
+      "fetched": 20,
       "corrupt": 0,
       "errors": [
-        "https://www.agerpres.ro/rss: HTTP 520",
-        "https://www.agerpres.ro/rss/: This operation was aborted"
+        "https://www.agerpres.ro/rss: HTTP 500"
       ],
-      "checkedAt": "2026-11-28T10:20:10.728Z"
+      "checkedAt": "2026-11-28T18:56:21.999Z"
     },
     {
       "id": "hotnews",
@@ -27,7 +26,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-28T10:20:10.922Z"
+      "checkedAt": "2026-11-28T18:56:22.285Z"
     },
     {
       "id": "zf",
@@ -37,7 +36,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-28T10:20:12.309Z"
+      "checkedAt": "2026-11-28T18:56:24.089Z"
     },
     {
       "id": "profit",
@@ -47,17 +46,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-28T10:20:12.551Z"
+      "checkedAt": "2026-11-28T18:56:24.493Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 245,
+      "fetched": 201,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-28T10:20:13.873Z"
+      "checkedAt": "2026-11-28T18:56:27.446Z"
     },
     {
       "id": "g4media",
@@ -67,7 +66,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-28T10:20:15.112Z"
+      "checkedAt": "2026-11-28T18:56:28.855Z"
     },
     {
       "id": "newsro",
@@ -77,10 +76,677 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-28T10:20:15.388Z"
+      "checkedAt": "2026-11-28T18:56:29.804Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-28-agerpres-marsuri-la-paris-si-in-alte-orase-din-e63b07",
+      "title": "Marșuri la Paris și în alte orașe din Franța împotriva violențelor asupra femeilor (FOTO/VIDEO)",
+      "summary": "",
+      "date": "2026-11-28T18:56:22.000Z",
+      "url": "https://agerpres.ro/social-extern/2026/11/28/marsuri-la-paris-si-in-alte-orase-din-franta-impotriva-violentelor-asupra-femeilor-foto-video--1617836",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Marșuri la Paris și în alte orașe din Franța împotriva violențelor asupra femeilor (FOTO/VIDEO)",
+      "addedAt": "2026-11-28T18:56:22.000Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-agerpres-video-sah-remiza-in-meciul-al-patrulea-al-2add3c",
+      "title": "VIDEO Șah: Remiză în meciul al patrulea al finalei Campionatului Mondial de la Geneva",
+      "summary": "",
+      "date": "2026-11-28T18:56:22.000Z",
+      "url": "https://agerpres.ro/sport-extern/2026/11/28/video-sah-remiza-in-meciul-al-patrulea-al-finalei-campionatului-mondial-de-la-geneva--1617833",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "VIDEO Șah: Remiză în meciul al patrulea al finalei Campionatului Mondial de la Geneva",
+      "addedAt": "2026-11-28T18:56:22.000Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-agerpres-video-netanyahu-ii-propune-lui-eisenkot-sa-aae340",
+      "title": "VIDEO Netanyahu îi propune lui Eisenkot să fie primul în caz de rotație în postul de premier",
+      "summary": "",
+      "date": "2026-11-28T18:56:21.999Z",
+      "url": "https://agerpres.ro/politic-extern/2026/11/28/video-netanyahu-ii-propune-lui-eisenkot-sa-fie-primul-in-caz-de-rotatie-in-postul-de-premier--1617840",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "VIDEO Netanyahu îi propune lui Eisenkot să fie primul în caz de rotație în postul de premier",
+      "addedAt": "2026-11-28T18:56:21.999Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-agerpres-video-presedintele-cj-dambovita-voi-01b3e0",
+      "title": "VIDEO Președintele CJ Dâmbovița: Voi organiza dezbateri, reforma administrativă trebuie să aibă în prim-plan cetățeanul",
+      "summary": "",
+      "date": "2026-11-28T18:56:21.999Z",
+      "url": "https://agerpres.ro/administratie/2026/11/28/video-presedintele-cj-dambovita-voi-organiza-dezbateri-reforma-administrativa-trebuie-sa-aiba-in-pri--1617837",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "VIDEO Președintele CJ Dâmbovița: Voi organiza dezbateri, reforma administrativă trebuie să aibă în prim-plan cetățeanul",
+      "addedAt": "2026-11-28T18:56:21.999Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-agerpres-video-handbal-feminin-romania-a-invins-28b70b",
+      "title": "VIDEO Handbal feminin: România a învins Polonia cu 38-32, în meci amical",
+      "summary": "",
+      "date": "2026-11-28T18:56:21.999Z",
+      "url": "https://agerpres.ro/sport/2026/11/28/video-handbal-feminin-romania-a-invins-polonia-cu-38-32-in-meci-amical--1617838",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "",
+      "imageAlt": "VIDEO Handbal feminin: România a învins Polonia cu 38-32, în meci amical",
+      "addedAt": "2026-11-28T18:56:21.999Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-agerpres-mae-atentionare-de-calatorie-republica-455cc6",
+      "title": "MAE/Atenționare de călătorie: Republica Letonia - posibilă creștere a timpilor de așteptare la frontiera cu Federația Rusă",
+      "summary": "",
+      "date": "2026-11-28T18:56:21.999Z",
+      "url": "https://agerpres.ro/politic/2026/11/28/mae-atentionare-de-calatorie-republica-letonia---posibila-crestere-a-timpilor-de-asteptare-la-fronti--1617834",
+      "source": "agerpres",
+      "sourceName": "Agerpres",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "MAE/Atenționare de călătorie: Republica Letonia - posibilă creștere a timpilor de așteptare la frontiera cu Federația Rusă",
+      "addedAt": "2026-11-28T18:56:21.999Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-g4media-topul-european-al-celor-mai-scumpe-statiuni-38a94a",
+      "title": "Topul european al celor mai scumpe stațiuni de schi / Atunci când pârtia costă o avere / În Zermatt cheltui mai mult de 300 de euro pe zi",
+      "summary": "O analiză care a luat în considerare 265 de stațiuni europene cu cel puțin 20 de kilometri de pârtii arată că cel mai scump resort este în Elveția: la Zermatt, o zi de schi consumă mai mult de 300 de euro, relatează Corriere della Sera. Pentru fiecare stațiune, s-a însumat prețul skipass-ului zilnic pentru adulți, […] © G4Media.ro .",
+      "date": "2026-11-28T18:54:28.000Z",
+      "url": "https://www.g4media.ro/topul-european-al-celor-mai-scumpe-statiuni-de-schi-atunci-cand-partia-costa-o-avere-in-zermatt-cheltui-mai-mult-de-300-de-euro-pe-zi.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Travel",
+        "care sunt cele mai scumpe statiuni de schi",
+        "topul statiunilor de schi"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/pasja1000-couple-3304959-scaled.jpg",
+      "imageAlt": "Topul european al celor mai scumpe stațiuni de schi / Atunci când pârtia costă o avere / În Zermatt cheltui mai mult de 300 de euro pe zi",
+      "addedAt": "2026-11-28T18:56:28.856Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-newsro-drdp-craiova-ninge-abundent-pe-drumul-01606b",
+      "title": "DRDP Craiova: Ninge abundent pe Drumul Expres Craiova – Piteşti. Utilajele de deszăpezire acţionează permanent pentru menţinerea circulaţiei în condiţii de siguranţă - VIDEO",
+      "summary": "Angajaţii Direcţiei Rutiere Drumuri şi Poduri Craiova îi avertizează pe şoferi că la această oră ninge abundent pe Drumul Expres Craiova – Piteşti, iar utilajele de deszăpezire acţionează permanent pentru menţinerea circulaţiei în condiţii de siguranţă.",
+      "date": "2026-11-28T18:51:24.000Z",
+      "url": "https://www.news.ro/social/drdp-craiova-ninge-abundent-pe-drumul-expres-craiova-pitesti-utilajele-de-deszapezire-actioneaza-permanent-pentru-mentinerea-circulatiei-in-conditii-de-siguranta-video-1922405128242026112023016903",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "DRDP Craiova: Ninge abundent pe Drumul Expres Craiova – Piteşti. Utilajele de deszăpezire acţionează permanent pentru menţinerea circulaţiei în condiţii de siguranţă - VIDEO",
+      "addedAt": "2026-11-28T18:56:29.804Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-hotnews-criptomoneda-sustinuta-de-familia-trump-s-a-bf4a36",
+      "title": "Criptomoneda susținută de familia Trump s-a prăbușit peste noapte, pierzându-și aproximativ 50% din valoare",
+      "summary": "Criptomoneda WLFI, lansată de o platformă susținută de Donald Trump și familia sa, și-a pierdut aproximativ 50% din valoare într-o singură noapte, într-un nou exemplu al volatilității activelor cripto asociate unor figuri politice, notează Reuters. Tokenul, care a pierdut peste 90% din valoare de la debutul tranzacționării, în septembrie 2025, era evaluat sâmbătă dimineață la …",
+      "date": "2026-11-28T18:47:46.000Z",
+      "url": "https://hotnews.ro/criptomoneda-sustinuta-de-familia-trump-s-a-prabusit-peste-noapte-pierzandu-si-aproximativ-50-din-valoare-2416771",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Criptomoneda susținută de familia Trump s-a prăbușit peste noapte, pierzându-și aproximativ 50% din valoare",
+      "addedAt": "2026-11-28T18:56:22.285Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-digi24-scrisoarea-lui-marius-budai-catre-colegii-650d44",
+      "title": "Scrisoarea lui Marius Budăi către „colegii” din PNL și USR: „Pensiile nu sunt pomeni electorale”",
+      "summary": "Deputatul Marius Budăi afirmă că PSD va trebui să relanseze economia, pentru a putea „corecta treptat ceea ce a fost greşit, inclusiv nedreptăţile create prin măsurile promovate de domnul Bolojan”, iar odată ce veniturile bugetare vor creşte, se vor putea asigura şi pensii sau salarii mai mari.",
+      "date": "2026-11-28T18:45:58.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/scrisoarea-lui-marius-budai-catre-colegii-din-pnl-si-usr-pensiile-nu-sunt-pomeni-electorale-4057265",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ekonomija",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjMl/MkYwNSUyRjMxJTJGMTc0MDAxMV8xNzQw/MDExX0lOUVVBTV9HVVZFUk5fU0VESU5U/QV9ORUdPQ0lFUklfMDAwNF9JTlFVQU1f/UGhvdG9zX09jdGF2X0dhbmVhLWJ1ZGFp/LmpwZyZoYXNoPWFlNTMzMjNlZGVhMWFmZmRhOTRkNWJlYzg5ODZiZWQx.jpg",
+      "imageAlt": "Scrisoarea lui Marius Budăi către „colegii” din PNL și USR: „Pensiile nu sunt pomeni electorale”",
+      "addedAt": "2026-11-28T18:56:27.448Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-newsro-mae-atentionare-de-calatorie-republica-5c8de7",
+      "title": "MAE, atenţionare de călătorie: Republica Letonia - posibilă creştere a timpilor de aşteptare de trecere a frontierei cu Federaţia Rusă",
+      "summary": "Ministerul Afacerilor Externe (MAE) informează cetăţenii şi transportatorii români care intenţionează să călătorească pe cale rutieră spre şi dinspre Federaţia Rusă că există posibilitatea creşterii timpului de aşteptare la punctele de trecere a frontierei (Grebņeva şi Terehovai) dintre Republica Letonia şi Federaţia Rusă, ca urmare a deciziei autorităţilor estoniene de închidere completă a punctelor de trecere a frontierei cu Federaţia Rusă, de la 1 decembrie 2026.",
+      "date": "2026-11-28T18:35:06.000Z",
+      "url": "https://www.news.ro/social/mae-atentionare-de-calatorie-republica-letonia-posibila-crestere-a-timpilor-de-asteptare-de-trecere-a-frontierei-cu-federatia-rusa-1922403528062026112023016887",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "MAE, atenţionare de călătorie: Republica Letonia - posibilă creştere a timpilor de aşteptare de trecere a frontierei cu Federaţia Rusă",
+      "addedAt": "2026-11-28T18:56:29.804Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-profit-sclavie-moderna-la-ferme-de-animale-din-d57e69",
+      "title": "Sclavie modernă la ferme de animale din județele Prahova și Brașov - FOTO",
+      "summary": "Trei persoane au fost arestate preventiv, iar alte patru au fost plasate sub control judiciar, fiind acuzate că au recrutat și supus unor munci extenuante, la ferme de vaci și oi din județele Prahova și Brașov, fără să fie plătite corespunzător, mai multe victime, inclusiv minore sau cu handicap grav, care erau adăpostite într-o baracă improvizată și o caroserie auto, fără apă curentă, toaletă sau un minim confort. Potrivit anchetatorilor, victimele ar fi fost obligate să muncească din greu, indiferent de condițiile meteorologice, atât la paza și mulsul animalelor, cât și la alte munci dificile în cadrul fermelor.",
+      "date": "2026-11-28T18:35:00.000Z",
+      "url": "https://www.profit.ro/stiri/life/sclavie-moderna-la-ferme-de-animale-din-judetele-prahova-si-brasov-foto-23016884?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Life"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33240/23016884/1/screenshot-2026-11-28-202841.png?width=800",
+      "imageAlt": "Sclavie modernă la ferme de animale din județele Prahova și Brașov - FOTO",
+      "addedAt": "2026-11-28T18:56:24.493Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-g4media-start-cu-noroc-si-un-punct-pentru-edi-bab4c3",
+      "title": "Start cu noroc și un punct pentru Edi Iordănescu în Championship, cu Watford / Derby County a avut două goluri anulate",
+      "summary": "Edi Iordănescu a debutat cu o remiză pe banca formației Watford, în deplasare cu Derby County, în etapa a 18-a din Championship. În aceeași rundă, fundașul român Andrei Coubiș a fost titular și a jucat toate cele 90 de minute pentru Lincoln City, în partida cu Wolverhampton, relatează Mediafax. Primul meci al lui Edi Iordănescu […] © G4Media.ro .",
+      "date": "2026-11-28T18:32:59.000Z",
+      "url": "https://www.g4media.ro/start-cu-noroc-si-un-punct-pentru-edi-iordanescu-in-championship-cu-watford-derby-county-a-avut-doua-goluri-anulate.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Sportz",
+        "ce a facut iordănescu cu watford"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "sport",
+      "image": "https://www.g4media.ro/wp-content/uploads/2023/03/edi-iordanescu.jpg",
+      "imageAlt": "Start cu noroc și un punct pentru Edi Iordănescu în Championship, cu Watford / Derby County a avut două goluri anulate",
+      "addedAt": "2026-11-28T18:56:28.856Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-digi24-batut-si-sufocat-intr-un-spital-de-ba10ad",
+      "title": "Bătut și sufocat într-un spital de psihiatrie. Moartea unui fost atlet a declanșat manifestații și dezbateri în Croația",
+      "summary": "Moartea în octombrie a unui pacient care a fost bătut şi sufocat într-un spital croat a declanşat un val de mărturii despre violenţe recurente, a provocat manifestaţii şi o dezbatere pe tema situaţiei psihiatriei în această ţară, relatează AFP, preluat de News.ro.",
+      "date": "2026-11-28T18:30:18.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/batut-si-sufocat-intr-un-spital-de-psihiatrie-moartea-unui-fost-atlet-a-declansat-manifestatii-si-dezbateri-in-croatia-4057221",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "sport",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjI4JTJGMzA5MDU1OV8zMDkw/NTU5X1NjcmVlbnNob3QtMjAyNi0xMS0y/OC0yMDE3MjQucG5nJmhhc2g9ZTc4NmEz/YmIwZjZhYWNjYzU4NjgxZjAwNTJmNTgxN2M=.png",
+      "imageAlt": "Bătut și sufocat într-un spital de psihiatrie. Moartea unui fost atlet a declanșat manifestații și dezbateri în Croația",
+      "addedAt": "2026-11-28T18:56:27.448Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-newsro-covasna-patru-persoane-la-spital-dupa-un-fc23b2",
+      "title": "Covasna: Patru persoane la spital, după un accident produs în localitatea Olteni, în care au fost implicate trei maşini/ Circulaţia s-a desfăşurat alternativ, pe un singur fir",
+      "summary": "Patru persoane au fost transportate la spital, sâmbătă seară, în urma unui accident produs pe DN12, în localitatea Olteni, din judeţul Covasna. Potrivit poliţiştilor rutieri, în accident au fost implicate trei autoturisme. Timp de aproximativ două ore, traficul rutier s-a desfăşurat dirijat, pe un singur fir, alternativ.",
+      "date": "2026-11-28T18:27:17.000Z",
+      "url": "https://www.news.ro/eveniment/covasna-patru-persoane-la-spital-dupa-un-accident-produs-in-localitatea-olteni-in-care-au-fost-implicate-trei-masini-circulatia-s-a-desfasurat-alternativ-pe-un-singur-fir-1922402728172026112023016883",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Covasna: Patru persoane la spital, după un accident produs în localitatea Olteni, în care au fost implicate trei maşini/ Circulaţia s-a desfăşurat alternativ, pe un singur fir",
+      "addedAt": "2026-11-28T18:56:29.805Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-digi24-cei-mai-simpatici-recruti-de-la-parada-de-1-c89c54",
+      "title": "Cei mai simpatici „recruți” de la parada de 1 Decembrie din Alba Iulia: Imagini emoționante cu cățeii de la Centrul Chinologic Sibiu",
+      "summary": "Parada militară de 1 Decembrie 2026 de la Alba Iulia vine cu surprize plăcute pentru iubitorii de animale. Printre participanți se vor număra și câțiva „recruți” mai puțin obișnuiți, dar foarte simpatici. Puii de căței ai Centrului Chinologic „Dr. Aurel Greblea” Sibiu se pregătesc să-și facă debutul la defilare.",
+      "date": "2026-11-28T18:26:25.000Z",
+      "url": "https://www.digi24.ro/magazin/stil-de-viata/animale/cei-mai-simpatici-recruti-de-la-parada-de-1-decembrie-din-alba-iulia-imagini-emotionante-cu-cateii-de-la-centrul-chinologic-sibiu-4057225",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjI4JTJGMzA5MDU1MF8zMDkw/NTUwX2NhaW5pLTUuanBnJmhhc2g9NGY3/NTNhNWQ0NGE0NmI2NTNlMjQ5NjU0NmUzYzIxNDI=.jpg",
+      "imageAlt": "Cei mai simpatici „recruți” de la parada de 1 Decembrie din Alba Iulia: Imagini emoționante cu cățeii de la Centrul Chinologic Sibiu",
+      "addedAt": "2026-11-28T18:56:27.449Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-g4media-foto-a-fost-deschis-targul-de-craciun-de-la-064408",
+      "title": "FOTO A fost deschis Târgul de Crăciun de la Timișoara / S-au aprins luminile de sărbători / Patinoar – circuit ca la Viena și brad de 20 de metri",
+      "summary": "Timișoara a intrat oficial în atmosfera sărbătorilor de iarnă. Sâmbătă seara s-a deschis o nouă ediție a Târgului de Crăciun, care anul acesta se desfășoară în Piața Victoriei, Piața Libertății, Piața Unirii și, în premieră, în Parcul Central – Scudier. Deschiderea târgului a coincis cu aprinderea iluminatului festiv din centrul orașului, moment care a marcat […] © G4Media.ro .",
+      "date": "2026-11-28T18:26:07.000Z",
+      "url": "https://www.g4media.ro/foto-a-fost-deschis-targul-de-craciun-de-la-timisoara-s-au-aprins-luminile-de-sarbatori-patinoar-circuit-ca-la-viena-si-brad-de-20-de-metri.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Timișoara",
+        "cel mai mare patinoar din romania",
+        "parcul central timisoara",
+        "piata victoriei timisoara"
+      ],
+      "author": "Ștefan Both",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/935520549_1597246265769883_3390856585585586456_n.jpg",
+      "imageAlt": "FOTO A fost deschis Târgul de Crăciun de la Timișoara / S-au aprins luminile de sărbători / Patinoar – circuit ca la Viena și brad de 20 de metri",
+      "addedAt": "2026-11-28T18:56:28.856Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-hotnews-comanda-de-sute-de-milioane-de-euro-facuta-56be20",
+      "title": "Comandă de sute de milioane de euro, făcută de Ucraina la unul dintre furnizorii săi cheie",
+      "summary": "Producătorul suedez de echipamente de apărare Saab a primit de la armata ucraineană o comandă în valoare de 450 de milioane de euro pentru radarele sale Giraffe 1X, potrivit unui anunț făcut sâmbătă de companie, citată de Reuters. Saab, un furnizor-cheie pentru Ucraina, a precizat că livrările vor avea loc în 2027. Compania a explicat …",
+      "date": "2026-11-28T18:23:05.000Z",
+      "url": "https://hotnews.ro/ucraina-comanda-radare-giraffe-de-sute-de-milioane-de-euro-de-la-saab-2416761",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "Război în Ucraina",
+        "Saab"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Comandă de sute de milioane de euro, făcută de Ucraina la unul dintre furnizorii săi cheie",
+      "addedAt": "2026-11-28T18:56:22.286Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-newsro-trafic-rutier-blocat-pe-centura-capitalei-54e58c",
+      "title": "Trafic rutier blocat pe Centura Capitalei, din cauza unui accident în lanţ cu patru maşini/ Este implicată şi o cisternă cu GPL, însă autorităţie spun că nu sunt scurgeri/ De…",
+      "summary": "Traficul rutier este blocat, sâmbătă seară, pe Centura Capitalei, în urma unui accident în lanţ în care au fost implicate două autoturisme, un TIR şi o cisternă încărcată cu GPL. Potrivit poliţiştilor, în urma accidentului nu s-au înregistrat victime, iar autorităţile au dat asigurări că nu sunt scurgeri de substanţe. Poliţia Rutieră estimează reluarea traficului după ora 21.00. Primele date arată că accidentul a avut loc din cauza nerespectării vitezei în condiţii meteorologice nefavorabile.",
+      "date": "2026-11-28T18:16:56.000Z",
+      "url": "https://www.news.ro/eveniment/trafic-rutier-blocat-centura-capitalei-cauza-unui-accident-lant-patru-masini-implicata-cisterna-gpl-insa-autoritatie-spun-scurgeri-asemenea-au-semnalate-victime-1922401628562026112023016866",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Trafic rutier blocat pe Centura Capitalei, din cauza unui accident în lanţ cu patru maşini/ Este implicată şi o cisternă cu GPL, însă autorităţie spun că nu sunt scurgeri/ De aseme",
+      "addedAt": "2026-11-28T18:56:29.805Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-digi24-cand-tigrul-rage-ii-raspundem-la-fel-e0be5d",
+      "title": "„Când tigrul rage, îi răspundem la fel”. Bărbatul care înfruntă tigrii bengalezi înarmat cu un băț: „Obiectivul meu este să-i salvez”",
+      "summary": "Înarmat doar cu un băț, un bărbat din Bangladesh înfruntă tigrii bengalezi pentru a proteja atât animalele, cât și comunitățile locale. Abdul Goni Gazi, în vârstă de 45 de ani, susține că a contribuit la salvarea a 36 de tigri și la recuperarea trupurilor a 106 persoane ucise în atacuri. Cunoscut drept „Goni Tigrul”, bărbatul și-a dedicat viața protejării acestor animale, în ciuda pericolelor și a opoziției unor localnici.",
+      "date": "2026-11-28T18:14:55.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/cand-tigrul-rage-ii-raspundem-la-fel-barbatul-care-infrunta-tigrii-bengalezi-inarmat-cu-un-bat-obiectivul-meu-este-sa-i-salvez-4042265",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjE4JTJGMzA3Njg1NF8zMDc2/ODU0X3Bob3RvLWNvbGxhZ2VfcG5nLTIw/MjYtMTEtMThUMTUzNTQxXzQzMC5wbmcm/aGFzaD03NTE1MGU2ZTYzNDdlODdkZWNjMmFhZTg4ZTQwNmMwMw==.png",
+      "imageAlt": "„Când tigrul rage, îi răspundem la fel”. Bărbatul care înfruntă tigrii bengalezi înarmat cu un băț: „Obiectivul meu este să-i salvez”",
+      "addedAt": "2026-11-28T18:56:27.449Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-g4media-lichidator-judiciar-din-bacau-condamnat-a71745",
+      "title": "Lichidator judiciar din Bacău, condamnat definitiv pentru delapidare / A folosit banii unei firme în faliment pentru cumpărături personale",
+      "summary": "Curtea de Apel Bacău a menținut condamnarea unui lichidator judiciar la trei ani de închisoare cu suspendare pentru delapidare în formă continuată, relatează Bacău.net. Judecătorii au stabilit că acesta și-a însușit fără drept 138.547,10 lei din fondurile unei firme pe care o administra, prin 55 de operațiuni efectuate între aprilie 2020 și februarie 2021. Instanța […] © G4Media.ro .",
+      "date": "2026-11-28T18:09:41.000Z",
+      "url": "https://www.g4media.ro/lichidator-judiciar-din-bacau-condamnat-definitiv-pentru-delapidare-a-folosit-banii-unei-firme-in-faliment-pentru-cumparaturi-personale.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "lichidator judiciar",
+        "proces de delapidare"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "drustvo",
+      "image": "https://www.g4media.ro/wp-content/uploads/2021/12/FB1A1650.jpg",
+      "imageAlt": "Lichidator judiciar din Bacău, condamnat definitiv pentru delapidare / A folosit banii unei firme în faliment pentru cumpărături personale",
+      "addedAt": "2026-11-28T18:56:28.856Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-digi24-sighiartau-atac-la-grindeanu-cand-nu-mai-ai-7bee02",
+      "title": "Sighiartău, atac la Grindeanu: „Când nu mai ai soluţii de oferit, trebuie să întreţii iluzia prin căutarea vinovaţilor în altă parte”",
+      "summary": "Deputatul PNL Robert Sighiartău spune că socialismul vinde promisiuni fără acoperire şi atrage atenţia că România nu poate prospera prin redistribuirea unei bogăţii pe care nu o produce.",
+      "date": "2026-11-28T18:08:24.000Z",
+      "url": "https://www.digi24.ro/stiri/actualitate/politica/sighiartau-atac-la-grindeanu-cand-nu-mai-ai-solutii-de-oferit-trebuie-sa-intretii-iluzia-prin-cautarea-vinovatilor-in-alta-parte-4057219",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "ai",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwOSUyRjI0JTJGMjk3NTk2Nl8yOTc1/OTY2X3JvYmVydC1zaWdoaWFydGF1LWlu/cXVhbS1zaWx2aXUtZmlsaXAuanBnJmhh/c2g9YTdkNmEwMDU2NzgwNzE5OGE3ZmU1NWFiNWMyZTE5ZmI=.jpg",
+      "imageAlt": "Sighiartău, atac la Grindeanu: „Când nu mai ai soluţii de oferit, trebuie să întreţii iluzia prin căutarea vinovaţilor în altă parte”",
+      "addedAt": "2026-11-28T18:56:27.449Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-newsro-spania-isi-retine-suflarea-cu-o-zi-inaintea-c48b81",
+      "title": "Spania îşi reţine suflarea cu o zi înaintea unor alegeri legislative anticipate cu o miză majoră",
+      "summary": "Spania îşi reţine suflarea sâmbătă, cu o zi înaintea unor alegeri decisive, în care socialistul Pedro Sanchez îşi joacă menţinerea la conducerea Guvernului, împotriva unei drepte prezentată ca favorită şi care ar putea ajunge la putere cu susţinerea extremei drepte, relatează AFP.",
+      "date": "2026-11-28T18:07:36.000Z",
+      "url": "https://www.news.ro/externe/spania-isi-retine-suflarea-cu-o-zi-inaintea-unor-alegeri-legislative-anticipate-cu-o-miza-majora-1922400728362026112023016807",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Spania îşi reţine suflarea cu o zi înaintea unor alegeri legislative anticipate cu o miză majoră",
+      "addedAt": "2026-11-28T18:56:29.805Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-newsro-robert-sighiartau-dupa-marea-benchetuiala-aad98c",
+      "title": "Robert Sighiartău: După marea benchetuială bugetară din vremea lui Marcel Ciolacu, care a lăsat România cu cel mai mare deficit din Uniunea Europeană, PSD se confruntă acum cu…",
+      "summary": "Deputatul liberal Robert Sighiartău atacă dur PSD făcând referire, într-o postare pe Facebook, la „promisiuni fără acoperire, bani cheltuiţi fără responsabilitate şi datorii lăsate generaţiilor viitoare”. „După marea benchetuială bugetară din vremea lui Marcel Ciolacu, care a lăsat România cu cel mai mare deficit din Uniunea Europeană, PSD se confruntă acum cu consecinţele propriei guvernări”, adaugă secretarul general al PNL.",
+      "date": "2026-11-28T18:01:58.000Z",
+      "url": "https://www.news.ro/politic-intern/robert-sighiartau-dupa-marea-benchetuiala-bugetara-vremea-marcel-ciolacu-lasat-romania-cel-mare-deficit-uniunea-europeana-psd-confrunta-acum-consecintele-propriei-guvernari-1922400128582026112023016843",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Robert Sighiartău: După marea benchetuială bugetară din vremea lui Marcel Ciolacu, care a lăsat România cu cel mai mare deficit din Uniunea Europeană, PSD se confruntă acum cu cons",
+      "addedAt": "2026-11-28T18:56:29.805Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-zf-scaderea-cererii-pe-piata-imobiliara-nu-va-76c294",
+      "title": "Scăderea cererii pe piaţa imobiliară nu va aduce aceleaşi corecţii de preţ pentru toate locuinţele. Flavius Drăghici, Azitis.com: Câştigătorii vor fi dezvoltatorii mari, cu…",
+      "summary": "",
+      "date": "2026-11-28T18:00:00.000Z",
+      "url": "https://www.zf.ro/constructii-imobiliare/scaderea-cererii-piata-imobiliara-aduce-aceleasi-corectii-pret-toate-locuintele-flavius-draghici-azitis-com-castigatorii-vor-dezvoltatorii-mari-proiecte-premium-bine-amplasate-pot-sustine-financiar-23291573",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Constructii & Imobiliare"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/21328/23291573/1/flavius-draghici.jpg?width=700",
+      "imageAlt": "Scăderea cererii pe piaţa imobiliară nu va aduce aceleaşi corecţii de preţ pentru toate locuinţele. Flavius Drăghici, Azitis.com: Câştigătorii vor fi dezvoltatorii mari, cu proiect",
+      "addedAt": "2026-11-28T18:56:24.089Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-g4media-exclusiv-trei-universitati-chineze-de-pe-e57e04",
+      "title": "EXCLUSIV | Trei universități chineze de pe lista neagră a SUA, UE și Canada, găzduite de Universitatea Politehnică la o expoziție / Fac parte din ”Cei Șapte Fii Ai Apărării…",
+      "summary": "Trei universități publice din China, aflate pe lista de sancțiuni comerciale a SUA (Entity List) și cu interdicții în programe ale UE sau Canadei, din motive de etică sau securitate, au fost găzduite, joi, de Universitatea Politehnică București, condusă de rectorul Mihnea Costoiu, la evenimentul China Higher Education Exhibition (Expoziția Chineză de Învățământ Superior). Fac […] © G4Media.ro .",
+      "date": "2026-11-28T17:58:52.000Z",
+      "url": "https://www.g4media.ro/exclusiv-trei-universitati-chineze-de-pe-lista-neagra-a-sua-ue-si-canada-gazduite-de-universitatea-politehnica-la-o-expozitie-fac-parte-din-cei-sapte-fii-ai-apararii-nationale.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Anchete",
+        "apărare china",
+        "cei sapte fii ai apararii nationale",
+        "China Higher Education Exhibition"
+      ],
+      "author": "Andreea Pavel",
+      "theme": "politika",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/universitati-china-politehnica7.jpg",
+      "imageAlt": "EXCLUSIV | Trei universități chineze de pe lista neagră a SUA, UE și Canada, găzduite de Universitatea Politehnică la o expoziție / Fac parte din ”Cei Șapte Fii Ai Apărării Naționa",
+      "addedAt": "2026-11-28T18:56:28.856Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-hotnews-cea-mai-profitabila-companie-auto-e-din-373861",
+      "title": "Cea mai profitabilă companie auto e din Japonia, dar cel mai mare câștig pe mașină e din Germania. Marja de profit a producătorilor de automobile s-a redus simțitor TABEL",
+      "summary": "Profitabilitatea industriei auto continuă să se diminueze pe măsură ce costurile de dezvoltare a noilor tehnologii cresc și apasă pe bugetele companiilor, în timp ce presiunea concurenței ridicate nu permite ajustarea prețurilor la nivelul cheltuielilor. Marja medie de profit operațional a industriei auto globale a coborât în premieră sub pragul de 4%, fiind mai mică …",
+      "date": "2026-11-28T17:55:29.000Z",
+      "url": "https://hotnews.ro/cea-mai-profitabila-companie-auto-e-din-japonia-dar-cel-mai-mare-castig-pe-masina-e-din-germania-marja-de-profit-a-producatorilor-de-automobile-s-a-redus-simtitor-tabel-2416755",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Cea mai profitabilă companie auto e din Japonia, dar cel mai mare câștig pe mașină e din Germania. Marja de profit a producătorilor de automobile s-a redus simțitor TABEL",
+      "addedAt": "2026-11-28T18:56:22.286Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-g4media-dezastru-pentru-manchester-united-pierde-320083",
+      "title": "Dezastru pentru Manchester United, pierde acasă cu Brentford: 4-0 / E pe loc de retrogradare / Pochettino nu a câștigat niciunul dintre primele trei meciuri",
+      "summary": "Manchester United continuă să traverseze o perioadă extrem de dificilă, suferind o nouă înfrângere usturătoare. Echipa pregătită de Mauricio Pochettino (foto) a fost învinsă de Brentford, scor 0-4, chiar pe Old Trafford, în etapa a 12-a din Premier League, relatează Mediafax. Brentford a început curajos și a deschis scorul în minutul 19, prin Callum Wilson. […] © G4Media.ro .",
+      "date": "2026-11-28T17:54:41.000Z",
+      "url": "https://www.g4media.ro/dezastru-pentru-manchester-united-pierde-acasa-cu-brentford-4-0-e-pe-loc-de-retrogradare-pochettino-nu-a-castigat-niciunul-dintre-primele-trei-meciuri.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Sportz",
+        "ce a făcut Manchester united",
+        "manchester united"
+      ],
+      "author": "Augustin Majearu",
+      "theme": "sport",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/11/profimedia-1140772535.jpg",
+      "imageAlt": "Dezastru pentru Manchester United, pierde acasă cu Brentford: 4-0 / E pe loc de retrogradare / Pochettino nu a câștigat niciunul dintre primele trei meciuri",
+      "addedAt": "2026-11-28T18:56:28.857Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-hotnews-peste-1-100-de-migranti-sositi-pe-doua-e642aa",
+      "title": "Peste 1.100 de migranți sosiți pe două insule din Grecia, în două zile. Operațiuni de salvare în lanț. Două persoane au murit",
+      "summary": "Peste 1.100 de migranți au sosit pe insulele Gavdos și Creta, de vineri dimineață și până sâmbătă după-amiază, conform datelor oficiale, citate de Associated Press. La sud de Gavdos, autoritățile au recuperat trupurile neînsuflețite a două persoane și le-au salvat pe alte 41, într-o operațiune la care a participat și Frontex, agenția UE pentru protecția …",
+      "date": "2026-11-28T17:48:24.000Z",
+      "url": "https://hotnews.ro/peste-1-100-de-migranti-sositi-pe-doua-insule-din-grecia-in-doua-zile-operatiuni-de-salvare-in-lant-doua-persoane-au-murit-2416748",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "grecia"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Peste 1.100 de migranți sosiți pe două insule din Grecia, în două zile. Operațiuni de salvare în lanț. Două persoane au murit",
+      "addedAt": "2026-11-28T18:56:22.286Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-digi24-ucraina-a-comandat-radare-giraffe-1x-de-450-05d05a",
+      "title": "Ucraina a comandat radare Giraffe 1X de 450 de milioane de euro de la compania suedeză Saab",
+      "summary": "Producătorul suedez de echipamente de apărare Saab a declarat sâmbătă că a primit o comandă în valoare de 492 de milioane de dolari (450 milioane de euro) de la forţele armate ucrainene pentru radare Giraffe 1X, relatează Reuters.",
+      "date": "2026-11-28T17:47:40.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/ucraina-a-comandat-radare-giraffe-1x-de-450-de-milioane-de-euro-de-la-compania-suedeza-saab-4057213",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYwMiUyRjE5JTJGMjU5ODc3M18yNTk4/NzczX0dldHR5SW1hZ2VzLTE0NTM2NjE4/OTguanBnJmhhc2g9NmY3MzY4MTAwNTQ1NzBjZjg5ZWVjYTdhNmI2YTUwMzA=.jpg",
+      "imageAlt": "Ucraina a comandat radare Giraffe 1X de 450 de milioane de euro de la compania suedeză Saab",
+      "addedAt": "2026-11-28T18:56:27.449Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-hotnews-cum-a-evadat-un-detinut-incarcerat-intr-un-5fd3e0",
+      "title": "Cum a evadat un deținut încarcerat într-un penitenciar de maximă securitate din Anglia deși era încătușat și legat cu lanțuri de un gardian",
+      "summary": "Un deținut dintr-unul dintre cele mai problematice penitenciare de maximă securitate din Anglia și Țara Galilor ar fi reușit să scape de sub supravegherea gardienilor folosindu-se de săpun, în timp ce se afla la spital pentru tratament. Bărbatul, în vârstă de 36 de ani, încarcerat la penitenciarul HMP Manchester, a reușit să evadeze deși era …",
+      "date": "2026-11-28T17:36:38.000Z",
+      "url": "https://hotnews.ro/cum-a-evadat-un-detinut-incarcerat-intr-un-penitenciar-de-maxima-securitate-din-anglia-desi-era-incatusat-si-legat-cu-lanturi-de-un-gardian-2416742",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International"
+      ],
+      "author": "Ana Teșcan",
+      "theme": "sigurnost",
+      "image": "",
+      "imageAlt": "Cum a evadat un deținut încarcerat într-un penitenciar de maximă securitate din Anglia deși era încătușat și legat cu lanțuri de un gardian",
+      "addedAt": "2026-11-28T18:56:22.286Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-hotnews-netanyahu-ii-propune-rivalului-sa-fie-0fe639",
+      "title": "Netanyahu îi propune rivalului să fie premier primul într-o rotativă, invocând „amploarea amenințării existențiale” pentru Israel",
+      "summary": "Premierul în exercițiu al Israelului, Benjamin Netanyahu, a confirmat pentru prima dată că ar fi de acord ca liderul Yashar, Gadi Eisenkot, să preia primul funcția de prim-ministru într-un guvern de unitate națională, conform unui comunicat de sâmbătă, citat de The Jerusalem Post. Benjamin Netanyahu a spus că i s-ar părea firesc să conducă el …",
+      "date": "2026-11-28T17:07:02.000Z",
+      "url": "https://hotnews.ro/netanyahu-ii-propune-rivalului-sa-fie-premier-primul-intr-o-rotativa-invocand-amploarea-amenintarii-existentiale-pentru-israel-2416734",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "Benjamin Netanyahu",
+        "Gadi Eisenkot"
+      ],
+      "author": "Vladimir Ionescu",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Netanyahu îi propune rivalului să fie premier primul într-o rotativă, invocând „amploarea amenințării existențiale” pentru Israel",
+      "addedAt": "2026-11-28T18:56:22.286Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-profit-vantul-puternic-doboara-copaci-in-bucuresti-30a6b5",
+      "title": "Vântul puternic doboară copaci în București și Ilfov. Concertele de la Târgul de Crăciun din Piața Constituției au fost anulate",
+      "summary": "Mai mulți copaci au căzut peste mașini sau pe carosabil în București și Ilfov, aflate sub atenționare cod galben de vânt puternic și ninsori. Primăria Capitalei a anulat cele trei concerte programate în această seară la Târgul de Crăciun din Piața Constituției, iar Primăria Sectorului 4 a anulat evenimentul dedicat aprinderii iluminatului festiv din Parcul Tudor Arghezi.",
+      "date": "2026-11-28T16:34:00.000Z",
+      "url": "https://www.profit.ro/stiri/social/vantul-puternic-doboara-copaci-in-bucuresti-si-ilfov-concertele-de-la-targul-de-craciun-din-piata-constitutiei-au-fost-anulate-23016703?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Social"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33239/23016703/1/blizzard-1972645-1280.jpg?width=800",
+      "imageAlt": "Vântul puternic doboară copaci în București și Ilfov. Concertele de la Târgul de Crăciun din Piața Constituției au fost anulate",
+      "addedAt": "2026-11-28T18:56:24.494Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-zf-un-video-minut-pentru-romania-cu-ocazia-a19f29",
+      "title": "Un video-minut pentru România! Cu ocazia Zilei Naţionale, 1 Decembrie, ZF vă invită să vorbiţi despre valorile României şi cum doriţi să arate această ţară în următorii 20 de ani…",
+      "summary": "",
+      "date": "2026-11-28T16:26:00.000Z",
+      "url": "https://www.zf.ro/eveniment/video-minut-romania-ocazia-zilei-nationale-1-decembrie-zf-invita-vorbiti-valorile-romaniei-doriti-arate-aceasta-tara-urmatorii-20-ani-intr-mesaj-video-selfie-minut-23291638",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Eveniment"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10386/23291638/1/whatsapp-image-2026-11-28-at-18-13-31.jpg?width=700",
+      "imageAlt": "Un video-minut pentru România! Cu ocazia Zilei Naţionale, 1 Decembrie, ZF vă invită să vorbiţi despre valorile României şi cum doriţi să arate această ţară în următorii 20 de ani, ",
+      "addedAt": "2026-11-28T18:56:24.089Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-zf-urmariti-in-reluare-gala-zf-2026-ce-a-spus-d054ce",
+      "title": "Urmăriţi în reluare Gala ZF 2026. Ce a spus invitatul special Johan Norberg, vedeţi premierea celor mai valoroase companii din România şi ce au spus liderii de business despre 20…",
+      "summary": "",
+      "date": "2026-11-28T16:23:00.000Z",
+      "url": "https://www.zf.ro/eveniment/urmariti-in-reluare-gala-zf-2026-ce-a-spus-invitatul-special-johan-norberg-vedeti-premierea-celor-mai-valoroase-companii-din-romania-si-ce-au-spus-liderii-de-business-despre-20-de-ani-de-ue-video-23291636",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Eveniment"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/10386/23291636/1/screenshot-2026-11-28-182346.png?width=700",
+      "imageAlt": "Urmăriţi în reluare Gala ZF 2026. Ce a spus invitatul special Johan Norberg, vedeţi premierea celor mai valoroase companii din România şi ce au spus liderii de business despre 20 d",
+      "addedAt": "2026-11-28T18:56:24.089Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-profit-colete-false-cu-linkuri-trimise-prin-sms-d4214f",
+      "title": "Colete false, cu linkuri trimise prin SMS, WhatsApp sau e-mail, sunt prezentate repetat în această perioadă de sărbători. Mesajul Poliției: Dacă ați devenit victima unei fraude…",
+      "summary": "Colete false, cu linkuri trimise prin SMS, WhatsApp sau e-mail, sunt prezentate repetat în această perioadă de sărbători, destinatatorilor fiindu-le cerut să introducă datele cardului bancar, codul CVV, parole sau coduri de autentificare primite prin SMS, pe pagini accesate din mesaje nesolicitate.",
+      "date": "2026-11-28T16:00:00.000Z",
+      "url": "https://www.profit.ro/stiri/social/colete-false-linkuri-trimise-sms-whatsapp-e-mail-prezentate-repetat-aceasta-perioada-sarbatori-mesajul-politiei-ati-devenit-victima-unei-fraude-contactati-imediat-banca-schimbati-parolele-sesizati-23016637?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Social"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33239/23016637/2/e-commerce-8656646-1920.jpg?width=800",
+      "imageAlt": "Colete false, cu linkuri trimise prin SMS, WhatsApp sau e-mail, sunt prezentate repetat în această perioadă de sărbători. Mesajul Poliției: Dacă ați devenit victima unei fraude, co",
+      "addedAt": "2026-11-28T18:56:24.494Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-profit-foto-romanii-ridica-parcuri-solare-in-28cf05",
+      "title": "FOTO Românii ridică parcuri solare în Germania. Parapet a finalizat lucrările la alte două proiecte",
+      "summary": "Compania românească Parapet a finalizat lucrările la alte două parcuri solare din Germania.",
+      "date": "2026-11-28T15:44:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/energie/foto-romanii-ridica-parcuri-solare-in-germania-parapet-a-finalizat-lucrarile-la-alte-doua-proiecte-23016626?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Energie"
+      ],
+      "author": "",
+      "theme": "sport",
+      "image": "https://i0.1616.ro/media/2/2621/33214/23016626/1/photovoltaic-491702-1280.jpg?width=800",
+      "imageAlt": "FOTO Românii ridică parcuri solare în Germania. Parapet a finalizat lucrările la alte două proiecte",
+      "addedAt": "2026-11-28T18:56:24.494Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-profit-avertisment-e-risc-de-criza-pe-stocurile-de-92d485",
+      "title": "Avertisment: e risc de criză pe stocurile de carne de porc înainte de Crăciun. Reglementare nouă cu șase zile înainte de Crăciun",
+      "summary": "Comercianții din România solicită modificarea ordinului care limitează la maximum opt zile de la sacrificare termenul de valabilitate al cărnii proaspete de porc. Măsura ar urma să intre în vigoare cu șase zile înainte de Crăciun și ar putea genera dificultăți de aprovizionare, în condițiile în care România își acoperă jumătate din consumul de carne de porc din importuri.",
+      "date": "2026-11-28T15:40:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/retail/avertisment-e-risc-de-criza-pe-stocurile-de-carne-de-porc-inainte-de-craciun-reglementare-noua-cu-sase-zile-inainte-de-craciun-23016590?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Retail"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/33215/23016590/2/meat.jpg?width=800",
+      "imageAlt": "Avertisment: e risc de criză pe stocurile de carne de porc înainte de Crăciun. Reglementare nouă cu șase zile înainte de Crăciun",
+      "addedAt": "2026-11-28T18:56:24.494Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-zf-fitch-reconfirma-ratingul-unicredit-bank-la-6c018f",
+      "title": "Fitch reconfirmă ratingul UniCredit Bank la BBB+, cu perspectivă negativă. Banca se află în top trei instituţii de credit din România, cu o cotă de piaţă de circa 13%",
+      "summary": "",
+      "date": "2026-11-28T15:37:35.000Z",
+      "url": "https://www.zf.ro/banci-si-asigurari/fitch-reconfirma-ratingul-unicredit-bank-la-bbb-cu-perspectiva-negativa-banca-se-afla-in-top-trei-institutii-de-credit-din-romania-cu-o-cota-de-piata-de-circa-13-23291602",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Bănci și Asigurări"
+      ],
+      "author": "",
+      "theme": "rat",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/22466/23291602/1/5-unicredit-bank2.jpg?width=700",
+      "imageAlt": "Fitch reconfirmă ratingul UniCredit Bank la BBB+, cu perspectivă negativă. Banca se află în top trei instituţii de credit din România, cu o cotă de piaţă de circa 13%",
+      "addedAt": "2026-11-28T18:56:24.089Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-zf-matematiciana-romana-ana-caraiani-pe-prima-f593c4",
+      "title": "Matematiciana română Ana Caraiani, pe prima pagină a Financial Times. Profesoara de la Imperial College London se află în centrul unei dezbateri care poate schimba viitorul…",
+      "summary": "",
+      "date": "2026-11-28T15:35:54.000Z",
+      "url": "https://www.zf.ro/profesii/matematiciana-romana-ana-caraiani-prima-pagina-financial-times-profesoara-imperial-college-london-afla-centrul-unei-dezbateri-schimba-viitorul-stiintei-intampla-inteligenta-artificiala-incepe-23291598",
+      "source": "zf",
+      "sourceName": "Ziarul Financiar",
+      "categories": [
+        "Profesii"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://storage0.dms.mpinteractiv.ro/media/1/1481/25326/23291598/1/screenshot-2026-11-28-173443.png?width=700",
+      "imageAlt": "Matematiciana română Ana Caraiani, pe prima pagină a Financial Times. Profesoara de la Imperial College London se află în centrul unei dezbateri care poate schimba viitorul ştiinţe",
+      "addedAt": "2026-11-28T18:56:24.089Z"
+    },
     {
       "slug": "bukurest-2026-11-28-g4media-peste-460-de-drone-s-au-indreptat-spre-e155c9",
       "title": "Peste 460 de drone s-au îndreptat spre regiunea Moscovei, spune primarul capitalei / Rusia susține că a doborât 1.246 de drone ucrainene într-o singură noapte",
