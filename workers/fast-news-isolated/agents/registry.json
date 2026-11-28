@@ -1,0 +1,4390 @@
+{
+  "version": 1,
+  "execution": "logical assignments; runtime not provisioned",
+  "policy": {
+    "singleWriter": true,
+    "mailAccess": false,
+    "vercel": false,
+    "requireEditorialReview": true,
+    "requirePublicVerification": true
+  },
+  "agents": [
+    {
+      "id": "desk-slovenija",
+      "kind": "country",
+      "country": "slovenija",
+      "language": "sl",
+      "sourceIds": [
+        "gnews-si",
+        "gnews-sport-si",
+        "rtvslo",
+        "24ur",
+        "delo"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-hrvatska",
+      "kind": "country",
+      "country": "hrvatska",
+      "language": "hr",
+      "sourceIds": [
+        "gnews-hr",
+        "gnews-sport-hr",
+        "hrt",
+        "index",
+        "jutarnji",
+        "vecernji",
+        "24sata",
+        "lider",
+        "poslovni",
+        "dnevnikhr",
+        "net.hr",
+        "novilist",
+        "tportal",
+        "nacional"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 0,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-bih",
+      "kind": "country",
+      "country": "bih",
+      "language": "bs",
+      "sourceIds": [
+        "gnews-ba",
+        "gnews-sport-ba",
+        "klix",
+        "avaz",
+        "fena"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-srbija",
+      "kind": "country",
+      "country": "srbija",
+      "language": "sr",
+      "sourceIds": [
+        "gnews-rs",
+        "gnews-sport-rs",
+        "b92",
+        "blic",
+        "danas"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-crna-gora",
+      "kind": "country",
+      "country": "crna-gora",
+      "language": "sr",
+      "sourceIds": [
+        "gnews-me",
+        "gnews-sport-me"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-makedonija",
+      "kind": "country",
+      "country": "makedonija",
+      "language": "mk",
+      "sourceIds": [
+        "gnews-mk",
+        "gnews-sport-mk"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-albanija",
+      "kind": "country",
+      "country": "albanija",
+      "language": "sq",
+      "sourceIds": [
+        "gnews-al",
+        "gnews-sport-al"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-bugarska",
+      "kind": "country",
+      "country": "bugarska",
+      "language": "bg",
+      "sourceIds": [
+        "gnews-bg",
+        "gnews-sport-bg"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-rumunjska",
+      "kind": "country",
+      "country": "rumunjska",
+      "language": "ro",
+      "sourceIds": [
+        "gnews-ro",
+        "gnews-sport-ro"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-grcka",
+      "kind": "country",
+      "country": "grcka",
+      "language": "el",
+      "sourceIds": [
+        "gnews-gr",
+        "gnews-sport-gr"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-turska",
+      "kind": "country",
+      "country": "turska",
+      "language": "tr",
+      "sourceIds": [
+        "gnews-tr",
+        "gnews-sport-tr"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kosovo",
+      "kind": "country",
+      "country": "kosovo",
+      "language": "sq",
+      "sourceIds": [
+        "gnews-xk",
+        "gnews-sport-xk"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-austrija",
+      "kind": "country",
+      "country": "austrija",
+      "language": "de",
+      "sourceIds": [
+        "gnews-at",
+        "gnews-sport-at",
+        "orf"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-madjarska",
+      "kind": "country",
+      "country": "madjarska",
+      "language": "hu",
+      "sourceIds": [
+        "gnews-hu",
+        "gnews-sport-hu"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-ceska",
+      "kind": "country",
+      "country": "ceska",
+      "language": "cs",
+      "sourceIds": [
+        "gnews-cz",
+        "gnews-sport-cz"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-slovakia",
+      "kind": "country",
+      "country": "slovakia",
+      "language": "sk",
+      "sourceIds": [
+        "gnews-sk",
+        "gnews-sport-sk"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-poljska",
+      "kind": "country",
+      "country": "poljska",
+      "language": "pl",
+      "sourceIds": [
+        "gnews-pl",
+        "gnews-sport-pl"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-njemacka",
+      "kind": "country",
+      "country": "njemacka",
+      "language": "de",
+      "sourceIds": [
+        "gnews-de",
+        "gnews-sport-de",
+        "tagesschau",
+        "spiegel"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-svajcarska",
+      "kind": "country",
+      "country": "svajcarska",
+      "language": "de",
+      "sourceIds": [
+        "gnews-ch",
+        "gnews-sport-ch"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-lihtenstajn",
+      "kind": "country",
+      "country": "lihtenstajn",
+      "language": "de",
+      "sourceIds": [
+        "gnews-li",
+        "gnews-sport-li"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-francuska",
+      "kind": "country",
+      "country": "francuska",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-fr",
+        "gnews-sport-fr"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-italija",
+      "kind": "country",
+      "country": "italija",
+      "language": "it",
+      "sourceIds": [
+        "gnews-it",
+        "gnews-sport-it"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-spanjolska",
+      "kind": "country",
+      "country": "spanjolska",
+      "language": "es",
+      "sourceIds": [
+        "gnews-es",
+        "gnews-sport-es"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-portugal",
+      "kind": "country",
+      "country": "portugal",
+      "language": "pt",
+      "sourceIds": [
+        "gnews-pt",
+        "gnews-sport-pt"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-velika-britanija",
+      "kind": "country",
+      "country": "velika-britanija",
+      "language": "en",
+      "sourceIds": [
+        "gnews-gb",
+        "gnews-sport-gb",
+        "bbc",
+        "guardian"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-irsla",
+      "kind": "country",
+      "country": "irsla",
+      "language": "en",
+      "sourceIds": [
+        "gnews-ie",
+        "gnews-sport-ie"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-nizozemska",
+      "kind": "country",
+      "country": "nizozemska",
+      "language": "nl",
+      "sourceIds": [
+        "gnews-nl",
+        "gnews-sport-nl"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-belgija",
+      "kind": "country",
+      "country": "belgija",
+      "language": "nl",
+      "sourceIds": [
+        "gnews-be",
+        "gnews-sport-be"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-danska",
+      "kind": "country",
+      "country": "danska",
+      "language": "da",
+      "sourceIds": [
+        "gnews-dk",
+        "gnews-sport-dk"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-svedska",
+      "kind": "country",
+      "country": "svedska",
+      "language": "sv",
+      "sourceIds": [
+        "gnews-se",
+        "gnews-sport-se"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-norveska",
+      "kind": "country",
+      "country": "norveska",
+      "language": "no",
+      "sourceIds": [
+        "gnews-no",
+        "gnews-sport-no"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-finska",
+      "kind": "country",
+      "country": "finska",
+      "language": "fi",
+      "sourceIds": [
+        "gnews-fi",
+        "gnews-sport-fi"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-island",
+      "kind": "country",
+      "country": "island",
+      "language": "is",
+      "sourceIds": [
+        "gnews-is",
+        "gnews-sport-is"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-estonija",
+      "kind": "country",
+      "country": "estonija",
+      "language": "et",
+      "sourceIds": [
+        "gnews-ee",
+        "gnews-sport-ee"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-latvija",
+      "kind": "country",
+      "country": "latvija",
+      "language": "lv",
+      "sourceIds": [
+        "gnews-lv",
+        "gnews-sport-lv"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-litva",
+      "kind": "country",
+      "country": "litva",
+      "language": "lt",
+      "sourceIds": [
+        "gnews-lt",
+        "gnews-sport-lt"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-rusija",
+      "kind": "country",
+      "country": "rusija",
+      "language": "ru",
+      "sourceIds": [
+        "gnews-ru",
+        "gnews-sport-ru"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-ukrajina",
+      "kind": "country",
+      "country": "ukrajina",
+      "language": "uk",
+      "sourceIds": [
+        "gnews-ua",
+        "gnews-sport-ua"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-bjelorusija",
+      "kind": "country",
+      "country": "bjelorusija",
+      "language": "be",
+      "sourceIds": [
+        "gnews-by",
+        "gnews-sport-by"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-moldavija",
+      "kind": "country",
+      "country": "moldavija",
+      "language": "ro",
+      "sourceIds": [
+        "gnews-md",
+        "gnews-sport-md"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-gruzija",
+      "kind": "country",
+      "country": "gruzija",
+      "language": "ka",
+      "sourceIds": [
+        "gnews-ge",
+        "gnews-sport-ge"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-armenija",
+      "kind": "country",
+      "country": "armenija",
+      "language": "hy",
+      "sourceIds": [
+        "gnews-am",
+        "gnews-sport-am"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-azerbajdzan",
+      "kind": "country",
+      "country": "azerbajdzan",
+      "language": "az",
+      "sourceIds": [
+        "gnews-az",
+        "gnews-sport-az"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-sad",
+      "kind": "country",
+      "country": "sad",
+      "language": "en",
+      "sourceIds": [
+        "gnews-us",
+        "gnews-sport-us",
+        "nyt",
+        "cnbc"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kanada",
+      "kind": "country",
+      "country": "kanada",
+      "language": "en",
+      "sourceIds": [
+        "gnews-ca",
+        "gnews-sport-ca",
+        "cbc"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-meksiko",
+      "kind": "country",
+      "country": "meksiko",
+      "language": "es",
+      "sourceIds": [
+        "gnews-mx",
+        "gnews-sport-mx",
+        "eluniversal_mx"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-gvatemala",
+      "kind": "country",
+      "country": "gvatemala",
+      "language": "es",
+      "sourceIds": [
+        "gnews-gt",
+        "gnews-sport-gt"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-honduras",
+      "kind": "country",
+      "country": "honduras",
+      "language": "es",
+      "sourceIds": [
+        "gnews-hn",
+        "gnews-sport-hn"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-salvador",
+      "kind": "country",
+      "country": "salvador",
+      "language": "es",
+      "sourceIds": [
+        "gnews-sv",
+        "gnews-sport-sv"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-nikaragva",
+      "kind": "country",
+      "country": "nikaragva",
+      "language": "es",
+      "sourceIds": [
+        "gnews-ni",
+        "gnews-sport-ni"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kosta-rika",
+      "kind": "country",
+      "country": "kosta-rika",
+      "language": "es",
+      "sourceIds": [
+        "gnews-cr",
+        "gnews-sport-cr"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-panama",
+      "kind": "country",
+      "country": "panama",
+      "language": "es",
+      "sourceIds": [
+        "gnews-pa",
+        "gnews-sport-pa"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kuba",
+      "kind": "country",
+      "country": "kuba",
+      "language": "es",
+      "sourceIds": [
+        "gnews-cu",
+        "gnews-sport-cu"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-dominikanska",
+      "kind": "country",
+      "country": "dominikanska",
+      "language": "es",
+      "sourceIds": [
+        "gnews-do",
+        "gnews-sport-do"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-jamajka",
+      "kind": "country",
+      "country": "jamajka",
+      "language": "en",
+      "sourceIds": [
+        "gnews-jm",
+        "gnews-sport-jm"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-venezuela",
+      "kind": "country",
+      "country": "venezuela",
+      "language": "es",
+      "sourceIds": [
+        "gnews-ve",
+        "gnews-sport-ve"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kolumbija",
+      "kind": "country",
+      "country": "kolumbija",
+      "language": "es",
+      "sourceIds": [
+        "gnews-co",
+        "gnews-sport-co"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-ekvador",
+      "kind": "country",
+      "country": "ekvador",
+      "language": "es",
+      "sourceIds": [
+        "gnews-ec",
+        "gnews-sport-ec"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-peru",
+      "kind": "country",
+      "country": "peru",
+      "language": "es",
+      "sourceIds": [
+        "gnews-pe",
+        "gnews-sport-pe"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-brazil",
+      "kind": "country",
+      "country": "brazil",
+      "language": "pt",
+      "sourceIds": [
+        "gnews-br",
+        "gnews-sport-br",
+        "g1"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-bolivija",
+      "kind": "country",
+      "country": "bolivija",
+      "language": "es",
+      "sourceIds": [
+        "gnews-bo",
+        "gnews-sport-bo"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-paragvaj",
+      "kind": "country",
+      "country": "paragvaj",
+      "language": "es",
+      "sourceIds": [
+        "gnews-py",
+        "gnews-sport-py"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-urugvaj",
+      "kind": "country",
+      "country": "urugvaj",
+      "language": "es",
+      "sourceIds": [
+        "gnews-uy",
+        "gnews-sport-uy"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-argentina",
+      "kind": "country",
+      "country": "argentina",
+      "language": "es",
+      "sourceIds": [
+        "gnews-ar",
+        "gnews-sport-ar",
+        "clarin"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-cile",
+      "kind": "country",
+      "country": "cile",
+      "language": "es",
+      "sourceIds": [
+        "gnews-cl",
+        "gnews-sport-cl",
+        "biobio",
+        "cnnchile"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kina",
+      "kind": "country",
+      "country": "kina",
+      "language": "zh",
+      "sourceIds": [
+        "gnews-cn",
+        "gnews-sport-cn"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-japan",
+      "kind": "country",
+      "country": "japan",
+      "language": "ja",
+      "sourceIds": [
+        "gnews-jp",
+        "gnews-sport-jp"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-juzna-koreja",
+      "kind": "country",
+      "country": "juzna-koreja",
+      "language": "ko",
+      "sourceIds": [
+        "gnews-kr",
+        "gnews-sport-kr"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-sjeverna-koreja",
+      "kind": "country",
+      "country": "sjeverna-koreja",
+      "language": "ko",
+      "sourceIds": [
+        "gnews-kp",
+        "gnews-sport-kp"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-tajvan",
+      "kind": "country",
+      "country": "tajvan",
+      "language": "zh",
+      "sourceIds": [
+        "gnews-tw",
+        "gnews-sport-tw"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-mongolija",
+      "kind": "country",
+      "country": "mongolija",
+      "language": "mn",
+      "sourceIds": [
+        "gnews-mn",
+        "gnews-sport-mn"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-vijetnam",
+      "kind": "country",
+      "country": "vijetnam",
+      "language": "vi",
+      "sourceIds": [
+        "gnews-vn",
+        "gnews-sport-vn"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-tajland",
+      "kind": "country",
+      "country": "tajland",
+      "language": "th",
+      "sourceIds": [
+        "gnews-th",
+        "gnews-sport-th"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-malezija",
+      "kind": "country",
+      "country": "malezija",
+      "language": "ms",
+      "sourceIds": [
+        "gnews-my",
+        "gnews-sport-my"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-singapur",
+      "kind": "country",
+      "country": "singapur",
+      "language": "en",
+      "sourceIds": [
+        "gnews-sg",
+        "gnews-sport-sg"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-indonezija",
+      "kind": "country",
+      "country": "indonezija",
+      "language": "id",
+      "sourceIds": [
+        "gnews-id",
+        "gnews-sport-id"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-filipini",
+      "kind": "country",
+      "country": "filipini",
+      "language": "en",
+      "sourceIds": [
+        "gnews-ph",
+        "gnews-sport-ph"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kambodza",
+      "kind": "country",
+      "country": "kambodza",
+      "language": "km",
+      "sourceIds": [
+        "gnews-kh",
+        "gnews-sport-kh"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-laos",
+      "kind": "country",
+      "country": "laos",
+      "language": "lo",
+      "sourceIds": [
+        "gnews-la",
+        "gnews-sport-la"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-myanmar",
+      "kind": "country",
+      "country": "myanmar",
+      "language": "my",
+      "sourceIds": [
+        "gnews-mm",
+        "gnews-sport-mm"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-indija",
+      "kind": "country",
+      "country": "indija",
+      "language": "hi",
+      "sourceIds": [
+        "gnews-in",
+        "gnews-sport-in",
+        "toi"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-pakistan",
+      "kind": "country",
+      "country": "pakistan",
+      "language": "ur",
+      "sourceIds": [
+        "gnews-pk",
+        "gnews-sport-pk"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-banglades",
+      "kind": "country",
+      "country": "banglades",
+      "language": "bn",
+      "sourceIds": [
+        "gnews-bd",
+        "gnews-sport-bd"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-srilanka",
+      "kind": "country",
+      "country": "srilanka",
+      "language": "si",
+      "sourceIds": [
+        "gnews-lk",
+        "gnews-sport-lk"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-nepal",
+      "kind": "country",
+      "country": "nepal",
+      "language": "ne",
+      "sourceIds": [
+        "gnews-np",
+        "gnews-sport-np"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-afganistan",
+      "kind": "country",
+      "country": "afganistan",
+      "language": "fa",
+      "sourceIds": [
+        "gnews-af",
+        "gnews-sport-af"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kazahstan",
+      "kind": "country",
+      "country": "kazahstan",
+      "language": "kk",
+      "sourceIds": [
+        "gnews-kz",
+        "gnews-sport-kz"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-uzbekistan",
+      "kind": "country",
+      "country": "uzbekistan",
+      "language": "uz",
+      "sourceIds": [
+        "gnews-uz",
+        "gnews-sport-uz"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-turkmenistan",
+      "kind": "country",
+      "country": "turkmenistan",
+      "language": "tk",
+      "sourceIds": [
+        "gnews-tm",
+        "gnews-sport-tm"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kirgistan",
+      "kind": "country",
+      "country": "kirgistan",
+      "language": "ky",
+      "sourceIds": [
+        "gnews-kg",
+        "gnews-sport-kg"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-tadzikistan",
+      "kind": "country",
+      "country": "tadzikistan",
+      "language": "tg",
+      "sourceIds": [
+        "gnews-tj",
+        "gnews-sport-tj"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-iran",
+      "kind": "country",
+      "country": "iran",
+      "language": "fa",
+      "sourceIds": [
+        "gnews-ir",
+        "gnews-sport-ir"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-irak",
+      "kind": "country",
+      "country": "irak",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-iq",
+        "gnews-sport-iq"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-saudijska",
+      "kind": "country",
+      "country": "saudijska",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-sa",
+        "gnews-sport-sa"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-uae",
+      "kind": "country",
+      "country": "uae",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-ae",
+        "gnews-sport-ae"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-katari",
+      "kind": "country",
+      "country": "katari",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-qa",
+        "gnews-sport-qa"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-izrael",
+      "kind": "country",
+      "country": "izrael",
+      "language": "he",
+      "sourceIds": [
+        "gnews-il",
+        "gnews-sport-il"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-jordan",
+      "kind": "country",
+      "country": "jordan",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-jo",
+        "gnews-sport-jo"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-libanon",
+      "kind": "country",
+      "country": "libanon",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-lb",
+        "gnews-sport-lb"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-sirija",
+      "kind": "country",
+      "country": "sirija",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-sy",
+        "gnews-sport-sy"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-egipat",
+      "kind": "country",
+      "country": "egipat",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-eg",
+        "gnews-sport-eg"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-maroko",
+      "kind": "country",
+      "country": "maroko",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-ma",
+        "gnews-sport-ma"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-alzir",
+      "kind": "country",
+      "country": "alzir",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-dz",
+        "gnews-sport-dz"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-tunis",
+      "kind": "country",
+      "country": "tunis",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-tn",
+        "gnews-sport-tn"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-libija",
+      "kind": "country",
+      "country": "libija",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-ly",
+        "gnews-sport-ly"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-sudan",
+      "kind": "country",
+      "country": "sudan",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-sd",
+        "gnews-sport-sd"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-nigerija",
+      "kind": "country",
+      "country": "nigerija",
+      "language": "en",
+      "sourceIds": [
+        "gnews-ng",
+        "gnews-sport-ng"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-gvana",
+      "kind": "country",
+      "country": "gvana",
+      "language": "en",
+      "sourceIds": [
+        "gnews-gh",
+        "gnews-sport-gh"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-senegal",
+      "kind": "country",
+      "country": "senegal",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-sn",
+        "gnews-sport-sn"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kenija",
+      "kind": "country",
+      "country": "kenija",
+      "language": "en",
+      "sourceIds": [
+        "gnews-ke",
+        "gnews-sport-ke"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-etipija",
+      "kind": "country",
+      "country": "etipija",
+      "language": "am",
+      "sourceIds": [
+        "gnews-et",
+        "gnews-sport-et"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-tanzanija",
+      "kind": "country",
+      "country": "tanzanija",
+      "language": "sw",
+      "sourceIds": [
+        "gnews-tz",
+        "gnews-sport-tz"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-juzna-afrika",
+      "kind": "country",
+      "country": "juzna-afrika",
+      "language": "en",
+      "sourceIds": [
+        "gnews-za",
+        "gnews-sport-za"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-mozambik",
+      "kind": "country",
+      "country": "mozambik",
+      "language": "pt",
+      "sourceIds": [
+        "gnews-mz",
+        "gnews-sport-mz"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-australija",
+      "kind": "country",
+      "country": "australija",
+      "language": "en",
+      "sourceIds": [
+        "gnews-au",
+        "gnews-sport-au",
+        "abc-au"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-novi-zeland",
+      "kind": "country",
+      "country": "novi-zeland",
+      "language": "en",
+      "sourceIds": [
+        "gnews-nz",
+        "gnews-sport-nz"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-papua-novagvineja",
+      "kind": "country",
+      "country": "papua-novagvineja",
+      "language": "en",
+      "sourceIds": [
+        "gnews-pg",
+        "gnews-sport-pg"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-andora",
+      "kind": "country",
+      "country": "andora",
+      "language": "ca",
+      "sourceIds": [
+        "gnews-ad",
+        "gnews-sport-ad"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-monako",
+      "kind": "country",
+      "country": "monako",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-mc",
+        "gnews-sport-mc"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-san-marino",
+      "kind": "country",
+      "country": "san-marino",
+      "language": "it",
+      "sourceIds": [
+        "gnews-sm",
+        "gnews-sport-sm"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-vatikan",
+      "kind": "country",
+      "country": "vatikan",
+      "language": "it",
+      "sourceIds": [
+        "gnews-va",
+        "gnews-sport-va"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-malta",
+      "kind": "country",
+      "country": "malta",
+      "language": "mt",
+      "sourceIds": [
+        "gnews-mt",
+        "gnews-sport-mt"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-cipar",
+      "kind": "country",
+      "country": "cipar",
+      "language": "el",
+      "sourceIds": [
+        "gnews-cy",
+        "gnews-sport-cy"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-grenland",
+      "kind": "country",
+      "country": "grenland",
+      "language": "kl",
+      "sourceIds": [
+        "gnews-gl",
+        "gnews-sport-gl"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-ferozki-otoci",
+      "kind": "country",
+      "country": "ferozki-otoci",
+      "language": "fo",
+      "sourceIds": [
+        "gnews-fo",
+        "gnews-sport-fo"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-zelenortska",
+      "kind": "country",
+      "country": "zelenortska",
+      "language": "pt",
+      "sourceIds": [
+        "gnews-cv",
+        "gnews-sport-cv"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-sao-tome",
+      "kind": "country",
+      "country": "sao-tome",
+      "language": "pt",
+      "sourceIds": [
+        "gnews-st",
+        "gnews-sport-st"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-gvineja-bissau",
+      "kind": "country",
+      "country": "gvineja-bissau",
+      "language": "pt",
+      "sourceIds": [
+        "gnews-gw",
+        "gnews-sport-gw"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-ekvatorska-gvineja",
+      "kind": "country",
+      "country": "ekvatorska-gvineja",
+      "language": "es",
+      "sourceIds": [
+        "gnews-gq",
+        "gnews-sport-gq"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-gambija",
+      "kind": "country",
+      "country": "gambija",
+      "language": "en",
+      "sourceIds": [
+        "gnews-gm",
+        "gnews-sport-gm"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-gvineja",
+      "kind": "country",
+      "country": "gvineja",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-gn",
+        "gnews-sport-gn"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-sijera-leone",
+      "kind": "country",
+      "country": "sijera-leone",
+      "language": "en",
+      "sourceIds": [
+        "gnews-sl",
+        "gnews-sport-sl"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-liberija",
+      "kind": "country",
+      "country": "liberija",
+      "language": "en",
+      "sourceIds": [
+        "gnews-lr",
+        "gnews-sport-lr"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-slone-coast",
+      "kind": "country",
+      "country": "slone-coast",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-ci",
+        "gnews-sport-ci"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-burkina-faso",
+      "kind": "country",
+      "country": "burkina-faso",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-bf",
+        "gnews-sport-bf"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-togo",
+      "kind": "country",
+      "country": "togo",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-tg",
+        "gnews-sport-tg"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-benin",
+      "kind": "country",
+      "country": "benin",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-bj",
+        "gnews-sport-bj"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-niger",
+      "kind": "country",
+      "country": "niger",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-ne",
+        "gnews-sport-ne"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-cad",
+      "kind": "country",
+      "country": "cad",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-td",
+        "gnews-sport-td"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kamerun",
+      "kind": "country",
+      "country": "kamerun",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-cm",
+        "gnews-sport-cm"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-srednjoafrika",
+      "kind": "country",
+      "country": "srednjoafrika",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-cf",
+        "gnews-sport-cf"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kongo-b",
+      "kind": "country",
+      "country": "kongo-b",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-cg",
+        "gnews-sport-cg"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kongo-k",
+      "kind": "country",
+      "country": "kongo-k",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-cd",
+        "gnews-sport-cd"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-gabon",
+      "kind": "country",
+      "country": "gabon",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-ga",
+        "gnews-sport-ga"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-angola",
+      "kind": "country",
+      "country": "angola",
+      "language": "pt",
+      "sourceIds": [
+        "gnews-ao",
+        "gnews-sport-ao"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-djibuti",
+      "kind": "country",
+      "country": "djibuti",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-dj",
+        "gnews-sport-dj"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-eritreja",
+      "kind": "country",
+      "country": "eritreja",
+      "language": "ti",
+      "sourceIds": [
+        "gnews-er",
+        "gnews-sport-er"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-somalija",
+      "kind": "country",
+      "country": "somalija",
+      "language": "so",
+      "sourceIds": [
+        "gnews-so",
+        "gnews-sport-so"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-juza-sudan",
+      "kind": "country",
+      "country": "juza-sudan",
+      "language": "en",
+      "sourceIds": [
+        "gnews-ss",
+        "gnews-sport-ss"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-uganda",
+      "kind": "country",
+      "country": "uganda",
+      "language": "en",
+      "sourceIds": [
+        "gnews-ug",
+        "gnews-sport-ug"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-ruanda",
+      "kind": "country",
+      "country": "ruanda",
+      "language": "rw",
+      "sourceIds": [
+        "gnews-rw",
+        "gnews-sport-rw"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-burundi",
+      "kind": "country",
+      "country": "burundi",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-bi",
+        "gnews-sport-bi"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-malavi",
+      "kind": "country",
+      "country": "malavi",
+      "language": "en",
+      "sourceIds": [
+        "gnews-mw",
+        "gnews-sport-mw"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-zambija",
+      "kind": "country",
+      "country": "zambija",
+      "language": "en",
+      "sourceIds": [
+        "gnews-zm",
+        "gnews-sport-zm"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-zimbabve",
+      "kind": "country",
+      "country": "zimbabve",
+      "language": "en",
+      "sourceIds": [
+        "gnews-zw",
+        "gnews-sport-zw"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-botsvana",
+      "kind": "country",
+      "country": "botsvana",
+      "language": "en",
+      "sourceIds": [
+        "gnews-bw",
+        "gnews-sport-bw"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-namibija",
+      "kind": "country",
+      "country": "namibija",
+      "language": "en",
+      "sourceIds": [
+        "gnews-na",
+        "gnews-sport-na"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-lesoto",
+      "kind": "country",
+      "country": "lesoto",
+      "language": "en",
+      "sourceIds": [
+        "gnews-ls",
+        "gnews-sport-ls"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-svazilend",
+      "kind": "country",
+      "country": "svazilend",
+      "language": "en",
+      "sourceIds": [
+        "gnews-sz",
+        "gnews-sport-sz"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-madagaskar",
+      "kind": "country",
+      "country": "madagaskar",
+      "language": "mg",
+      "sourceIds": [
+        "gnews-mg",
+        "gnews-sport-mg"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-mauricijus",
+      "kind": "country",
+      "country": "mauricijus",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-mu",
+        "gnews-sport-mu"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-komori",
+      "kind": "country",
+      "country": "komori",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-km",
+        "gnews-sport-km"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-sejceli",
+      "kind": "country",
+      "country": "sejceli",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-sc",
+        "gnews-sport-sc"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-mauritanija",
+      "kind": "country",
+      "country": "mauritanija",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-mr",
+        "gnews-sport-mr"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-zapadna-sahara",
+      "kind": "country",
+      "country": "zapadna-sahara",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-eh",
+        "gnews-sport-eh"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-mali",
+      "kind": "country",
+      "country": "mali",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-ml",
+        "gnews-sport-ml"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-jemen",
+      "kind": "country",
+      "country": "jemen",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-ye",
+        "gnews-sport-ye"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-oman",
+      "kind": "country",
+      "country": "oman",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-om",
+        "gnews-sport-om"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-bahrein",
+      "kind": "country",
+      "country": "bahrein",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-bh",
+        "gnews-sport-bh"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kuwait",
+      "kind": "country",
+      "country": "kuwait",
+      "language": "ar",
+      "sourceIds": [
+        "gnews-kw",
+        "gnews-sport-kw"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-butan",
+      "kind": "country",
+      "country": "butan",
+      "language": "dz",
+      "sourceIds": [
+        "gnews-bt",
+        "gnews-sport-bt"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-maldivi",
+      "kind": "country",
+      "country": "maldivi",
+      "language": "dv",
+      "sourceIds": [
+        "gnews-mv",
+        "gnews-sport-mv"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-brunej",
+      "kind": "country",
+      "country": "brunej",
+      "language": "ms",
+      "sourceIds": [
+        "gnews-bn",
+        "gnews-sport-bn"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-istocni-timor",
+      "kind": "country",
+      "country": "istocni-timor",
+      "language": "pt",
+      "sourceIds": [
+        "gnews-tl",
+        "gnews-sport-tl"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-bahami",
+      "kind": "country",
+      "country": "bahami",
+      "language": "en",
+      "sourceIds": [
+        "gnews-bs",
+        "gnews-sport-bs"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-barbados",
+      "kind": "country",
+      "country": "barbados",
+      "language": "en",
+      "sourceIds": [
+        "gnews-bb",
+        "gnews-sport-bb"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-trinidad",
+      "kind": "country",
+      "country": "trinidad",
+      "language": "en",
+      "sourceIds": [
+        "gnews-tt",
+        "gnews-sport-tt"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-haiti",
+      "kind": "country",
+      "country": "haiti",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-ht",
+        "gnews-sport-ht"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-belize",
+      "kind": "country",
+      "country": "belize",
+      "language": "en",
+      "sourceIds": [
+        "gnews-bz",
+        "gnews-sport-bz"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-grenada",
+      "kind": "country",
+      "country": "grenada",
+      "language": "en",
+      "sourceIds": [
+        "gnews-gd",
+        "gnews-sport-gd"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-sveta-lucija",
+      "kind": "country",
+      "country": "sveta-lucija",
+      "language": "en",
+      "sourceIds": [
+        "gnews-lc",
+        "gnews-sport-lc"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-antigva",
+      "kind": "country",
+      "country": "antigva",
+      "language": "en",
+      "sourceIds": [
+        "gnews-ag",
+        "gnews-sport-ag"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-dominika-karibi",
+      "kind": "country",
+      "country": "dominika-karibi",
+      "language": "en",
+      "sourceIds": [
+        "gnews-dm",
+        "gnews-sport-dm"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-sveti-kitts",
+      "kind": "country",
+      "country": "sveti-kitts",
+      "language": "en",
+      "sourceIds": [
+        "gnews-kn",
+        "gnews-sport-kn"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-sveti-vincent",
+      "kind": "country",
+      "country": "sveti-vincent",
+      "language": "en",
+      "sourceIds": [
+        "gnews-vc",
+        "gnews-sport-vc"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-fidzi",
+      "kind": "country",
+      "country": "fidzi",
+      "language": "en",
+      "sourceIds": [
+        "gnews-fj",
+        "gnews-sport-fj"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-salomonski-otoci",
+      "kind": "country",
+      "country": "salomonski-otoci",
+      "language": "en",
+      "sourceIds": [
+        "gnews-sb",
+        "gnews-sport-sb"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-vanuatu",
+      "kind": "country",
+      "country": "vanuatu",
+      "language": "bi",
+      "sourceIds": [
+        "gnews-vu",
+        "gnews-sport-vu"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-samoa",
+      "kind": "country",
+      "country": "samoa",
+      "language": "sm",
+      "sourceIds": [
+        "gnews-ws",
+        "gnews-sport-ws"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-tonga",
+      "kind": "country",
+      "country": "tonga",
+      "language": "to",
+      "sourceIds": [
+        "gnews-to",
+        "gnews-sport-to"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-kiribati",
+      "kind": "country",
+      "country": "kiribati",
+      "language": "en",
+      "sourceIds": [
+        "gnews-ki",
+        "gnews-sport-ki"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-mikronezija",
+      "kind": "country",
+      "country": "mikronezija",
+      "language": "en",
+      "sourceIds": [
+        "gnews-fm",
+        "gnews-sport-fm"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-marsalovi",
+      "kind": "country",
+      "country": "marsalovi",
+      "language": "en",
+      "sourceIds": [
+        "gnews-mh",
+        "gnews-sport-mh"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-palau",
+      "kind": "country",
+      "country": "palau",
+      "language": "en",
+      "sourceIds": [
+        "gnews-pw",
+        "gnews-sport-pw"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-nauru",
+      "kind": "country",
+      "country": "nauru",
+      "language": "na",
+      "sourceIds": [
+        "gnews-nr",
+        "gnews-sport-nr"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-tuvalu",
+      "kind": "country",
+      "country": "tuvalu",
+      "language": "tvl",
+      "sourceIds": [
+        "gnews-tv",
+        "gnews-sport-tv"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-americanska-samoa",
+      "kind": "country",
+      "country": "americanska-samoa",
+      "language": "en",
+      "sourceIds": [
+        "gnews-as",
+        "gnews-sport-as"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-novi-kaledonija",
+      "kind": "country",
+      "country": "novi-kaledonija",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-nc",
+        "gnews-sport-nc"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-francuska-polinezija",
+      "kind": "country",
+      "country": "francuska-polinezija",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-pf",
+        "gnews-sport-pf"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-luksemburg",
+      "kind": "country",
+      "country": "luksemburg",
+      "language": "fr",
+      "sourceIds": [
+        "gnews-lu",
+        "gnews-sport-lu"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "desk-gvajana",
+      "kind": "country",
+      "country": "gvajana",
+      "language": "en",
+      "sourceIds": [
+        "gnews-gy",
+        "gnews-sport-gy"
+      ],
+      "targetDaily": 300,
+      "refreshMinutes": 120,
+      "priority": 1,
+      "tasks": [
+        "collect",
+        "deduplicate",
+        "localize",
+        "editorial-review",
+        "queue",
+        "verify-public"
+      ]
+    },
+    {
+      "id": "shared-source-health",
+      "kind": "shared",
+      "role": "source-health"
+    },
+    {
+      "id": "shared-source-recovery",
+      "kind": "shared",
+      "role": "source-recovery"
+    },
+    {
+      "id": "shared-historical-recovery",
+      "kind": "shared",
+      "role": "historical-recovery"
+    },
+    {
+      "id": "shared-croatia-desk",
+      "kind": "shared",
+      "role": "croatia-desk"
+    },
+    {
+      "id": "shared-regional-desk",
+      "kind": "shared",
+      "role": "regional-desk"
+    },
+    {
+      "id": "shared-world-desk",
+      "kind": "shared",
+      "role": "world-desk"
+    },
+    {
+      "id": "shared-fact-check",
+      "kind": "shared",
+      "role": "fact-check"
+    },
+    {
+      "id": "shared-primary-sources",
+      "kind": "shared",
+      "role": "primary-sources"
+    },
+    {
+      "id": "shared-translation",
+      "kind": "shared",
+      "role": "translation"
+    },
+    {
+      "id": "shared-language-review",
+      "kind": "shared",
+      "role": "language-review"
+    },
+    {
+      "id": "shared-event-dedupe",
+      "kind": "shared",
+      "role": "event-dedupe"
+    },
+    {
+      "id": "shared-copyright",
+      "kind": "shared",
+      "role": "copyright"
+    },
+    {
+      "id": "shared-photo-rights",
+      "kind": "shared",
+      "role": "photo-rights"
+    },
+    {
+      "id": "shared-image-production",
+      "kind": "shared",
+      "role": "image-production"
+    },
+    {
+      "id": "shared-gallery",
+      "kind": "shared",
+      "role": "gallery"
+    },
+    {
+      "id": "shared-seo",
+      "kind": "shared",
+      "role": "seo"
+    },
+    {
+      "id": "shared-hreflang",
+      "kind": "shared",
+      "role": "hreflang"
+    },
+    {
+      "id": "shared-sitemap",
+      "kind": "shared",
+      "role": "sitemap"
+    },
+    {
+      "id": "shared-publisher",
+      "kind": "shared",
+      "role": "publisher"
+    },
+    {
+      "id": "shared-public-verification",
+      "kind": "shared",
+      "role": "public-verification"
+    },
+    {
+      "id": "shared-deployment",
+      "kind": "shared",
+      "role": "deployment"
+    },
+    {
+      "id": "shared-rollback",
+      "kind": "shared",
+      "role": "rollback"
+    },
+    {
+      "id": "shared-resource-budget",
+      "kind": "shared",
+      "role": "resource-budget"
+    },
+    {
+      "id": "shared-incident-control",
+      "kind": "shared",
+      "role": "incident-control"
+    }
+  ]
+}
