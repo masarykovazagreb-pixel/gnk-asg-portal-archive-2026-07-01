@@ -7,7 +7,7 @@ const article=JSON.parse(await readFile(source,"utf8"));
 checkReady(article);
 const {evidence,...publicArticle}=article;
 const origin=new URL(process.env.FAST_NEWS_DEV_ORIGIN||"");
-if(origin.protocol!=="https:"||origin.pathname!=="/"||origin.username||origin.password||origin.search||origin.hash)throw Error("Invalid origin");
+if(origin.origin!=="https://dev.gnk-asg.hr"||origin.pathname!=="/"||origin.username||origin.password||origin.search||origin.hash)throw Error("Invalid authorized DEV origin");
 const token=process.env.FAST_NEWS_PUBLISH_TOKEN;if(!token)throw Error("Missing authorized publisher token");
 const result=await fetch(new URL("/api/publish",origin),{method:"POST",headers:{"content-type":"application/json",authorization:"Bearer "+token},body:JSON.stringify(publicArticle),redirect:"error",signal:AbortSignal.timeout(20000)});
 if(!result.ok)throw Error("Publication rejected: HTTP "+result.status);
