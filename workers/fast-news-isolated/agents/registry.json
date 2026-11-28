@@ -6,7 +6,13 @@
     "mailAccess": false,
     "vercel": false,
     "requireEditorialReview": true,
-    "requirePublicVerification": true
+    "requirePublicVerification": true,
+    "translation": {
+      "requireActualLocalizedText": true,
+      "fullTextRequiresRights": true,
+      "sourceAttribution": true,
+      "englishRequired": true
+    }
   },
   "agents": [
     {
@@ -30,7 +36,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "sl",
+        "en"
       ]
     },
     {
@@ -63,7 +77,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "hr",
+        "en"
       ]
     },
     {
@@ -87,7 +109,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "bs",
+        "en"
       ]
     },
     {
@@ -111,7 +141,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "sr",
+        "en"
       ]
     },
     {
@@ -132,7 +170,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "sr",
+        "en"
       ]
     },
     {
@@ -153,7 +199,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "mk",
+        "en"
       ]
     },
     {
@@ -174,7 +228,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "sq",
+        "en"
       ]
     },
     {
@@ -195,7 +257,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "bg",
+        "en"
       ]
     },
     {
@@ -216,7 +286,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ro",
+        "en"
       ]
     },
     {
@@ -237,7 +315,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "el",
+        "en"
       ]
     },
     {
@@ -258,7 +344,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "tr",
+        "en"
       ]
     },
     {
@@ -279,7 +373,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "sq",
+        "en"
       ]
     },
     {
@@ -301,7 +403,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "de",
+        "en"
       ]
     },
     {
@@ -322,7 +432,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "hu",
+        "en"
       ]
     },
     {
@@ -343,7 +461,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "cs",
+        "en"
       ]
     },
     {
@@ -364,7 +490,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "sk",
+        "en"
       ]
     },
     {
@@ -385,7 +519,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "pl",
+        "en"
       ]
     },
     {
@@ -408,7 +550,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "de",
+        "en"
       ]
     },
     {
@@ -429,7 +579,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "de",
+        "en"
       ]
     },
     {
@@ -450,7 +608,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "de",
+        "en"
       ]
     },
     {
@@ -471,7 +637,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -492,7 +666,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "it",
+        "en"
       ]
     },
     {
@@ -513,7 +695,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -534,7 +724,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "pt",
+        "en"
       ]
     },
     {
@@ -557,7 +755,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -578,7 +783,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -599,7 +811,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "nl",
+        "en"
       ]
     },
     {
@@ -620,7 +840,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "nl",
+        "en"
       ]
     },
     {
@@ -641,7 +869,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "da",
+        "en"
       ]
     },
     {
@@ -662,7 +898,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "sv",
+        "en"
       ]
     },
     {
@@ -683,7 +927,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "no",
+        "en"
       ]
     },
     {
@@ -704,7 +956,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fi",
+        "en"
       ]
     },
     {
@@ -725,7 +985,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "is",
+        "en"
       ]
     },
     {
@@ -746,7 +1014,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "et",
+        "en"
       ]
     },
     {
@@ -767,7 +1043,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "lv",
+        "en"
       ]
     },
     {
@@ -788,7 +1072,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "lt",
+        "en"
       ]
     },
     {
@@ -809,7 +1101,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ru",
+        "en"
       ]
     },
     {
@@ -830,7 +1130,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "uk",
+        "en"
       ]
     },
     {
@@ -851,7 +1159,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "be",
+        "en"
       ]
     },
     {
@@ -872,7 +1188,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ro",
+        "en"
       ]
     },
     {
@@ -893,7 +1217,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ka",
+        "en"
       ]
     },
     {
@@ -914,7 +1246,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "hy",
+        "en"
       ]
     },
     {
@@ -935,7 +1275,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "az",
+        "en"
       ]
     },
     {
@@ -958,7 +1306,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -980,7 +1335,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -1002,7 +1364,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1023,7 +1393,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1044,7 +1422,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1065,7 +1451,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1086,7 +1480,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1107,7 +1509,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1128,7 +1538,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1149,7 +1567,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1170,7 +1596,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1191,7 +1625,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -1212,7 +1653,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1233,7 +1682,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1254,7 +1711,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1275,7 +1740,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1297,7 +1770,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "pt",
+        "en"
       ]
     },
     {
@@ -1318,7 +1799,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1339,7 +1828,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1360,7 +1857,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1382,7 +1887,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1405,7 +1918,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -1426,7 +1947,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "zh",
+        "en"
       ]
     },
     {
@@ -1447,7 +1976,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ja",
+        "en"
       ]
     },
     {
@@ -1468,7 +2005,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ko",
+        "en"
       ]
     },
     {
@@ -1489,7 +2034,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ko",
+        "en"
       ]
     },
     {
@@ -1510,7 +2063,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "zh",
+        "en"
       ]
     },
     {
@@ -1531,7 +2092,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "mn",
+        "en"
       ]
     },
     {
@@ -1552,7 +2121,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "vi",
+        "en"
       ]
     },
     {
@@ -1573,7 +2150,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "th",
+        "en"
       ]
     },
     {
@@ -1594,7 +2179,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ms",
+        "en"
       ]
     },
     {
@@ -1615,7 +2208,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -1636,7 +2236,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "id",
+        "en"
       ]
     },
     {
@@ -1657,7 +2265,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -1678,7 +2293,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "km",
+        "en"
       ]
     },
     {
@@ -1699,7 +2322,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "lo",
+        "en"
       ]
     },
     {
@@ -1720,7 +2351,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "my",
+        "en"
       ]
     },
     {
@@ -1742,7 +2381,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "hi",
+        "en"
       ]
     },
     {
@@ -1763,7 +2410,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ur",
+        "en"
       ]
     },
     {
@@ -1784,7 +2439,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "bn",
+        "en"
       ]
     },
     {
@@ -1805,7 +2468,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "si",
+        "en"
       ]
     },
     {
@@ -1826,7 +2497,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ne",
+        "en"
       ]
     },
     {
@@ -1847,7 +2526,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fa",
+        "en"
       ]
     },
     {
@@ -1868,7 +2555,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "kk",
+        "en"
       ]
     },
     {
@@ -1889,7 +2584,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "uz",
+        "en"
       ]
     },
     {
@@ -1910,7 +2613,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "tk",
+        "en"
       ]
     },
     {
@@ -1931,7 +2642,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ky",
+        "en"
       ]
     },
     {
@@ -1952,7 +2671,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "tg",
+        "en"
       ]
     },
     {
@@ -1973,7 +2700,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fa",
+        "en"
       ]
     },
     {
@@ -1994,7 +2729,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2015,7 +2758,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2036,7 +2787,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2057,7 +2816,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2078,7 +2845,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "he",
+        "en"
       ]
     },
     {
@@ -2099,7 +2874,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2120,7 +2903,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2141,7 +2932,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2162,7 +2961,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2183,7 +2990,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2204,7 +3019,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2225,7 +3048,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2246,7 +3077,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2267,7 +3106,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -2288,7 +3135,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -2309,7 +3163,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -2330,7 +3191,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -2351,7 +3220,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -2372,7 +3248,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "am",
+        "en"
       ]
     },
     {
@@ -2393,7 +3277,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "sw",
+        "en"
       ]
     },
     {
@@ -2414,7 +3306,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -2435,7 +3334,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "pt",
+        "en"
       ]
     },
     {
@@ -2457,7 +3364,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -2478,7 +3392,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -2499,7 +3420,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -2520,7 +3448,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ca",
+        "en"
       ]
     },
     {
@@ -2541,7 +3477,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -2562,7 +3506,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "it",
+        "en"
       ]
     },
     {
@@ -2583,7 +3535,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "it",
+        "en"
       ]
     },
     {
@@ -2604,7 +3564,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "mt",
+        "en"
       ]
     },
     {
@@ -2625,7 +3593,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "el",
+        "en"
       ]
     },
     {
@@ -2646,7 +3622,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "kl",
+        "en"
       ]
     },
     {
@@ -2667,7 +3651,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fo",
+        "en"
       ]
     },
     {
@@ -2688,7 +3680,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "pt",
+        "en"
       ]
     },
     {
@@ -2709,7 +3709,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "pt",
+        "en"
       ]
     },
     {
@@ -2730,7 +3738,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "pt",
+        "en"
       ]
     },
     {
@@ -2751,7 +3767,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "es",
+        "en"
       ]
     },
     {
@@ -2772,7 +3796,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -2793,7 +3824,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -2814,7 +3853,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -2835,7 +3881,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -2856,7 +3909,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -2877,7 +3938,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -2898,7 +3967,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -2919,7 +3996,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -2940,7 +4025,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -2961,7 +4054,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -2982,7 +4083,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -3003,7 +4112,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -3024,7 +4141,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -3045,7 +4170,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -3066,7 +4199,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -3087,7 +4228,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "pt",
+        "en"
       ]
     },
     {
@@ -3108,7 +4257,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -3129,7 +4286,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ti",
+        "en"
       ]
     },
     {
@@ -3150,7 +4315,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "so",
+        "en"
       ]
     },
     {
@@ -3171,7 +4344,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3192,7 +4372,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3213,7 +4400,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "rw",
+        "en"
       ]
     },
     {
@@ -3234,7 +4429,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -3255,7 +4458,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3276,7 +4486,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3297,7 +4514,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3318,7 +4542,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3339,7 +4570,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3360,7 +4598,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3381,7 +4626,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3402,7 +4654,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "mg",
+        "en"
       ]
     },
     {
@@ -3423,7 +4683,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -3444,7 +4712,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -3465,7 +4741,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -3486,7 +4770,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -3507,7 +4799,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -3528,7 +4828,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -3549,7 +4857,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -3570,7 +4886,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -3591,7 +4915,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -3612,7 +4944,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ar",
+        "en"
       ]
     },
     {
@@ -3633,7 +4973,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "dz",
+        "en"
       ]
     },
     {
@@ -3654,7 +5002,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "dv",
+        "en"
       ]
     },
     {
@@ -3675,7 +5031,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "ms",
+        "en"
       ]
     },
     {
@@ -3696,7 +5060,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "pt",
+        "en"
       ]
     },
     {
@@ -3717,7 +5089,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3738,7 +5117,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3759,7 +5145,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3780,7 +5173,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -3801,7 +5202,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3822,7 +5230,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3843,7 +5258,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3864,7 +5286,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3885,7 +5314,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3906,7 +5342,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3927,7 +5370,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3948,7 +5398,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3969,7 +5426,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -3990,7 +5454,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "bi",
+        "en"
       ]
     },
     {
@@ -4011,7 +5483,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "sm",
+        "en"
       ]
     },
     {
@@ -4032,7 +5512,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "to",
+        "en"
       ]
     },
     {
@@ -4053,7 +5541,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -4074,7 +5569,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -4095,7 +5597,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -4116,7 +5625,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -4137,7 +5653,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "na",
+        "en"
       ]
     },
     {
@@ -4158,7 +5682,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "tvl",
+        "en"
       ]
     },
     {
@@ -4179,7 +5711,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
@@ -4200,7 +5739,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -4221,7 +5768,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -4242,7 +5797,15 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "fr",
+        "en"
       ]
     },
     {
@@ -4263,7 +5826,14 @@
         "localize",
         "editorial-review",
         "queue",
-        "verify-public"
+        "verify-public",
+        "monitor-local-media",
+        "verify-translation",
+        "sync-rss",
+        "verify-language-urls"
+      ],
+      "requiredLanguages": [
+        "en"
       ]
     },
     {
