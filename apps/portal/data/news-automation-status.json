@@ -1,7 +1,7 @@
 {
   "ok": true,
   "status": "refreshed",
-  "updated_at": "2026-11-28T02:57:25+01:00",
+  "updated_at": "2026-11-28T10:25:35+01:00",
   "engine": "single_publication_engine_v14_github_actions",
   "cadence": "six times daily at 01:37, 05:37, 09:37, 13:37, 17:37 and 21:37 UTC; watchdog recovery if stale",
   "timezone": "Europe/Zagreb",
@@ -9,11 +9,11 @@
   "max_items_per_source": 6,
   "feeds_configured": 84,
   "feeds_http_ok": 73,
-  "feeds_usable": 49,
-  "feeds_empty": 24,
+  "feeds_usable": 50,
+  "feeds_empty": 23,
   "feeds_failed": 11,
-  "current_cycle_validated_items": 1324,
-  "current_cycle_distinct_sources": 49,
+  "current_cycle_validated_items": 1334,
+  "current_cycle_distinct_sources": 50,
   "source_diversity_floor": 6,
   "public_items_target": 300,
   "public_items_written": 300,
@@ -41,14 +41,14 @@
       "source": "BBC Business",
       "ok": true,
       "usable": true,
-      "items": 47,
+      "items": 48,
       "error": null
     },
     {
       "source": "The Guardian Business",
       "ok": true,
       "usable": true,
-      "items": 40,
+      "items": 39,
       "error": null
     },
     {
@@ -76,7 +76,7 @@
       "source": "The Independent Business",
       "ok": true,
       "usable": true,
-      "items": 10,
+      "items": 9,
       "error": null
     },
     {
@@ -202,7 +202,7 @@
       "source": "The Hindu BusinessLine",
       "ok": true,
       "usable": true,
-      "items": 53,
+      "items": 50,
       "error": null
     },
     {
@@ -237,14 +237,14 @@
       "source": "The Japan Times",
       "ok": true,
       "usable": true,
-      "items": 27,
+      "items": 28,
       "error": null
     },
     {
       "source": "Channel News Asia",
       "ok": true,
       "usable": true,
-      "items": 11,
+      "items": 7,
       "error": null
     },
     {
@@ -273,7 +273,7 @@
       "ok": false,
       "usable": false,
       "items": 0,
-      "error": "HTTP 404"
+      "error": "HTTP 403"
     },
     {
       "source": "Agencia Brasil",
@@ -370,7 +370,7 @@
       "source": "Poslovni dnevnik",
       "ok": true,
       "usable": true,
-      "items": 14,
+      "items": 15,
       "error": null
     },
     {
@@ -397,8 +397,8 @@
     {
       "source": "Netokracija",
       "ok": true,
-      "usable": false,
-      "items": 0,
+      "usable": true,
+      "items": 10,
       "error": null
     },
     {
@@ -545,14 +545,14 @@
       "source": "BBC Sport",
       "ok": true,
       "usable": true,
-      "items": 62,
+      "items": 63,
       "error": null
     },
     {
       "source": "The Guardian Sport",
       "ok": true,
       "usable": true,
-      "items": 24,
+      "items": 26,
       "error": null
     },
     {
