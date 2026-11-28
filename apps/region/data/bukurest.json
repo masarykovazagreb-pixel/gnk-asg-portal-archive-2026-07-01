@@ -4,17 +4,20 @@
   "lang": "ro",
   "city": "Bukurešt",
   "country": "Rumunjska",
-  "updatedAt": "2026-11-28T09:29:34.854Z",
+  "updatedAt": "2026-11-28T10:20:15.390Z",
   "sources": [
     {
       "id": "agerpres",
       "name": "Agerpres",
       "url": "https://www.agerpres.ro/rss",
-      "ok": true,
-      "fetched": 20,
+      "ok": false,
+      "fetched": 0,
       "corrupt": 0,
-      "errors": [],
-      "checkedAt": "2026-11-28T09:29:30.186Z"
+      "errors": [
+        "https://www.agerpres.ro/rss: HTTP 520",
+        "https://www.agerpres.ro/rss/: This operation was aborted"
+      ],
+      "checkedAt": "2026-11-28T10:20:10.728Z"
     },
     {
       "id": "hotnews",
@@ -24,7 +27,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-28T09:29:30.379Z"
+      "checkedAt": "2026-11-28T10:20:10.922Z"
     },
     {
       "id": "zf",
@@ -34,7 +37,7 @@
       "fetched": 20,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-28T09:29:31.779Z"
+      "checkedAt": "2026-11-28T10:20:12.309Z"
     },
     {
       "id": "profit",
@@ -44,17 +47,17 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-28T09:29:31.927Z"
+      "checkedAt": "2026-11-28T10:20:12.551Z"
     },
     {
       "id": "digi24",
       "name": "Digi24",
       "url": "https://www.digi24.ro/rss",
       "ok": true,
-      "fetched": 255,
+      "fetched": 245,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-28T09:29:33.234Z"
+      "checkedAt": "2026-11-28T10:20:13.873Z"
     },
     {
       "id": "g4media",
@@ -64,7 +67,7 @@
       "fetched": 30,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-28T09:29:34.585Z"
+      "checkedAt": "2026-11-28T10:20:15.112Z"
     },
     {
       "id": "newsro",
@@ -74,10 +77,282 @@
       "fetched": 10,
       "corrupt": 0,
       "errors": [],
-      "checkedAt": "2026-11-28T09:29:34.851Z"
+      "checkedAt": "2026-11-28T10:20:15.388Z"
     }
   ],
   "items": [
+    {
+      "slug": "bukurest-2026-11-28-g4media-peste-460-de-drone-s-au-indreptat-spre-e155c9",
+      "title": "Peste 460 de drone s-au îndreptat spre regiunea Moscovei, spune primarul capitalei / Rusia susține că a doborât 1.246 de drone ucrainene într-o singură noapte",
+      "summary": "Primarul Moscovei, Serghei Sobianin, a declarat sâmbătă, că 462 de drone s-au îndreptat spre regiunea capitalei ruse în cursul nopții, iar 123 au fost distruse în apropierea orașului. Separat, Ministerul rus al Apărării a anunțat că forțele sale antiaeriene au doborât 1.246 de drone ucrainene în mai multe regiuni ale Rusiei și deasupra Crimeei, peninsula […] © G4Media.ro .",
+      "date": "2026-11-28T10:19:03.000Z",
+      "url": "https://www.g4media.ro/atac-drone-moscova-rusia-1246-drone-doborat.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "briansk",
+        "drone ucrainene",
+        "moscova"
+      ],
+      "author": "Redacția",
+      "theme": "rat",
+      "image": "https://www.g4media.ro/wp-content/uploads/2023/03/bryansk-regiune-oblast-rusia-ucriana-kiev-lansare-drone-kamikaze-razboi-atac.jpg",
+      "imageAlt": "Peste 460 de drone s-au îndreptat spre regiunea Moscovei, spune primarul capitalei / Rusia susține că a doborât 1.246 de drone ucrainene într-o singură noapte",
+      "addedAt": "2026-11-28T10:20:15.113Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-newsro-caras-severin-barbat-de-25-de-ani-cercetat-755ea1",
+      "title": "Caraş Severin - Bărbat de 25 de ani, cercetat după ce i-a ameninţat pe poliţişti în clipuri postate pe o reţea de socializare - VIDEO",
+      "summary": "Un bărbat în vârstă de 25 de ani este anchetat după ce i-a ameninţat pe poliţişti în clipuri postate pe o reţea de socializare. Bărbatul a reacţionat astfel după ce, în urmă cu câteva zile, poliţiştii au intervenit pe o stradă din Reşiţa pentru prinderea unui şofer care nu a oprit la semnal şi a fost urmărit. În momentul imobilizării conducătorului auto, mai multe persoane au vrut să împiedice acest lucru şi au aruncat cu pietre în direcţia poliţiştilor. Aceştia au fost nevoiţi să folosească armamentul din dotare, fără a se înregistra victime.",
+      "date": "2026-11-28T10:15:24.000Z",
+      "url": "https://www.news.ro/eveniment/caras-severin-barbat-de-25-de-ani-cercetat-dupa-ce-i-a-amenintat-pe-politisti-in-clipuri-postate-pe-o-retea-de-socializare-video-1922401528242026111223016168",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Caraş Severin - Bărbat de 25 de ani, cercetat după ce i-a ameninţat pe poliţişti în clipuri postate pe o reţea de socializare - VIDEO",
+      "addedAt": "2026-11-28T10:20:15.388Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-g4media-zboruri-suspendate-cateva-ore-pe-aeroportul-2aa0b1",
+      "title": "Zboruri suspendate câteva ore pe aeroportul Köln/Bonn, după ce o dronă a survolat aeroportul / În august, o dronă cu explozibil a fost descoperită la Leipzig/Halle, iar unul…",
+      "summary": "Decolările și aterizările pe aeroportul Köln/Bonn din Germania au fost suspendate în noaptea de vineri spre sâmbătă, 27 spre 28 noiembrie, după ce o dronă a fost observată deasupra aeroportului, cu puțin înainte de ora locală 22.00. Traficul aerian a fost reluat în jurul orei 00.30, după verificările serviciului german de control al traficului aerian. Site-ul […] © G4Media.ro .",
+      "date": "2026-11-28T10:07:18.000Z",
+      "url": "https://www.g4media.ro/drona-aeroport-koln-bonn-zboruri-suspendate.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "aeroportul Leipzig/Halle",
+        "drone",
+        "Germania"
+      ],
+      "author": "Redacția",
+      "theme": "rat",
+      "image": "https://www.g4media.ro/wp-content/uploads/2021/07/aeroport-germania.jpg",
+      "imageAlt": "Zboruri suspendate câteva ore pe aeroportul Köln/Bonn, după ce o dronă a survolat aeroportul / În august, o dronă cu explozibil a fost descoperită la Leipzig/Halle, iar unul dintre",
+      "addedAt": "2026-11-28T10:20:15.113Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-newsro-deputatul-laura-gherasim-autoarea-667a60",
+      "title": "Deputatul Laura Gherasim, autoarea raportului AUR privind anularea alegerilor prezidenţiale, anunţă că va depune sesizări penale vizând anularea scrutinului şi persoanele publice…",
+      "summary": "Deputatul Laura Gherasim, autoarea raportului formaţiunii privind anularea alegerilor prezidenţiale, anunţă că va depune săptămâna viitoare două sesizări penale; una privind anularea scrutinului şi una vizând persoanele publice care au făcut declaraţii ”împotriva cetăţenilor români”, având ca temei art. 369 din Codul penal, care sancţionează incitarea la violenţă, ură sau discriminare. Ea îi enumeră, printre alţii, pe Cristian Tudor Popescu, Radu Buzoianu, Mugur Ciuvică.",
+      "date": "2026-11-28T10:05:30.000Z",
+      "url": "https://www.news.ro/politic-intern/deputatul-laura-gherasim-autoarea-raportului-aur-privind-anularea-alegerilor-prezidentiale-anunta-depune-sesizari-penale-vizand-anularea-scrutinului-persoanele-publice-au-facut-declaratii-impotriva-1922400528302026111223016155",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Deputatul Laura Gherasim, autoarea raportului AUR privind anularea alegerilor prezidenţiale, anunţă că va depune sesizări penale vizând anularea scrutinului şi persoanele publice c",
+      "addedAt": "2026-11-28T10:20:15.388Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-profit-openai-da-in-judecata-apple-630b49",
+      "title": "OpenAI dă în judecată Apple",
+      "summary": "OpenAI a intentat Apple un contra-proces în care își acuză rivalul de furtul unor secrete comerciale și concurență neloială.",
+      "date": "2026-11-28T10:04:00.000Z",
+      "url": "https://www.profit.ro/povesti-cu-profit/it-c/openai-da-in-judecata-apple-23015925?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "IT&C"
+      ],
+      "author": "",
+      "theme": "ai",
+      "image": "https://i0.1616.ro/media/2/2621/33216/23015925/1/chatgpt-3.jpg?width=800",
+      "imageAlt": "OpenAI dă în judecată Apple",
+      "addedAt": "2026-11-28T10:20:12.551Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-newsro-peste-o-jumatate-de-milion-de-americani-in-37237d",
+      "title": "Peste o jumătate de milion de americani, în continuare fără electricitate, în estul şi centrul SUA, după intemperiile de Thanksgiving",
+      "summary": "Sute de mii de americani nu aveau electricitate, în urma unor intemperii violente, de Thanksgiving, în estul şi centrul Statelor Unite, care au condus la amânarea unei defilări la New York, relatează AFP.",
+      "date": "2026-11-28T10:01:41.000Z",
+      "url": "https://www.news.ro/externe/peste-o-jumatate-de-milion-de-americani-in-continuare-fara-electricitate-in-estul-si-centrul-sua-dupa-intemperiile-de-thanksgiving-1922400128412026111223016149",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Peste o jumătate de milion de americani, în continuare fără electricitate, în estul şi centrul SUA, după intemperiile de Thanksgiving",
+      "addedAt": "2026-11-28T10:20:15.388Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-hotnews-alegeri-in-spania-unde-traiesc-peste-600-9f1f2e",
+      "title": "Alegeri în Spania, unde trăiesc peste 600.000 de români. Toată lumea se uită la extrema dreaptă, dar ce a făcut premierul socialist Pedro Sanchez? Ultimele sondaje",
+      "summary": "Spaniolii votează duminică, 29 noiembrie, în cadrul alegerilor parlamentare anticipate convocate de premierul Pedro Sanchez pe fondul mai multor crize publice. Sondajele dau favorită pentru formarea viitorului executiv o coaliție între conservatori și extrema-dreaptă. Decizia premierului Pedro Sanchez de a convoca alegeri parlamentare anticipate a fost văzută drept un pariu. Alegerile la termen trebuiau să …",
+      "date": "2026-11-28T10:00:19.000Z",
+      "url": "https://hotnews.ro/alegeri-in-tara-in-care-traiesc-peste-600-000-de-romani-toata-lumea-se-uita-la-extrema-dreapta-dar-ce-a-facut-premierul-socialistului-pedro-sanchez-ultimele-sondaje-2414838",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "Proiect PULSE",
+        "alegeri",
+        "extrema dreapta"
+      ],
+      "author": "Sebastian Pricop",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Alegeri în Spania, unde trăiesc peste 600.000 de români. Toată lumea se uită la extrema dreaptă, dar ce a făcut premierul socialist Pedro Sanchez? Ultimele sondaje",
+      "addedAt": "2026-11-28T10:20:10.923Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-digi24-liderul-extremei-drepte-din-austria-vrea-sa-282510",
+      "title": "Liderul extremei drepte din Austria vrea să trimită migranții sirieni și afgani în Ucraina. Ce spune despre românii expulzați",
+      "summary": "Liderul Partidului Libertății din Austria (FPÖ), Herbert Kickl, consideră că Ucraina ar trebui să primească, după încheierea războiului cu Rusia, migranții sirieni și afgani care nu pot fi deportați în țările lor de origine. El a vorbit despre viziunea partidului său în privința repatrierilor și a expulzărilor, anunțând că va depune și un proiect de lege constituțională privind „remigrarea”, acuzând autoritățile austriece că mint în privința numărului expulzărilor. El vorbește, într-un interviu pentru publicația Heute, inclusiv despre românii expulzați din Austria, „cerșetori și vagabonzi, care sunt reținuți și se întorc după câteva săptămâni”.",
+      "date": "2026-11-28T09:56:23.000Z",
+      "url": "https://www.digi24.ro/stiri/externe/liderul-extremei-drepte-din-austria-vrea-sa-trimita-migrantii-sirieni-si-afgani-in-ucraina-ce-spune-despre-romanii-expulzati-4056885",
+      "source": "digi24",
+      "sourceName": "Digi24",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA4dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjYl/MkYxMSUyRjI4JTJGMzA5MDEzNF8zMDkw/MTM0X0hlcmJlcnQtS2lja2wtbGlkZXJ1/bC1wYXJ0aWR1bHVpLUZQTy1kZS1leHRy/ZW1hLWRyZWFwdGEtZGluLUF1c3RyaWFf/LUZvdG8tUHJvZmltZWRpYS5qcGcmaGFz/aD1mNWM5ZTNkZThkYjhmOTgxNTQ4MGMxYTk1NjdiZmYyOA==.jpg",
+      "imageAlt": "Liderul extremei drepte din Austria vrea să trimită migranții sirieni și afgani în Ucraina. Ce spune despre românii expulzați",
+      "addedAt": "2026-11-28T10:20:13.876Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-newsro-cantaret-de-muzica-populara-arestat-20ffe0",
+      "title": "Cântăreţ de muzică populară, arestat preventiv după ce a agresat sexual o adolescentă de 13 ani / El este acuzat că a atins-o în zona fesei, a luat-o în braţe şi a pupat-o pe obraz",
+      "summary": "Un cântăreţ de muzică populară, în vârstă de 46 de ani, este cercetat de poliţiştii din Bucureşti după ce a agresat sexual o fată în vârstă de 13 ani. Bărbatul este acuzat că a atins-o pe fată în zona fesei, a luat-o în braţe şi a pupat-o pe obraz. El a fost arestat preventiv pentru 30 de zile.",
+      "date": "2026-11-28T09:49:25.000Z",
+      "url": "https://www.news.ro/eveniment/cantaret-de-muzica-populara-arestat-preventiv-dupa-ce-a-agresat-sexual-o-adolescenta-de-13-ani-el-este-acuzat-ca-a-atins-o-in-zona-fesei-a-luat-o-in-brate-si-a-pupat-o-pe-obraz-1922404928252026111123016151",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Cântăreţ de muzică populară, arestat preventiv după ce a agresat sexual o adolescentă de 13 ani / El este acuzat că a atins-o în zona fesei, a luat-o în braţe şi a pupat-o pe obraz",
+      "addedAt": "2026-11-28T10:20:15.389Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-g4media-judecatoarea-ramona-gratiela-milu-omisa-de-7d8ce1",
+      "title": "Judecătoarea Ramona Grațiela Milu, omisă de două ori să fie invitată la reuniuni CSM cu șefii curților de apel / Despre declarația de la Craiova: „Un amestec de competențe arogate…",
+      "summary": "Judecătoarea Ramona Grațiela Milu, membră CSM, scrie pe Facebook că a aflat din presă despre reuniunea președinților de curți de apel cu membri ai CSM, consiliu din care face parte, întâlnire ce a avut loc la Curtea de Apel Craiova. Este a doua întâlnire de acest nivel la care nu a fost invitată, spune ea, […] © G4Media.ro .",
+      "date": "2026-11-28T09:46:50.000Z",
+      "url": "https://www.g4media.ro/ramona-gratiela-milu-csm-reuniuni-craiova-oradea.html",
+      "source": "g4media",
+      "sourceName": "G4Media",
+      "categories": [
+        "Articole",
+        "consiliul superior al magistraturii",
+        "csm",
+        "curtea de apel craiova"
+      ],
+      "author": "Alina Mihai",
+      "theme": "ai",
+      "image": "https://www.g4media.ro/wp-content/uploads/2026/01/Ramona-Gratiela-Milu-e1768486762993.jpg",
+      "imageAlt": "Judecătoarea Ramona Grațiela Milu, omisă de două ori să fie invitată la reuniuni CSM cu șefii curților de apel / Despre declarația de la Craiova: „Un amestec de competențe arogate ",
+      "addedAt": "2026-11-28T10:20:15.113Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-newsro-traficul-aerian-pe-aeroportul-din-koln-b9ef94",
+      "title": "Traficul aerian pe aeroportul din Koln, suspendat din cauza unei drone",
+      "summary": "Aterizările şi decolările au fost suspendate, în noaptea de vineri spre sâmbătă, pe aeroportul din Koln, în urma observării unei drone, scrie presa germană.",
+      "date": "2026-11-28T09:43:00.000Z",
+      "url": "https://www.news.ro/externe/traficul-aerian-pe-aeroportul-din-koln-suspendat-din-cauza-unei-drone-1922404328002026111123016144",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "rat",
+      "image": "",
+      "imageAlt": "Traficul aerian pe aeroportul din Koln, suspendat din cauza unei drone",
+      "addedAt": "2026-11-28T10:20:15.389Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-hotnews-majorari-salariale-bonusuri-si-angajari-noi-8ceeb5",
+      "title": "Majorări salariale, bonusuri și angajări noi. Cum planifici bugetul de personal cu ajutorul soluțiilor SD Worx",
+      "summary": "Un departament solicită două poziții noi. Altul propune majorări salariale pentru angajații cu experiență. În paralel, compania pregătește bugetul de bonusuri și analizează dacă poate extinde anumite beneficii. Fiecare propunere are o justificare, însă toate trebuie evaluate împreună pentru a înțelege ce cheltuieli poate susține organizația în anul următor. Pentru echipele de HR și financiar, …",
+      "date": "2026-11-28T09:34:58.000Z",
+      "url": "https://hotnews.ro/majorari-salariale-bonusuri-si-angajari-noi-cum-planifici-bugetul-de-personal-cu-ajutorul-solutiilor-sd-worx-2416506",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Esential"
+      ],
+      "author": "Ariana Lazurca",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Majorări salariale, bonusuri și angajări noi. Cum planifici bugetul de personal cu ajutorul soluțiilor SD Worx",
+      "addedAt": "2026-11-28T10:20:10.923Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-hotnews-donald-trump-jr-revoltat-de-o-scena-aleasa-863ab9",
+      "title": "Donald Trump Jr., revoltat de o scenă aleasă de Netflix pentru promovarea unui nou serial",
+      "summary": "Donald Trump Jr., fiul cel mare al președintelui SUA, a mustrat platforma de streaming Netflix după ce a publicat, de Ziua Recunoștinței, un videoclip promoțional în care două actrițe din serialul „The Hunting Wives” se sărută, potrivit Deadline. „Ce este în neregulă cu voi??? Este Ziua Recunoștinței”, a scris Donald Trump Jr. pe rețeaua X, …",
+      "date": "2026-11-28T09:33:06.000Z",
+      "url": "https://hotnews.ro/donald-trump-jr-revoltat-de-promovarea-netflix-pentru-un-nou-serial-ce-efect-a-avut-furia-fiului-presedintelui-sua-2416491",
+      "source": "hotnews",
+      "sourceName": "HotNews",
+      "categories": [
+        "Actualitate",
+        "International",
+        "Life"
+      ],
+      "author": "Alexandra Coșlea",
+      "theme": "ai",
+      "image": "",
+      "imageAlt": "Donald Trump Jr., revoltat de o scenă aleasă de Netflix pentru promovarea unui nou serial",
+      "addedAt": "2026-11-28T10:20:10.923Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-newsro-universitatea-de-stiintele-vietii-din-364bac",
+      "title": "Universitatea de Ştiinţele Vieţii din Timişoara şi-a deschis reprezentanţă permanentă la Bruxelles / Universitatea a atras peste 30 de milioane de euro şi îşi propune să…",
+      "summary": "Universitatea de Ştiinţele Vieţii din Timişoara a anunţat deschiderea unei reprezentanţe permanente la Bruxelles şi îşi propune să accelereze atragerea finanţărilor europene şi să dezvolte parteneriate internaţionale. Până în prezent, Universitatea a atras proiecte care au depăşit 30 de milioane de euro.",
+      "date": "2026-11-28T09:32:23.000Z",
+      "url": "https://www.news.ro/edu-news/universitatea-stiintele-vietii-timisoara-deschis-reprezentanta-permanenta-bruxelles-universitatea-atras-peste-30-milioane-euro-isi-propune-accelereze-atragerea-finantarilor-europene-foto-1922403228232026111123016146",
+      "source": "newsro",
+      "sourceName": "News.ro",
+      "categories": [],
+      "author": "",
+      "theme": "drustvo",
+      "image": "",
+      "imageAlt": "Universitatea de Ştiinţele Vieţii din Timişoara şi-a deschis reprezentanţă permanentă la Bruxelles / Universitatea a atras peste 30 de milioane de euro şi îşi propune să accelereze",
+      "addedAt": "2026-11-28T10:20:15.389Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-profit-whatsapp-vinde-cartele-de-date-d9e049",
+      "title": "WhatsApp vinde cartele de date",
+      "summary": "WhatsApp anunță că va oferi în curând utilizatorilor posibilitatea cumpărării cartelelor electronice eSIM.",
+      "date": "2026-11-28T09:32:00.000Z",
+      "url": "https://www.profit.ro/romania-conectata/whatsapp-vinde-cartele-de-date-23015945?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "România Conectată"
+      ],
+      "author": "",
+      "theme": "drustvo",
+      "image": "https://i0.1616.ro/media/2/2621/41186/23015945/1/whatsapp-app-icon.jpg?width=800",
+      "imageAlt": "WhatsApp vinde cartele de date",
+      "addedAt": "2026-11-28T10:20:12.551Z"
+    },
+    {
+      "slug": "bukurest-2026-11-28-profit-romanii-sunt-cei-mai-reticenti-consumatori-470f7f",
+      "title": "Românii sunt cei mai reticenți consumatori din UE în privința achizițiilor importante și cei mai pesimiști după greci",
+      "summary": "Românii sunt consumatorii europeni cel mai puțin dispuși să cheltuiască bani pe achiziții importante în următoarele 12 luni și ocupă penultimul loc în Uniunea Europeană în ceea ce privește încrederea consumatorilor, după Grecia, potrivit datelor publicate de Comisia Europeană. România are, totodată, cea mai ridicată rată anuală a inflației din UE, de 7% în octombrie.",
+      "date": "2026-11-28T09:30:00.000Z",
+      "url": "https://www.profit.ro/must-read/romanii-sunt-cei-mai-reticenti-consumatori-din-ue-in-privinta-achizitiilor-importante-si-cei-mai-pesimisti-dupa-greci-23016103?utm_source=Rss&utm_medium=Referral&utm_campaign=Cross",
+      "source": "profit",
+      "sourceName": "Profit.ro",
+      "categories": [
+        "Must read"
+      ],
+      "author": "",
+      "theme": "politika",
+      "image": "",
+      "imageAlt": "Românii sunt cei mai reticenți consumatori din UE în privința achizițiilor importante și cei mai pesimiști după greci",
+      "addedAt": "2026-11-28T10:20:12.552Z"
+    },
     {
       "slug": "bukurest-2026-11-28-agerpres-meteo-bucuresti-vreme-deosebit-de-rece-cu-958410",
       "title": "Meteo București: Vreme deosebit de rece, cu ploaie și ninsoare pe parcursul acestui weekend",
