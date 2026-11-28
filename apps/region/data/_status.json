@@ -1,11 +1,11 @@
 {
   "version": 1,
   "lastRun": {
-    "at": "2026-11-28T18:58:14.564Z",
+    "at": "2026-11-28T21:45:45.430Z",
     "channels": {
       "beograd": {
         "fetched": 23,
-        "total": 2706,
+        "total": 2729,
         "sourcesOk": 4,
         "sourcesTotal": 6,
         "corrupt": 0,
@@ -15,8 +15,8 @@
         ]
       },
       "budimpesta": {
-        "fetched": 27,
-        "total": 2535,
+        "fetched": 22,
+        "total": 2557,
         "sourcesOk": 6,
         "sourcesTotal": 7,
         "corrupt": 0,
@@ -25,8 +25,8 @@
         ]
       },
       "rim": {
-        "fetched": 18,
-        "total": 1825,
+        "fetched": 8,
+        "total": 1833,
         "sourcesOk": 5,
         "sourcesTotal": 8,
         "corrupt": 0,
@@ -37,16 +37,16 @@
         ]
       },
       "bukurest": {
-        "fetched": 40,
-        "total": 3669,
+        "fetched": 36,
+        "total": 3705,
         "sourcesOk": 7,
         "sourcesTotal": 7,
         "corrupt": 0,
         "failed": []
       },
       "jakarta": {
-        "fetched": 21,
-        "total": 2503,
+        "fetched": 13,
+        "total": 2516,
         "sourcesOk": 4,
         "sourcesTotal": 8,
         "corrupt": 0,
@@ -58,8 +58,8 @@
         ]
       },
       "saopaulo": {
-        "fetched": 28,
-        "total": 3130,
+        "fetched": 25,
+        "total": 3155,
         "sourcesOk": 6,
         "sourcesTotal": 8,
         "corrupt": 0,
@@ -69,8 +69,8 @@
         ]
       },
       "singapur": {
-        "fetched": 8,
-        "total": 1516,
+        "fetched": 11,
+        "total": 1527,
         "sourcesOk": 3,
         "sourcesTotal": 8,
         "corrupt": 0,
@@ -83,8 +83,8 @@
         ]
       },
       "tokio": {
-        "fetched": 15,
-        "total": 2500,
+        "fetched": 14,
+        "total": 2514,
         "sourcesOk": 6,
         "sourcesTotal": 8,
         "corrupt": 0,
@@ -97,43 +97,43 @@
     "built": [
       {
         "channel": "beograd",
-        "pages": 2723,
-        "items": 2706
+        "pages": 2746,
+        "items": 2729
       },
       {
         "channel": "budimpesta",
-        "pages": 2553,
-        "items": 2535
+        "pages": 2575,
+        "items": 2557
       },
       {
         "channel": "rim",
-        "pages": 1843,
-        "items": 1825
+        "pages": 1851,
+        "items": 1833
       },
       {
         "channel": "bukurest",
-        "pages": 3689,
-        "items": 3669
+        "pages": 3725,
+        "items": 3705
       },
       {
         "channel": "jakarta",
-        "pages": 2522,
-        "items": 2503
+        "pages": 2535,
+        "items": 2516
       },
       {
         "channel": "saopaulo",
-        "pages": 3149,
-        "items": 3130
+        "pages": 3174,
+        "items": 3155
       },
       {
         "channel": "singapur",
-        "pages": 1532,
-        "items": 1516
+        "pages": 1543,
+        "items": 1527
       },
       {
         "channel": "tokio",
-        "pages": 2519,
-        "items": 2500
+        "pages": 2533,
+        "items": 2514
       }
     ],
     "env": {
@@ -141,6 +141,146 @@
     }
   },
   "runs": [
+    {
+      "at": "2026-11-28T21:45:45.430Z",
+      "channels": {
+        "beograd": {
+          "fetched": 23,
+          "total": 2729,
+          "sourcesOk": 4,
+          "sourcesTotal": 6,
+          "corrupt": 0,
+          "failed": [
+            "rts",
+            "b92"
+          ]
+        },
+        "budimpesta": {
+          "fetched": 22,
+          "total": 2557,
+          "sourcesOk": 6,
+          "sourcesTotal": 7,
+          "corrupt": 0,
+          "failed": [
+            "index"
+          ]
+        },
+        "rim": {
+          "fetched": 8,
+          "total": 1833,
+          "sourcesOk": 5,
+          "sourcesTotal": 8,
+          "corrupt": 0,
+          "failed": [
+            "ilpost",
+            "fanpage",
+            "adnkronos"
+          ]
+        },
+        "bukurest": {
+          "fetched": 36,
+          "total": 3705,
+          "sourcesOk": 7,
+          "sourcesTotal": 7,
+          "corrupt": 0,
+          "failed": []
+        },
+        "jakarta": {
+          "fetched": 13,
+          "total": 2516,
+          "sourcesOk": 4,
+          "sourcesTotal": 8,
+          "corrupt": 0,
+          "failed": [
+            "kompas",
+            "detik",
+            "tempo",
+            "kumparan"
+          ]
+        },
+        "saopaulo": {
+          "fetched": 25,
+          "total": 3155,
+          "sourcesOk": 6,
+          "sourcesTotal": 8,
+          "corrupt": 0,
+          "failed": [
+            "estadao",
+            "valor"
+          ]
+        },
+        "singapur": {
+          "fetched": 11,
+          "total": 1527,
+          "sourcesOk": 3,
+          "sourcesTotal": 8,
+          "corrupt": 0,
+          "failed": [
+            "mothership",
+            "today",
+            "onlinecitizen",
+            "zaobao",
+            "stworld"
+          ]
+        },
+        "tokio": {
+          "fetched": 14,
+          "total": 2514,
+          "sourcesOk": 6,
+          "sourcesTotal": 8,
+          "corrupt": 0,
+          "failed": [
+            "kyodo",
+            "nikkei"
+          ]
+        }
+      },
+      "built": [
+        {
+          "channel": "beograd",
+          "pages": 2746,
+          "items": 2729
+        },
+        {
+          "channel": "budimpesta",
+          "pages": 2575,
+          "items": 2557
+        },
+        {
+          "channel": "rim",
+          "pages": 1851,
+          "items": 1833
+        },
+        {
+          "channel": "bukurest",
+          "pages": 3725,
+          "items": 3705
+        },
+        {
+          "channel": "jakarta",
+          "pages": 2535,
+          "items": 2516
+        },
+        {
+          "channel": "saopaulo",
+          "pages": 3174,
+          "items": 3155
+        },
+        {
+          "channel": "singapur",
+          "pages": 1543,
+          "items": 1527
+        },
+        {
+          "channel": "tokio",
+          "pages": 2533,
+          "items": 2514
+        }
+      ],
+      "env": {
+        "node": "v22.23.5"
+      }
+    },
     {
       "at": "2026-11-28T18:58:14.564Z",
       "channels": {
@@ -6167,169 +6307,6 @@
           "channel": "peking",
           "pages": 1786,
           "items": 1767
-        }
-      ],
-      "env": {
-        "node": "v22.23.5"
-      }
-    },
-    {
-      "at": "2026-11-25T02:27:58.077Z",
-      "channels": {
-        "zagreb": {
-          "fetched": 6,
-          "total": 3802,
-          "sourcesOk": 7,
-          "sourcesTotal": 7,
-          "corrupt": 0,
-          "failed": []
-        },
-        "sarajevo": {
-          "fetched": 2,
-          "total": 3269,
-          "sourcesOk": 6,
-          "sourcesTotal": 8,
-          "corrupt": 0,
-          "failed": [
-            "oslobodjenje",
-            "hayat"
-          ]
-        },
-        "ljubljana": {
-          "fetched": 1,
-          "total": 3088,
-          "sourcesOk": 6,
-          "sourcesTotal": 13,
-          "corrupt": 0,
-          "failed": [
-            "sta",
-            "dnevnik",
-            "siol",
-            "mladina",
-            "zurnal24",
-            "primorske",
-            "staslo"
-          ]
-        },
-        "sofija": {
-          "fetched": 0,
-          "total": 2361,
-          "sourcesOk": 5,
-          "sourcesTotal": 8,
-          "corrupt": 0,
-          "failed": [
-            "bta",
-            "novinite",
-            "btaen"
-          ]
-        },
-        "nairobi": {
-          "fetched": 1,
-          "total": 1398,
-          "sourcesOk": 4,
-          "sourcesTotal": 8,
-          "corrupt": 0,
-          "failed": [
-            "star",
-            "businessdaily",
-            "citizen",
-            "eastafrican"
-          ]
-        },
-        "newyork": {
-          "fetched": 10,
-          "total": 2145,
-          "sourcesOk": 7,
-          "sourcesTotal": 8,
-          "corrupt": 0,
-          "failed": [
-            "politico"
-          ]
-        },
-        "sydney": {
-          "fetched": 14,
-          "total": 2028,
-          "sourcesOk": 4,
-          "sourcesTotal": 8,
-          "corrupt": 0,
-          "failed": [
-            "newscomau",
-            "afr",
-            "theaustralian",
-            "9news"
-          ]
-        },
-        "kairo": {
-          "fetched": 4,
-          "total": 1020,
-          "sourcesOk": 4,
-          "sourcesTotal": 9,
-          "corrupt": 0,
-          "failed": [
-            "youm7",
-            "almasryalyoum",
-            "aljazeera",
-            "ahram",
-            "ahramonline"
-          ]
-        },
-        "peking": {
-          "fetched": 12,
-          "total": 1746,
-          "sourcesOk": 6,
-          "sourcesTotal": 8,
-          "corrupt": 0,
-          "failed": [
-            "zaobaozh",
-            "chinadaily"
-          ]
-        }
-      },
-      "built": [
-        {
-          "channel": "zagreb",
-          "pages": 3822,
-          "items": 3802
-        },
-        {
-          "channel": "sarajevo",
-          "pages": 3289,
-          "items": 3269
-        },
-        {
-          "channel": "ljubljana",
-          "pages": 3110,
-          "items": 3088
-        },
-        {
-          "channel": "sofija",
-          "pages": 2380,
-          "items": 2361
-        },
-        {
-          "channel": "nairobi",
-          "pages": 1415,
-          "items": 1398
-        },
-        {
-          "channel": "newyork",
-          "pages": 2165,
-          "items": 2145
-        },
-        {
-          "channel": "sydney",
-          "pages": 2046,
-          "items": 2028
-        },
-        {
-          "channel": "kairo",
-          "pages": 1038,
-          "items": 1020
-        },
-        {
-          "channel": "peking",
-          "pages": 1765,
-          "items": 1746
         }
       ],
       "env": {
